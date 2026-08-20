@@ -1,0 +1,105 @@
+{
+  "name": "@oore/client",
+  "version": "0.0.0",
+  "description": "Typed, tree-shakeable client for the Oore API",
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oore-ci/oore-client-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/oore-ci/oore-client-js/issues"
+  },
+  "homepage": "https://github.com/oore-ci/oore-client-js#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js"
+    },
+    "./logs": {
+      "types": "./dist/logs.d.ts",
+      "import": "./dist/logs.js"
+    },
+    "./msw": {
+      "types": "./dist/msw.d.ts",
+      "import": "./dist/msw.js"
+    },
+    "./msw/scenarios": {
+      "types": "./dist/msw-scenarios.d.ts",
+      "import": "./dist/msw-scenarios.js"
+    },
+    "./models": {
+      "types": "./dist/models.d.ts",
+      "import": "./dist/models.js"
+    },
+    "./operations": {
+      "types": "./dist/operations.d.ts",
+      "import": "./dist/operations.js"
+    },
+    "./react-query": {
+      "types": "./dist/react-query.d.ts",
+      "import": "./dist/react-query.js"
+    },
+    "./valibot": {
+      "types": "./dist/valibot.d.ts",
+      "import": "./dist/valibot.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun run clean && bun run generate && bun run typecheck && bunx tsc -p tsconfig.build.json",
+    "check": "bun run generate && bun run typecheck && bun run check:coverage && bun test && bun run build && bun run check:exports && bun run check:tree-shaking",
+    "check:coverage": "bun run scripts/check-coverage.ts",
+    "check:exports": "bun run scripts/check-exports.ts",
+    "check:tree-shaking": "bun run scripts/check-tree-shaking.ts",
+    "clean": "rm -rf dist .tmp",
+    "fetch-schema": "bun run scripts/fetch-schema.ts",
+    "generate": "bunx openapi-ts -f openapi-ts.config.ts && bun run scripts/generate-valibot-modules.ts && bun run scripts/generate-msw-entry.ts && bun run scripts/generate-adapter-entries.ts",
+    "test": "bun test",
+    "typecheck": "bunx tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.101.0",
+    "msw": "^2.15.0",
+    "valibot": "^1.4.0"
+  },
+  "peerDependenciesMeta": {
+    "@tanstack/react-query": {
+      "optional": true
+    },
+    "msw": {
+      "optional": true
+    },
+    "valibot": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "0.99.0",
+    "@tanstack/react-query": "5.101.4",
+    "@types/bun": "1.3.14",
+    "@types/node": "24.3.0",
+    "@types/react": "19.2.18",
+    "msw": "2.15.0",
+    "react": "19.2.8",
+    "typescript": "5.9.3",
+    "valibot": "1.4.2"
+  }
+}

@@ -1,0 +1,79 @@
+name: Sync OpenAPI schema
+
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: openapi-schema-sync
+  cancel-in-progress: false
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: main
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Install exact dependencies
+        run: bun ci
+
+      - name: Fetch schema and generate package
+        run: |
+          bun run fetch-schema
+          bun run generate
+
+      - name: Detect schema change
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check changed package
+        if: steps.changes.outputs.changed == 'true'
+        run: bun run check
+
+      - name: Push generated branch
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -B automation/openapi-sync
+          git add openapi src
+          git commit -m 'feat(schema): sync OpenAPI schema'
+          git push --force origin HEAD:automation/openapi-sync
+
+      - name: Open or update schema pull request
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh pr view automation/openapi-sync --json url --jq .url; then
+            gh pr create \
+              --base main \
+              --head automation/openapi-sync \
+              --title 'feat(schema): sync OpenAPI schema' \
+              --body 'Updates the checked-in OpenAPI schema and all generated package surfaces. The sync job has run the full package check.'
+          fi
+
+      - name: Dispatch CI for generated branch
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ci.yml --ref automation/openapi-sync
