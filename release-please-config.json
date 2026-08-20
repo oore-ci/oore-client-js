@@ -4,6 +4,7 @@
   "include-component-in-tag": false,
   "packages": {
     ".": {
+      "initial-version": "0.1.0",
       "package-name": "@oore/client"
     }
   }
