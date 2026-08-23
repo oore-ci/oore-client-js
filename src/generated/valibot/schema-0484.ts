@@ -3,4 +3,4 @@
 import * as v from 'valibot'
 import { vArtifactStorageSettingsResponse } from './schema-0012.js'
 
-export const vUpdateArtifactStorageSettingsResponse = vArtifactStorageSettingsResponse;
+export const vGetArtifactStorageSettingsResponse = vArtifactStorageSettingsResponse;

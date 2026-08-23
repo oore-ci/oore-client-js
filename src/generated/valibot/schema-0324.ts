@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGithubInstalledResponse = v.string();
+export const vGithubInstalledHeaders = v.object({
+    Cookie: v.nullish(v.string())
+});

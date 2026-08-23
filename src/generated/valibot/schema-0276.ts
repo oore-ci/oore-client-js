@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vListScopedDownloadTokensPath = v.object({
+export const vCreateScopedDownloadTokenPath = v.object({
     artifact_id: v.string()
 });

@@ -2,11 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vGithubInstalledQuery = v.object({
-    installation_id: v.optional(v.pipe(v.union([
-        v.number(),
-        v.string(),
-        v.bigint()
-    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
-    setup_action: v.optional(v.string())
-});
+export const vGithubCreatePageResponse = v.string();

@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vDeleteIntegrationPath = v.object({
+export const vDeleteLocalGitIntegrationPath = v.object({
     id: v.string()
 });

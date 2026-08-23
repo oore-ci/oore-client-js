@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vMarkOperatorIncidentReadPath = v.object({
-    id: v.string()
+export const vListOperatorIncidentsQuery = v.object({
+    status: v.optional(v.string()),
+    resource_id: v.optional(v.string())
 });

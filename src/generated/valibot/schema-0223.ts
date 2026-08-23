@@ -2,9 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vUserRole = v.picklist([
-    'owner',
-    'admin',
-    'developer',
-    'qa_viewer'
-]);
+export const vUpdateTrustedProxySettingsRequest = v.object({
+    shared_secret: v.nullish(v.string()),
+    trusted_proxy_cidrs: v.optional(v.array(v.string())),
+    user_email_header: v.nullish(v.string()),
+    warpgate_ticket: v.nullish(v.string())
+});

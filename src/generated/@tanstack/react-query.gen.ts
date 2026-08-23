@@ -846,7 +846,8 @@ export const listBuildsQueryKey = (options?: Options<ListBuildsData>) => createQ
 /**
  * List builds
  *
- * Returns builds, optionally filtered by project, pipeline, or status.
+ * Returns builds, optionally filtered by project, pipeline, status, branch,
+ * or a multi-field search term.
  */
 export const listBuildsOptions = (options?: Options<ListBuildsData>) => queryOptions<ListBuildsResponse2, ListBuildsError, ListBuildsResponse2, ReturnType<typeof listBuildsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listBuilds({
@@ -863,7 +864,8 @@ export const listBuildsInfiniteQueryKey = (options?: Options<ListBuildsData>): Q
 /**
  * List builds
  *
- * Returns builds, optionally filtered by project, pipeline, or status.
+ * Returns builds, optionally filtered by project, pipeline, status, branch,
+ * or a multi-field search term.
  */
 export const listBuildsInfiniteOptions = (options?: Options<ListBuildsData>) => {
     const opts = infiniteQueryOptions<ListBuildsResponse2, ListBuildsError, InfiniteData<ListBuildsResponse2>, QueryKey<Options<ListBuildsData>>, number | Pick<QueryKey<Options<ListBuildsData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
@@ -892,7 +894,8 @@ export const listBuildsInfiniteOptions = (options?: Options<ListBuildsData>) => 
 /**
  * List builds
  *
- * Returns builds, optionally filtered by project, pipeline, or status.
+ * Returns builds, optionally filtered by project, pipeline, status, branch,
+ * or a multi-field search term.
  */
 export const useListBuildsQuery = (options?: Options<ListBuildsData>) => useQuery(listBuildsOptions(options));
 

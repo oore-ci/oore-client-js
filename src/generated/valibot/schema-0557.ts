@@ -3,4 +3,4 @@
 import * as v from 'valibot'
 import { vWebhookResponse } from './schema-0243.js'
 
-export const vGithubWebhookResponse = vWebhookResponse;
+export const vGitlabWebhookResponse = vWebhookResponse;

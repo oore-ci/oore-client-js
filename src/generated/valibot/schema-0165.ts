@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vSetupOidcStartResponse = v.object({
-    authorization_url: v.string(),
-    state: v.string()
+export const vSetupLocalOwnerCreateRequest = v.object({
+    email: v.string()
 });

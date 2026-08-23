@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vListPipelineIosDevicesPath = v.object({
+export const vUpdatePipelineIosSigningPath = v.object({
     pipeline_id: v.string()
 });

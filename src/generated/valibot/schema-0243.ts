@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vDownloadViaScopedTokenPath = v.object({
-    token: v.string()
+export const vWebhookResponse = v.object({
+    duplicate: v.nullish(v.boolean()),
+    ok: v.boolean()
 });

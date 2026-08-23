@@ -2,10 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vSyncPipelineIosSigningResponse = v.object({
-    ok: v.boolean(),
-    pipeline_id: v.string(),
-    synced_bundle_ids: v.array(v.string()),
-    updated_profiles: v.pipe(v.number(), v.integer(), v.minValue(0)),
-    warnings: v.array(v.string())
+export const vSyncInstallationsRequest = v.object({
+    installation_id: v.nullish(v.string())
 });

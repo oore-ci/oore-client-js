@@ -2,9 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRunnerStatus = v.picklist([
-    'online',
-    'offline',
-    'busy',
-    'draining'
-]);
+export const vRunnerPolicyBlockReason = v.picklist(['instance_paused', 'repository_unavailable']);

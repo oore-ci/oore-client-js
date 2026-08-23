@@ -2,12 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vTestOidcConnectionResponse = v.object({
-    authorization_endpoint: v.string(),
-    discovered_issuer: v.string(),
-    jwks_uri: v.string(),
-    scopes_supported: v.array(v.string()),
-    success: v.boolean(),
-    token_endpoint: v.string(),
-    userinfo_endpoint: v.nullish(v.string())
+export const vTestNotificationChannelResponse = v.object({
+    error: v.nullish(v.string()),
+    success: v.boolean()
 });

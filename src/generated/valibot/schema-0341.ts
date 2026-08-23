@@ -3,4 +3,4 @@
 import * as v from 'valibot'
 import { vOkResponse } from './schema-0095.js'
 
-export const vDeleteIntegrationResponse = vOkResponse;
+export const vDeleteLocalGitIntegrationResponse = vOkResponse;

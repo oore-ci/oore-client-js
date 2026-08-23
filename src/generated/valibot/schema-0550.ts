@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGithubWebhookBody = v.unknown();
+export const vUpdateUserRolePath = v.object({
+    user_id: v.string()
+});

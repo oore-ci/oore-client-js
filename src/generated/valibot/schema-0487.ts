@@ -3,4 +3,4 @@
 import * as v from 'valibot'
 import { vExternalAccessNetworkSettingsResponse } from './schema-0047.js'
 
-export const vUpdateExternalAccessNetworkSettingsResponse = vExternalAccessNetworkSettingsResponse;
+export const vGetExternalAccessNetworkSettingsResponse = vExternalAccessNetworkSettingsResponse;

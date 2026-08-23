@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vListArtifactsPath = v.object({
+export const vGetBuildPath = v.object({
     build_id: v.string()
 });

@@ -2,8 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vSmtpTlsMode = v.picklist([
-    'none',
-    'start_tls',
-    'tls'
-]);
+export const vSetupTrustedProxyConfigureRequest = v.object({
+    setup_owner_email: v.nullish(v.string()),
+    shared_secret: v.nullish(v.string()),
+    trusted_proxy_cidrs: v.optional(v.array(v.string())),
+    user_email_header: v.nullish(v.string())
+});

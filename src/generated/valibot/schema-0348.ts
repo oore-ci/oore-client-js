@@ -3,4 +3,4 @@
 import * as v from 'valibot'
 import { vGitLabCredentialStatusResponse } from './schema-0059.js'
 
-export const vCheckGitlabPersonalTokenResponse = vGitLabCredentialStatusResponse;
+export const vReplaceGitlabPersonalTokenResponse = vGitLabCredentialStatusResponse;

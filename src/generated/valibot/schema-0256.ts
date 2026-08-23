@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRevokeScopedDownloadTokenPath = v.object({
+export const vRevokeApiTokenPath = v.object({
     token_id: v.string()
 });

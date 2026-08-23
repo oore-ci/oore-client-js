@@ -2,10 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vRunnerIosProvisioningProfile = v.object({
-    bundle_id: v.string(),
-    profile_base64: v.string(),
-    profile_filename: v.string(),
-    profile_name: v.nullish(v.string()),
-    profile_uuid: v.nullish(v.string())
+export const vRunnerHeartbeatRequest = v.object({
+    capabilities: v.optional(v.record(v.string(), v.unknown())),
+    status: v.string()
 });

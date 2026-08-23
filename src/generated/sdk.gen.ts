@@ -359,7 +359,8 @@ export const trustedProxyLogin = <ThrowOnError extends boolean = true>(options?:
 /**
  * List builds
  *
- * Returns builds, optionally filtered by project, pipeline, or status.
+ * Returns builds, optionally filtered by project, pipeline, status, branch,
+ * or a multi-field search term.
  */
 export const listBuilds = <ThrowOnError extends boolean = true>(options?: Options<ListBuildsData, ThrowOnError>): RequestResult<ListBuildsResponses, ListBuildsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<ListBuildsResponses, ListBuildsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',

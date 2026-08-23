@@ -3,4 +3,4 @@
 import * as v from 'valibot'
 import { vBinaryPayload } from './schema-0016.js'
 
-export const vGitlabCheckoutUploadPackResponse = vBinaryPayload;
+export const vGitlabCheckoutUploadPackBody = vBinaryPayload;

@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRevokeArtifactDownloadTokenResponse = v.object({
+export const vRevokeApiTokenResponse = v.object({
     revoked: v.boolean()
 });

@@ -740,7 +740,7 @@ export type ListProjectMembersResponse = {
 };
 
 export type ListProjectsResponse = {
-    projects: Array<Project>;
+    projects: Array<ProjectListItem>;
     total: number;
 };
 
@@ -993,6 +993,21 @@ export type ProjectDetailResponse = {
     current_user_role: ProjectRole;
     pipeline_count: number;
     project: Project;
+};
+
+export type ProjectLatestBuild = {
+    build_number: number;
+    created_at: number;
+    finished_at?: number | null;
+    id: string;
+    pipeline_id: string;
+    pipeline_name?: string | null;
+    status: BuildStatus;
+    updated_at: number;
+};
+
+export type ProjectListItem = Project & {
+    latest_build?: null | ProjectLatestBuild;
 };
 
 export type ProjectMember = {
@@ -2488,6 +2503,14 @@ export type ListBuildsData = {
          * Filter by one status or up to 9 comma-separated statuses
          */
         status?: string;
+        /**
+         * Filter by exact branch
+         */
+        branch?: string;
+        /**
+         * Case-insensitive literal search across project, pipeline, branch, and commit SHA; numeric values and #<number> match an exact build number (maximum 200 characters)
+         */
+        search?: string;
         /**
          * Sort by created_at, status, project_name, pipeline_name, or branch
          */

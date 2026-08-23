@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vDeleteLocalGitIntegrationPath = v.object({
-    id: v.string()
+export const vBrowseLocalGitDirectoriesQuery = v.object({
+    path: v.optional(v.string())
 });

@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vListProjectArtifactsPath = v.object({
+export const vUpdateProjectPath = v.object({
     project_id: v.string()
 });

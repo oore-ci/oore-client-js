@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vListPipelinesPath = v.object({
-    project_id: v.string()
+export const vUpdateProjectMemberPath = v.object({
+    project_id: v.string(),
+    user_id: v.string()
 });

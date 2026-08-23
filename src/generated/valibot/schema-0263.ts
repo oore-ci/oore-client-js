@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vDownloadLocalArtifactLegacyPath = v.object({
+export const vGetIosInstallManifestV1Path = v.object({
     token: v.string()
 });

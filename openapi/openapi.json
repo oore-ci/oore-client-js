@@ -1588,7 +1588,7 @@
           "Builds"
         ],
         "summary": "List builds",
-        "description": "Returns builds, optionally filtered by project, pipeline, or status.",
+        "description": "Returns builds, optionally filtered by project, pipeline, status, branch,\nor a multi-field search term.",
         "operationId": "list_builds",
         "parameters": [
           {
@@ -1633,6 +1633,24 @@
             "name": "status",
             "in": "query",
             "description": "Filter by one status or up to 9 comma-separated statuses",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "branch",
+            "in": "query",
+            "description": "Filter by exact branch",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Case-insensitive literal search across project, pipeline, branch, and commit SHA; numeric values and #<number> match an exact build number (maximum 200 characters)",
             "required": false,
             "schema": {
               "type": "string"
@@ -11358,7 +11376,7 @@
           "projects": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Project"
+              "$ref": "#/components/schemas/ProjectListItem"
             }
           },
           "total": {
@@ -12275,6 +12293,75 @@
             "$ref": "#/components/schemas/Project"
           }
         }
+      },
+      "ProjectLatestBuild": {
+        "type": "object",
+        "required": [
+          "id",
+          "build_number",
+          "status",
+          "pipeline_id",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "build_number": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "finished_at": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64"
+          },
+          "id": {
+            "type": "string"
+          },
+          "pipeline_id": {
+            "type": "string"
+          },
+          "pipeline_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/BuildStatus"
+          },
+          "updated_at": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ProjectListItem": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Project"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "latest_build": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ProjectLatestBuild"
+                  }
+                ]
+              }
+            }
+          }
+        ]
       },
       "ProjectMember": {
         "type": "object",

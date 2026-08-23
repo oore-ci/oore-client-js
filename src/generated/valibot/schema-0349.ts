@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vListInstallationsPath = v.object({
+export const vCheckGitlabPersonalTokenPath = v.object({
     id: v.string()
 });

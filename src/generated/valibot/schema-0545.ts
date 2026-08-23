@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vReEnableUserPath = v.object({
+export const vDeleteUserPath = v.object({
     user_id: v.string()
 });

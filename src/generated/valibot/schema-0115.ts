@@ -2,8 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vRegisterIosDeviceRequest = v.object({
-    name: v.string(),
-    platform: v.nullish(v.string()),
-    udid: v.string()
+export const vReadinessResponse = v.object({
+    database: v.boolean(),
+    encryption: v.boolean(),
+    migrations: v.boolean(),
+    ok: v.boolean()
 });
