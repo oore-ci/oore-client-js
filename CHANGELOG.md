@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/oore-ci/oore-client-js/compare/v0.1.0...v0.2.0) (2026-10-20)
+
+
+### Features
+
+* **schema:** add release and rollout endpoints ([#7](https://github.com/oore-ci/oore-client-js/issues/7)) ([224653f](https://github.com/oore-ci/oore-client-js/commit/224653fe5bf42b436118e34762b75ec291af4b09))
+
 ## 0.1.0 (2026-08-20)
 
 
