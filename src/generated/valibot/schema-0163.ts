@@ -2,9 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vRunnerStatus = v.picklist([
-    'online',
-    'offline',
-    'busy',
-    'draining'
-]);
+export const vRunnerHeartbeatRequest = v.object({
+    capabilities: v.optional(v.record(v.string(), v.unknown())),
+    status: v.string()
+});

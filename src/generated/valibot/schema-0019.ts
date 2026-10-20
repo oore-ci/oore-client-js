@@ -2,8 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vBuildChangelogPreviewResponse = v.object({
-    base_commit: v.nullish(v.string()),
-    markdown: v.string(),
-    target_commit: v.string()
-});
+export const vBinaryPayload = v.string();

@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vUpdateProjectMemberPath = v.object({
-    project_id: v.string(),
-    user_id: v.string()
+export const vCreateBuildPath = v.object({
+    project_id: v.string()
 });

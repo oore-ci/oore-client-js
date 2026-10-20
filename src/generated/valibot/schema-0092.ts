@@ -2,8 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vNotificationDeliveryStatus = v.picklist([
-    'pending',
-    'delivered',
-    'failed'
+export const vNotificationChannelType = v.picklist([
+    'webhook',
+    'mattermost',
+    'email',
+    'slack'
 ]);

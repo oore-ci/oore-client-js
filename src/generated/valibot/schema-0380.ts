@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vSyncInstallationsPath = v.object({
+export const vGetIntegrationPath = v.object({
     id: v.string()
 });

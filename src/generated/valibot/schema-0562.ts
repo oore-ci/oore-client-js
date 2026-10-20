@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vReportJobPublishResultHeaders = v.object({
-    'x-oore-signing-token': v.string()
+export const vGitlabCheckoutDiscoveryQuery = v.object({
+    service: v.string()
 });

@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vListBuildArtifactsRequest = v.object({
-    build_ids: v.array(v.string())
-});
+export const vKeyStorageMode = v.picklist(['keychain', 'file']);

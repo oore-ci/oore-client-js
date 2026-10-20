@@ -2,4 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vPublishStore = v.picklist(['google_play', 'app_store']);
+export const vProjectRole = v.picklist([
+    'maintainer',
+    'developer',
+    'viewer'
+]);

@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRetentionCleanupTarget = v.picklist(['artifacts_only', 'full']);
+export const vReplaceGitLabTokenRequest = v.object({
+    access_token: v.string()
+});

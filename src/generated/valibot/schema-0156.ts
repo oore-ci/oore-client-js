@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRunnerHeartbeatRequest = v.object({
-    capabilities: v.optional(v.record(v.string(), v.unknown())),
-    status: v.string()
+export const vRevokeApiTokenResponse = v.object({
+    revoked: v.boolean()
 });

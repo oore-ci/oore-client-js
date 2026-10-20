@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vListOperatorIncidentsQuery = v.object({
-    status: v.optional(v.string()),
-    resource_id: v.optional(v.string())
+export const vCheckGitlabPersonalTokenPath = v.object({
+    id: v.string()
 });
