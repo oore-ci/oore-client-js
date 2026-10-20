@@ -2,4 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vBinaryPayload = v.string();
+export const vArtifactType = v.picklist([
+    'apk',
+    'ipa',
+    'app',
+    'generic'
+]);

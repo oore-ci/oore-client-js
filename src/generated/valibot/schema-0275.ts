@@ -2,4 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vGetIosInstallManifestResponse = v.string();
+export const vValidatePipelineResponse = v.object({
+    errors: v.array(v.string()),
+    valid: v.boolean()
+});

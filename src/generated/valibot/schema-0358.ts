@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitlabCallbackResponse = v.string();
+export const vGithubCreatePageQuery = v.object({
+    state: v.string()
+});

@@ -2,11 +2,21 @@
 
 import * as v from 'valibot'
 
-export const vBootstrapTokenVerifyResponse = v.object({
-    expires_at: v.pipe(v.union([
+export const vAuditLogEntry = v.object({
+    action: v.string(),
+    actor_email: v.nullish(v.string()),
+    actor_id: v.nullish(v.string()),
+    created_at: v.pipe(v.union([
         v.number(),
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
-    session_token: v.string()
+    details: v.nullish(v.string()),
+    id: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    resource_id: v.nullish(v.string()),
+    resource_type: v.string()
 });

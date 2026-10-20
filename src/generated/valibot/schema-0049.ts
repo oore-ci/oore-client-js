@@ -2,10 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vExternalAccessPreflightCheck = v.object({
-    failure_code: v.nullish(v.string()),
-    id: v.string(),
-    label: v.string(),
-    message: v.string(),
-    ok: v.boolean()
-});
+export const vExternalAccessNetworkSource = v.picklist([
+    'database',
+    'environment',
+    'default'
+]);

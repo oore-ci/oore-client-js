@@ -2,7 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vReleaseActionRequest = v.object({
-    fraction: v.nullish(v.number()),
-    reason: v.nullish(v.string())
+export const vRegisterRunnerRequest = v.object({
+    capabilities: v.optional(v.record(v.string(), v.unknown())),
+    name: v.string()
 });

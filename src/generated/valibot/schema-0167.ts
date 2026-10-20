@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRuntimeMode = v.picklist(['local', 'remote']);
+export const vRunnerPolicyBlockReason = v.picklist(['instance_paused', 'repository_unavailable']);

@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vJobStatusResponse = v.object({
-    status: v.string()
-});
+export const vIosExportMethod = v.picklist(['ad_hoc', 'app_store']);

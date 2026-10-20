@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitHubAppCompleteRequest = v.object({
+export const vFrontendPairRequest = v.object({
     code: v.string()
 });

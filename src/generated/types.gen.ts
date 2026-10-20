@@ -56,6 +56,49 @@ export type ApiTokenSummary = {
     role: UserRole;
 };
 
+/**
+ * Where an App Store Connect upload goes once Apple finishes processing it.
+ */
+export type AppStoreDestination = 'testflight' | 'app_store';
+
+/**
+ * App Store publishing settings for a pipeline, stored as the `app_store`
+ * publish target. Uploads use the App Store Connect API key from the
+ * pipeline's iOS signing settings and require the `app_store` export method.
+ */
+export type AppStorePublishConfig = {
+    destination?: AppStoreDestination;
+    enabled: boolean;
+    /**
+     * Release the approved version with Apple's seven-day phased release.
+     */
+    phased_release?: boolean;
+    /**
+     * TestFlight "What to Test" or App Store "What's New", per locale.
+     */
+    release_notes: Array<AppStoreReleaseNote>;
+    /**
+     * Submit the App Store version for review once the build is attached.
+     */
+    submit_for_review?: boolean;
+    /**
+     * TestFlight group names. Used when `destination` is `testflight`.
+     */
+    testflight_groups: Array<string>;
+    /**
+     * Export compliance answer set on each processed build.
+     */
+    uses_non_exempt_encryption?: boolean;
+};
+
+/**
+ * Release notes for one App Store Connect locale, such as `en-US`.
+ */
+export type AppStoreReleaseNote = {
+    locale: string;
+    whats_new: string;
+};
+
 export type AppendBuildLogsRequest = {
     chunks: Array<BuildLogChunk>;
 };
@@ -717,6 +760,15 @@ export type IosCertificateInput = {
     p12_password?: string | null;
 };
 
+/**
+ * How a signed iOS archive is distributed.
+ *
+ * `ad_hoc` IPAs install on registered devices through Oore. `app_store` IPAs
+ * are signed with an App Store distribution profile and can only be uploaded
+ * to App Store Connect for TestFlight or App Store release.
+ */
+export type IosExportMethod = 'ad_hoc' | 'app_store';
+
 export type IosProvisioningProfileInput = {
     bundle_id: string;
     profile_base64?: string | null;
@@ -1006,6 +1058,20 @@ export type PipelineAndroidSigningResponse = {
     release: AndroidSigningProfile;
 };
 
+export type PipelineAppStorePublishResponse = {
+    /**
+     * Whether the pipeline's iOS signing exports App Store IPAs.
+     */
+    app_store_export: boolean;
+    config: AppStorePublishConfig;
+    /**
+     * Whether the pipeline's iOS signing has an App Store Connect API key.
+     */
+    has_api_key: boolean;
+    pipeline_id: string;
+    updated_at?: number | null;
+};
+
 export type PipelineCommandStages = {
     build: Array<string>;
     post_build: Array<string>;
@@ -1024,6 +1090,11 @@ export type PipelineEnvVar = {
 
 export type PipelineExecutionConfig = {
     artifact_patterns: Array<string>;
+    /**
+     * Added to the project build number to form `OORE_VERSION_CODE`, so the
+     * first store upload can start above the store's existing version code.
+     */
+    build_number_offset?: number;
     commands: PipelineCommandStages;
     env?: Array<PipelineEnvVar>;
     flutter_version?: string | null;
@@ -1047,7 +1118,7 @@ export type PipelineIosSigningResponse = {
     api_key_id?: string | null;
     bundle_ids: Array<string>;
     enabled: boolean;
-    export_method: string;
+    export_method: IosExportMethod;
     has_api_key: boolean;
     has_p12: boolean;
     has_p12_password: boolean;
@@ -1324,6 +1395,7 @@ export type ReplaceGitLabTokenRequest = {
  */
 export type RepositoryWorkflowExecutionPreview = {
     artifact_patterns: Array<string>;
+    build_number_offset?: number;
     commands: PipelineCommandStages;
     env_keys: Array<string>;
     flutter_version?: string | null;
@@ -1420,6 +1492,23 @@ export type RunnerAndroidSigningResponse = {
     release?: null | RunnerAndroidSigningProfile;
 };
 
+/**
+ * What the runner needs to upload the job's IPA to App Store Connect.
+ */
+export type RunnerAppStorePublishPlan = {
+    config: AppStorePublishConfig;
+    credentials: RunnerAppStoreUploadCredentials;
+};
+
+/**
+ * App Store Connect API key handed to the runner for `altool` upload.
+ */
+export type RunnerAppStoreUploadCredentials = {
+    issuer_id: string;
+    key_id: string;
+    private_key_pem: string;
+};
+
 export type RunnerHeartbeatRequest = {
     capabilities?: {
         [key: string]: unknown;
@@ -1437,7 +1526,7 @@ export type RunnerIosProvisioningProfile = {
 
 export type RunnerIosSigningBundle = {
     enabled: boolean;
-    export_method: string;
+    export_method: IosExportMethod;
     mode: IosSigningMode;
     p12_base64: string;
     p12_filename: string;
@@ -1469,6 +1558,7 @@ export type RunnerPolicyBlockReason = 'instance_paused' | 'repository_unavailabl
  * Publish work for the runner, fetched with the job-scoped grant.
  */
 export type RunnerPublishPlan = {
+    app_store?: null | RunnerAppStorePublishPlan;
     changelog?: string | null;
     google_play?: null | GooglePlayPublishConfig;
 };
@@ -1499,7 +1589,35 @@ export type RunnerStatus = 'online' | 'offline' | 'busy' | 'draining';
 
 export type RuntimeMode = 'local' | 'remote';
 
+export type RuntimeUpdateCheck = {
+    detail?: string | null;
+    /**
+     * What to run or change on the backend Mac to make the check pass.
+     */
+    fix?: string | null;
+    /**
+     * Stable identifier, for example `updater_definition`.
+     */
+    id: string;
+    label: string;
+    status: RuntimeUpdateCheckStatus;
+};
+
+export type RuntimeUpdateCheckStatus = 'pass' | 'warn' | 'fail';
+
 export type RuntimeUpdatePhase = 'idle' | 'updating' | 'restarting' | 'failed';
+
+export type RuntimeUpdatePreflight = {
+    /**
+     * Unix timestamp, in seconds, of when the checks ran.
+     */
+    checked_at: number;
+    checks: Array<RuntimeUpdateCheck>;
+    /**
+     * True when no check failed, so a one-click backend update can start.
+     */
+    ready: boolean;
+};
 
 export type RuntimeUpdateStatus = {
     error?: string | null;
@@ -1767,6 +1885,7 @@ export type UpdatePipelineIosSigningRequest = {
     bundle_ids?: Array<string>;
     certificate?: null | IosCertificateInput;
     enabled?: boolean;
+    export_method?: null | IosExportMethod;
     mode: IosSigningMode;
     provisioning_profiles?: Array<IosProvisioningProfileInput>;
     team_id?: string | null;
@@ -4108,6 +4227,70 @@ export type SyncPipelineIosSigningResponses = {
 };
 
 export type SyncPipelineIosSigningResponse2 = SyncPipelineIosSigningResponses[keyof SyncPipelineIosSigningResponses];
+
+export type GetPipelineAppStorePublishData = {
+    body?: never;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/publish/app-store';
+};
+
+export type GetPipelineAppStorePublishErrors = {
+    /**
+     * Pipeline not found
+     */
+    404: ApiError;
+};
+
+export type GetPipelineAppStorePublishError = GetPipelineAppStorePublishErrors[keyof GetPipelineAppStorePublishErrors];
+
+export type GetPipelineAppStorePublishResponses = {
+    /**
+     * App Store publish settings
+     */
+    200: PipelineAppStorePublishResponse;
+};
+
+export type GetPipelineAppStorePublishResponse = GetPipelineAppStorePublishResponses[keyof GetPipelineAppStorePublishResponses];
+
+export type UpdatePipelineAppStorePublishData = {
+    body: AppStorePublishConfig;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/publish/app-store';
+};
+
+export type UpdatePipelineAppStorePublishErrors = {
+    /**
+     * Invalid settings
+     */
+    400: ApiError;
+    /**
+     * Pipeline not found
+     */
+    404: ApiError;
+};
+
+export type UpdatePipelineAppStorePublishError = UpdatePipelineAppStorePublishErrors[keyof UpdatePipelineAppStorePublishErrors];
+
+export type UpdatePipelineAppStorePublishResponses = {
+    /**
+     * App Store publish settings updated
+     */
+    200: PipelineAppStorePublishResponse;
+};
+
+export type UpdatePipelineAppStorePublishResponse = UpdatePipelineAppStorePublishResponses[keyof UpdatePipelineAppStorePublishResponses];
 
 export type GetPipelineGooglePlayPublishData = {
     body?: never;
@@ -7383,6 +7566,35 @@ export type StartRuntimeUpdateResponses = {
 };
 
 export type StartRuntimeUpdateResponse = StartRuntimeUpdateResponses[keyof StartRuntimeUpdateResponses];
+
+export type GetRuntimeUpdatePreflightData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/system/update/preflight';
+};
+
+export type GetRuntimeUpdatePreflightErrors = {
+    /**
+     * Not authenticated
+     */
+    401: ApiError;
+    /**
+     * Owner role required
+     */
+    403: ApiError;
+};
+
+export type GetRuntimeUpdatePreflightError = GetRuntimeUpdatePreflightErrors[keyof GetRuntimeUpdatePreflightErrors];
+
+export type GetRuntimeUpdatePreflightResponses = {
+    /**
+     * Backend update preflight checks
+     */
+    200: RuntimeUpdatePreflight;
+};
+
+export type GetRuntimeUpdatePreflightResponse = GetRuntimeUpdatePreflightResponses[keyof GetRuntimeUpdatePreflightResponses];
 
 export type ListUsersData = {
     body?: never;

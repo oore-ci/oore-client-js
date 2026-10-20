@@ -2,6 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vLogoutResponse = v.object({
-    ok: v.boolean()
+export const vLocalGitDirectoryEntry = v.object({
+    is_git_repository: v.boolean(),
+    name: v.string(),
+    path: v.string()
 });

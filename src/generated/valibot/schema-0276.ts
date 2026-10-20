@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vMetricsResponse = v.string();
+export const vWarpgateTicketSource = v.picklist(['database', 'environment']);

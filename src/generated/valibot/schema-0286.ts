@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vDownloadViaScopedTokenV1Path = v.object({
-    token: v.string()
-});
+export const vMetricsResponse = v.string();

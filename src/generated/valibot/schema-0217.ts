@@ -2,7 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vTestNotificationChannelResponse = v.object({
-    error: v.nullish(v.string()),
-    success: v.boolean()
-});
+export const vSmtpTlsMode = v.picklist([
+    'none',
+    'start_tls',
+    'tls'
+]);

@@ -2,8 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vArtifactStorageSource = v.picklist([
-    'database',
-    'environment',
-    'default'
-]);
+export const vArtifactInstallPlatform = v.picklist(['android', 'ios']);

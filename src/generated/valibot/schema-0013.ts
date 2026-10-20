@@ -2,9 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vArtifactType = v.picklist([
-    'apk',
-    'ipa',
-    'app',
-    'generic'
+export const vArtifactStorageSource = v.picklist([
+    'database',
+    'environment',
+    'default'
 ]);
