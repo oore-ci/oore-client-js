@@ -2,8 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitlabCheckoutUploadPackPath = v.object({
-    runner_id: v.string(),
-    job_id: v.string(),
-    git_path: v.string()
+export const vRaiseReleasePath = v.object({
+    release_id: v.string()
 });

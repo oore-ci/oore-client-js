@@ -2,7 +2,7 @@
 
 import { client } from './client.gen.js';
 import type { Client, ClientMeta, Options as Options2, RequestResult, ServerSentEventsResult, TDataShape } from './client/index.js';
-import type { AbortArtifactData, AbortArtifactResponses, AddProjectMemberData, AddProjectMemberErrors, AddProjectMemberResponses, AppendBuildLogsData, AppendBuildLogsResponses, BrowseLocalGitDirectoriesData, BrowseLocalGitDirectoriesErrors, BrowseLocalGitDirectoriesResponses, CancelBuildData, CancelBuildErrors, CancelBuildResponses, CheckGitlabPersonalTokenData, CheckGitlabPersonalTokenErrors, CheckGitlabPersonalTokenResponses, ClaimJobData, ClaimJobResponses, CompleteArtifactData, CompleteArtifactResponses, CompleteSetupData, CompleteSetupErrors, CompleteSetupResponses, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcErrors, ConfigureExternalAccessOidcResponses, ConfigureOidcData, ConfigureOidcErrors, ConfigureOidcResponses, CreateApiTokenData, CreateApiTokenErrors, CreateApiTokenResponses, CreateArtifactData, CreateArtifactInstallLinkData, CreateArtifactInstallLinkErrors, CreateArtifactInstallLinkResponses, CreateArtifactResponses, CreateBuildData, CreateBuildErrors, CreateBuildResponses, CreateLocalGitIntegrationData, CreateLocalGitIntegrationErrors, CreateLocalGitIntegrationResponses, CreateNotificationChannelData, CreateNotificationChannelErrors, CreateNotificationChannelResponses, CreatePipelineData, CreatePipelineErrors, CreatePipelineResponses, CreateProjectData, CreateProjectErrors, CreateProjectResponses, CreateScopedDownloadTokenData, CreateScopedDownloadTokenErrors, CreateScopedDownloadTokenResponses, CreateStreamTokenData, CreateStreamTokenResponses, DeleteIntegrationData, DeleteIntegrationErrors, DeleteIntegrationResponses, DeleteLocalGitIntegrationData, DeleteLocalGitIntegrationErrors, DeleteLocalGitIntegrationResponses, DeleteNotificationChannelData, DeleteNotificationChannelErrors, DeleteNotificationChannelResponses, DeletePipelineData, DeletePipelineErrors, DeletePipelineResponses, DeleteProjectData, DeleteProjectErrors, DeleteProjectResponses, DeleteProjectRetentionData, DeleteProjectRetentionResponses, DeleteRunnerData, DeleteRunnerErrors, DeleteRunnerResponses, DeleteUserData, DeleteUserErrors, DeleteUserResponses, DiscoverRepositoryWorkflowsData, DiscoverRepositoryWorkflowsErrors, DiscoverRepositoryWorkflowsResponses, DownloadLocalArtifactData, DownloadLocalArtifactErrors, DownloadLocalArtifactInstallData, DownloadLocalArtifactInstallErrors, DownloadLocalArtifactInstallResponses, DownloadLocalArtifactLegacyData, DownloadLocalArtifactLegacyErrors, DownloadLocalArtifactLegacyResponses, DownloadLocalArtifactResponses, DownloadViaScopedTokenData, DownloadViaScopedTokenErrors, DownloadViaScopedTokenV1Data, DownloadViaScopedTokenV1Errors, FrontendPairData, FrontendPairErrors, FrontendPairResponses, GenerateDownloadLinkData, GenerateDownloadLinkErrors, GenerateDownloadLinkResponses, GetArtifactStorageSettingsData, GetArtifactStorageSettingsResponses, GetBuildData, GetBuildErrors, GetBuildLogsData, GetBuildLogsResponses, GetBuildResponses, GetExternalAccessNetworkSettingsData, GetExternalAccessNetworkSettingsErrors, GetExternalAccessNetworkSettingsResponses, GetExternalAccessOidcData, GetExternalAccessOidcErrors, GetExternalAccessOidcResponses, GetExternalAccessPreflightData, GetExternalAccessPreflightResponses, GetExternalAccessTrustedProxySettingsData, GetExternalAccessTrustedProxySettingsErrors, GetExternalAccessTrustedProxySettingsResponses, GetInstancePreferencesData, GetInstancePreferencesResponses, GetIntegrationData, GetIntegrationErrors, GetIntegrationResponses, GetIosInstallManifestData, GetIosInstallManifestErrors, GetIosInstallManifestResponses, GetIosInstallManifestV1Data, GetIosInstallManifestV1Errors, GetIosInstallManifestV1Responses, GetJobAndroidSigningData, GetJobAndroidSigningErrors, GetJobAndroidSigningResponses, GetJobIosSigningData, GetJobIosSigningErrors, GetJobIosSigningResponses, GetJobStatusData, GetJobStatusResponses, GetMeData, GetMeErrors, GetMeResponses, GetNotificationChannelData, GetNotificationChannelErrors, GetNotificationChannelResponses, GetPipelineAndroidSigningData, GetPipelineAndroidSigningResponses, GetPipelineData, GetPipelineErrors, GetPipelineIosSigningData, GetPipelineIosSigningResponses, GetPipelineResponses, GetProjectData, GetProjectErrors, GetProjectResponses, GetProjectRetentionData, GetProjectRetentionResponses, GetRetentionLastCleanupData, GetRetentionLastCleanupResponses, GetRetentionPolicyData, GetRetentionPolicyResponses, GetRunnerData, GetRunnerErrors, GetRunnerResponses, GetRuntimeUpdateStatusData, GetRuntimeUpdateStatusErrors, GetRuntimeUpdateStatusResponses, GetSetupStatusData, GetSetupStatusErrors, GetSetupStatusResponses, GetSetupSummaryData, GetSetupSummaryErrors, GetSetupSummaryResponses, GithubCallbackData, GithubCallbackResponses, GithubCompleteData, GithubCompleteErrors, GithubCompleteResponses, GithubCreatePageData, GithubCreatePageErrors, GithubCreatePageResponses, GithubInstalledData, GithubInstalledErrors, GithubInstalledResponses, GithubStartData, GithubStartErrors, GithubStartResponses, GithubWebhookData, GithubWebhookErrors, GithubWebhookResponses, GitlabAuthorizeData, GitlabAuthorizeErrors, GitlabAuthorizeResponses, GitlabCallbackData, GitlabCallbackResponses, GitlabCheckoutDiscoveryData, GitlabCheckoutDiscoveryErrors, GitlabCheckoutDiscoveryResponses, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackErrors, GitlabCheckoutUploadPackResponses, GitlabStartData, GitlabStartErrors, GitlabStartResponses, GitlabWebhookData, GitlabWebhookErrors, GitlabWebhookResponses, HealthzData, HealthzResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListApiTokensData, ListApiTokensErrors, ListApiTokensResponses, ListArtifactsData, ListArtifactsResponses, ListAuditLogsData, ListAuditLogsErrors, ListAuditLogsResponses, ListBuildArtifactsData, ListBuildArtifactsErrors, ListBuildArtifactsResponses, ListBuildsData, ListBuildsErrors, ListBuildsResponses, ListInstallationsData, ListInstallationsResponses, ListIntegrationsData, ListIntegrationsResponses, ListLocalGitIntegrationsData, ListLocalGitIntegrationsErrors, ListLocalGitIntegrationsResponses, ListNotificationChannelsData, ListNotificationChannelsErrors, ListNotificationChannelsResponses, ListNotificationDeliveriesData, ListNotificationDeliveriesErrors, ListNotificationDeliveriesResponses, ListOperatorIncidentsData, ListOperatorIncidentsErrors, ListOperatorIncidentsResponses, ListPipelineIosDevicesData, ListPipelineIosDevicesResponses, ListPipelinesData, ListPipelinesErrors, ListPipelinesResponses, ListProjectArtifactsData, ListProjectArtifactsErrors, ListProjectArtifactsResponses, ListProjectMemberCandidatesData, ListProjectMemberCandidatesErrors, ListProjectMemberCandidatesResponses, ListProjectMembersData, ListProjectMembersErrors, ListProjectMembersResponses, ListProjectsData, ListProjectsErrors, ListProjectsResponses, ListRepositoriesData, ListRepositoriesResponses, ListRunnersData, ListRunnersResponses, ListScopedDownloadTokensData, ListScopedDownloadTokensResponses, ListSourceRepositoriesData, ListSourceRepositoriesResponses, ListUsersData, ListUsersErrors, ListUsersResponses, LocalLoginData, LocalLoginErrors, LocalLoginResponses, LogoutData, LogoutResponses, MarkOperatorIncidentReadData, MarkOperatorIncidentReadErrors, MarkOperatorIncidentReadResponses, MetricsData, MetricsResponses, OidcCallbackData, OidcCallbackErrors, OidcCallbackResponses, OidcStartData, OidcStartErrors, OidcStartResponses, PreviewBuildChangelogData, PreviewBuildChangelogErrors, PreviewBuildChangelogResponses, ReadyzData, ReadyzErrors, ReadyzResponses, ReEnableUserData, ReEnableUserErrors, ReEnableUserResponses, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponses, RegisterRunnerData, RegisterRunnerResponses, RemoveProjectMemberData, RemoveProjectMemberErrors, RemoveProjectMemberResponses, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenErrors, ReplaceGitlabPersonalTokenResponses, RepositoryAvatarData, RepositoryAvatarErrors, RepositoryAvatarResponses, RerunBuildData, RerunBuildErrors, RerunBuildResponses, RevokeApiTokenData, RevokeApiTokenErrors, RevokeApiTokenResponses, RevokeScopedDownloadTokenData, RevokeScopedDownloadTokenErrors, RevokeScopedDownloadTokenResponses, RotateGitlabRepositoryWebhookSecretData, RotateGitlabRepositoryWebhookSecretErrors, RotateGitlabRepositoryWebhookSecretResponses, RunnerHeartbeatData, RunnerHeartbeatResponses, SetupLocalOwnerCreateData, SetupLocalOwnerCreateErrors, SetupLocalOwnerCreateResponses, SetupOidcStartData, SetupOidcStartErrors, SetupOidcStartResponses, SetupOidcVerifyData, SetupOidcVerifyErrors, SetupOidcVerifyResponses, SetupOwnerClaimTrustedProxyData, SetupOwnerClaimTrustedProxyErrors, SetupOwnerClaimTrustedProxyResponses, SetupPreferencesData, SetupPreferencesErrors, SetupPreferencesResponses, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureErrors, SetupTrustedProxyConfigureResponses, StartRuntimeUpdateData, StartRuntimeUpdateErrors, StartRuntimeUpdateResponses, StreamBuildLogsData, StreamBuildLogsErrors, StreamBuildLogsResponse, StreamBuildLogsResponses, SyncInstallationsData, SyncInstallationsErrors, SyncInstallationsResponses, SyncPipelineIosSigningData, SyncPipelineIosSigningResponses, TestNotificationChannelData, TestNotificationChannelErrors, TestNotificationChannelResponses, TestOidcConnectionData, TestOidcConnectionErrors, TestOidcConnectionResponses, TrustedProxyLoginData, TrustedProxyLoginErrors, TrustedProxyLoginResponses, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsErrors, UpdateArtifactStorageSettingsResponses, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsErrors, UpdateExternalAccessNetworkSettingsResponses, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsErrors, UpdateExternalAccessTrustedProxySettingsResponses, UpdateInstancePreferencesData, UpdateInstancePreferencesErrors, UpdateInstancePreferencesResponses, UpdateJobStatusData, UpdateJobStatusErrors, UpdateJobStatusResponses, UpdateNotificationChannelData, UpdateNotificationChannelErrors, UpdateNotificationChannelResponses, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponses, UpdatePipelineData, UpdatePipelineErrors, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponses, UpdatePipelineResponses, UpdateProjectData, UpdateProjectErrors, UpdateProjectMemberData, UpdateProjectMemberErrors, UpdateProjectMemberResponses, UpdateProjectResponses, UpdateProjectRetentionData, UpdateProjectRetentionResponses, UpdateRetentionPolicyData, UpdateRetentionPolicyResponses, UpdateRunnerData, UpdateRunnerResponses, UpdateUserRoleData, UpdateUserRoleErrors, UpdateUserRoleResponses, UploadLocalArtifactData, UploadLocalArtifactErrors, UploadLocalArtifactResponses, ValidatePipelineData, ValidatePipelineResponses, VerifyBootstrapTokenData, VerifyBootstrapTokenErrors, VerifyBootstrapTokenResponses } from './types.gen.js';
+import type { AbortArtifactData, AbortArtifactResponses, AddProjectMemberData, AddProjectMemberErrors, AddProjectMemberResponses, AppendBuildLogsData, AppendBuildLogsResponses, ApproveReleaseData, ApproveReleaseErrors, ApproveReleaseResponses, BrowseLocalGitDirectoriesData, BrowseLocalGitDirectoriesErrors, BrowseLocalGitDirectoriesResponses, CancelBuildData, CancelBuildErrors, CancelBuildResponses, CheckGitlabPersonalTokenData, CheckGitlabPersonalTokenErrors, CheckGitlabPersonalTokenResponses, ClaimJobData, ClaimJobResponses, CompleteArtifactData, CompleteArtifactResponses, CompleteReleaseData, CompleteReleaseErrors, CompleteReleaseResponses, CompleteSetupData, CompleteSetupErrors, CompleteSetupResponses, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcErrors, ConfigureExternalAccessOidcResponses, ConfigureOidcData, ConfigureOidcErrors, ConfigureOidcResponses, CreateApiTokenData, CreateApiTokenErrors, CreateApiTokenResponses, CreateArtifactData, CreateArtifactInstallLinkData, CreateArtifactInstallLinkErrors, CreateArtifactInstallLinkResponses, CreateArtifactResponses, CreateBuildData, CreateBuildErrors, CreateBuildResponses, CreateLocalGitIntegrationData, CreateLocalGitIntegrationErrors, CreateLocalGitIntegrationResponses, CreateNotificationChannelData, CreateNotificationChannelErrors, CreateNotificationChannelResponses, CreatePipelineData, CreatePipelineErrors, CreatePipelineResponses, CreateProjectData, CreateProjectErrors, CreateProjectResponses, CreateReleaseData, CreateReleaseErrors, CreateReleaseResponses, CreateScopedDownloadTokenData, CreateScopedDownloadTokenErrors, CreateScopedDownloadTokenResponses, CreateStreamTokenData, CreateStreamTokenResponses, DeleteIntegrationData, DeleteIntegrationErrors, DeleteIntegrationResponses, DeleteLocalGitIntegrationData, DeleteLocalGitIntegrationErrors, DeleteLocalGitIntegrationResponses, DeleteNotificationChannelData, DeleteNotificationChannelErrors, DeleteNotificationChannelResponses, DeletePipelineData, DeletePipelineErrors, DeletePipelineResponses, DeleteProjectData, DeleteProjectErrors, DeleteProjectResponses, DeleteProjectRetentionData, DeleteProjectRetentionResponses, DeleteRunnerData, DeleteRunnerErrors, DeleteRunnerResponses, DeleteUserData, DeleteUserErrors, DeleteUserResponses, DiscoverRepositoryWorkflowsData, DiscoverRepositoryWorkflowsErrors, DiscoverRepositoryWorkflowsResponses, DownloadLocalArtifactData, DownloadLocalArtifactErrors, DownloadLocalArtifactInstallData, DownloadLocalArtifactInstallErrors, DownloadLocalArtifactInstallResponses, DownloadLocalArtifactLegacyData, DownloadLocalArtifactLegacyErrors, DownloadLocalArtifactLegacyResponses, DownloadLocalArtifactResponses, DownloadViaScopedTokenData, DownloadViaScopedTokenErrors, DownloadViaScopedTokenV1Data, DownloadViaScopedTokenV1Errors, FrontendPairData, FrontendPairErrors, FrontendPairResponses, GenerateDownloadLinkData, GenerateDownloadLinkErrors, GenerateDownloadLinkResponses, GetArtifactStorageSettingsData, GetArtifactStorageSettingsResponses, GetBuildData, GetBuildErrors, GetBuildLogsData, GetBuildLogsResponses, GetBuildResponses, GetExternalAccessNetworkSettingsData, GetExternalAccessNetworkSettingsErrors, GetExternalAccessNetworkSettingsResponses, GetExternalAccessOidcData, GetExternalAccessOidcErrors, GetExternalAccessOidcResponses, GetExternalAccessPreflightData, GetExternalAccessPreflightResponses, GetExternalAccessTrustedProxySettingsData, GetExternalAccessTrustedProxySettingsErrors, GetExternalAccessTrustedProxySettingsResponses, GetInstancePreferencesData, GetInstancePreferencesResponses, GetIntegrationData, GetIntegrationErrors, GetIntegrationResponses, GetIosInstallManifestData, GetIosInstallManifestErrors, GetIosInstallManifestResponses, GetIosInstallManifestV1Data, GetIosInstallManifestV1Errors, GetIosInstallManifestV1Responses, GetJobAndroidSigningData, GetJobAndroidSigningErrors, GetJobAndroidSigningResponses, GetJobIosSigningData, GetJobIosSigningErrors, GetJobIosSigningResponses, GetJobStatusData, GetJobStatusResponses, GetMeData, GetMeErrors, GetMeResponses, GetNotificationChannelData, GetNotificationChannelErrors, GetNotificationChannelResponses, GetPipelineAndroidSigningData, GetPipelineAndroidSigningResponses, GetPipelineData, GetPipelineErrors, GetPipelineIosSigningData, GetPipelineIosSigningResponses, GetPipelineResponses, GetProjectData, GetProjectErrors, GetProjectResponses, GetProjectRetentionData, GetProjectRetentionResponses, GetReleaseData, GetReleaseErrors, GetReleaseResponses, GetRetentionLastCleanupData, GetRetentionLastCleanupResponses, GetRetentionPolicyData, GetRetentionPolicyResponses, GetRunnerData, GetRunnerErrors, GetRunnerResponses, GetRuntimeUpdateStatusData, GetRuntimeUpdateStatusErrors, GetRuntimeUpdateStatusResponses, GetSetupStatusData, GetSetupStatusErrors, GetSetupStatusResponses, GetSetupSummaryData, GetSetupSummaryErrors, GetSetupSummaryResponses, GithubCallbackData, GithubCallbackResponses, GithubCompleteData, GithubCompleteErrors, GithubCompleteResponses, GithubCreatePageData, GithubCreatePageErrors, GithubCreatePageResponses, GithubInstalledData, GithubInstalledErrors, GithubInstalledResponses, GithubStartData, GithubStartErrors, GithubStartResponses, GithubWebhookData, GithubWebhookErrors, GithubWebhookResponses, GitlabAuthorizeData, GitlabAuthorizeErrors, GitlabAuthorizeResponses, GitlabCallbackData, GitlabCallbackResponses, GitlabCheckoutDiscoveryData, GitlabCheckoutDiscoveryErrors, GitlabCheckoutDiscoveryResponses, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackErrors, GitlabCheckoutUploadPackResponses, GitlabStartData, GitlabStartErrors, GitlabStartResponses, GitlabWebhookData, GitlabWebhookErrors, GitlabWebhookResponses, HaltReleaseData, HaltReleaseErrors, HaltReleaseResponses, HealthzData, HealthzResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListApiTokensData, ListApiTokensErrors, ListApiTokensResponses, ListArtifactsData, ListArtifactsResponses, ListAuditLogsData, ListAuditLogsErrors, ListAuditLogsResponses, ListBuildArtifactsData, ListBuildArtifactsErrors, ListBuildArtifactsResponses, ListBuildsData, ListBuildsErrors, ListBuildsResponses, ListInstallationsData, ListInstallationsResponses, ListIntegrationsData, ListIntegrationsResponses, ListLocalGitIntegrationsData, ListLocalGitIntegrationsErrors, ListLocalGitIntegrationsResponses, ListNotificationChannelsData, ListNotificationChannelsErrors, ListNotificationChannelsResponses, ListNotificationDeliveriesData, ListNotificationDeliveriesErrors, ListNotificationDeliveriesResponses, ListOperatorIncidentsData, ListOperatorIncidentsErrors, ListOperatorIncidentsResponses, ListPipelineIosDevicesData, ListPipelineIosDevicesResponses, ListPipelinesData, ListPipelinesErrors, ListPipelinesResponses, ListProjectArtifactsData, ListProjectArtifactsErrors, ListProjectArtifactsResponses, ListProjectMemberCandidatesData, ListProjectMemberCandidatesErrors, ListProjectMemberCandidatesResponses, ListProjectMembersData, ListProjectMembersErrors, ListProjectMembersResponses, ListProjectsData, ListProjectsErrors, ListProjectsResponses, ListReleaseEventsData, ListReleaseEventsErrors, ListReleaseEventsResponses, ListReleasesData, ListReleasesErrors, ListReleasesResponses, ListRepositoriesData, ListRepositoriesResponses, ListRunnersData, ListRunnersResponses, ListScopedDownloadTokensData, ListScopedDownloadTokensResponses, ListSourceRepositoriesData, ListSourceRepositoriesResponses, ListUsersData, ListUsersErrors, ListUsersResponses, LocalLoginData, LocalLoginErrors, LocalLoginResponses, LogoutData, LogoutResponses, MarkOperatorIncidentReadData, MarkOperatorIncidentReadErrors, MarkOperatorIncidentReadResponses, MetricsData, MetricsResponses, OidcCallbackData, OidcCallbackErrors, OidcCallbackResponses, OidcStartData, OidcStartErrors, OidcStartResponses, PauseReleaseData, PauseReleaseErrors, PauseReleaseResponses, PreviewBuildChangelogData, PreviewBuildChangelogErrors, PreviewBuildChangelogResponses, RaiseReleaseData, RaiseReleaseErrors, RaiseReleaseResponses, ReadyzData, ReadyzErrors, ReadyzResponses, ReEnableUserData, ReEnableUserErrors, ReEnableUserResponses, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponses, RegisterRunnerData, RegisterRunnerResponses, RemoveProjectMemberData, RemoveProjectMemberErrors, RemoveProjectMemberResponses, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenErrors, ReplaceGitlabPersonalTokenResponses, RepositoryAvatarData, RepositoryAvatarErrors, RepositoryAvatarResponses, RerunBuildData, RerunBuildErrors, RerunBuildResponses, ResumeReleaseData, ResumeReleaseErrors, ResumeReleaseResponses, RevokeApiTokenData, RevokeApiTokenErrors, RevokeApiTokenResponses, RevokeScopedDownloadTokenData, RevokeScopedDownloadTokenErrors, RevokeScopedDownloadTokenResponses, RotateGitlabRepositoryWebhookSecretData, RotateGitlabRepositoryWebhookSecretErrors, RotateGitlabRepositoryWebhookSecretResponses, RunnerHeartbeatData, RunnerHeartbeatResponses, SetupLocalOwnerCreateData, SetupLocalOwnerCreateErrors, SetupLocalOwnerCreateResponses, SetupOidcStartData, SetupOidcStartErrors, SetupOidcStartResponses, SetupOidcVerifyData, SetupOidcVerifyErrors, SetupOidcVerifyResponses, SetupOwnerClaimTrustedProxyData, SetupOwnerClaimTrustedProxyErrors, SetupOwnerClaimTrustedProxyResponses, SetupPreferencesData, SetupPreferencesErrors, SetupPreferencesResponses, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureErrors, SetupTrustedProxyConfigureResponses, StartRuntimeUpdateData, StartRuntimeUpdateErrors, StartRuntimeUpdateResponses, StreamBuildLogsData, StreamBuildLogsErrors, StreamBuildLogsResponse, StreamBuildLogsResponses, SyncInstallationsData, SyncInstallationsErrors, SyncInstallationsResponses, SyncPipelineIosSigningData, SyncPipelineIosSigningResponses, TestNotificationChannelData, TestNotificationChannelErrors, TestNotificationChannelResponses, TestOidcConnectionData, TestOidcConnectionErrors, TestOidcConnectionResponses, TrustedProxyLoginData, TrustedProxyLoginErrors, TrustedProxyLoginResponses, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsErrors, UpdateArtifactStorageSettingsResponses, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsErrors, UpdateExternalAccessNetworkSettingsResponses, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsErrors, UpdateExternalAccessTrustedProxySettingsResponses, UpdateInstancePreferencesData, UpdateInstancePreferencesErrors, UpdateInstancePreferencesResponses, UpdateJobStatusData, UpdateJobStatusErrors, UpdateJobStatusResponses, UpdateNotificationChannelData, UpdateNotificationChannelErrors, UpdateNotificationChannelResponses, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponses, UpdatePipelineData, UpdatePipelineErrors, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponses, UpdatePipelineResponses, UpdateProjectData, UpdateProjectErrors, UpdateProjectMemberData, UpdateProjectMemberErrors, UpdateProjectMemberResponses, UpdateProjectResponses, UpdateProjectRetentionData, UpdateProjectRetentionResponses, UpdateRetentionPolicyData, UpdateRetentionPolicyResponses, UpdateRunnerData, UpdateRunnerResponses, UpdateUserRoleData, UpdateUserRoleErrors, UpdateUserRoleResponses, UploadLocalArtifactData, UploadLocalArtifactErrors, UploadLocalArtifactResponses, ValidatePipelineData, ValidatePipelineResponses, VerifyBootstrapTokenData, VerifyBootstrapTokenErrors, VerifyBootstrapTokenResponses } from './types.gen.js';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -1139,6 +1139,154 @@ export const getSetupStatus = <ThrowOnError extends boolean = true>(options?: Op
     responseStyle: 'data',
     url: '/v1/public/setup-status',
     ...options
+});
+
+/**
+ * List release events
+ *
+ * Recent release history entries across projects the caller can read, newest first.
+ */
+export const listReleaseEvents = <ThrowOnError extends boolean = true>(options?: Options<ListReleaseEventsData, ThrowOnError>): RequestResult<ListReleaseEventsResponses, ListReleaseEventsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<ListReleaseEventsResponses, ListReleaseEventsErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/release-events',
+    ...options
+});
+
+/**
+ * List releases
+ *
+ * Releases in projects the caller can read, newest first.
+ */
+export const listReleases = <ThrowOnError extends boolean = true>(options?: Options<ListReleasesData, ThrowOnError>): RequestResult<ListReleasesResponses, ListReleasesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<ListReleasesResponses, ListReleasesErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases',
+    ...options
+});
+
+/**
+ * Create release
+ *
+ * Records a release for a succeeded build. Requires the project maintainer role.
+ */
+export const createRelease = <ThrowOnError extends boolean = true>(options: Options<CreateReleaseData, ThrowOnError>): RequestResult<CreateReleaseResponses, CreateReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreateReleaseResponses, CreateReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Get release
+ *
+ * Release detail with its full state history, oldest first.
+ */
+export const getRelease = <ThrowOnError extends boolean = true>(options: Options<GetReleaseData, ThrowOnError>): RequestResult<GetReleaseResponses, GetReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReleaseResponses, GetReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}',
+    ...options
+});
+
+/**
+ * Approve release
+ *
+ * Records the maintainer approval required by the release policy. Writes history, an audit log entry, and a release event.
+ */
+export const approveRelease = <ThrowOnError extends boolean = true>(options: Options<ApproveReleaseData, ThrowOnError>): RequestResult<ApproveReleaseResponses, ApproveReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ApproveReleaseResponses, ApproveReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/approve',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Complete rollout
+ *
+ * Rolls out to 100%. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const completeRelease = <ThrowOnError extends boolean = true>(options: Options<CompleteReleaseData, ThrowOnError>): RequestResult<CompleteReleaseResponses, CompleteReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CompleteReleaseResponses, CompleteReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/complete',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Halt rollout
+ *
+ * Halts the rollout at the store. A halted release never advances until resumed. Requires developer or maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const haltRelease = <ThrowOnError extends boolean = true>(options: Options<HaltReleaseData, ThrowOnError>): RequestResult<HaltReleaseResponses, HaltReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<HaltReleaseResponses, HaltReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/halt',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Pause rollout
+ *
+ * Stops scheduled steps. Requires developer or maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const pauseRelease = <ThrowOnError extends boolean = true>(options: Options<PauseReleaseData, ThrowOnError>): RequestResult<PauseReleaseResponses, PauseReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<PauseReleaseResponses, PauseReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/pause',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Raise rollout
+ *
+ * Raises the rollout to `fraction`, or to the next policy step. Raising to 1 completes the release. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const raiseRelease = <ThrowOnError extends boolean = true>(options: Options<RaiseReleaseData, ThrowOnError>): RequestResult<RaiseReleaseResponses, RaiseReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<RaiseReleaseResponses, RaiseReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/raise',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Resume rollout
+ *
+ * Resumes a paused or halted release; the next step is one interval away. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const resumeRelease = <ThrowOnError extends boolean = true>(options: Options<ResumeReleaseData, ThrowOnError>): RequestResult<ResumeReleaseResponses, ResumeReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ResumeReleaseResponses, ResumeReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/resume',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
 
 /**

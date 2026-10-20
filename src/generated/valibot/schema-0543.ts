@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vDeleteUserPath = v.object({
-    user_id: v.string()
+export const vGetNotificationChannelPath = v.object({
+    id: v.string()
 });

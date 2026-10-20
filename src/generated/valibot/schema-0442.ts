@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGetRunnerPath = v.object({
-    runner_id: v.string()
+export const vDeleteProjectRetentionPath = v.object({
+    project_id: v.string()
 });

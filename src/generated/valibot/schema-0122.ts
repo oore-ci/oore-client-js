@@ -2,6 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vReplaceGitLabTokenRequest = v.object({
-    access_token: v.string()
-});
+export const vReleaseApprovalGate = v.picklist([
+    'none',
+    'before_upload',
+    'before_production'
+]);

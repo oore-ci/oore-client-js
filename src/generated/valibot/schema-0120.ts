@@ -2,4 +2,11 @@
 
 import * as v from 'valibot'
 
-export const vRemoteAuthMode = v.picklist(['oidc', 'trusted_proxy']);
+export const vReleaseAction = v.picklist([
+    'raise',
+    'pause',
+    'resume',
+    'halt',
+    'complete',
+    'approve'
+]);

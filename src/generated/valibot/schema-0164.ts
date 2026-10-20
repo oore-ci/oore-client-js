@@ -2,6 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vSetupOidcStartRequest = v.object({
-    redirect_uri: v.string()
-});
+export const vScmProvider = v.picklist([
+    'github',
+    'gitlab',
+    'local_git'
+]);

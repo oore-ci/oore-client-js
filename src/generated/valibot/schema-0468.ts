@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitlabCheckoutDiscoveryQuery = v.object({
-    service: v.string()
+export const vPauseReleasePath = v.object({
+    release_id: v.string()
 });

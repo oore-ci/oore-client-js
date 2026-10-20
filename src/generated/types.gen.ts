@@ -408,6 +408,23 @@ export type CreateProjectResponse = {
     project: Project;
 };
 
+export type CreateReleaseRequest = {
+    artifact_id?: string | null;
+    build_id: string;
+    package_name?: string | null;
+    policy?: null | ReleasePolicy;
+    reason?: string | null;
+    /**
+     * Initial fraction; defaults to the first policy step.
+     */
+    rollout_fraction?: number | null;
+    state?: null | ReleaseState;
+    store: ReleaseStore;
+    track: string;
+    version_code?: number | null;
+    version_name?: string | null;
+};
+
 export type CreateScopedDownloadTokenRequest = {
     /**
      * If true, token is consumed after first download.
@@ -744,6 +761,15 @@ export type ListProjectsResponse = {
     total: number;
 };
 
+export type ListReleaseActivityResponse = {
+    events: Array<ReleaseActivityEvent>;
+};
+
+export type ListReleasesResponse = {
+    releases: Array<Release>;
+    total: number;
+};
+
 export type ListRepositoriesResponse = {
     repositories: Array<IntegrationRepository>;
     total: number;
@@ -1075,6 +1101,126 @@ export type RegisteredIosDevice = {
     status: string;
     udid: string;
 };
+
+export type Release = {
+    /**
+     * Actions the caller may take now, from their project role and the state.
+     */
+    allowed_actions: Array<ReleaseAction>;
+    approved_at?: number | null;
+    approved_by_email?: string | null;
+    artifact_id?: string | null;
+    awaiting_approval: boolean;
+    build_id: string;
+    build_number?: number | null;
+    crash_rate?: number | null;
+    crash_rate_threshold?: number | null;
+    created_at: number;
+    health: ReleaseHealth;
+    id: string;
+    next_fraction?: number | null;
+    next_step_at?: number | null;
+    package_name?: string | null;
+    /**
+     * `android` or `ios`, derived from the store.
+     */
+    platform: string;
+    policy: ReleasePolicy;
+    project_id: string;
+    project_name?: string | null;
+    /**
+     * Fraction of users, 0..1.
+     */
+    rollout_fraction: number;
+    state: ReleaseState;
+    store: ReleaseStore;
+    /**
+     * Play track, or TestFlight group / `app_store`.
+     */
+    track: string;
+    updated_at: number;
+    version_code?: number | null;
+    version_name?: string | null;
+};
+
+/**
+ * Manual controls on a release.
+ */
+export type ReleaseAction = 'raise' | 'pause' | 'resume' | 'halt' | 'complete' | 'approve';
+
+export type ReleaseActionRequest = {
+    /**
+     * Raise only: target fraction (0..1]. Defaults to the next policy step.
+     */
+    fraction?: number | null;
+    reason?: string | null;
+};
+
+/**
+ * A history entry with the release it belongs to, for activity feeds.
+ */
+export type ReleaseActivityEvent = ReleaseHistoryEntry & {
+    build_id: string;
+    project_id: string;
+    project_name?: string | null;
+    release_id: string;
+    store: ReleaseStore;
+    track: string;
+    version_name?: string | null;
+};
+
+/**
+ * Where a maintainer approval is required, if anywhere.
+ */
+export type ReleaseApprovalGate = 'none' | 'before_upload' | 'before_production';
+
+export type ReleaseDetailResponse = {
+    history: Array<ReleaseHistoryEntry>;
+    release: Release;
+};
+
+export type ReleaseHealth = 'unknown' | 'healthy' | 'warning' | 'breached';
+
+export type ReleaseHistoryEntry = {
+    actor_email?: string | null;
+    /**
+     * Null when the daemon or a store made the change.
+     */
+    actor_id?: string | null;
+    at: number;
+    from_fraction?: number | null;
+    from_state?: null | ReleaseState;
+    id: string;
+    reason?: string | null;
+    to_fraction?: number | null;
+    to_state: ReleaseState;
+};
+
+/**
+ * Staged rollout policy stored with each release.
+ */
+export type ReleasePolicy = {
+    approval?: ReleaseApprovalGate;
+    /**
+     * Crash rate (0..1) at or above which the daemon halts the rollout.
+     */
+    crash_rate_threshold?: number | null;
+    /**
+     * Hours between automatic steps.
+     */
+    interval_hours?: number;
+    /**
+     * Ascending rollout fractions in (0, 1]; the last step must be 1.
+     */
+    steps?: Array<number>;
+};
+
+export type ReleaseState = 'uploading' | 'processing' | 'in_review' | 'rolling' | 'paused' | 'halted' | 'complete' | 'failed';
+
+/**
+ * Store a release is published to.
+ */
+export type ReleaseStore = 'google_play' | 'app_store';
 
 export type RemoteAuthMode = 'oidc' | 'trusted_proxy';
 
@@ -4476,6 +4622,447 @@ export type GetSetupStatusResponses = {
 };
 
 export type GetSetupStatusResponse = GetSetupStatusResponses[keyof GetSetupStatusResponses];
+
+export type ListReleaseEventsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Filter by project
+         */
+        project_id?: string;
+        /**
+         * Page size, 1 to 200 (default 50)
+         */
+        limit?: number;
+    };
+    url: '/v1/release-events';
+};
+
+export type ListReleaseEventsErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+};
+
+export type ListReleaseEventsError = ListReleaseEventsErrors[keyof ListReleaseEventsErrors];
+
+export type ListReleaseEventsResponses = {
+    /**
+     * Release activity
+     */
+    200: ListReleaseActivityResponse;
+};
+
+export type ListReleaseEventsResponse = ListReleaseEventsResponses[keyof ListReleaseEventsResponses];
+
+export type ListReleasesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Filter by project
+         */
+        project_id?: string;
+        /**
+         * Filter by build
+         */
+        build_id?: string;
+        /**
+         * Filter by one state or comma-separated states
+         */
+        state?: string;
+        /**
+         * Page size, 1 to 200 (default 50)
+         */
+        limit?: number;
+        /**
+         * Page offset (default 0)
+         */
+        offset?: number;
+    };
+    url: '/v1/releases';
+};
+
+export type ListReleasesErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+};
+
+export type ListReleasesError = ListReleasesErrors[keyof ListReleasesErrors];
+
+export type ListReleasesResponses = {
+    /**
+     * Release list
+     */
+    200: ListReleasesResponse;
+};
+
+export type ListReleasesResponse2 = ListReleasesResponses[keyof ListReleasesResponses];
+
+export type CreateReleaseData = {
+    body: CreateReleaseRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/releases';
+};
+
+export type CreateReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Build not found
+     */
+    404: ApiError;
+    /**
+     * Build has not succeeded
+     */
+    409: ApiError;
+};
+
+export type CreateReleaseError = CreateReleaseErrors[keyof CreateReleaseErrors];
+
+export type CreateReleaseResponses = {
+    /**
+     * Created release
+     */
+    200: Release;
+};
+
+export type CreateReleaseResponse = CreateReleaseResponses[keyof CreateReleaseResponses];
+
+export type GetReleaseData = {
+    body?: never;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}';
+};
+
+export type GetReleaseErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type GetReleaseError = GetReleaseErrors[keyof GetReleaseErrors];
+
+export type GetReleaseResponses = {
+    /**
+     * Release detail
+     */
+    200: ReleaseDetailResponse;
+};
+
+export type GetReleaseResponse = GetReleaseResponses[keyof GetReleaseResponses];
+
+export type ApproveReleaseData = {
+    /**
+     * Optional reason; `fraction` is accepted by raise only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/approve';
+};
+
+export type ApproveReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type ApproveReleaseError = ApproveReleaseErrors[keyof ApproveReleaseErrors];
+
+export type ApproveReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type ApproveReleaseResponse = ApproveReleaseResponses[keyof ApproveReleaseResponses];
+
+export type CompleteReleaseData = {
+    /**
+     * Optional reason; `fraction` is accepted by raise only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/complete';
+};
+
+export type CompleteReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type CompleteReleaseError = CompleteReleaseErrors[keyof CompleteReleaseErrors];
+
+export type CompleteReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type CompleteReleaseResponse = CompleteReleaseResponses[keyof CompleteReleaseResponses];
+
+export type HaltReleaseData = {
+    /**
+     * Optional reason; `fraction` is accepted by raise only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/halt';
+};
+
+export type HaltReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type HaltReleaseError = HaltReleaseErrors[keyof HaltReleaseErrors];
+
+export type HaltReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type HaltReleaseResponse = HaltReleaseResponses[keyof HaltReleaseResponses];
+
+export type PauseReleaseData = {
+    /**
+     * Optional reason; `fraction` is accepted by raise only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/pause';
+};
+
+export type PauseReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type PauseReleaseError = PauseReleaseErrors[keyof PauseReleaseErrors];
+
+export type PauseReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type PauseReleaseResponse = PauseReleaseResponses[keyof PauseReleaseResponses];
+
+export type RaiseReleaseData = {
+    /**
+     * Optional reason; `fraction` is accepted by raise only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/raise';
+};
+
+export type RaiseReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type RaiseReleaseError = RaiseReleaseErrors[keyof RaiseReleaseErrors];
+
+export type RaiseReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type RaiseReleaseResponse = RaiseReleaseResponses[keyof RaiseReleaseResponses];
+
+export type ResumeReleaseData = {
+    /**
+     * Optional reason; `fraction` is accepted by raise only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/resume';
+};
+
+export type ResumeReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type ResumeReleaseError = ResumeReleaseErrors[keyof ResumeReleaseErrors];
+
+export type ResumeReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type ResumeReleaseResponse = ResumeReleaseResponses[keyof ResumeReleaseResponses];
 
 export type ListRunnersData = {
     body?: never;

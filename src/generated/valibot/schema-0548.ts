@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vUpdateUserRolePath = v.object({
-    user_id: v.string()
+export const vListNotificationDeliveriesPath = v.object({
+    id: v.string()
 });

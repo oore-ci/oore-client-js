@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vCreateArtifactPath = v.object({
-    runner_id: v.string(),
-    job_id: v.string()
+export const vApproveReleasePath = v.object({
+    release_id: v.string()
 });

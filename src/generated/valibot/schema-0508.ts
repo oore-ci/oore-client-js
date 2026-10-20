@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vListNotificationDeliveriesPath = v.object({
-    id: v.string()
+export const vGitlabCheckoutDiscoveryQuery = v.object({
+    service: v.string()
 });

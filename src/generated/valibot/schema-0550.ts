@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGithubWebhookBody = v.unknown();
+export const vTestNotificationChannelPath = v.object({
+    id: v.string()
+});

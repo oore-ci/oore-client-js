@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vSmtpTlsMode = v.picklist([
-    'none',
-    'start_tls',
-    'tls'
-]);
+export const vSetupOidcStartResponse = v.object({
+    authorization_url: v.string(),
+    state: v.string()
+});

@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRetentionCleanupTarget = v.picklist(['artifacts_only', 'full']);
+export const vReleaseStore = v.picklist(['google_play', 'app_store']);

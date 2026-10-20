@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vUpdateExternalAccessNetworkSettingsRequest = v.object({
-    allowed_origins: v.array(v.string()),
-    artifact_delivery_url: v.nullish(v.string()),
-    public_url: v.nullish(v.string())
+export const vTriggerConfig = v.object({
+    branches: v.array(v.string()),
+    events: v.array(v.string())
 });

@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vRemoveProjectMemberResponse = v.object({
-    ok: v.boolean()
+export const vReleaseActionRequest = v.object({
+    fraction: v.nullish(v.number()),
+    reason: v.nullish(v.string())
 });

@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vGetIosInstallManifestV1Response = v.string();
+export const vMetricsResponse = v.string();

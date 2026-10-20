@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vScmProvider = v.picklist([
-    'github',
-    'gitlab',
-    'local_git'
-]);
+export const vRunnerHeartbeatRequest = v.object({
+    capabilities: v.optional(v.record(v.string(), v.unknown())),
+    status: v.string()
+});

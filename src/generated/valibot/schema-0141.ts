@@ -2,9 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRunnerStatus = v.picklist([
-    'online',
-    'offline',
-    'busy',
-    'draining'
-]);
+export const vRetentionCleanupTarget = v.picklist(['artifacts_only', 'full']);

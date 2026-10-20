@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vOidcStartQuery = v.object({
-    redirect_uri: v.string()
+export const vCreateArtifactInstallLinkPath = v.object({
+    artifact_id: v.string()
 });

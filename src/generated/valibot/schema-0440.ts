@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vDeleteRunnerPath = v.object({
-    runner_id: v.string()
+export const vDiscoverRepositoryWorkflowsQuery = v.object({
+    ref: v.optional(v.string()),
+    path: v.optional(v.string())
 });

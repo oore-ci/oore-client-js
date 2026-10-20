@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGetJobAndroidSigningPath = v.object({
-    runner_id: v.string(),
-    job_id: v.string()
+export const vGetReleasePath = v.object({
+    release_id: v.string()
 });
