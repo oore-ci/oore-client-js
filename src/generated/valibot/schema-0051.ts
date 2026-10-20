@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vFrontendPairResponse = v.object({
-    backend_proof: v.string(),
-    user_email_header: v.string()
+export const vFrontendPairRequest = v.object({
+    code: v.string()
 });

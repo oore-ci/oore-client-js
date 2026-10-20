@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vPauseReleasePath = v.object({
-    release_id: v.string()
+export const vDiscoverRepositoryWorkflowsPath = v.object({
+    project_id: v.string()
 });

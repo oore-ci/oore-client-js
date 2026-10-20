@@ -2,7 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vValidatePipelineResponse = v.object({
-    errors: v.array(v.string()),
-    valid: v.boolean()
-});
+export const vUserRole = v.picklist([
+    'owner',
+    'admin',
+    'developer',
+    'qa_viewer'
+]);

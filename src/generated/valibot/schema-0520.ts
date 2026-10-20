@@ -2,7 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vUpdateJobStatusPath = v.object({
-    runner_id: v.string(),
-    job_id: v.string()
-});
+export const vDeleteRunnerResponse = v.void();

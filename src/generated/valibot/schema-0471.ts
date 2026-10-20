@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRaiseReleasePath = v.object({
-    release_id: v.string()
+export const vDeleteProjectRetentionPath = v.object({
+    project_id: v.string()
 });

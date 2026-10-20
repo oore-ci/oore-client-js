@@ -2,7 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vLocalLoginRequest = v.object({
-    email: v.nullish(v.string()),
-    recovery_capability: v.nullish(v.string())
+export const vLocalGitPathSuggestion = v.object({
+    label: v.string(),
+    path: v.string()
 });

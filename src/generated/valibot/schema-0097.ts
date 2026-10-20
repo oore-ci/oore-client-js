@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vOperatorIncidentStatus = v.picklist(['open', 'resolved']);
+export const vOkResponse = v.object({
+    ok: v.boolean()
+});

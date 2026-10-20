@@ -368,17 +368,22 @@ export type CreateNotificationChannelRequest = {
     channel_type: NotificationChannelType;
     enabled?: boolean;
     /**
-     * Terminal build statuses to notify on. Empty or omitted means all terminal events.
+     * Events to notify on. Empty or omitted means all events.
      */
     events?: Array<string>;
     name: string;
     /**
-     * HMAC secret for signing webhook payloads (webhook only, optional).
+     * Scope the channel to one project. Omit for an instance-wide channel.
+     */
+    project_id?: string | null;
+    /**
+     * Webhook: HMAC secret for signing payloads. Slack: bot token with
+     * `users:read.email`, used to mention the triggering user. Optional.
      */
     secret?: string | null;
     smtp_config?: null | SmtpConfig;
     /**
-     * Webhook/Mattermost incoming webhook URL (required for webhook/mattermost).
+     * Incoming webhook URL (required for webhook, mattermost and slack).
      */
     url?: string | null;
 };
@@ -443,6 +448,11 @@ export type CreateScopedDownloadTokenResponse = {
     prefix: string;
     single_use: boolean;
     token: string;
+};
+
+export type CreateSecretRequest = {
+    name: string;
+    value: string;
 };
 
 export type DeleteNotificationChannelResponse = {
@@ -573,6 +583,51 @@ export type GitLabStartRequest = {
     client_secret?: string | null;
     host_url: string;
 };
+
+/**
+ * Per-pipeline Google Play upload settings. Credentials are referenced by
+ * secret name and never stored here.
+ */
+export type GooglePlayPublishConfig = {
+    /**
+     * Create a draft release instead of rolling out.
+     */
+    draft?: boolean;
+    enabled?: boolean;
+    /**
+     * In-app update priority, 0 to 5.
+     */
+    in_app_update_priority?: number | null;
+    /**
+     * Expected application id. When omitted, the AAB's package is used.
+     */
+    package_name?: string | null;
+    release_notes?: GooglePlayReleaseNotesSource;
+    release_notes_dir?: string | null;
+    release_notes_locale?: string;
+    /**
+     * Initial staged rollout, 0 < percent <= 100. Omitted means 100.
+     */
+    rollout_percent?: number | null;
+    rollout_policy?: null | ReleasePolicy;
+    /**
+     * Name of the secret holding the service account JSON key.
+     */
+    service_account_secret: string;
+    /**
+     * `internal`, `closed`, `open`, `production`, or a custom track name.
+     */
+    track: string;
+    /**
+     * Upload R8/ProGuard `mapping.txt` when the build produced one.
+     */
+    upload_mapping?: boolean;
+};
+
+/**
+ * Where Google Play release notes come from.
+ */
+export type GooglePlayReleaseNotesSource = 'none' | 'changelog' | 'repo_files';
 
 export type HealthResponse = {
     channel: string | null;
@@ -781,6 +836,10 @@ export type ListRunnersResponse = {
     total: number;
 };
 
+export type ListSecretsResponse = {
+    secrets: Array<SecretSummary>;
+};
+
 export type ListSourceRepositoriesResponse = {
     repositories: Array<SourceRepository>;
     total: number;
@@ -830,11 +889,12 @@ export type NotificationChannel = {
     created_by?: string | null;
     enabled: boolean;
     /**
-     * Which terminal build statuses trigger this channel. Empty means all.
+     * Which events trigger this channel. Empty means all.
      */
     events: Array<string>;
     /**
-     * True if the channel has an HMAC secret configured (webhook only).
+     * True if the channel has a secret configured: the HMAC secret for
+     * webhook channels, or the bot token used for mentions on Slack channels.
      */
     has_secret: boolean;
     /**
@@ -847,6 +907,12 @@ export type NotificationChannel = {
     has_url: boolean;
     id: string;
     name: string;
+    /**
+     * Project this channel is scoped to. Absent means the channel receives
+     * events from every project, plus instance-wide events such as runner
+     * offline.
+     */
+    project_id?: string | null;
     updated_at: number;
 };
 
@@ -854,7 +920,7 @@ export type NotificationChannelResponse = {
     channel: NotificationChannel;
 };
 
-export type NotificationChannelType = 'webhook' | 'mattermost' | 'email';
+export type NotificationChannelType = 'webhook' | 'mattermost' | 'email' | 'slack';
 
 export type NotificationDelivery = {
     attempt_count: number;
@@ -865,6 +931,7 @@ export type NotificationDelivery = {
     event_type: string;
     id: string;
     last_error?: string | null;
+    release_id?: string | null;
     status: NotificationDeliveryStatus;
 };
 
@@ -965,6 +1032,16 @@ export type PipelineExecutionConfig = {
     platforms: Array<BuildPlatform>;
 };
 
+export type PipelineGooglePlayPublishResponse = {
+    config?: null | GooglePlayPublishConfig;
+    pipeline_id: string;
+    /**
+     * Whether the referenced service account secret exists in a visible scope.
+     */
+    service_account_secret_present: boolean;
+    updated_at?: number | null;
+};
+
 export type PipelineIosSigningResponse = {
     api_issuer_id?: string | null;
     api_key_id?: string | null;
@@ -1056,6 +1133,8 @@ export type ProjectRetentionOverride = {
 
 export type ProjectRole = 'maintainer' | 'developer' | 'viewer';
 
+export type PublishStore = 'google_play' | 'app_store';
+
 export type ReEnableUserResponse = {
     user: User;
 };
@@ -1065,6 +1144,14 @@ export type ReadinessResponse = {
     encryption: boolean;
     migrations: boolean;
     ok: boolean;
+    /**
+     * Version of the running `oored` binary.
+     */
+    package_version: string;
+    /**
+     * Installed release version from the install root's `VERSION` file.
+     */
+    version: string;
 };
 
 export type RegisterIosDeviceRequest = {
@@ -1298,6 +1385,13 @@ export type RevokeArtifactDownloadTokenResponse = {
     revoked: boolean;
 };
 
+/**
+ * Replace a secret's value (rotation).
+ */
+export type RotateSecretRequest = {
+    value: string;
+};
+
 export type Runner = {
     capabilities: {
         [key: string]: unknown;
@@ -1356,7 +1450,50 @@ export type RunnerIosSigningResponse = {
     bundle?: null | RunnerIosSigningBundle;
 };
 
+/**
+ * A resolved secret delivered to the runner assigned to an active job.
+ */
+export type RunnerJobSecret = {
+    name: string;
+    scope: SecretScope;
+    value: string;
+};
+
+export type RunnerJobSecretsResponse = {
+    secrets: Array<RunnerJobSecret>;
+};
+
 export type RunnerPolicyBlockReason = 'instance_paused' | 'repository_unavailable';
+
+/**
+ * Publish work for the runner, fetched with the job-scoped grant.
+ */
+export type RunnerPublishPlan = {
+    changelog?: string | null;
+    google_play?: null | GooglePlayPublishConfig;
+};
+
+/**
+ * Outcome of a store upload, reported by the runner.
+ */
+export type RunnerPublishResult = {
+    package_name: string;
+    /**
+     * Staged rollout fraction, 0 < f <= 1. Absent for drafts.
+     */
+    rollout_fraction?: number | null;
+    /**
+     * `completed`, `in_progress` or `draft`.
+     */
+    status: string;
+    store: PublishStore;
+    /**
+     * Store track as sent to the store (for Play: internal, alpha, beta, production or custom).
+     */
+    track: string;
+    version_code: number;
+    version_name?: string | null;
+};
 
 export type RunnerStatus = 'online' | 'offline' | 'busy' | 'draining';
 
@@ -1371,6 +1508,28 @@ export type RuntimeUpdateStatus = {
 };
 
 export type ScmProvider = 'github' | 'gitlab' | 'local_git';
+
+export type SecretResponse = {
+    secret: SecretSummary;
+};
+
+/**
+ * Where a secret is defined. A job sees instance, project and pipeline secrets;
+ * on a name clash the narrower scope wins.
+ */
+export type SecretScope = 'instance' | 'project' | 'pipeline';
+
+/**
+ * Secret metadata. Values are write-only and never returned by the user API.
+ */
+export type SecretSummary = {
+    created_at: number;
+    name: string;
+    pipeline_id?: string | null;
+    project_id?: string | null;
+    scope: SecretScope;
+    updated_at: number;
+};
 
 export type SetupCompleteResponse = {
     instance_id: string;
@@ -1582,7 +1741,13 @@ export type UpdateNotificationChannelRequest = {
     events?: Array<string> | null;
     name?: string | null;
     /**
-     * New HMAC secret. Omit to keep existing; pass empty string to clear.
+     * New project scope. Omit to keep existing; pass empty string to make
+     * the channel instance-wide.
+     */
+    project_id?: string | null;
+    /**
+     * New HMAC secret (webhook) or bot token (slack). Omit to keep existing;
+     * pass empty string to clear.
      */
     secret?: string | null;
     smtp_config?: null | UpdateSmtpConfig;
@@ -3944,6 +4109,218 @@ export type SyncPipelineIosSigningResponses = {
 
 export type SyncPipelineIosSigningResponse2 = SyncPipelineIosSigningResponses[keyof SyncPipelineIosSigningResponses];
 
+export type GetPipelineGooglePlayPublishData = {
+    body?: never;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/publish/google-play';
+};
+
+export type GetPipelineGooglePlayPublishErrors = {
+    /**
+     * Pipeline not found
+     */
+    404: ApiError;
+};
+
+export type GetPipelineGooglePlayPublishError = GetPipelineGooglePlayPublishErrors[keyof GetPipelineGooglePlayPublishErrors];
+
+export type GetPipelineGooglePlayPublishResponses = {
+    /**
+     * Google Play publish settings
+     */
+    200: PipelineGooglePlayPublishResponse;
+};
+
+export type GetPipelineGooglePlayPublishResponse = GetPipelineGooglePlayPublishResponses[keyof GetPipelineGooglePlayPublishResponses];
+
+export type UpdatePipelineGooglePlayPublishData = {
+    body: GooglePlayPublishConfig;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/publish/google-play';
+};
+
+export type UpdatePipelineGooglePlayPublishErrors = {
+    /**
+     * Invalid settings
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Pipeline not found
+     */
+    404: ApiError;
+};
+
+export type UpdatePipelineGooglePlayPublishError = UpdatePipelineGooglePlayPublishErrors[keyof UpdatePipelineGooglePlayPublishErrors];
+
+export type UpdatePipelineGooglePlayPublishResponses = {
+    /**
+     * Saved settings
+     */
+    200: PipelineGooglePlayPublishResponse;
+};
+
+export type UpdatePipelineGooglePlayPublishResponse = UpdatePipelineGooglePlayPublishResponses[keyof UpdatePipelineGooglePlayPublishResponses];
+
+export type ListPipelineSecretsData = {
+    body?: never;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/secrets';
+};
+
+export type ListPipelineSecretsErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+};
+
+export type ListPipelineSecretsError = ListPipelineSecretsErrors[keyof ListPipelineSecretsErrors];
+
+export type ListPipelineSecretsResponses = {
+    /**
+     * Secret names
+     */
+    200: ListSecretsResponse;
+};
+
+export type ListPipelineSecretsResponse = ListPipelineSecretsResponses[keyof ListPipelineSecretsResponses];
+
+export type CreatePipelineSecretData = {
+    body: CreateSecretRequest;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/secrets';
+};
+
+export type CreatePipelineSecretErrors = {
+    /**
+     * Invalid name or value
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * A secret with this name already exists in this scope
+     */
+    409: ApiError;
+};
+
+export type CreatePipelineSecretError = CreatePipelineSecretErrors[keyof CreatePipelineSecretErrors];
+
+export type CreatePipelineSecretResponses = {
+    /**
+     * Secret created
+     */
+    201: SecretResponse;
+};
+
+export type CreatePipelineSecretResponse = CreatePipelineSecretResponses[keyof CreatePipelineSecretResponses];
+
+export type DeletePipelineSecretData = {
+    body?: never;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+        /**
+         * Secret name
+         */
+        name: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/secrets/{name}';
+};
+
+export type DeletePipelineSecretErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Secret not found
+     */
+    404: ApiError;
+};
+
+export type DeletePipelineSecretError = DeletePipelineSecretErrors[keyof DeletePipelineSecretErrors];
+
+export type DeletePipelineSecretResponses = {
+    /**
+     * Secret deleted
+     */
+    200: OkResponse;
+};
+
+export type DeletePipelineSecretResponse = DeletePipelineSecretResponses[keyof DeletePipelineSecretResponses];
+
+export type RotatePipelineSecretData = {
+    body: RotateSecretRequest;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+        /**
+         * Secret name
+         */
+        name: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/secrets/{name}';
+};
+
+export type RotatePipelineSecretErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Secret not found
+     */
+    404: ApiError;
+};
+
+export type RotatePipelineSecretError = RotatePipelineSecretErrors[keyof RotatePipelineSecretErrors];
+
+export type RotatePipelineSecretResponses = {
+    /**
+     * Secret rotated
+     */
+    200: SecretResponse;
+};
+
+export type RotatePipelineSecretResponse = RotatePipelineSecretResponses[keyof RotatePipelineSecretResponses];
+
 export type ListProjectsData = {
     body?: never;
     path?: never;
@@ -4597,6 +4974,150 @@ export type UpdateProjectRetentionResponses = {
 };
 
 export type UpdateProjectRetentionResponse = UpdateProjectRetentionResponses[keyof UpdateProjectRetentionResponses];
+
+export type ListProjectSecretsData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/secrets';
+};
+
+export type ListProjectSecretsErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+};
+
+export type ListProjectSecretsError = ListProjectSecretsErrors[keyof ListProjectSecretsErrors];
+
+export type ListProjectSecretsResponses = {
+    /**
+     * Secret names
+     */
+    200: ListSecretsResponse;
+};
+
+export type ListProjectSecretsResponse = ListProjectSecretsResponses[keyof ListProjectSecretsResponses];
+
+export type CreateProjectSecretData = {
+    body: CreateSecretRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/secrets';
+};
+
+export type CreateProjectSecretErrors = {
+    /**
+     * Invalid name or value
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * A secret with this name already exists in this scope
+     */
+    409: ApiError;
+};
+
+export type CreateProjectSecretError = CreateProjectSecretErrors[keyof CreateProjectSecretErrors];
+
+export type CreateProjectSecretResponses = {
+    /**
+     * Secret created
+     */
+    201: SecretResponse;
+};
+
+export type CreateProjectSecretResponse = CreateProjectSecretResponses[keyof CreateProjectSecretResponses];
+
+export type DeleteProjectSecretData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Secret name
+         */
+        name: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/secrets/{name}';
+};
+
+export type DeleteProjectSecretErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Secret not found
+     */
+    404: ApiError;
+};
+
+export type DeleteProjectSecretError = DeleteProjectSecretErrors[keyof DeleteProjectSecretErrors];
+
+export type DeleteProjectSecretResponses = {
+    /**
+     * Secret deleted
+     */
+    200: OkResponse;
+};
+
+export type DeleteProjectSecretResponse = DeleteProjectSecretResponses[keyof DeleteProjectSecretResponses];
+
+export type RotateProjectSecretData = {
+    body: RotateSecretRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Secret name
+         */
+        name: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/secrets/{name}';
+};
+
+export type RotateProjectSecretErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Secret not found
+     */
+    404: ApiError;
+};
+
+export type RotateProjectSecretError = RotateProjectSecretErrors[keyof RotateProjectSecretErrors];
+
+export type RotateProjectSecretResponses = {
+    /**
+     * Secret rotated
+     */
+    200: SecretResponse;
+};
+
+export type RotateProjectSecretResponse = RotateProjectSecretResponses[keyof RotateProjectSecretResponses];
 
 export type GetSetupStatusData = {
     body?: never;
@@ -5553,6 +6074,158 @@ export type AppendBuildLogsResponses = {
 
 export type AppendBuildLogsResponse2 = AppendBuildLogsResponses[keyof AppendBuildLogsResponses];
 
+export type GetJobPublishPlanData = {
+    body?: never;
+    headers: {
+        /**
+         * Job-scoped signing grant
+         */
+        'x-oore-signing-token': string;
+    };
+    path: {
+        /**
+         * Runner ID
+         */
+        runner_id: string;
+        /**
+         * Build/Job ID
+         */
+        job_id: string;
+    };
+    query?: never;
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/publish';
+};
+
+export type GetJobPublishPlanErrors = {
+    /**
+     * Runner authentication or signing grant is missing or invalid
+     */
+    401: ApiError;
+    /**
+     * Runner does not match the active assignment
+     */
+    403: ApiError;
+    /**
+     * Job is not active
+     */
+    409: ApiError;
+};
+
+export type GetJobPublishPlanError = GetJobPublishPlanErrors[keyof GetJobPublishPlanErrors];
+
+export type GetJobPublishPlanResponses = {
+    /**
+     * Publish plan
+     */
+    200: RunnerPublishPlan;
+};
+
+export type GetJobPublishPlanResponse = GetJobPublishPlanResponses[keyof GetJobPublishPlanResponses];
+
+export type ReportJobPublishResultData = {
+    body: RunnerPublishResult;
+    headers: {
+        /**
+         * Job-scoped signing grant
+         */
+        'x-oore-signing-token': string;
+    };
+    path: {
+        /**
+         * Runner ID
+         */
+        runner_id: string;
+        /**
+         * Build/Job ID
+         */
+        job_id: string;
+    };
+    query?: never;
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/publish-results';
+};
+
+export type ReportJobPublishResultErrors = {
+    /**
+     * Runner authentication or signing grant is missing or invalid
+     */
+    401: ApiError;
+    /**
+     * Runner does not match the active assignment
+     */
+    403: ApiError;
+    /**
+     * Job is not active
+     */
+    409: ApiError;
+};
+
+export type ReportJobPublishResultError = ReportJobPublishResultErrors[keyof ReportJobPublishResultErrors];
+
+export type ReportJobPublishResultResponses = {
+    /**
+     * Recorded
+     */
+    200: OkResponse;
+};
+
+export type ReportJobPublishResultResponse = ReportJobPublishResultResponses[keyof ReportJobPublishResultResponses];
+
+export type GetJobSecretsData = {
+    body?: never;
+    headers: {
+        /**
+         * Job-scoped signing grant
+         */
+        'x-oore-signing-token': string;
+    };
+    path: {
+        /**
+         * Runner ID
+         */
+        runner_id: string;
+        /**
+         * Build/Job ID
+         */
+        job_id: string;
+    };
+    query?: never;
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/secrets';
+};
+
+export type GetJobSecretsErrors = {
+    /**
+     * Runner authentication or signing grant is missing or invalid
+     */
+    401: ApiError;
+    /**
+     * Runner does not match the active assignment
+     */
+    403: ApiError;
+    /**
+     * Build not found
+     */
+    404: ApiError;
+    /**
+     * Job is not active
+     */
+    409: ApiError;
+    /**
+     * Secrets could not be loaded
+     */
+    500: ApiError;
+};
+
+export type GetJobSecretsError = GetJobSecretsErrors[keyof GetJobSecretsErrors];
+
+export type GetJobSecretsResponses = {
+    /**
+     * Resolved secrets
+     */
+    200: RunnerJobSecretsResponse;
+};
+
+export type GetJobSecretsResponse = GetJobSecretsResponses[keyof GetJobSecretsResponses];
+
 export type UpdateJobStatusData = {
     body: UpdateJobStatusRequest;
     path: {
@@ -5586,6 +6259,132 @@ export type UpdateJobStatusResponses = {
 };
 
 export type UpdateJobStatusResponse = UpdateJobStatusResponses[keyof UpdateJobStatusResponses];
+
+export type ListInstanceSecretsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/secrets';
+};
+
+export type ListInstanceSecretsErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+};
+
+export type ListInstanceSecretsError = ListInstanceSecretsErrors[keyof ListInstanceSecretsErrors];
+
+export type ListInstanceSecretsResponses = {
+    /**
+     * Secret names
+     */
+    200: ListSecretsResponse;
+};
+
+export type ListInstanceSecretsResponse = ListInstanceSecretsResponses[keyof ListInstanceSecretsResponses];
+
+export type CreateInstanceSecretData = {
+    body: CreateSecretRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/secrets';
+};
+
+export type CreateInstanceSecretErrors = {
+    /**
+     * Invalid name or value
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * A secret with this name already exists in this scope
+     */
+    409: ApiError;
+};
+
+export type CreateInstanceSecretError = CreateInstanceSecretErrors[keyof CreateInstanceSecretErrors];
+
+export type CreateInstanceSecretResponses = {
+    /**
+     * Secret created
+     */
+    201: SecretResponse;
+};
+
+export type CreateInstanceSecretResponse = CreateInstanceSecretResponses[keyof CreateInstanceSecretResponses];
+
+export type DeleteInstanceSecretData = {
+    body?: never;
+    path: {
+        /**
+         * Secret name
+         */
+        name: string;
+    };
+    query?: never;
+    url: '/v1/secrets/{name}';
+};
+
+export type DeleteInstanceSecretErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Secret not found
+     */
+    404: ApiError;
+};
+
+export type DeleteInstanceSecretError = DeleteInstanceSecretErrors[keyof DeleteInstanceSecretErrors];
+
+export type DeleteInstanceSecretResponses = {
+    /**
+     * Secret deleted
+     */
+    200: OkResponse;
+};
+
+export type DeleteInstanceSecretResponse = DeleteInstanceSecretResponses[keyof DeleteInstanceSecretResponses];
+
+export type RotateInstanceSecretData = {
+    body: RotateSecretRequest;
+    path: {
+        /**
+         * Secret name
+         */
+        name: string;
+    };
+    query?: never;
+    url: '/v1/secrets/{name}';
+};
+
+export type RotateInstanceSecretErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Secret not found
+     */
+    404: ApiError;
+};
+
+export type RotateInstanceSecretError = RotateInstanceSecretErrors[keyof RotateInstanceSecretErrors];
+
+export type RotateInstanceSecretResponses = {
+    /**
+     * Secret rotated
+     */
+    200: SecretResponse;
+};
+
+export type RotateInstanceSecretResponse = RotateInstanceSecretResponses[keyof RotateInstanceSecretResponses];
 
 export type GetArtifactStorageSettingsData = {
     body?: never;

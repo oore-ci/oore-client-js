@@ -2,7 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vRemoveProjectMemberPath = v.object({
-    project_id: v.string(),
-    user_id: v.string()
+export const vRotatePipelineSecretPath = v.object({
+    pipeline_id: v.string(),
+    name: v.string()
 });
