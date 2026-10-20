@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vListInstallationsPath = v.object({
-    id: v.string()
-});
+export const vGithubCreatePageResponse = v.string();

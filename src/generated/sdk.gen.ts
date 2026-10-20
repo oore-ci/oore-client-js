@@ -2,7 +2,7 @@
 
 import { client } from './client.gen.js';
 import type { Client, ClientMeta, Options as Options2, RequestResult, ServerSentEventsResult, TDataShape } from './client/index.js';
-import type { AbortArtifactData, AbortArtifactResponses, AddProjectMemberData, AddProjectMemberErrors, AddProjectMemberResponses, AppendBuildLogsData, AppendBuildLogsResponses, BrowseLocalGitDirectoriesData, BrowseLocalGitDirectoriesErrors, BrowseLocalGitDirectoriesResponses, CancelBuildData, CancelBuildErrors, CancelBuildResponses, CheckGitlabPersonalTokenData, CheckGitlabPersonalTokenErrors, CheckGitlabPersonalTokenResponses, ClaimJobData, ClaimJobResponses, CompleteArtifactData, CompleteArtifactResponses, CompleteSetupData, CompleteSetupErrors, CompleteSetupResponses, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcErrors, ConfigureExternalAccessOidcResponses, ConfigureOidcData, ConfigureOidcErrors, ConfigureOidcResponses, CreateApiTokenData, CreateApiTokenErrors, CreateApiTokenResponses, CreateArtifactData, CreateArtifactInstallLinkData, CreateArtifactInstallLinkErrors, CreateArtifactInstallLinkResponses, CreateArtifactResponses, CreateBuildData, CreateBuildErrors, CreateBuildResponses, CreateLocalGitIntegrationData, CreateLocalGitIntegrationErrors, CreateLocalGitIntegrationResponses, CreateNotificationChannelData, CreateNotificationChannelErrors, CreateNotificationChannelResponses, CreatePipelineData, CreatePipelineErrors, CreatePipelineResponses, CreateProjectData, CreateProjectErrors, CreateProjectResponses, CreateScopedDownloadTokenData, CreateScopedDownloadTokenErrors, CreateScopedDownloadTokenResponses, CreateStreamTokenData, CreateStreamTokenResponses, DeleteIntegrationData, DeleteIntegrationErrors, DeleteIntegrationResponses, DeleteLocalGitIntegrationData, DeleteLocalGitIntegrationErrors, DeleteLocalGitIntegrationResponses, DeleteNotificationChannelData, DeleteNotificationChannelErrors, DeleteNotificationChannelResponses, DeletePipelineData, DeletePipelineErrors, DeletePipelineResponses, DeleteProjectData, DeleteProjectErrors, DeleteProjectResponses, DeleteProjectRetentionData, DeleteProjectRetentionResponses, DeleteRunnerData, DeleteRunnerErrors, DeleteRunnerResponses, DeleteUserData, DeleteUserErrors, DeleteUserResponses, DiscoverRepositoryWorkflowsData, DiscoverRepositoryWorkflowsErrors, DiscoverRepositoryWorkflowsResponses, DownloadLocalArtifactData, DownloadLocalArtifactErrors, DownloadLocalArtifactInstallData, DownloadLocalArtifactInstallErrors, DownloadLocalArtifactInstallResponses, DownloadLocalArtifactLegacyData, DownloadLocalArtifactLegacyErrors, DownloadLocalArtifactLegacyResponses, DownloadLocalArtifactResponses, DownloadViaScopedTokenData, DownloadViaScopedTokenErrors, DownloadViaScopedTokenV1Data, DownloadViaScopedTokenV1Errors, FrontendPairData, FrontendPairErrors, FrontendPairResponses, GenerateDownloadLinkData, GenerateDownloadLinkErrors, GenerateDownloadLinkResponses, GetArtifactStorageSettingsData, GetArtifactStorageSettingsResponses, GetBuildData, GetBuildErrors, GetBuildLogsData, GetBuildLogsResponses, GetBuildResponses, GetExternalAccessNetworkSettingsData, GetExternalAccessNetworkSettingsErrors, GetExternalAccessNetworkSettingsResponses, GetExternalAccessOidcData, GetExternalAccessOidcErrors, GetExternalAccessOidcResponses, GetExternalAccessPreflightData, GetExternalAccessPreflightResponses, GetExternalAccessTrustedProxySettingsData, GetExternalAccessTrustedProxySettingsErrors, GetExternalAccessTrustedProxySettingsResponses, GetInstancePreferencesData, GetInstancePreferencesResponses, GetIntegrationData, GetIntegrationErrors, GetIntegrationResponses, GetIosInstallManifestData, GetIosInstallManifestErrors, GetIosInstallManifestResponses, GetIosInstallManifestV1Data, GetIosInstallManifestV1Errors, GetIosInstallManifestV1Responses, GetJobAndroidSigningData, GetJobAndroidSigningErrors, GetJobAndroidSigningResponses, GetJobIosSigningData, GetJobIosSigningErrors, GetJobIosSigningResponses, GetJobStatusData, GetJobStatusResponses, GetMeData, GetMeErrors, GetMeResponses, GetNotificationChannelData, GetNotificationChannelErrors, GetNotificationChannelResponses, GetPipelineAndroidSigningData, GetPipelineAndroidSigningResponses, GetPipelineData, GetPipelineErrors, GetPipelineIosSigningData, GetPipelineIosSigningResponses, GetPipelineResponses, GetProjectData, GetProjectErrors, GetProjectResponses, GetProjectRetentionData, GetProjectRetentionResponses, GetRetentionLastCleanupData, GetRetentionLastCleanupResponses, GetRetentionPolicyData, GetRetentionPolicyResponses, GetRunnerData, GetRunnerErrors, GetRunnerResponses, GetRuntimeUpdateStatusData, GetRuntimeUpdateStatusErrors, GetRuntimeUpdateStatusResponses, GetSetupStatusData, GetSetupStatusErrors, GetSetupStatusResponses, GetSetupSummaryData, GetSetupSummaryErrors, GetSetupSummaryResponses, GithubCallbackData, GithubCallbackResponses, GithubCompleteData, GithubCompleteErrors, GithubCompleteResponses, GithubCreatePageData, GithubCreatePageErrors, GithubCreatePageResponses, GithubInstalledData, GithubInstalledErrors, GithubInstalledResponses, GithubStartData, GithubStartErrors, GithubStartResponses, GithubWebhookData, GithubWebhookErrors, GithubWebhookResponses, GitlabAuthorizeData, GitlabAuthorizeErrors, GitlabAuthorizeResponses, GitlabCallbackData, GitlabCallbackResponses, GitlabCheckoutDiscoveryData, GitlabCheckoutDiscoveryErrors, GitlabCheckoutDiscoveryResponses, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackErrors, GitlabCheckoutUploadPackResponses, GitlabStartData, GitlabStartErrors, GitlabStartResponses, GitlabWebhookData, GitlabWebhookErrors, GitlabWebhookResponses, HealthzData, HealthzResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListApiTokensData, ListApiTokensErrors, ListApiTokensResponses, ListArtifactsData, ListArtifactsResponses, ListAuditLogsData, ListAuditLogsErrors, ListAuditLogsResponses, ListBuildArtifactsData, ListBuildArtifactsErrors, ListBuildArtifactsResponses, ListBuildsData, ListBuildsErrors, ListBuildsResponses, ListInstallationsData, ListInstallationsResponses, ListIntegrationsData, ListIntegrationsResponses, ListLocalGitIntegrationsData, ListLocalGitIntegrationsErrors, ListLocalGitIntegrationsResponses, ListNotificationChannelsData, ListNotificationChannelsErrors, ListNotificationChannelsResponses, ListNotificationDeliveriesData, ListNotificationDeliveriesErrors, ListNotificationDeliveriesResponses, ListOperatorIncidentsData, ListOperatorIncidentsErrors, ListOperatorIncidentsResponses, ListPipelineIosDevicesData, ListPipelineIosDevicesResponses, ListPipelinesData, ListPipelinesErrors, ListPipelinesResponses, ListProjectArtifactsData, ListProjectArtifactsErrors, ListProjectArtifactsResponses, ListProjectMemberCandidatesData, ListProjectMemberCandidatesErrors, ListProjectMemberCandidatesResponses, ListProjectMembersData, ListProjectMembersErrors, ListProjectMembersResponses, ListProjectsData, ListProjectsErrors, ListProjectsResponses, ListRepositoriesData, ListRepositoriesResponses, ListRunnersData, ListRunnersResponses, ListScopedDownloadTokensData, ListScopedDownloadTokensResponses, ListSourceRepositoriesData, ListSourceRepositoriesResponses, ListUsersData, ListUsersErrors, ListUsersResponses, LocalLoginData, LocalLoginErrors, LocalLoginResponses, LogoutData, LogoutResponses, MarkOperatorIncidentReadData, MarkOperatorIncidentReadErrors, MarkOperatorIncidentReadResponses, MetricsData, MetricsResponses, OidcCallbackData, OidcCallbackErrors, OidcCallbackResponses, OidcStartData, OidcStartErrors, OidcStartResponses, PreviewBuildChangelogData, PreviewBuildChangelogErrors, PreviewBuildChangelogResponses, ReadyzData, ReadyzErrors, ReadyzResponses, ReEnableUserData, ReEnableUserErrors, ReEnableUserResponses, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponses, RegisterRunnerData, RegisterRunnerResponses, RemoveProjectMemberData, RemoveProjectMemberErrors, RemoveProjectMemberResponses, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenErrors, ReplaceGitlabPersonalTokenResponses, RepositoryAvatarData, RepositoryAvatarErrors, RepositoryAvatarResponses, RerunBuildData, RerunBuildErrors, RerunBuildResponses, RevokeApiTokenData, RevokeApiTokenErrors, RevokeApiTokenResponses, RevokeScopedDownloadTokenData, RevokeScopedDownloadTokenErrors, RevokeScopedDownloadTokenResponses, RotateGitlabRepositoryWebhookSecretData, RotateGitlabRepositoryWebhookSecretErrors, RotateGitlabRepositoryWebhookSecretResponses, RunnerHeartbeatData, RunnerHeartbeatResponses, SetupLocalOwnerCreateData, SetupLocalOwnerCreateErrors, SetupLocalOwnerCreateResponses, SetupOidcStartData, SetupOidcStartErrors, SetupOidcStartResponses, SetupOidcVerifyData, SetupOidcVerifyErrors, SetupOidcVerifyResponses, SetupOwnerClaimTrustedProxyData, SetupOwnerClaimTrustedProxyErrors, SetupOwnerClaimTrustedProxyResponses, SetupPreferencesData, SetupPreferencesErrors, SetupPreferencesResponses, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureErrors, SetupTrustedProxyConfigureResponses, StartRuntimeUpdateData, StartRuntimeUpdateErrors, StartRuntimeUpdateResponses, StreamBuildLogsData, StreamBuildLogsErrors, StreamBuildLogsResponse, StreamBuildLogsResponses, SyncInstallationsData, SyncInstallationsErrors, SyncInstallationsResponses, SyncPipelineIosSigningData, SyncPipelineIosSigningResponses, TestNotificationChannelData, TestNotificationChannelErrors, TestNotificationChannelResponses, TestOidcConnectionData, TestOidcConnectionErrors, TestOidcConnectionResponses, TrustedProxyLoginData, TrustedProxyLoginErrors, TrustedProxyLoginResponses, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsErrors, UpdateArtifactStorageSettingsResponses, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsErrors, UpdateExternalAccessNetworkSettingsResponses, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsErrors, UpdateExternalAccessTrustedProxySettingsResponses, UpdateInstancePreferencesData, UpdateInstancePreferencesErrors, UpdateInstancePreferencesResponses, UpdateJobStatusData, UpdateJobStatusErrors, UpdateJobStatusResponses, UpdateNotificationChannelData, UpdateNotificationChannelErrors, UpdateNotificationChannelResponses, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponses, UpdatePipelineData, UpdatePipelineErrors, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponses, UpdatePipelineResponses, UpdateProjectData, UpdateProjectErrors, UpdateProjectMemberData, UpdateProjectMemberErrors, UpdateProjectMemberResponses, UpdateProjectResponses, UpdateProjectRetentionData, UpdateProjectRetentionResponses, UpdateRetentionPolicyData, UpdateRetentionPolicyResponses, UpdateRunnerData, UpdateRunnerResponses, UpdateUserRoleData, UpdateUserRoleErrors, UpdateUserRoleResponses, UploadLocalArtifactData, UploadLocalArtifactErrors, UploadLocalArtifactResponses, ValidatePipelineData, ValidatePipelineResponses, VerifyBootstrapTokenData, VerifyBootstrapTokenErrors, VerifyBootstrapTokenResponses } from './types.gen.js';
+import type { AbortArtifactData, AbortArtifactResponses, AddProjectMemberData, AddProjectMemberErrors, AddProjectMemberResponses, AppendBuildLogsData, AppendBuildLogsResponses, ApproveReleaseData, ApproveReleaseErrors, ApproveReleaseResponses, BrowseLocalGitDirectoriesData, BrowseLocalGitDirectoriesErrors, BrowseLocalGitDirectoriesResponses, CancelBuildData, CancelBuildErrors, CancelBuildResponses, CheckGitlabPersonalTokenData, CheckGitlabPersonalTokenErrors, CheckGitlabPersonalTokenResponses, ClaimJobData, ClaimJobResponses, CompleteArtifactData, CompleteArtifactResponses, CompleteReleaseData, CompleteReleaseErrors, CompleteReleaseResponses, CompleteSetupData, CompleteSetupErrors, CompleteSetupResponses, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcErrors, ConfigureExternalAccessOidcResponses, ConfigureOidcData, ConfigureOidcErrors, ConfigureOidcResponses, CreateApiTokenData, CreateApiTokenErrors, CreateApiTokenResponses, CreateArtifactData, CreateArtifactInstallLinkData, CreateArtifactInstallLinkErrors, CreateArtifactInstallLinkResponses, CreateArtifactResponses, CreateBuildData, CreateBuildErrors, CreateBuildResponses, CreateInstanceSecretData, CreateInstanceSecretErrors, CreateInstanceSecretResponses, CreateLocalGitIntegrationData, CreateLocalGitIntegrationErrors, CreateLocalGitIntegrationResponses, CreateNotificationChannelData, CreateNotificationChannelErrors, CreateNotificationChannelResponses, CreatePipelineData, CreatePipelineErrors, CreatePipelineResponses, CreatePipelineSecretData, CreatePipelineSecretErrors, CreatePipelineSecretResponses, CreateProjectData, CreateProjectErrors, CreateProjectResponses, CreateProjectSecretData, CreateProjectSecretErrors, CreateProjectSecretResponses, CreateReleaseData, CreateReleaseErrors, CreateReleaseResponses, CreateScopedDownloadTokenData, CreateScopedDownloadTokenErrors, CreateScopedDownloadTokenResponses, CreateStreamTokenData, CreateStreamTokenResponses, DeleteInstanceSecretData, DeleteInstanceSecretErrors, DeleteInstanceSecretResponses, DeleteIntegrationData, DeleteIntegrationErrors, DeleteIntegrationResponses, DeleteLocalGitIntegrationData, DeleteLocalGitIntegrationErrors, DeleteLocalGitIntegrationResponses, DeleteNotificationChannelData, DeleteNotificationChannelErrors, DeleteNotificationChannelResponses, DeletePipelineData, DeletePipelineErrors, DeletePipelineResponses, DeletePipelineSecretData, DeletePipelineSecretErrors, DeletePipelineSecretResponses, DeleteProjectData, DeleteProjectErrors, DeleteProjectResponses, DeleteProjectRetentionData, DeleteProjectRetentionResponses, DeleteProjectSecretData, DeleteProjectSecretErrors, DeleteProjectSecretResponses, DeleteRunnerData, DeleteRunnerErrors, DeleteRunnerResponses, DeleteUserData, DeleteUserErrors, DeleteUserResponses, DiscoverRepositoryWorkflowsData, DiscoverRepositoryWorkflowsErrors, DiscoverRepositoryWorkflowsResponses, DownloadLocalArtifactData, DownloadLocalArtifactErrors, DownloadLocalArtifactInstallData, DownloadLocalArtifactInstallErrors, DownloadLocalArtifactInstallResponses, DownloadLocalArtifactLegacyData, DownloadLocalArtifactLegacyErrors, DownloadLocalArtifactLegacyResponses, DownloadLocalArtifactResponses, DownloadViaScopedTokenData, DownloadViaScopedTokenErrors, DownloadViaScopedTokenV1Data, DownloadViaScopedTokenV1Errors, FrontendPairData, FrontendPairErrors, FrontendPairResponses, GenerateDownloadLinkData, GenerateDownloadLinkErrors, GenerateDownloadLinkResponses, GetArtifactStorageSettingsData, GetArtifactStorageSettingsResponses, GetBuildData, GetBuildErrors, GetBuildLogsData, GetBuildLogsResponses, GetBuildResponses, GetExternalAccessNetworkSettingsData, GetExternalAccessNetworkSettingsErrors, GetExternalAccessNetworkSettingsResponses, GetExternalAccessOidcData, GetExternalAccessOidcErrors, GetExternalAccessOidcResponses, GetExternalAccessPreflightData, GetExternalAccessPreflightResponses, GetExternalAccessTrustedProxySettingsData, GetExternalAccessTrustedProxySettingsErrors, GetExternalAccessTrustedProxySettingsResponses, GetInstancePreferencesData, GetInstancePreferencesResponses, GetIntegrationData, GetIntegrationErrors, GetIntegrationResponses, GetIosInstallManifestData, GetIosInstallManifestErrors, GetIosInstallManifestResponses, GetIosInstallManifestV1Data, GetIosInstallManifestV1Errors, GetIosInstallManifestV1Responses, GetJobAndroidSigningData, GetJobAndroidSigningErrors, GetJobAndroidSigningResponses, GetJobIosSigningData, GetJobIosSigningErrors, GetJobIosSigningResponses, GetJobPublishPlanData, GetJobPublishPlanErrors, GetJobPublishPlanResponses, GetJobSecretsData, GetJobSecretsErrors, GetJobSecretsResponses, GetJobStatusData, GetJobStatusResponses, GetMeData, GetMeErrors, GetMeResponses, GetNotificationChannelData, GetNotificationChannelErrors, GetNotificationChannelResponses, GetPipelineAndroidSigningData, GetPipelineAndroidSigningResponses, GetPipelineData, GetPipelineErrors, GetPipelineGooglePlayPublishData, GetPipelineGooglePlayPublishErrors, GetPipelineGooglePlayPublishResponses, GetPipelineIosSigningData, GetPipelineIosSigningResponses, GetPipelineResponses, GetProjectData, GetProjectErrors, GetProjectResponses, GetProjectRetentionData, GetProjectRetentionResponses, GetReleaseData, GetReleaseErrors, GetReleaseResponses, GetRetentionLastCleanupData, GetRetentionLastCleanupResponses, GetRetentionPolicyData, GetRetentionPolicyResponses, GetRunnerData, GetRunnerErrors, GetRunnerResponses, GetRuntimeUpdateStatusData, GetRuntimeUpdateStatusErrors, GetRuntimeUpdateStatusResponses, GetSetupStatusData, GetSetupStatusErrors, GetSetupStatusResponses, GetSetupSummaryData, GetSetupSummaryErrors, GetSetupSummaryResponses, GithubCallbackData, GithubCallbackResponses, GithubCompleteData, GithubCompleteErrors, GithubCompleteResponses, GithubCreatePageData, GithubCreatePageErrors, GithubCreatePageResponses, GithubInstalledData, GithubInstalledErrors, GithubInstalledResponses, GithubStartData, GithubStartErrors, GithubStartResponses, GithubWebhookData, GithubWebhookErrors, GithubWebhookResponses, GitlabAuthorizeData, GitlabAuthorizeErrors, GitlabAuthorizeResponses, GitlabCallbackData, GitlabCallbackResponses, GitlabCheckoutDiscoveryData, GitlabCheckoutDiscoveryErrors, GitlabCheckoutDiscoveryResponses, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackErrors, GitlabCheckoutUploadPackResponses, GitlabStartData, GitlabStartErrors, GitlabStartResponses, GitlabWebhookData, GitlabWebhookErrors, GitlabWebhookResponses, HaltReleaseData, HaltReleaseErrors, HaltReleaseResponses, HealthzData, HealthzResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListApiTokensData, ListApiTokensErrors, ListApiTokensResponses, ListArtifactsData, ListArtifactsResponses, ListAuditLogsData, ListAuditLogsErrors, ListAuditLogsResponses, ListBuildArtifactsData, ListBuildArtifactsErrors, ListBuildArtifactsResponses, ListBuildsData, ListBuildsErrors, ListBuildsResponses, ListInstallationsData, ListInstallationsResponses, ListInstanceSecretsData, ListInstanceSecretsErrors, ListInstanceSecretsResponses, ListIntegrationsData, ListIntegrationsResponses, ListLocalGitIntegrationsData, ListLocalGitIntegrationsErrors, ListLocalGitIntegrationsResponses, ListNotificationChannelsData, ListNotificationChannelsErrors, ListNotificationChannelsResponses, ListNotificationDeliveriesData, ListNotificationDeliveriesErrors, ListNotificationDeliveriesResponses, ListOperatorIncidentsData, ListOperatorIncidentsErrors, ListOperatorIncidentsResponses, ListPipelineIosDevicesData, ListPipelineIosDevicesResponses, ListPipelinesData, ListPipelineSecretsData, ListPipelineSecretsErrors, ListPipelineSecretsResponses, ListPipelinesErrors, ListPipelinesResponses, ListProjectArtifactsData, ListProjectArtifactsErrors, ListProjectArtifactsResponses, ListProjectMemberCandidatesData, ListProjectMemberCandidatesErrors, ListProjectMemberCandidatesResponses, ListProjectMembersData, ListProjectMembersErrors, ListProjectMembersResponses, ListProjectsData, ListProjectSecretsData, ListProjectSecretsErrors, ListProjectSecretsResponses, ListProjectsErrors, ListProjectsResponses, ListReleaseEventsData, ListReleaseEventsErrors, ListReleaseEventsResponses, ListReleasesData, ListReleasesErrors, ListReleasesResponses, ListRepositoriesData, ListRepositoriesResponses, ListRunnersData, ListRunnersResponses, ListScopedDownloadTokensData, ListScopedDownloadTokensResponses, ListSourceRepositoriesData, ListSourceRepositoriesResponses, ListUsersData, ListUsersErrors, ListUsersResponses, LocalLoginData, LocalLoginErrors, LocalLoginResponses, LogoutData, LogoutResponses, MarkOperatorIncidentReadData, MarkOperatorIncidentReadErrors, MarkOperatorIncidentReadResponses, MetricsData, MetricsResponses, OidcCallbackData, OidcCallbackErrors, OidcCallbackResponses, OidcStartData, OidcStartErrors, OidcStartResponses, PauseReleaseData, PauseReleaseErrors, PauseReleaseResponses, PreviewBuildChangelogData, PreviewBuildChangelogErrors, PreviewBuildChangelogResponses, RaiseReleaseData, RaiseReleaseErrors, RaiseReleaseResponses, ReadyzData, ReadyzErrors, ReadyzResponses, ReEnableUserData, ReEnableUserErrors, ReEnableUserResponses, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponses, RegisterRunnerData, RegisterRunnerResponses, RemoveProjectMemberData, RemoveProjectMemberErrors, RemoveProjectMemberResponses, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenErrors, ReplaceGitlabPersonalTokenResponses, ReportJobPublishResultData, ReportJobPublishResultErrors, ReportJobPublishResultResponses, RepositoryAvatarData, RepositoryAvatarErrors, RepositoryAvatarResponses, RerunBuildData, RerunBuildErrors, RerunBuildResponses, ResumeReleaseData, ResumeReleaseErrors, ResumeReleaseResponses, RevokeApiTokenData, RevokeApiTokenErrors, RevokeApiTokenResponses, RevokeScopedDownloadTokenData, RevokeScopedDownloadTokenErrors, RevokeScopedDownloadTokenResponses, RotateGitlabRepositoryWebhookSecretData, RotateGitlabRepositoryWebhookSecretErrors, RotateGitlabRepositoryWebhookSecretResponses, RotateInstanceSecretData, RotateInstanceSecretErrors, RotateInstanceSecretResponses, RotatePipelineSecretData, RotatePipelineSecretErrors, RotatePipelineSecretResponses, RotateProjectSecretData, RotateProjectSecretErrors, RotateProjectSecretResponses, RunnerHeartbeatData, RunnerHeartbeatResponses, SetupLocalOwnerCreateData, SetupLocalOwnerCreateErrors, SetupLocalOwnerCreateResponses, SetupOidcStartData, SetupOidcStartErrors, SetupOidcStartResponses, SetupOidcVerifyData, SetupOidcVerifyErrors, SetupOidcVerifyResponses, SetupOwnerClaimTrustedProxyData, SetupOwnerClaimTrustedProxyErrors, SetupOwnerClaimTrustedProxyResponses, SetupPreferencesData, SetupPreferencesErrors, SetupPreferencesResponses, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureErrors, SetupTrustedProxyConfigureResponses, StartRuntimeUpdateData, StartRuntimeUpdateErrors, StartRuntimeUpdateResponses, StreamBuildLogsData, StreamBuildLogsErrors, StreamBuildLogsResponse, StreamBuildLogsResponses, SyncInstallationsData, SyncInstallationsErrors, SyncInstallationsResponses, SyncPipelineIosSigningData, SyncPipelineIosSigningResponses, TestNotificationChannelData, TestNotificationChannelErrors, TestNotificationChannelResponses, TestOidcConnectionData, TestOidcConnectionErrors, TestOidcConnectionResponses, TrustedProxyLoginData, TrustedProxyLoginErrors, TrustedProxyLoginResponses, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsErrors, UpdateArtifactStorageSettingsResponses, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsErrors, UpdateExternalAccessNetworkSettingsResponses, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsErrors, UpdateExternalAccessTrustedProxySettingsResponses, UpdateInstancePreferencesData, UpdateInstancePreferencesErrors, UpdateInstancePreferencesResponses, UpdateJobStatusData, UpdateJobStatusErrors, UpdateJobStatusResponses, UpdateNotificationChannelData, UpdateNotificationChannelErrors, UpdateNotificationChannelResponses, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponses, UpdatePipelineData, UpdatePipelineErrors, UpdatePipelineGooglePlayPublishData, UpdatePipelineGooglePlayPublishErrors, UpdatePipelineGooglePlayPublishResponses, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponses, UpdatePipelineResponses, UpdateProjectData, UpdateProjectErrors, UpdateProjectMemberData, UpdateProjectMemberErrors, UpdateProjectMemberResponses, UpdateProjectResponses, UpdateProjectRetentionData, UpdateProjectRetentionResponses, UpdateRetentionPolicyData, UpdateRetentionPolicyResponses, UpdateRunnerData, UpdateRunnerResponses, UpdateUserRoleData, UpdateUserRoleErrors, UpdateUserRoleResponses, UploadLocalArtifactData, UploadLocalArtifactErrors, UploadLocalArtifactResponses, ValidatePipelineData, ValidatePipelineResponses, VerifyBootstrapTokenData, VerifyBootstrapTokenErrors, VerifyBootstrapTokenResponses } from './types.gen.js';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -906,6 +906,90 @@ export const syncPipelineIosSigning = <ThrowOnError extends boolean = true>(opti
 });
 
 /**
+ * Get Google Play publish settings
+ *
+ * Requires project read access. Also reports whether the referenced
+ * service account secret exists in a visible scope.
+ */
+export const getPipelineGooglePlayPublish = <ThrowOnError extends boolean = true>(options: Options<GetPipelineGooglePlayPublishData, ThrowOnError>): RequestResult<GetPipelineGooglePlayPublishResponses, GetPipelineGooglePlayPublishErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetPipelineGooglePlayPublishResponses, GetPipelineGooglePlayPublishErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/pipelines/{pipeline_id}/publish/google-play',
+    ...options
+});
+
+/**
+ * Update Google Play publish settings
+ *
+ * Requires the manage pipelines project permission. The service account
+ * JSON is stored separately as a secret and referenced by name.
+ */
+export const updatePipelineGooglePlayPublish = <ThrowOnError extends boolean = true>(options: Options<UpdatePipelineGooglePlayPublishData, ThrowOnError>): RequestResult<UpdatePipelineGooglePlayPublishResponses, UpdatePipelineGooglePlayPublishErrors, ThrowOnError, 'data'> => (options.client ?? client).put<UpdatePipelineGooglePlayPublishResponses, UpdatePipelineGooglePlayPublishErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/pipelines/{pipeline_id}/publish/google-play',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List pipeline secrets
+ *
+ * Returns secret names and timestamps. Values are never returned. Requires project read access.
+ */
+export const listPipelineSecrets = <ThrowOnError extends boolean = true>(options: Options<ListPipelineSecretsData, ThrowOnError>): RequestResult<ListPipelineSecretsResponses, ListPipelineSecretsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<ListPipelineSecretsResponses, ListPipelineSecretsErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/pipelines/{pipeline_id}/secrets',
+    ...options
+});
+
+/**
+ * Create pipeline secret
+ *
+ * Stores an encrypted value. The response never contains it. Requires the manage pipelines project permission.
+ */
+export const createPipelineSecret = <ThrowOnError extends boolean = true>(options: Options<CreatePipelineSecretData, ThrowOnError>): RequestResult<CreatePipelineSecretResponses, CreatePipelineSecretErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreatePipelineSecretResponses, CreatePipelineSecretErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/pipelines/{pipeline_id}/secrets',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete pipeline secret
+ */
+export const deletePipelineSecret = <ThrowOnError extends boolean = true>(options: Options<DeletePipelineSecretData, ThrowOnError>): RequestResult<DeletePipelineSecretResponses, DeletePipelineSecretErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeletePipelineSecretResponses, DeletePipelineSecretErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/pipelines/{pipeline_id}/secrets/{name}',
+    ...options
+});
+
+/**
+ * Rotate pipeline secret
+ *
+ * Replaces the stored value. Requires the manage pipelines project permission.
+ */
+export const rotatePipelineSecret = <ThrowOnError extends boolean = true>(options: Options<RotatePipelineSecretData, ThrowOnError>): RequestResult<RotatePipelineSecretResponses, RotatePipelineSecretErrors, ThrowOnError, 'data'> => (options.client ?? client).put<RotatePipelineSecretResponses, RotatePipelineSecretErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/pipelines/{pipeline_id}/secrets/{name}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
  * List projects
  */
 export const listProjects = <ThrowOnError extends boolean = true>(options?: Options<ListProjectsData, ThrowOnError>): RequestResult<ListProjectsResponses, ListProjectsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<ListProjectsResponses, ListProjectsErrors, ThrowOnError, 'data'>({
@@ -1130,6 +1214,60 @@ export const updateProjectRetention = <ThrowOnError extends boolean = true>(opti
 });
 
 /**
+ * List project secrets
+ *
+ * Returns secret names and timestamps. Values are never returned. Requires project read access.
+ */
+export const listProjectSecrets = <ThrowOnError extends boolean = true>(options: Options<ListProjectSecretsData, ThrowOnError>): RequestResult<ListProjectSecretsResponses, ListProjectSecretsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<ListProjectSecretsResponses, ListProjectSecretsErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/projects/{project_id}/secrets',
+    ...options
+});
+
+/**
+ * Create project secret
+ *
+ * Stores an encrypted value. The response never contains it. Requires the manage pipelines project permission.
+ */
+export const createProjectSecret = <ThrowOnError extends boolean = true>(options: Options<CreateProjectSecretData, ThrowOnError>): RequestResult<CreateProjectSecretResponses, CreateProjectSecretErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreateProjectSecretResponses, CreateProjectSecretErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/projects/{project_id}/secrets',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete project secret
+ */
+export const deleteProjectSecret = <ThrowOnError extends boolean = true>(options: Options<DeleteProjectSecretData, ThrowOnError>): RequestResult<DeleteProjectSecretResponses, DeleteProjectSecretErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteProjectSecretResponses, DeleteProjectSecretErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/projects/{project_id}/secrets/{name}',
+    ...options
+});
+
+/**
+ * Rotate project secret
+ *
+ * Replaces the stored value. Requires the manage pipelines project permission.
+ */
+export const rotateProjectSecret = <ThrowOnError extends boolean = true>(options: Options<RotateProjectSecretData, ThrowOnError>): RequestResult<RotateProjectSecretResponses, RotateProjectSecretErrors, ThrowOnError, 'data'> => (options.client ?? client).put<RotateProjectSecretResponses, RotateProjectSecretErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/projects/{project_id}/secrets/{name}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
  * Get setup status
  *
  * Returns the current setup state and instance ID. This endpoint is
@@ -1139,6 +1277,154 @@ export const getSetupStatus = <ThrowOnError extends boolean = true>(options?: Op
     responseStyle: 'data',
     url: '/v1/public/setup-status',
     ...options
+});
+
+/**
+ * List release events
+ *
+ * Recent release history entries across projects the caller can read, newest first.
+ */
+export const listReleaseEvents = <ThrowOnError extends boolean = true>(options?: Options<ListReleaseEventsData, ThrowOnError>): RequestResult<ListReleaseEventsResponses, ListReleaseEventsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<ListReleaseEventsResponses, ListReleaseEventsErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/release-events',
+    ...options
+});
+
+/**
+ * List releases
+ *
+ * Releases in projects the caller can read, newest first.
+ */
+export const listReleases = <ThrowOnError extends boolean = true>(options?: Options<ListReleasesData, ThrowOnError>): RequestResult<ListReleasesResponses, ListReleasesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<ListReleasesResponses, ListReleasesErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases',
+    ...options
+});
+
+/**
+ * Create release
+ *
+ * Records a release for a succeeded build. Requires the project maintainer role.
+ */
+export const createRelease = <ThrowOnError extends boolean = true>(options: Options<CreateReleaseData, ThrowOnError>): RequestResult<CreateReleaseResponses, CreateReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreateReleaseResponses, CreateReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Get release
+ *
+ * Release detail with its full state history, oldest first.
+ */
+export const getRelease = <ThrowOnError extends boolean = true>(options: Options<GetReleaseData, ThrowOnError>): RequestResult<GetReleaseResponses, GetReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReleaseResponses, GetReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}',
+    ...options
+});
+
+/**
+ * Approve release
+ *
+ * Records the maintainer approval required by the release policy. Writes history, an audit log entry, and a release event.
+ */
+export const approveRelease = <ThrowOnError extends boolean = true>(options: Options<ApproveReleaseData, ThrowOnError>): RequestResult<ApproveReleaseResponses, ApproveReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ApproveReleaseResponses, ApproveReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/approve',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Complete rollout
+ *
+ * Rolls out to 100%. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const completeRelease = <ThrowOnError extends boolean = true>(options: Options<CompleteReleaseData, ThrowOnError>): RequestResult<CompleteReleaseResponses, CompleteReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CompleteReleaseResponses, CompleteReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/complete',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Halt rollout
+ *
+ * Halts the rollout at the store. A halted release never advances until resumed. Requires developer or maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const haltRelease = <ThrowOnError extends boolean = true>(options: Options<HaltReleaseData, ThrowOnError>): RequestResult<HaltReleaseResponses, HaltReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<HaltReleaseResponses, HaltReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/halt',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Pause rollout
+ *
+ * Stops scheduled steps. Requires developer or maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const pauseRelease = <ThrowOnError extends boolean = true>(options: Options<PauseReleaseData, ThrowOnError>): RequestResult<PauseReleaseResponses, PauseReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<PauseReleaseResponses, PauseReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/pause',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Raise rollout
+ *
+ * Raises the rollout to `fraction`, or to the next policy step. Raising to 1 completes the release. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const raiseRelease = <ThrowOnError extends boolean = true>(options: Options<RaiseReleaseData, ThrowOnError>): RequestResult<RaiseReleaseResponses, RaiseReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<RaiseReleaseResponses, RaiseReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/raise',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Resume rollout
+ *
+ * Resumes a paused or halted release; the next step is one interval away. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const resumeRelease = <ThrowOnError extends boolean = true>(options: Options<ResumeReleaseData, ThrowOnError>): RequestResult<ResumeReleaseResponses, ResumeReleaseErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ResumeReleaseResponses, ResumeReleaseErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/releases/{release_id}/resume',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
 
 /**
@@ -1359,6 +1645,49 @@ export const appendBuildLogs = <ThrowOnError extends boolean = true>(options: Op
 });
 
 /**
+ * Get job publish plan
+ *
+ * Returns enabled store publish settings and the build changelog to the
+ * assigned runner while the job is active.
+ */
+export const getJobPublishPlan = <ThrowOnError extends boolean = true>(options: Options<GetJobPublishPlanData, ThrowOnError>): RequestResult<GetJobPublishPlanResponses, GetJobPublishPlanErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetJobPublishPlanResponses, GetJobPublishPlanErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/publish',
+    ...options
+});
+
+/**
+ * Report a store upload
+ *
+ * Records a completed store upload for an active job.
+ */
+export const reportJobPublishResult = <ThrowOnError extends boolean = true>(options: Options<ReportJobPublishResultData, ThrowOnError>): RequestResult<ReportJobPublishResultResponses, ReportJobPublishResultErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ReportJobPublishResultResponses, ReportJobPublishResultErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/publish-results',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Get job-scoped secrets
+ *
+ * Returns resolved instance, project and pipeline secrets (narrowest scope
+ * wins) only to the assigned runner while the job is active. Both the runner
+ * bearer token and job-scoped signing grant are required.
+ */
+export const getJobSecrets = <ThrowOnError extends boolean = true>(options: Options<GetJobSecretsData, ThrowOnError>): RequestResult<GetJobSecretsResponses, GetJobSecretsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetJobSecretsResponses, GetJobSecretsErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/secrets',
+    ...options
+});
+
+/**
  * Update job status
  *
  * Runner reports build status transitions and step results.
@@ -1367,6 +1696,60 @@ export const updateJobStatus = <ThrowOnError extends boolean = true>(options: Op
     responseStyle: 'data',
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/v1/runners/{runner_id}/jobs/{job_id}/status',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List instance secrets
+ *
+ * Returns secret names and timestamps. Values are never returned. Requires instance settings read access.
+ */
+export const listInstanceSecrets = <ThrowOnError extends boolean = true>(options?: Options<ListInstanceSecretsData, ThrowOnError>): RequestResult<ListInstanceSecretsResponses, ListInstanceSecretsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<ListInstanceSecretsResponses, ListInstanceSecretsErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/secrets',
+    ...options
+});
+
+/**
+ * Create instance secret
+ *
+ * Stores an encrypted value. The response never contains it. Requires instance settings write access.
+ */
+export const createInstanceSecret = <ThrowOnError extends boolean = true>(options: Options<CreateInstanceSecretData, ThrowOnError>): RequestResult<CreateInstanceSecretResponses, CreateInstanceSecretErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreateInstanceSecretResponses, CreateInstanceSecretErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/secrets',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete instance secret
+ */
+export const deleteInstanceSecret = <ThrowOnError extends boolean = true>(options: Options<DeleteInstanceSecretData, ThrowOnError>): RequestResult<DeleteInstanceSecretResponses, DeleteInstanceSecretErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteInstanceSecretResponses, DeleteInstanceSecretErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/secrets/{name}',
+    ...options
+});
+
+/**
+ * Rotate instance secret
+ *
+ * Replaces the stored value. Requires instance settings write access.
+ */
+export const rotateInstanceSecret = <ThrowOnError extends boolean = true>(options: Options<RotateInstanceSecretData, ThrowOnError>): RequestResult<RotateInstanceSecretResponses, RotateInstanceSecretErrors, ThrowOnError, 'data'> => (options.client ?? client).put<RotateInstanceSecretResponses, RotateInstanceSecretErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/secrets/{name}',
     ...options,
     headers: {
         'Content-Type': 'application/json',

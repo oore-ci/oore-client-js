@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitLabAuthorizeRequest = v.object({
-    integration_id: v.string(),
-    redirect_url: v.string()
+export const vGitHubAppStartResponse = v.object({
+    create_url: v.string()
 });

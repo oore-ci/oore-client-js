@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vDeleteNotificationChannelPath = v.object({
-    id: v.string()
+export const vCompleteReleasePath = v.object({
+    release_id: v.string()
 });

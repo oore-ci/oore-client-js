@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRunnerPolicyBlockReason = v.picklist(['instance_paused', 'repository_unavailable']);
+export const vRemoveProjectMemberResponse = v.object({
+    ok: v.boolean()
+});

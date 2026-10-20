@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vTriggerConfig = v.object({
-    branches: v.array(v.string()),
-    events: v.array(v.string())
+export const vSetupOidcStartRequest = v.object({
+    redirect_uri: v.string()
 });

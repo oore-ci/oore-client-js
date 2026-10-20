@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGetJobIosSigningHeaders = v.object({
-    'x-oore-signing-token': v.string()
+export const vGetProjectRetentionPath = v.object({
+    project_id: v.string()
 });

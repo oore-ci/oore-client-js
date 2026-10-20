@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, useMutation, type UseMutationOptions, useQuery } from '@tanstack/react-query';
 
 import { client } from '../client.gen.js';
-import { abortArtifact, addProjectMember, appendBuildLogs, browseLocalGitDirectories, cancelBuild, checkGitlabPersonalToken, claimJob, completeArtifact, completeSetup, configureExternalAccessOidc, configureOidc, createApiToken, createArtifact, createArtifactInstallLink, createBuild, createLocalGitIntegration, createNotificationChannel, createPipeline, createProject, createScopedDownloadToken, createStreamToken, deleteIntegration, deleteLocalGitIntegration, deleteNotificationChannel, deletePipeline, deleteProject, deleteProjectRetention, deleteRunner, deleteUser, discoverRepositoryWorkflows, downloadLocalArtifact, downloadLocalArtifactInstall, downloadLocalArtifactLegacy, downloadViaScopedToken, downloadViaScopedTokenV1, frontendPair, generateDownloadLink, getArtifactStorageSettings, getBuild, getBuildLogs, getExternalAccessNetworkSettings, getExternalAccessOidc, getExternalAccessPreflight, getExternalAccessTrustedProxySettings, getInstancePreferences, getIntegration, getIosInstallManifest, getIosInstallManifestV1, getJobAndroidSigning, getJobIosSigning, getJobStatus, getMe, getNotificationChannel, getPipeline, getPipelineAndroidSigning, getPipelineIosSigning, getProject, getProjectRetention, getRetentionLastCleanup, getRetentionPolicy, getRunner, getRuntimeUpdateStatus, getSetupStatus, getSetupSummary, githubCallback, githubComplete, githubCreatePage, githubInstalled, githubStart, githubWebhook, gitlabAuthorize, gitlabCallback, gitlabCheckoutDiscovery, gitlabCheckoutUploadPack, gitlabStart, gitlabWebhook, healthz, inviteUser, listApiTokens, listArtifacts, listAuditLogs, listBuildArtifacts, listBuilds, listInstallations, listIntegrations, listLocalGitIntegrations, listNotificationChannels, listNotificationDeliveries, listOperatorIncidents, listPipelineIosDevices, listPipelines, listProjectArtifacts, listProjectMemberCandidates, listProjectMembers, listProjects, listRepositories, listRunners, listScopedDownloadTokens, listSourceRepositories, listUsers, localLogin, logout, markOperatorIncidentRead, metrics, oidcCallback, oidcStart, type Options, previewBuildChangelog, readyz, reEnableUser, registerPipelineIosDevice, registerRunner, removeProjectMember, replaceGitlabPersonalToken, repositoryAvatar, rerunBuild, revokeApiToken, revokeScopedDownloadToken, rotateGitlabRepositoryWebhookSecret, runnerHeartbeat, setupLocalOwnerCreate, setupOidcStart, setupOidcVerify, setupOwnerClaimTrustedProxy, setupPreferences, setupTrustedProxyConfigure, startRuntimeUpdate, syncInstallations, syncPipelineIosSigning, testNotificationChannel, testOidcConnection, trustedProxyLogin, updateArtifactStorageSettings, updateExternalAccessNetworkSettings, updateExternalAccessTrustedProxySettings, updateInstancePreferences, updateJobStatus, updateNotificationChannel, updatePipeline, updatePipelineAndroidSigning, updatePipelineIosSigning, updateProject, updateProjectMember, updateProjectRetention, updateRetentionPolicy, updateRunner, updateUserRole, uploadLocalArtifact, validatePipeline, verifyBootstrapToken } from '../sdk.gen.js';
-import type { AbortArtifactData, AbortArtifactResponse, AddProjectMemberData, AddProjectMemberError, AddProjectMemberResponse2, AppendBuildLogsData, AppendBuildLogsResponse2, BrowseLocalGitDirectoriesData, BrowseLocalGitDirectoriesError, BrowseLocalGitDirectoriesResponse2, CancelBuildData, CancelBuildError, CancelBuildResponse2, CheckGitlabPersonalTokenData, CheckGitlabPersonalTokenError, CheckGitlabPersonalTokenResponse, ClaimJobData, ClaimJobResponse2, CompleteArtifactData, CompleteArtifactResponse2, CompleteSetupData, CompleteSetupError, CompleteSetupResponse, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcError, ConfigureExternalAccessOidcResponse2, ConfigureOidcData, ConfigureOidcError, ConfigureOidcResponse, CreateApiTokenData, CreateApiTokenError, CreateApiTokenResponse2, CreateArtifactData, CreateArtifactInstallLinkData, CreateArtifactInstallLinkError, CreateArtifactInstallLinkResponse, CreateArtifactResponse2, CreateBuildData, CreateBuildError, CreateBuildResponse2, CreateLocalGitIntegrationData, CreateLocalGitIntegrationError, CreateLocalGitIntegrationResponse2, CreateNotificationChannelData, CreateNotificationChannelError, CreateNotificationChannelResponse, CreatePipelineData, CreatePipelineError, CreatePipelineResponse2, CreateProjectData, CreateProjectError, CreateProjectResponse2, CreateScopedDownloadTokenData, CreateScopedDownloadTokenError, CreateScopedDownloadTokenResponse2, CreateStreamTokenData, CreateStreamTokenResponse, DeleteIntegrationData, DeleteIntegrationError, DeleteIntegrationResponse, DeleteLocalGitIntegrationData, DeleteLocalGitIntegrationError, DeleteLocalGitIntegrationResponse, DeleteNotificationChannelData, DeleteNotificationChannelError, DeleteNotificationChannelResponse2, DeletePipelineData, DeletePipelineError, DeletePipelineResponse, DeleteProjectData, DeleteProjectError, DeleteProjectResponse, DeleteProjectRetentionData, DeleteProjectRetentionResponse, DeleteRunnerData, DeleteRunnerError, DeleteRunnerResponse, DeleteUserData, DeleteUserError, DeleteUserResponse, DiscoverRepositoryWorkflowsData, DiscoverRepositoryWorkflowsError, DiscoverRepositoryWorkflowsResponse2, DownloadLocalArtifactData, DownloadLocalArtifactError, DownloadLocalArtifactInstallData, DownloadLocalArtifactInstallError, DownloadLocalArtifactInstallResponse, DownloadLocalArtifactLegacyData, DownloadLocalArtifactLegacyError, DownloadLocalArtifactLegacyResponse, DownloadLocalArtifactResponse, DownloadViaScopedTokenData, DownloadViaScopedTokenError, DownloadViaScopedTokenV1Data, DownloadViaScopedTokenV1Error, FrontendPairData, FrontendPairError, FrontendPairResponse2, GenerateDownloadLinkData, GenerateDownloadLinkError, GenerateDownloadLinkResponse, GetArtifactStorageSettingsData, GetArtifactStorageSettingsResponse, GetBuildData, GetBuildError, GetBuildLogsData, GetBuildLogsResponse, GetBuildResponse, GetExternalAccessNetworkSettingsData, GetExternalAccessNetworkSettingsError, GetExternalAccessNetworkSettingsResponse, GetExternalAccessOidcData, GetExternalAccessOidcError, GetExternalAccessOidcResponse2, GetExternalAccessPreflightData, GetExternalAccessPreflightResponse, GetExternalAccessTrustedProxySettingsData, GetExternalAccessTrustedProxySettingsError, GetExternalAccessTrustedProxySettingsResponse, GetInstancePreferencesData, GetInstancePreferencesResponse, GetIntegrationData, GetIntegrationError, GetIntegrationResponse, GetIosInstallManifestData, GetIosInstallManifestError, GetIosInstallManifestResponse, GetIosInstallManifestV1Data, GetIosInstallManifestV1Error, GetIosInstallManifestV1Response, GetJobAndroidSigningData, GetJobAndroidSigningError, GetJobAndroidSigningResponse, GetJobIosSigningData, GetJobIosSigningError, GetJobIosSigningResponse, GetJobStatusData, GetJobStatusResponse, GetMeData, GetMeError, GetMeResponse, GetNotificationChannelData, GetNotificationChannelError, GetNotificationChannelResponse, GetPipelineAndroidSigningData, GetPipelineAndroidSigningResponse, GetPipelineData, GetPipelineError, GetPipelineIosSigningData, GetPipelineIosSigningResponse, GetPipelineResponse, GetProjectData, GetProjectError, GetProjectResponse, GetProjectRetentionData, GetProjectRetentionResponse, GetRetentionLastCleanupData, GetRetentionLastCleanupResponse, GetRetentionPolicyData, GetRetentionPolicyResponse, GetRunnerData, GetRunnerError, GetRunnerResponse, GetRuntimeUpdateStatusData, GetRuntimeUpdateStatusError, GetRuntimeUpdateStatusResponse, GetSetupStatusData, GetSetupStatusError, GetSetupStatusResponse, GetSetupSummaryData, GetSetupSummaryError, GetSetupSummaryResponse, GithubCallbackData, GithubCallbackResponse, GithubCompleteData, GithubCompleteError, GithubCompleteResponse, GithubCreatePageData, GithubCreatePageResponse, GithubInstalledData, GithubInstalledResponse, GithubStartData, GithubStartError, GithubStartResponse, GithubWebhookData, GithubWebhookError, GithubWebhookResponse, GitlabAuthorizeData, GitlabAuthorizeError, GitlabAuthorizeResponse, GitlabCallbackData, GitlabCallbackResponse, GitlabCheckoutDiscoveryData, GitlabCheckoutDiscoveryError, GitlabCheckoutDiscoveryResponse, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackError, GitlabCheckoutUploadPackResponse, GitlabStartData, GitlabStartError, GitlabStartResponse, GitlabWebhookData, GitlabWebhookError, GitlabWebhookResponse, HealthzData, HealthzResponse, InviteUserData, InviteUserError, InviteUserResponse2, ListApiTokensData, ListApiTokensError, ListApiTokensResponse2, ListArtifactsData, ListArtifactsResponse2, ListAuditLogsData, ListAuditLogsError, ListAuditLogsResponse2, ListBuildArtifactsData, ListBuildArtifactsError, ListBuildArtifactsResponse, ListBuildsData, ListBuildsError, ListBuildsResponse2, ListInstallationsData, ListInstallationsResponse2, ListIntegrationsData, ListIntegrationsResponse2, ListLocalGitIntegrationsData, ListLocalGitIntegrationsError, ListLocalGitIntegrationsResponse, ListNotificationChannelsData, ListNotificationChannelsError, ListNotificationChannelsResponse2, ListNotificationDeliveriesData, ListNotificationDeliveriesError, ListNotificationDeliveriesResponse2, ListOperatorIncidentsData, ListOperatorIncidentsError, ListOperatorIncidentsResponse2, ListPipelineIosDevicesData, ListPipelineIosDevicesResponse2, ListPipelinesData, ListPipelinesError, ListPipelinesResponse2, ListProjectArtifactsData, ListProjectArtifactsError, ListProjectArtifactsResponse, ListProjectMemberCandidatesData, ListProjectMemberCandidatesError, ListProjectMemberCandidatesResponse2, ListProjectMembersData, ListProjectMembersError, ListProjectMembersResponse2, ListProjectsData, ListProjectsError, ListProjectsResponse2, ListRepositoriesData, ListRepositoriesResponse2, ListRunnersData, ListRunnersResponse2, ListScopedDownloadTokensData, ListScopedDownloadTokensResponse, ListSourceRepositoriesData, ListSourceRepositoriesResponse2, ListUsersData, ListUsersError, ListUsersResponse2, LocalLoginData, LocalLoginError, LocalLoginResponse2, LogoutData, LogoutResponse2, MarkOperatorIncidentReadData, MarkOperatorIncidentReadError, MarkOperatorIncidentReadResponse, MetricsData, MetricsResponse, OidcCallbackData, OidcCallbackError, OidcCallbackResponse2, OidcStartData, OidcStartError, OidcStartResponse2, PreviewBuildChangelogData, PreviewBuildChangelogError, PreviewBuildChangelogResponse, ReadyzData, ReadyzError, ReadyzResponse, ReEnableUserData, ReEnableUserError, ReEnableUserResponse2, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponse, RegisterRunnerData, RegisterRunnerResponse2, RemoveProjectMemberData, RemoveProjectMemberError, RemoveProjectMemberResponse2, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenError, ReplaceGitlabPersonalTokenResponse, RepositoryAvatarData, RepositoryAvatarError, RepositoryAvatarResponse, RerunBuildData, RerunBuildError, RerunBuildResponse2, RevokeApiTokenData, RevokeApiTokenError, RevokeApiTokenResponse2, RevokeScopedDownloadTokenData, RevokeScopedDownloadTokenError, RevokeScopedDownloadTokenResponse, RotateGitlabRepositoryWebhookSecretData, RotateGitlabRepositoryWebhookSecretError, RotateGitlabRepositoryWebhookSecretResponse, RunnerHeartbeatData, RunnerHeartbeatResponse, SetupLocalOwnerCreateData, SetupLocalOwnerCreateError, SetupLocalOwnerCreateResponse2, SetupOidcStartData, SetupOidcStartError, SetupOidcStartResponse2, SetupOidcVerifyData, SetupOidcVerifyError, SetupOidcVerifyResponse2, SetupOwnerClaimTrustedProxyData, SetupOwnerClaimTrustedProxyError, SetupOwnerClaimTrustedProxyResponse, SetupPreferencesData, SetupPreferencesError, SetupPreferencesResponse2, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureError, SetupTrustedProxyConfigureResponse2, StartRuntimeUpdateData, StartRuntimeUpdateError, StartRuntimeUpdateResponse, SyncInstallationsData, SyncInstallationsError, SyncInstallationsResponse2, SyncPipelineIosSigningData, SyncPipelineIosSigningResponse2, TestNotificationChannelData, TestNotificationChannelError, TestNotificationChannelResponse2, TestOidcConnectionData, TestOidcConnectionError, TestOidcConnectionResponse2, TrustedProxyLoginData, TrustedProxyLoginError, TrustedProxyLoginResponse, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsError, UpdateArtifactStorageSettingsResponse, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsError, UpdateExternalAccessNetworkSettingsResponse, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsError, UpdateExternalAccessTrustedProxySettingsResponse, UpdateInstancePreferencesData, UpdateInstancePreferencesError, UpdateInstancePreferencesResponse, UpdateJobStatusData, UpdateJobStatusError, UpdateJobStatusResponse, UpdateNotificationChannelData, UpdateNotificationChannelError, UpdateNotificationChannelResponse, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponse, UpdatePipelineData, UpdatePipelineError, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponse, UpdatePipelineResponse, UpdateProjectData, UpdateProjectError, UpdateProjectMemberData, UpdateProjectMemberError, UpdateProjectMemberResponse2, UpdateProjectResponse, UpdateProjectRetentionData, UpdateProjectRetentionResponse, UpdateRetentionPolicyData, UpdateRetentionPolicyResponse, UpdateRunnerData, UpdateRunnerResponse2, UpdateUserRoleData, UpdateUserRoleError, UpdateUserRoleResponse2, UploadLocalArtifactData, UploadLocalArtifactError, ValidatePipelineData, ValidatePipelineResponse2, VerifyBootstrapTokenData, VerifyBootstrapTokenError, VerifyBootstrapTokenResponse } from '../types.gen.js';
+import { abortArtifact, addProjectMember, appendBuildLogs, approveRelease, browseLocalGitDirectories, cancelBuild, checkGitlabPersonalToken, claimJob, completeArtifact, completeRelease, completeSetup, configureExternalAccessOidc, configureOidc, createApiToken, createArtifact, createArtifactInstallLink, createBuild, createInstanceSecret, createLocalGitIntegration, createNotificationChannel, createPipeline, createPipelineSecret, createProject, createProjectSecret, createRelease, createScopedDownloadToken, createStreamToken, deleteInstanceSecret, deleteIntegration, deleteLocalGitIntegration, deleteNotificationChannel, deletePipeline, deletePipelineSecret, deleteProject, deleteProjectRetention, deleteProjectSecret, deleteRunner, deleteUser, discoverRepositoryWorkflows, downloadLocalArtifact, downloadLocalArtifactInstall, downloadLocalArtifactLegacy, downloadViaScopedToken, downloadViaScopedTokenV1, frontendPair, generateDownloadLink, getArtifactStorageSettings, getBuild, getBuildLogs, getExternalAccessNetworkSettings, getExternalAccessOidc, getExternalAccessPreflight, getExternalAccessTrustedProxySettings, getInstancePreferences, getIntegration, getIosInstallManifest, getIosInstallManifestV1, getJobAndroidSigning, getJobIosSigning, getJobPublishPlan, getJobSecrets, getJobStatus, getMe, getNotificationChannel, getPipeline, getPipelineAndroidSigning, getPipelineGooglePlayPublish, getPipelineIosSigning, getProject, getProjectRetention, getRelease, getRetentionLastCleanup, getRetentionPolicy, getRunner, getRuntimeUpdateStatus, getSetupStatus, getSetupSummary, githubCallback, githubComplete, githubCreatePage, githubInstalled, githubStart, githubWebhook, gitlabAuthorize, gitlabCallback, gitlabCheckoutDiscovery, gitlabCheckoutUploadPack, gitlabStart, gitlabWebhook, haltRelease, healthz, inviteUser, listApiTokens, listArtifacts, listAuditLogs, listBuildArtifacts, listBuilds, listInstallations, listInstanceSecrets, listIntegrations, listLocalGitIntegrations, listNotificationChannels, listNotificationDeliveries, listOperatorIncidents, listPipelineIosDevices, listPipelines, listPipelineSecrets, listProjectArtifacts, listProjectMemberCandidates, listProjectMembers, listProjects, listProjectSecrets, listReleaseEvents, listReleases, listRepositories, listRunners, listScopedDownloadTokens, listSourceRepositories, listUsers, localLogin, logout, markOperatorIncidentRead, metrics, oidcCallback, oidcStart, type Options, pauseRelease, previewBuildChangelog, raiseRelease, readyz, reEnableUser, registerPipelineIosDevice, registerRunner, removeProjectMember, replaceGitlabPersonalToken, reportJobPublishResult, repositoryAvatar, rerunBuild, resumeRelease, revokeApiToken, revokeScopedDownloadToken, rotateGitlabRepositoryWebhookSecret, rotateInstanceSecret, rotatePipelineSecret, rotateProjectSecret, runnerHeartbeat, setupLocalOwnerCreate, setupOidcStart, setupOidcVerify, setupOwnerClaimTrustedProxy, setupPreferences, setupTrustedProxyConfigure, startRuntimeUpdate, syncInstallations, syncPipelineIosSigning, testNotificationChannel, testOidcConnection, trustedProxyLogin, updateArtifactStorageSettings, updateExternalAccessNetworkSettings, updateExternalAccessTrustedProxySettings, updateInstancePreferences, updateJobStatus, updateNotificationChannel, updatePipeline, updatePipelineAndroidSigning, updatePipelineGooglePlayPublish, updatePipelineIosSigning, updateProject, updateProjectMember, updateProjectRetention, updateRetentionPolicy, updateRunner, updateUserRole, uploadLocalArtifact, validatePipeline, verifyBootstrapToken } from '../sdk.gen.js';
+import type { AbortArtifactData, AbortArtifactResponse, AddProjectMemberData, AddProjectMemberError, AddProjectMemberResponse2, AppendBuildLogsData, AppendBuildLogsResponse2, ApproveReleaseData, ApproveReleaseError, ApproveReleaseResponse, BrowseLocalGitDirectoriesData, BrowseLocalGitDirectoriesError, BrowseLocalGitDirectoriesResponse2, CancelBuildData, CancelBuildError, CancelBuildResponse2, CheckGitlabPersonalTokenData, CheckGitlabPersonalTokenError, CheckGitlabPersonalTokenResponse, ClaimJobData, ClaimJobResponse2, CompleteArtifactData, CompleteArtifactResponse2, CompleteReleaseData, CompleteReleaseError, CompleteReleaseResponse, CompleteSetupData, CompleteSetupError, CompleteSetupResponse, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcError, ConfigureExternalAccessOidcResponse2, ConfigureOidcData, ConfigureOidcError, ConfigureOidcResponse, CreateApiTokenData, CreateApiTokenError, CreateApiTokenResponse2, CreateArtifactData, CreateArtifactInstallLinkData, CreateArtifactInstallLinkError, CreateArtifactInstallLinkResponse, CreateArtifactResponse2, CreateBuildData, CreateBuildError, CreateBuildResponse2, CreateInstanceSecretData, CreateInstanceSecretError, CreateInstanceSecretResponse, CreateLocalGitIntegrationData, CreateLocalGitIntegrationError, CreateLocalGitIntegrationResponse2, CreateNotificationChannelData, CreateNotificationChannelError, CreateNotificationChannelResponse, CreatePipelineData, CreatePipelineError, CreatePipelineResponse2, CreatePipelineSecretData, CreatePipelineSecretError, CreatePipelineSecretResponse, CreateProjectData, CreateProjectError, CreateProjectResponse2, CreateProjectSecretData, CreateProjectSecretError, CreateProjectSecretResponse, CreateReleaseData, CreateReleaseError, CreateReleaseResponse, CreateScopedDownloadTokenData, CreateScopedDownloadTokenError, CreateScopedDownloadTokenResponse2, CreateStreamTokenData, CreateStreamTokenResponse, DeleteInstanceSecretData, DeleteInstanceSecretError, DeleteInstanceSecretResponse, DeleteIntegrationData, DeleteIntegrationError, DeleteIntegrationResponse, DeleteLocalGitIntegrationData, DeleteLocalGitIntegrationError, DeleteLocalGitIntegrationResponse, DeleteNotificationChannelData, DeleteNotificationChannelError, DeleteNotificationChannelResponse2, DeletePipelineData, DeletePipelineError, DeletePipelineResponse, DeletePipelineSecretData, DeletePipelineSecretError, DeletePipelineSecretResponse, DeleteProjectData, DeleteProjectError, DeleteProjectResponse, DeleteProjectRetentionData, DeleteProjectRetentionResponse, DeleteProjectSecretData, DeleteProjectSecretError, DeleteProjectSecretResponse, DeleteRunnerData, DeleteRunnerError, DeleteRunnerResponse, DeleteUserData, DeleteUserError, DeleteUserResponse, DiscoverRepositoryWorkflowsData, DiscoverRepositoryWorkflowsError, DiscoverRepositoryWorkflowsResponse2, DownloadLocalArtifactData, DownloadLocalArtifactError, DownloadLocalArtifactInstallData, DownloadLocalArtifactInstallError, DownloadLocalArtifactInstallResponse, DownloadLocalArtifactLegacyData, DownloadLocalArtifactLegacyError, DownloadLocalArtifactLegacyResponse, DownloadLocalArtifactResponse, DownloadViaScopedTokenData, DownloadViaScopedTokenError, DownloadViaScopedTokenV1Data, DownloadViaScopedTokenV1Error, FrontendPairData, FrontendPairError, FrontendPairResponse2, GenerateDownloadLinkData, GenerateDownloadLinkError, GenerateDownloadLinkResponse, GetArtifactStorageSettingsData, GetArtifactStorageSettingsResponse, GetBuildData, GetBuildError, GetBuildLogsData, GetBuildLogsResponse, GetBuildResponse, GetExternalAccessNetworkSettingsData, GetExternalAccessNetworkSettingsError, GetExternalAccessNetworkSettingsResponse, GetExternalAccessOidcData, GetExternalAccessOidcError, GetExternalAccessOidcResponse2, GetExternalAccessPreflightData, GetExternalAccessPreflightResponse, GetExternalAccessTrustedProxySettingsData, GetExternalAccessTrustedProxySettingsError, GetExternalAccessTrustedProxySettingsResponse, GetInstancePreferencesData, GetInstancePreferencesResponse, GetIntegrationData, GetIntegrationError, GetIntegrationResponse, GetIosInstallManifestData, GetIosInstallManifestError, GetIosInstallManifestResponse, GetIosInstallManifestV1Data, GetIosInstallManifestV1Error, GetIosInstallManifestV1Response, GetJobAndroidSigningData, GetJobAndroidSigningError, GetJobAndroidSigningResponse, GetJobIosSigningData, GetJobIosSigningError, GetJobIosSigningResponse, GetJobPublishPlanData, GetJobPublishPlanError, GetJobPublishPlanResponse, GetJobSecretsData, GetJobSecretsError, GetJobSecretsResponse, GetJobStatusData, GetJobStatusResponse, GetMeData, GetMeError, GetMeResponse, GetNotificationChannelData, GetNotificationChannelError, GetNotificationChannelResponse, GetPipelineAndroidSigningData, GetPipelineAndroidSigningResponse, GetPipelineData, GetPipelineError, GetPipelineGooglePlayPublishData, GetPipelineGooglePlayPublishError, GetPipelineGooglePlayPublishResponse, GetPipelineIosSigningData, GetPipelineIosSigningResponse, GetPipelineResponse, GetProjectData, GetProjectError, GetProjectResponse, GetProjectRetentionData, GetProjectRetentionResponse, GetReleaseData, GetReleaseError, GetReleaseResponse, GetRetentionLastCleanupData, GetRetentionLastCleanupResponse, GetRetentionPolicyData, GetRetentionPolicyResponse, GetRunnerData, GetRunnerError, GetRunnerResponse, GetRuntimeUpdateStatusData, GetRuntimeUpdateStatusError, GetRuntimeUpdateStatusResponse, GetSetupStatusData, GetSetupStatusError, GetSetupStatusResponse, GetSetupSummaryData, GetSetupSummaryError, GetSetupSummaryResponse, GithubCallbackData, GithubCallbackResponse, GithubCompleteData, GithubCompleteError, GithubCompleteResponse, GithubCreatePageData, GithubCreatePageResponse, GithubInstalledData, GithubInstalledResponse, GithubStartData, GithubStartError, GithubStartResponse, GithubWebhookData, GithubWebhookError, GithubWebhookResponse, GitlabAuthorizeData, GitlabAuthorizeError, GitlabAuthorizeResponse, GitlabCallbackData, GitlabCallbackResponse, GitlabCheckoutDiscoveryData, GitlabCheckoutDiscoveryError, GitlabCheckoutDiscoveryResponse, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackError, GitlabCheckoutUploadPackResponse, GitlabStartData, GitlabStartError, GitlabStartResponse, GitlabWebhookData, GitlabWebhookError, GitlabWebhookResponse, HaltReleaseData, HaltReleaseError, HaltReleaseResponse, HealthzData, HealthzResponse, InviteUserData, InviteUserError, InviteUserResponse2, ListApiTokensData, ListApiTokensError, ListApiTokensResponse2, ListArtifactsData, ListArtifactsResponse2, ListAuditLogsData, ListAuditLogsError, ListAuditLogsResponse2, ListBuildArtifactsData, ListBuildArtifactsError, ListBuildArtifactsResponse, ListBuildsData, ListBuildsError, ListBuildsResponse2, ListInstallationsData, ListInstallationsResponse2, ListInstanceSecretsData, ListInstanceSecretsError, ListInstanceSecretsResponse, ListIntegrationsData, ListIntegrationsResponse2, ListLocalGitIntegrationsData, ListLocalGitIntegrationsError, ListLocalGitIntegrationsResponse, ListNotificationChannelsData, ListNotificationChannelsError, ListNotificationChannelsResponse2, ListNotificationDeliveriesData, ListNotificationDeliveriesError, ListNotificationDeliveriesResponse2, ListOperatorIncidentsData, ListOperatorIncidentsError, ListOperatorIncidentsResponse2, ListPipelineIosDevicesData, ListPipelineIosDevicesResponse2, ListPipelinesData, ListPipelineSecretsData, ListPipelineSecretsError, ListPipelineSecretsResponse, ListPipelinesError, ListPipelinesResponse2, ListProjectArtifactsData, ListProjectArtifactsError, ListProjectArtifactsResponse, ListProjectMemberCandidatesData, ListProjectMemberCandidatesError, ListProjectMemberCandidatesResponse2, ListProjectMembersData, ListProjectMembersError, ListProjectMembersResponse2, ListProjectsData, ListProjectSecretsData, ListProjectSecretsError, ListProjectSecretsResponse, ListProjectsError, ListProjectsResponse2, ListReleaseEventsData, ListReleaseEventsError, ListReleaseEventsResponse, ListReleasesData, ListReleasesError, ListReleasesResponse2, ListRepositoriesData, ListRepositoriesResponse2, ListRunnersData, ListRunnersResponse2, ListScopedDownloadTokensData, ListScopedDownloadTokensResponse, ListSourceRepositoriesData, ListSourceRepositoriesResponse2, ListUsersData, ListUsersError, ListUsersResponse2, LocalLoginData, LocalLoginError, LocalLoginResponse2, LogoutData, LogoutResponse2, MarkOperatorIncidentReadData, MarkOperatorIncidentReadError, MarkOperatorIncidentReadResponse, MetricsData, MetricsResponse, OidcCallbackData, OidcCallbackError, OidcCallbackResponse2, OidcStartData, OidcStartError, OidcStartResponse2, PauseReleaseData, PauseReleaseError, PauseReleaseResponse, PreviewBuildChangelogData, PreviewBuildChangelogError, PreviewBuildChangelogResponse, RaiseReleaseData, RaiseReleaseError, RaiseReleaseResponse, ReadyzData, ReadyzError, ReadyzResponse, ReEnableUserData, ReEnableUserError, ReEnableUserResponse2, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponse, RegisterRunnerData, RegisterRunnerResponse2, RemoveProjectMemberData, RemoveProjectMemberError, RemoveProjectMemberResponse2, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenError, ReplaceGitlabPersonalTokenResponse, ReportJobPublishResultData, ReportJobPublishResultError, ReportJobPublishResultResponse, RepositoryAvatarData, RepositoryAvatarError, RepositoryAvatarResponse, RerunBuildData, RerunBuildError, RerunBuildResponse2, ResumeReleaseData, ResumeReleaseError, ResumeReleaseResponse, RevokeApiTokenData, RevokeApiTokenError, RevokeApiTokenResponse2, RevokeScopedDownloadTokenData, RevokeScopedDownloadTokenError, RevokeScopedDownloadTokenResponse, RotateGitlabRepositoryWebhookSecretData, RotateGitlabRepositoryWebhookSecretError, RotateGitlabRepositoryWebhookSecretResponse, RotateInstanceSecretData, RotateInstanceSecretError, RotateInstanceSecretResponse, RotatePipelineSecretData, RotatePipelineSecretError, RotatePipelineSecretResponse, RotateProjectSecretData, RotateProjectSecretError, RotateProjectSecretResponse, RunnerHeartbeatData, RunnerHeartbeatResponse, SetupLocalOwnerCreateData, SetupLocalOwnerCreateError, SetupLocalOwnerCreateResponse2, SetupOidcStartData, SetupOidcStartError, SetupOidcStartResponse2, SetupOidcVerifyData, SetupOidcVerifyError, SetupOidcVerifyResponse2, SetupOwnerClaimTrustedProxyData, SetupOwnerClaimTrustedProxyError, SetupOwnerClaimTrustedProxyResponse, SetupPreferencesData, SetupPreferencesError, SetupPreferencesResponse2, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureError, SetupTrustedProxyConfigureResponse2, StartRuntimeUpdateData, StartRuntimeUpdateError, StartRuntimeUpdateResponse, SyncInstallationsData, SyncInstallationsError, SyncInstallationsResponse2, SyncPipelineIosSigningData, SyncPipelineIosSigningResponse2, TestNotificationChannelData, TestNotificationChannelError, TestNotificationChannelResponse2, TestOidcConnectionData, TestOidcConnectionError, TestOidcConnectionResponse2, TrustedProxyLoginData, TrustedProxyLoginError, TrustedProxyLoginResponse, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsError, UpdateArtifactStorageSettingsResponse, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsError, UpdateExternalAccessNetworkSettingsResponse, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsError, UpdateExternalAccessTrustedProxySettingsResponse, UpdateInstancePreferencesData, UpdateInstancePreferencesError, UpdateInstancePreferencesResponse, UpdateJobStatusData, UpdateJobStatusError, UpdateJobStatusResponse, UpdateNotificationChannelData, UpdateNotificationChannelError, UpdateNotificationChannelResponse, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponse, UpdatePipelineData, UpdatePipelineError, UpdatePipelineGooglePlayPublishData, UpdatePipelineGooglePlayPublishError, UpdatePipelineGooglePlayPublishResponse, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponse, UpdatePipelineResponse, UpdateProjectData, UpdateProjectError, UpdateProjectMemberData, UpdateProjectMemberError, UpdateProjectMemberResponse2, UpdateProjectResponse, UpdateProjectRetentionData, UpdateProjectRetentionResponse, UpdateRetentionPolicyData, UpdateRetentionPolicyResponse, UpdateRunnerData, UpdateRunnerResponse2, UpdateUserRoleData, UpdateUserRoleError, UpdateUserRoleResponse2, UploadLocalArtifactData, UploadLocalArtifactError, ValidatePipelineData, ValidatePipelineResponse2, VerifyBootstrapTokenData, VerifyBootstrapTokenError, VerifyBootstrapTokenResponse } from '../types.gen.js';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -1985,6 +1985,158 @@ export const syncPipelineIosSigningMutation = (options?: Partial<Options<SyncPip
  */
 export const useSyncPipelineIosSigningMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<SyncPipelineIosSigningResponse2, DefaultError, Options<SyncPipelineIosSigningData>>, 'mutationFn'>>) => useMutation({ ...syncPipelineIosSigningMutation(), ...mutationOptions });
 
+export const getPipelineGooglePlayPublishQueryKey = (options: Options<GetPipelineGooglePlayPublishData>) => createQueryKey('getPipelineGooglePlayPublish', options, false, ['Pipeline Publishing']);
+
+/**
+ * Get Google Play publish settings
+ *
+ * Requires project read access. Also reports whether the referenced
+ * service account secret exists in a visible scope.
+ */
+export const getPipelineGooglePlayPublishOptions = (options: Options<GetPipelineGooglePlayPublishData>) => queryOptions<GetPipelineGooglePlayPublishResponse, GetPipelineGooglePlayPublishError, GetPipelineGooglePlayPublishResponse, ReturnType<typeof getPipelineGooglePlayPublishQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await getPipelineGooglePlayPublish({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: getPipelineGooglePlayPublishQueryKey(options)
+});
+
+/**
+ * Get Google Play publish settings
+ *
+ * Requires project read access. Also reports whether the referenced
+ * service account secret exists in a visible scope.
+ */
+export const useGetPipelineGooglePlayPublishQuery = (options: Options<GetPipelineGooglePlayPublishData>) => useQuery(getPipelineGooglePlayPublishOptions(options));
+
+export const updatePipelineGooglePlayPublishMutationKey = (options?: Partial<Options<UpdatePipelineGooglePlayPublishData>>) => createMutationKey('updatePipelineGooglePlayPublish', options, ['Pipeline Publishing']);
+
+/**
+ * Update Google Play publish settings
+ *
+ * Requires the manage pipelines project permission. The service account
+ * JSON is stored separately as a secret and referenced by name.
+ */
+export const updatePipelineGooglePlayPublishMutation = (options?: Partial<Options<UpdatePipelineGooglePlayPublishData>>): UseMutationOptions<UpdatePipelineGooglePlayPublishResponse, UpdatePipelineGooglePlayPublishError, Options<UpdatePipelineGooglePlayPublishData>> => {
+    const mutationOptions: UseMutationOptions<UpdatePipelineGooglePlayPublishResponse, UpdatePipelineGooglePlayPublishError, Options<UpdatePipelineGooglePlayPublishData>> = {
+        mutationFn: async (fnOptions) => await updatePipelineGooglePlayPublish({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: updatePipelineGooglePlayPublishMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Update Google Play publish settings
+ *
+ * Requires the manage pipelines project permission. The service account
+ * JSON is stored separately as a secret and referenced by name.
+ */
+export const useUpdatePipelineGooglePlayPublishMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<UpdatePipelineGooglePlayPublishResponse, UpdatePipelineGooglePlayPublishError, Options<UpdatePipelineGooglePlayPublishData>>, 'mutationFn'>>) => useMutation({ ...updatePipelineGooglePlayPublishMutation(), ...mutationOptions });
+
+export const listPipelineSecretsQueryKey = (options: Options<ListPipelineSecretsData>) => createQueryKey('listPipelineSecrets', options, false, ['Secrets']);
+
+/**
+ * List pipeline secrets
+ *
+ * Returns secret names and timestamps. Values are never returned. Requires project read access.
+ */
+export const listPipelineSecretsOptions = (options: Options<ListPipelineSecretsData>) => queryOptions<ListPipelineSecretsResponse, ListPipelineSecretsError, ListPipelineSecretsResponse, ReturnType<typeof listPipelineSecretsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await listPipelineSecrets({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: listPipelineSecretsQueryKey(options)
+});
+
+/**
+ * List pipeline secrets
+ *
+ * Returns secret names and timestamps. Values are never returned. Requires project read access.
+ */
+export const useListPipelineSecretsQuery = (options: Options<ListPipelineSecretsData>) => useQuery(listPipelineSecretsOptions(options));
+
+export const createPipelineSecretMutationKey = (options?: Partial<Options<CreatePipelineSecretData>>) => createMutationKey('createPipelineSecret', options, ['Secrets']);
+
+/**
+ * Create pipeline secret
+ *
+ * Stores an encrypted value. The response never contains it. Requires the manage pipelines project permission.
+ */
+export const createPipelineSecretMutation = (options?: Partial<Options<CreatePipelineSecretData>>): UseMutationOptions<CreatePipelineSecretResponse, CreatePipelineSecretError, Options<CreatePipelineSecretData>> => {
+    const mutationOptions: UseMutationOptions<CreatePipelineSecretResponse, CreatePipelineSecretError, Options<CreatePipelineSecretData>> = {
+        mutationFn: async (fnOptions) => await createPipelineSecret({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: createPipelineSecretMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Create pipeline secret
+ *
+ * Stores an encrypted value. The response never contains it. Requires the manage pipelines project permission.
+ */
+export const useCreatePipelineSecretMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<CreatePipelineSecretResponse, CreatePipelineSecretError, Options<CreatePipelineSecretData>>, 'mutationFn'>>) => useMutation({ ...createPipelineSecretMutation(), ...mutationOptions });
+
+export const deletePipelineSecretMutationKey = (options?: Partial<Options<DeletePipelineSecretData>>) => createMutationKey('deletePipelineSecret', options, ['Secrets']);
+
+/**
+ * Delete pipeline secret
+ */
+export const deletePipelineSecretMutation = (options?: Partial<Options<DeletePipelineSecretData>>): UseMutationOptions<DeletePipelineSecretResponse, DeletePipelineSecretError, Options<DeletePipelineSecretData>> => {
+    const mutationOptions: UseMutationOptions<DeletePipelineSecretResponse, DeletePipelineSecretError, Options<DeletePipelineSecretData>> = {
+        mutationFn: async (fnOptions) => await deletePipelineSecret({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: deletePipelineSecretMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Delete pipeline secret
+ */
+export const useDeletePipelineSecretMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<DeletePipelineSecretResponse, DeletePipelineSecretError, Options<DeletePipelineSecretData>>, 'mutationFn'>>) => useMutation({ ...deletePipelineSecretMutation(), ...mutationOptions });
+
+export const rotatePipelineSecretMutationKey = (options?: Partial<Options<RotatePipelineSecretData>>) => createMutationKey('rotatePipelineSecret', options, ['Secrets']);
+
+/**
+ * Rotate pipeline secret
+ *
+ * Replaces the stored value. Requires the manage pipelines project permission.
+ */
+export const rotatePipelineSecretMutation = (options?: Partial<Options<RotatePipelineSecretData>>): UseMutationOptions<RotatePipelineSecretResponse, RotatePipelineSecretError, Options<RotatePipelineSecretData>> => {
+    const mutationOptions: UseMutationOptions<RotatePipelineSecretResponse, RotatePipelineSecretError, Options<RotatePipelineSecretData>> = {
+        mutationFn: async (fnOptions) => await rotatePipelineSecret({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: rotatePipelineSecretMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Rotate pipeline secret
+ *
+ * Replaces the stored value. Requires the manage pipelines project permission.
+ */
+export const useRotatePipelineSecretMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<RotatePipelineSecretResponse, RotatePipelineSecretError, Options<RotatePipelineSecretData>>, 'mutationFn'>>) => useMutation({ ...rotatePipelineSecretMutation(), ...mutationOptions });
+
 export const listProjectsQueryKey = (options?: Options<ListProjectsData>) => createQueryKey('listProjects', options, false, ['Projects']);
 
 /**
@@ -2455,6 +2607,104 @@ export const updateProjectRetentionMutation = (options?: Partial<Options<UpdateP
  */
 export const useUpdateProjectRetentionMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<UpdateProjectRetentionResponse, DefaultError, Options<UpdateProjectRetentionData>>, 'mutationFn'>>) => useMutation({ ...updateProjectRetentionMutation(), ...mutationOptions });
 
+export const listProjectSecretsQueryKey = (options: Options<ListProjectSecretsData>) => createQueryKey('listProjectSecrets', options, false, ['Secrets']);
+
+/**
+ * List project secrets
+ *
+ * Returns secret names and timestamps. Values are never returned. Requires project read access.
+ */
+export const listProjectSecretsOptions = (options: Options<ListProjectSecretsData>) => queryOptions<ListProjectSecretsResponse, ListProjectSecretsError, ListProjectSecretsResponse, ReturnType<typeof listProjectSecretsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await listProjectSecrets({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: listProjectSecretsQueryKey(options)
+});
+
+/**
+ * List project secrets
+ *
+ * Returns secret names and timestamps. Values are never returned. Requires project read access.
+ */
+export const useListProjectSecretsQuery = (options: Options<ListProjectSecretsData>) => useQuery(listProjectSecretsOptions(options));
+
+export const createProjectSecretMutationKey = (options?: Partial<Options<CreateProjectSecretData>>) => createMutationKey('createProjectSecret', options, ['Secrets']);
+
+/**
+ * Create project secret
+ *
+ * Stores an encrypted value. The response never contains it. Requires the manage pipelines project permission.
+ */
+export const createProjectSecretMutation = (options?: Partial<Options<CreateProjectSecretData>>): UseMutationOptions<CreateProjectSecretResponse, CreateProjectSecretError, Options<CreateProjectSecretData>> => {
+    const mutationOptions: UseMutationOptions<CreateProjectSecretResponse, CreateProjectSecretError, Options<CreateProjectSecretData>> = {
+        mutationFn: async (fnOptions) => await createProjectSecret({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: createProjectSecretMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Create project secret
+ *
+ * Stores an encrypted value. The response never contains it. Requires the manage pipelines project permission.
+ */
+export const useCreateProjectSecretMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<CreateProjectSecretResponse, CreateProjectSecretError, Options<CreateProjectSecretData>>, 'mutationFn'>>) => useMutation({ ...createProjectSecretMutation(), ...mutationOptions });
+
+export const deleteProjectSecretMutationKey = (options?: Partial<Options<DeleteProjectSecretData>>) => createMutationKey('deleteProjectSecret', options, ['Secrets']);
+
+/**
+ * Delete project secret
+ */
+export const deleteProjectSecretMutation = (options?: Partial<Options<DeleteProjectSecretData>>): UseMutationOptions<DeleteProjectSecretResponse, DeleteProjectSecretError, Options<DeleteProjectSecretData>> => {
+    const mutationOptions: UseMutationOptions<DeleteProjectSecretResponse, DeleteProjectSecretError, Options<DeleteProjectSecretData>> = {
+        mutationFn: async (fnOptions) => await deleteProjectSecret({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: deleteProjectSecretMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Delete project secret
+ */
+export const useDeleteProjectSecretMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<DeleteProjectSecretResponse, DeleteProjectSecretError, Options<DeleteProjectSecretData>>, 'mutationFn'>>) => useMutation({ ...deleteProjectSecretMutation(), ...mutationOptions });
+
+export const rotateProjectSecretMutationKey = (options?: Partial<Options<RotateProjectSecretData>>) => createMutationKey('rotateProjectSecret', options, ['Secrets']);
+
+/**
+ * Rotate project secret
+ *
+ * Replaces the stored value. Requires the manage pipelines project permission.
+ */
+export const rotateProjectSecretMutation = (options?: Partial<Options<RotateProjectSecretData>>): UseMutationOptions<RotateProjectSecretResponse, RotateProjectSecretError, Options<RotateProjectSecretData>> => {
+    const mutationOptions: UseMutationOptions<RotateProjectSecretResponse, RotateProjectSecretError, Options<RotateProjectSecretData>> = {
+        mutationFn: async (fnOptions) => await rotateProjectSecret({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: rotateProjectSecretMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Rotate project secret
+ *
+ * Replaces the stored value. Requires the manage pipelines project permission.
+ */
+export const useRotateProjectSecretMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<RotateProjectSecretResponse, RotateProjectSecretError, Options<RotateProjectSecretData>>, 'mutationFn'>>) => useMutation({ ...rotateProjectSecretMutation(), ...mutationOptions });
+
 export const getSetupStatusQueryKey = (options?: Options<GetSetupStatusData>) => createQueryKey('getSetupStatus', options, false, ['Setup']);
 
 /**
@@ -2480,6 +2730,291 @@ export const getSetupStatusOptions = (options?: Options<GetSetupStatusData>) => 
  * always public and contains no sensitive information.
  */
 export const useGetSetupStatusQuery = (options?: Options<GetSetupStatusData>) => useQuery(getSetupStatusOptions(options));
+
+export const listReleaseEventsQueryKey = (options?: Options<ListReleaseEventsData>) => createQueryKey('listReleaseEvents', options, false, ['Releases']);
+
+/**
+ * List release events
+ *
+ * Recent release history entries across projects the caller can read, newest first.
+ */
+export const listReleaseEventsOptions = (options?: Options<ListReleaseEventsData>) => queryOptions<ListReleaseEventsResponse, ListReleaseEventsError, ListReleaseEventsResponse, ReturnType<typeof listReleaseEventsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await listReleaseEvents({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: listReleaseEventsQueryKey(options)
+});
+
+/**
+ * List release events
+ *
+ * Recent release history entries across projects the caller can read, newest first.
+ */
+export const useListReleaseEventsQuery = (options?: Options<ListReleaseEventsData>) => useQuery(listReleaseEventsOptions(options));
+
+export const listReleasesQueryKey = (options?: Options<ListReleasesData>) => createQueryKey('listReleases', options, false, ['Releases']);
+
+/**
+ * List releases
+ *
+ * Releases in projects the caller can read, newest first.
+ */
+export const listReleasesOptions = (options?: Options<ListReleasesData>) => queryOptions<ListReleasesResponse2, ListReleasesError, ListReleasesResponse2, ReturnType<typeof listReleasesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await listReleases({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: listReleasesQueryKey(options)
+});
+
+export const listReleasesInfiniteQueryKey = (options?: Options<ListReleasesData>): QueryKey<Options<ListReleasesData>> => createQueryKey('listReleases', options, true);
+
+/**
+ * List releases
+ *
+ * Releases in projects the caller can read, newest first.
+ */
+export const listReleasesInfiniteOptions = (options?: Options<ListReleasesData>) => {
+    const opts = infiniteQueryOptions<ListReleasesResponse2, ListReleasesError, InfiniteData<ListReleasesResponse2>, QueryKey<Options<ListReleasesData>>, number | Pick<QueryKey<Options<ListReleasesData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<ListReleasesData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    offset: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            return await listReleases({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+        },
+        queryKey: listReleasesInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * List releases
+ *
+ * Releases in projects the caller can read, newest first.
+ */
+export const useListReleasesQuery = (options?: Options<ListReleasesData>) => useQuery(listReleasesOptions(options));
+
+export const createReleaseMutationKey = (options?: Partial<Options<CreateReleaseData>>) => createMutationKey('createRelease', options, ['Releases']);
+
+/**
+ * Create release
+ *
+ * Records a release for a succeeded build. Requires the project maintainer role.
+ */
+export const createReleaseMutation = (options?: Partial<Options<CreateReleaseData>>): UseMutationOptions<CreateReleaseResponse, CreateReleaseError, Options<CreateReleaseData>> => {
+    const mutationOptions: UseMutationOptions<CreateReleaseResponse, CreateReleaseError, Options<CreateReleaseData>> = {
+        mutationFn: async (fnOptions) => await createRelease({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: createReleaseMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Create release
+ *
+ * Records a release for a succeeded build. Requires the project maintainer role.
+ */
+export const useCreateReleaseMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<CreateReleaseResponse, CreateReleaseError, Options<CreateReleaseData>>, 'mutationFn'>>) => useMutation({ ...createReleaseMutation(), ...mutationOptions });
+
+export const getReleaseQueryKey = (options: Options<GetReleaseData>) => createQueryKey('getRelease', options, false, ['Releases']);
+
+/**
+ * Get release
+ *
+ * Release detail with its full state history, oldest first.
+ */
+export const getReleaseOptions = (options: Options<GetReleaseData>) => queryOptions<GetReleaseResponse, GetReleaseError, GetReleaseResponse, ReturnType<typeof getReleaseQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await getRelease({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: getReleaseQueryKey(options)
+});
+
+/**
+ * Get release
+ *
+ * Release detail with its full state history, oldest first.
+ */
+export const useGetReleaseQuery = (options: Options<GetReleaseData>) => useQuery(getReleaseOptions(options));
+
+export const approveReleaseMutationKey = (options?: Partial<Options<ApproveReleaseData>>) => createMutationKey('approveRelease', options, ['Releases']);
+
+/**
+ * Approve release
+ *
+ * Records the maintainer approval required by the release policy. Writes history, an audit log entry, and a release event.
+ */
+export const approveReleaseMutation = (options?: Partial<Options<ApproveReleaseData>>): UseMutationOptions<ApproveReleaseResponse, ApproveReleaseError, Options<ApproveReleaseData>> => {
+    const mutationOptions: UseMutationOptions<ApproveReleaseResponse, ApproveReleaseError, Options<ApproveReleaseData>> = {
+        mutationFn: async (fnOptions) => await approveRelease({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: approveReleaseMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Approve release
+ *
+ * Records the maintainer approval required by the release policy. Writes history, an audit log entry, and a release event.
+ */
+export const useApproveReleaseMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<ApproveReleaseResponse, ApproveReleaseError, Options<ApproveReleaseData>>, 'mutationFn'>>) => useMutation({ ...approveReleaseMutation(), ...mutationOptions });
+
+export const completeReleaseMutationKey = (options?: Partial<Options<CompleteReleaseData>>) => createMutationKey('completeRelease', options, ['Releases']);
+
+/**
+ * Complete rollout
+ *
+ * Rolls out to 100%. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const completeReleaseMutation = (options?: Partial<Options<CompleteReleaseData>>): UseMutationOptions<CompleteReleaseResponse, CompleteReleaseError, Options<CompleteReleaseData>> => {
+    const mutationOptions: UseMutationOptions<CompleteReleaseResponse, CompleteReleaseError, Options<CompleteReleaseData>> = {
+        mutationFn: async (fnOptions) => await completeRelease({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: completeReleaseMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Complete rollout
+ *
+ * Rolls out to 100%. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const useCompleteReleaseMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<CompleteReleaseResponse, CompleteReleaseError, Options<CompleteReleaseData>>, 'mutationFn'>>) => useMutation({ ...completeReleaseMutation(), ...mutationOptions });
+
+export const haltReleaseMutationKey = (options?: Partial<Options<HaltReleaseData>>) => createMutationKey('haltRelease', options, ['Releases']);
+
+/**
+ * Halt rollout
+ *
+ * Halts the rollout at the store. A halted release never advances until resumed. Requires developer or maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const haltReleaseMutation = (options?: Partial<Options<HaltReleaseData>>): UseMutationOptions<HaltReleaseResponse, HaltReleaseError, Options<HaltReleaseData>> => {
+    const mutationOptions: UseMutationOptions<HaltReleaseResponse, HaltReleaseError, Options<HaltReleaseData>> = {
+        mutationFn: async (fnOptions) => await haltRelease({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: haltReleaseMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Halt rollout
+ *
+ * Halts the rollout at the store. A halted release never advances until resumed. Requires developer or maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const useHaltReleaseMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<HaltReleaseResponse, HaltReleaseError, Options<HaltReleaseData>>, 'mutationFn'>>) => useMutation({ ...haltReleaseMutation(), ...mutationOptions });
+
+export const pauseReleaseMutationKey = (options?: Partial<Options<PauseReleaseData>>) => createMutationKey('pauseRelease', options, ['Releases']);
+
+/**
+ * Pause rollout
+ *
+ * Stops scheduled steps. Requires developer or maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const pauseReleaseMutation = (options?: Partial<Options<PauseReleaseData>>): UseMutationOptions<PauseReleaseResponse, PauseReleaseError, Options<PauseReleaseData>> => {
+    const mutationOptions: UseMutationOptions<PauseReleaseResponse, PauseReleaseError, Options<PauseReleaseData>> = {
+        mutationFn: async (fnOptions) => await pauseRelease({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: pauseReleaseMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Pause rollout
+ *
+ * Stops scheduled steps. Requires developer or maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const usePauseReleaseMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<PauseReleaseResponse, PauseReleaseError, Options<PauseReleaseData>>, 'mutationFn'>>) => useMutation({ ...pauseReleaseMutation(), ...mutationOptions });
+
+export const raiseReleaseMutationKey = (options?: Partial<Options<RaiseReleaseData>>) => createMutationKey('raiseRelease', options, ['Releases']);
+
+/**
+ * Raise rollout
+ *
+ * Raises the rollout to `fraction`, or to the next policy step. Raising to 1 completes the release. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const raiseReleaseMutation = (options?: Partial<Options<RaiseReleaseData>>): UseMutationOptions<RaiseReleaseResponse, RaiseReleaseError, Options<RaiseReleaseData>> => {
+    const mutationOptions: UseMutationOptions<RaiseReleaseResponse, RaiseReleaseError, Options<RaiseReleaseData>> = {
+        mutationFn: async (fnOptions) => await raiseRelease({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: raiseReleaseMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Raise rollout
+ *
+ * Raises the rollout to `fraction`, or to the next policy step. Raising to 1 completes the release. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const useRaiseReleaseMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<RaiseReleaseResponse, RaiseReleaseError, Options<RaiseReleaseData>>, 'mutationFn'>>) => useMutation({ ...raiseReleaseMutation(), ...mutationOptions });
+
+export const resumeReleaseMutationKey = (options?: Partial<Options<ResumeReleaseData>>) => createMutationKey('resumeRelease', options, ['Releases']);
+
+/**
+ * Resume rollout
+ *
+ * Resumes a paused or halted release; the next step is one interval away. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const resumeReleaseMutation = (options?: Partial<Options<ResumeReleaseData>>): UseMutationOptions<ResumeReleaseResponse, ResumeReleaseError, Options<ResumeReleaseData>> => {
+    const mutationOptions: UseMutationOptions<ResumeReleaseResponse, ResumeReleaseError, Options<ResumeReleaseData>> = {
+        mutationFn: async (fnOptions) => await resumeRelease({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: resumeReleaseMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Resume rollout
+ *
+ * Resumes a paused or halted release; the next step is one interval away. Requires maintainer. Writes history, an audit log entry, and a release event.
+ */
+export const useResumeReleaseMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<ResumeReleaseResponse, ResumeReleaseError, Options<ResumeReleaseData>>, 'mutationFn'>>) => useMutation({ ...resumeReleaseMutation(), ...mutationOptions });
 
 export const listRunnersQueryKey = (options?: Options<ListRunnersData>) => createQueryKey('listRunners', options, false, ['Runners']);
 
@@ -2892,6 +3427,86 @@ export const appendBuildLogsMutation = (options?: Partial<Options<AppendBuildLog
  */
 export const useAppendBuildLogsMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<AppendBuildLogsResponse2, DefaultError, Options<AppendBuildLogsData>>, 'mutationFn'>>) => useMutation({ ...appendBuildLogsMutation(), ...mutationOptions });
 
+export const getJobPublishPlanQueryKey = (options: Options<GetJobPublishPlanData>) => createQueryKey('getJobPublishPlan', options, false, ['Pipeline Publishing']);
+
+/**
+ * Get job publish plan
+ *
+ * Returns enabled store publish settings and the build changelog to the
+ * assigned runner while the job is active.
+ */
+export const getJobPublishPlanOptions = (options: Options<GetJobPublishPlanData>) => queryOptions<GetJobPublishPlanResponse, GetJobPublishPlanError, GetJobPublishPlanResponse, ReturnType<typeof getJobPublishPlanQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await getJobPublishPlan({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: getJobPublishPlanQueryKey(options)
+});
+
+/**
+ * Get job publish plan
+ *
+ * Returns enabled store publish settings and the build changelog to the
+ * assigned runner while the job is active.
+ */
+export const useGetJobPublishPlanQuery = (options: Options<GetJobPublishPlanData>) => useQuery(getJobPublishPlanOptions(options));
+
+export const reportJobPublishResultMutationKey = (options?: Partial<Options<ReportJobPublishResultData>>) => createMutationKey('reportJobPublishResult', options, ['Pipeline Publishing']);
+
+/**
+ * Report a store upload
+ *
+ * Records a completed store upload for an active job.
+ */
+export const reportJobPublishResultMutation = (options?: Partial<Options<ReportJobPublishResultData>>): UseMutationOptions<ReportJobPublishResultResponse, ReportJobPublishResultError, Options<ReportJobPublishResultData>> => {
+    const mutationOptions: UseMutationOptions<ReportJobPublishResultResponse, ReportJobPublishResultError, Options<ReportJobPublishResultData>> = {
+        mutationFn: async (fnOptions) => await reportJobPublishResult({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: reportJobPublishResultMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Report a store upload
+ *
+ * Records a completed store upload for an active job.
+ */
+export const useReportJobPublishResultMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<ReportJobPublishResultResponse, ReportJobPublishResultError, Options<ReportJobPublishResultData>>, 'mutationFn'>>) => useMutation({ ...reportJobPublishResultMutation(), ...mutationOptions });
+
+export const getJobSecretsQueryKey = (options: Options<GetJobSecretsData>) => createQueryKey('getJobSecrets', options, false, ['Secrets']);
+
+/**
+ * Get job-scoped secrets
+ *
+ * Returns resolved instance, project and pipeline secrets (narrowest scope
+ * wins) only to the assigned runner while the job is active. Both the runner
+ * bearer token and job-scoped signing grant are required.
+ */
+export const getJobSecretsOptions = (options: Options<GetJobSecretsData>) => queryOptions<GetJobSecretsResponse, GetJobSecretsError, GetJobSecretsResponse, ReturnType<typeof getJobSecretsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await getJobSecrets({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: getJobSecretsQueryKey(options)
+});
+
+/**
+ * Get job-scoped secrets
+ *
+ * Returns resolved instance, project and pipeline secrets (narrowest scope
+ * wins) only to the assigned runner while the job is active. Both the runner
+ * bearer token and job-scoped signing grant are required.
+ */
+export const useGetJobSecretsQuery = (options: Options<GetJobSecretsData>) => useQuery(getJobSecretsOptions(options));
+
 export const updateJobStatusMutationKey = (options?: Partial<Options<UpdateJobStatusData>>) => createMutationKey('updateJobStatus', options, ['Runners']);
 
 /**
@@ -2917,6 +3532,104 @@ export const updateJobStatusMutation = (options?: Partial<Options<UpdateJobStatu
  * Runner reports build status transitions and step results.
  */
 export const useUpdateJobStatusMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<UpdateJobStatusResponse, UpdateJobStatusError, Options<UpdateJobStatusData>>, 'mutationFn'>>) => useMutation({ ...updateJobStatusMutation(), ...mutationOptions });
+
+export const listInstanceSecretsQueryKey = (options?: Options<ListInstanceSecretsData>) => createQueryKey('listInstanceSecrets', options, false, ['Secrets']);
+
+/**
+ * List instance secrets
+ *
+ * Returns secret names and timestamps. Values are never returned. Requires instance settings read access.
+ */
+export const listInstanceSecretsOptions = (options?: Options<ListInstanceSecretsData>) => queryOptions<ListInstanceSecretsResponse, ListInstanceSecretsError, ListInstanceSecretsResponse, ReturnType<typeof listInstanceSecretsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await listInstanceSecrets({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: listInstanceSecretsQueryKey(options)
+});
+
+/**
+ * List instance secrets
+ *
+ * Returns secret names and timestamps. Values are never returned. Requires instance settings read access.
+ */
+export const useListInstanceSecretsQuery = (options?: Options<ListInstanceSecretsData>) => useQuery(listInstanceSecretsOptions(options));
+
+export const createInstanceSecretMutationKey = (options?: Partial<Options<CreateInstanceSecretData>>) => createMutationKey('createInstanceSecret', options, ['Secrets']);
+
+/**
+ * Create instance secret
+ *
+ * Stores an encrypted value. The response never contains it. Requires instance settings write access.
+ */
+export const createInstanceSecretMutation = (options?: Partial<Options<CreateInstanceSecretData>>): UseMutationOptions<CreateInstanceSecretResponse, CreateInstanceSecretError, Options<CreateInstanceSecretData>> => {
+    const mutationOptions: UseMutationOptions<CreateInstanceSecretResponse, CreateInstanceSecretError, Options<CreateInstanceSecretData>> = {
+        mutationFn: async (fnOptions) => await createInstanceSecret({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: createInstanceSecretMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Create instance secret
+ *
+ * Stores an encrypted value. The response never contains it. Requires instance settings write access.
+ */
+export const useCreateInstanceSecretMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<CreateInstanceSecretResponse, CreateInstanceSecretError, Options<CreateInstanceSecretData>>, 'mutationFn'>>) => useMutation({ ...createInstanceSecretMutation(), ...mutationOptions });
+
+export const deleteInstanceSecretMutationKey = (options?: Partial<Options<DeleteInstanceSecretData>>) => createMutationKey('deleteInstanceSecret', options, ['Secrets']);
+
+/**
+ * Delete instance secret
+ */
+export const deleteInstanceSecretMutation = (options?: Partial<Options<DeleteInstanceSecretData>>): UseMutationOptions<DeleteInstanceSecretResponse, DeleteInstanceSecretError, Options<DeleteInstanceSecretData>> => {
+    const mutationOptions: UseMutationOptions<DeleteInstanceSecretResponse, DeleteInstanceSecretError, Options<DeleteInstanceSecretData>> = {
+        mutationFn: async (fnOptions) => await deleteInstanceSecret({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: deleteInstanceSecretMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Delete instance secret
+ */
+export const useDeleteInstanceSecretMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<DeleteInstanceSecretResponse, DeleteInstanceSecretError, Options<DeleteInstanceSecretData>>, 'mutationFn'>>) => useMutation({ ...deleteInstanceSecretMutation(), ...mutationOptions });
+
+export const rotateInstanceSecretMutationKey = (options?: Partial<Options<RotateInstanceSecretData>>) => createMutationKey('rotateInstanceSecret', options, ['Secrets']);
+
+/**
+ * Rotate instance secret
+ *
+ * Replaces the stored value. Requires instance settings write access.
+ */
+export const rotateInstanceSecretMutation = (options?: Partial<Options<RotateInstanceSecretData>>): UseMutationOptions<RotateInstanceSecretResponse, RotateInstanceSecretError, Options<RotateInstanceSecretData>> => {
+    const mutationOptions: UseMutationOptions<RotateInstanceSecretResponse, RotateInstanceSecretError, Options<RotateInstanceSecretData>> = {
+        mutationFn: async (fnOptions) => await rotateInstanceSecret({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: rotateInstanceSecretMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Rotate instance secret
+ *
+ * Replaces the stored value. Requires instance settings write access.
+ */
+export const useRotateInstanceSecretMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<RotateInstanceSecretResponse, RotateInstanceSecretError, Options<RotateInstanceSecretData>>, 'mutationFn'>>) => useMutation({ ...rotateInstanceSecretMutation(), ...mutationOptions });
 
 export const getArtifactStorageSettingsQueryKey = (options?: Options<GetArtifactStorageSettingsData>) => createQueryKey('getArtifactStorageSettings', options, false, ['Instance Settings']);
 

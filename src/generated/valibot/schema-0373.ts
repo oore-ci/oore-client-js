@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vUpdatePipelineAndroidSigningPath = v.object({
-    pipeline_id: v.string()
+export const vReplaceGitlabPersonalTokenPath = v.object({
+    id: v.string()
 });

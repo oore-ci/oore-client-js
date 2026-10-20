@@ -2,9 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRunnerStatus = v.picklist([
-    'online',
-    'offline',
-    'busy',
-    'draining'
-]);
+export const vReplaceGitLabTokenRequest = v.object({
+    access_token: v.string()
+});

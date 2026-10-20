@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vGetBuildPath = v.object({
-    build_id: v.string()
-});
+export const vGetIosInstallManifestV1Response = v.string();

@@ -2,4 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vGitlabWebhookBody = v.unknown();
+export const vGetJobIosSigningPath = v.object({
+    runner_id: v.string(),
+    job_id: v.string()
+});

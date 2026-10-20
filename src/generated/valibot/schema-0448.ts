@@ -2,6 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vClaimJobPath = v.object({
-    runner_id: v.string()
+export const vPreviewBuildChangelogQuery = v.object({
+    pipeline_id: v.string(),
+    branch: v.optional(v.string()),
+    commit_sha: v.optional(v.string())
 });

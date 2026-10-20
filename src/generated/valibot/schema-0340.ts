@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vDeleteIntegrationPath = v.object({
+export const vRotateGitlabRepositoryWebhookSecretPath = v.object({
     id: v.string()
 });

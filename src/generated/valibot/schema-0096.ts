@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vOperatorIncidentSeverity = v.picklist([
-    'info',
-    'warning',
-    'critical'
-]);
+export const vOidcStartResponse = v.object({
+    authorization_url: v.string(),
+    state: v.string()
+});

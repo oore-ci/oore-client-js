@@ -2,6 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vSetupLocalOwnerCreateRequest = v.object({
-    email: v.string()
-});
+export const vRunnerStatus = v.picklist([
+    'online',
+    'offline',
+    'busy',
+    'draining'
+]);

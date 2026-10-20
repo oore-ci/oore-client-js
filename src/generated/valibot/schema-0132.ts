@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRevokeApiTokenResponse = v.object({
-    revoked: v.boolean()
-});
+export const vReleaseStore = v.picklist(['google_play', 'app_store']);

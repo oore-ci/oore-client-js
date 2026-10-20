@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitHubAppStartRequest = v.object({
-    redirect_url: v.string(),
-    webhook_url: v.string()
+export const vGitHubAppCompleteRequest = v.object({
+    code: v.string()
 });

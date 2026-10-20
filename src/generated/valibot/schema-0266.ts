@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vUploadLocalArtifactPath = v.object({
-    token: v.string()
-});
+export const vWarpgateTicketSource = v.picklist(['database', 'environment']);

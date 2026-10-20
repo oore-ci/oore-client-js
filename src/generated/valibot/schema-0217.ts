@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vUpdateRunnerRequest = v.object({
-    name: v.nullish(v.string())
+export const vTestNotificationChannelResponse = v.object({
+    error: v.nullish(v.string()),
+    success: v.boolean()
 });

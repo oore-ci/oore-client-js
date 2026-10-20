@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vCreateScopedDownloadTokenPath = v.object({
-    artifact_id: v.string()
+export const vGetIosInstallManifestPath = v.object({
+    token: v.string()
 });

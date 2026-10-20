@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vReplaceGitlabPersonalTokenPath = v.object({
-    id: v.string()
-});
+export const vGithubCallbackResponse = v.string();

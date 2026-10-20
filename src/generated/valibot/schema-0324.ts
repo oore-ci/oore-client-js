@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGithubInstalledResponse = v.string();
+export const vGetBuildLogsPath = v.object({
+    build_id: v.string()
+});
