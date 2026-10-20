@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/oore-ci/oore-client-js/compare/v0.2.0...v0.3.0) (2026-10-20)
+
+
+### Features
+
+* **schema:** add App Store publishing and Play version check ([#10](https://github.com/oore-ci/oore-client-js/issues/10)) ([7de9475](https://github.com/oore-ci/oore-client-js/commit/7de94757ad5a12865f888d9ee7d1709e4ef1bb90))
+
 ## [0.2.0](https://github.com/oore-ci/oore-client-js/compare/v0.1.0...v0.2.0) (2026-10-20)
 
 
