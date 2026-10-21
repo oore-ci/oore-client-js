@@ -2,11 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vReadinessResponse = v.object({
-    database: v.boolean(),
-    encryption: v.boolean(),
-    migrations: v.boolean(),
-    ok: v.boolean(),
-    package_version: v.string(),
-    version: v.string()
-});
+export const vPublishStore = v.picklist(['google_play', 'app_store']);

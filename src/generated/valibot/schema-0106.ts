@@ -2,4 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vOperatorIncidentStatus = v.picklist(['open', 'resolved']);
+export const vOperatorIncidentSeverity = v.picklist([
+    'info',
+    'warning',
+    'critical'
+]);

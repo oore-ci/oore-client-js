@@ -2,7 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vWebhookResponse = v.object({
-    duplicate: v.nullish(v.boolean()),
-    ok: v.boolean()
+export const vValidatePipelineResponse = v.object({
+    errors: v.array(v.string()),
+    valid: v.boolean()
 });

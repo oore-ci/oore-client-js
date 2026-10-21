@@ -2,7 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vLocalGitPathSuggestion = v.object({
-    label: v.string(),
+export const vLocalGitDirectoryEntry = v.object({
+    is_git_repository: v.boolean(),
+    name: v.string(),
     path: v.string()
 });

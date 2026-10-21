@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vIosApiCredentialInput = v.object({
-    issuer_id: v.nullish(v.string()),
-    key_id: v.nullish(v.string()),
-    private_key_base64: v.nullish(v.string())
+export const vInviteUserRequest = v.object({
+    email: v.string(),
+    role: v.string()
 });

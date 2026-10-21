@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vDeleteNotificationChannelResponse = v.object({
-    deleted: v.boolean()
+export const vCreateSecretRequest = v.strictObject({
+    name: v.string(),
+    value: v.string()
 });

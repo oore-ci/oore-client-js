@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vGithubCreatePageQuery = v.object({
-    state: v.string()
+export const vGithubCallbackQuery = v.object({
+    code: v.optional(v.string()),
+    state: v.optional(v.string())
 });

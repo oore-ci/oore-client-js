@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRotateSecretRequest = v.strictObject({
-    value: v.string()
+export const vRevokeArtifactDownloadTokenResponse = v.object({
+    revoked: v.boolean()
 });

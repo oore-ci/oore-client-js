@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vLogoutResponse = v.object({
-    ok: v.boolean()
+export const vLocalLoginRequest = v.object({
+    email: v.nullish(v.string()),
+    recovery_capability: v.nullish(v.string())
 });

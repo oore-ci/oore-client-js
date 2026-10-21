@@ -2,8 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitlabWebhookHeaders = v.object({
-    'X-Gitlab-Token': v.string(),
-    'X-Gitlab-Event-UUID': v.nullish(v.string()),
-    'X-Gitlab-Event': v.nullish(v.string())
+export const vUpdateUserRolePath = v.object({
+    user_id: v.string()
 });

@@ -3,4 +3,4 @@
 import * as v from 'valibot'
 import { vBinaryPayload } from './schema-0019.js'
 
-export const vDownloadLocalArtifactLegacyResponse = vBinaryPayload;
+export const vDownloadLocalArtifactResponse = vBinaryPayload;

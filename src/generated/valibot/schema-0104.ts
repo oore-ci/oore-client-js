@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vOkResponse = v.object({
-    ok: v.boolean()
+export const vOidcStartResponse = v.object({
+    authorization_url: v.string(),
+    state: v.string()
 });

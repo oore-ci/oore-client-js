@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vReportJobPublishResultHeaders = v.object({
-    'x-oore-signing-token': v.string()
+export const vAppendBuildLogsPath = v.object({
+    runner_id: v.string(),
+    job_id: v.string()
 });

@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vReleaseApprovalGate = v.picklist([
-    'none',
-    'before_upload',
-    'before_production'
-]);
+export const vReleaseActionRequest = v.object({
+    fraction: v.nullish(v.number()),
+    reason: v.nullish(v.string())
+});

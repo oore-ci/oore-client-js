@@ -2,8 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vOperatorIncidentSeverity = v.picklist([
-    'info',
-    'warning',
-    'critical'
-]);
+export const vOkResponse = v.object({
+    ok: v.boolean()
+});

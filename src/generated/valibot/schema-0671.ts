@@ -2,8 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGithubWebhookHeaders = v.object({
-    'X-Hub-Signature-256': v.string(),
-    'X-GitHub-Delivery': v.nullish(v.string()),
-    'X-GitHub-Event': v.nullish(v.string())
+export const vReEnableUserPath = v.object({
+    user_id: v.string()
 });

@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vUploadLocalArtifactPath = v.object({
-    token: v.string()
-});
+export const vGetIosInstallManifestV1Response = v.string();

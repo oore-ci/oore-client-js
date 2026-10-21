@@ -2,6 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vJobStatusResponse = v.object({
-    status: v.string()
-});
+export const vIosSigningMode = v.picklist([
+    'manual',
+    'api',
+    'hybrid'
+]);

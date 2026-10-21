@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vMetricsResponse = v.string();
+export const vDownloadLocalArtifactInstallPath = v.object({
+    token: v.string()
+});

@@ -2,10 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vCreateProjectRequest = v.object({
-    default_branch: v.nullish(v.string()),
-    description: v.nullish(v.string()),
-    local_repository_path: v.nullish(v.string()),
-    name: v.string(),
-    repository_id: v.nullish(v.string())
+export const vCreateLocalGitIntegrationRequest = v.object({
+    display_name: v.nullish(v.string()),
+    repository_path: v.string()
 });
