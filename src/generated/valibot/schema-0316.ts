@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGenerateDownloadLinkPath = v.object({
-    artifact_id: v.string()
+export const vDownloadLocalArtifactLegacyPath = v.object({
+    token: v.string()
 });

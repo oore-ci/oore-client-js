@@ -2,10 +2,10 @@
 
 import * as v from 'valibot'
 
-export const vHealthResponse = v.object({
-    channel: v.nullable(v.string()),
-    github_repo: v.nullable(v.string()),
-    ok: v.boolean(),
-    package_version: v.string(),
-    version: v.string()
-});
+export const vGitLabCredentialStatus = v.picklist([
+    'valid',
+    'expiring',
+    'expired',
+    'rejected',
+    'unknown'
+]);

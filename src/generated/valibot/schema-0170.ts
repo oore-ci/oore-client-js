@@ -2,10 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vRunnerIosProvisioningProfile = v.object({
-    bundle_id: v.string(),
-    profile_base64: v.string(),
-    profile_filename: v.string(),
-    profile_name: v.nullish(v.string()),
-    profile_uuid: v.nullish(v.string())
+export const vRunnerAppStoreUploadCredentials = v.object({
+    issuer_id: v.string(),
+    key_id: v.string(),
+    private_key_pem: v.string()
 });

@@ -2,4 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vBuildIsolation = v.picklist(['host', 'vm']);
+export const vBuildApprovalState = v.picklist([
+    'pending',
+    'approved',
+    'rejected'
+]);

@@ -2,8 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vIosSigningMode = v.picklist([
-    'manual',
-    'api',
-    'hybrid'
-]);
+export const vIosCertificateInput = v.object({
+    p12_base64: v.nullish(v.string()),
+    p12_filename: v.nullish(v.string()),
+    p12_password: v.nullish(v.string())
+});

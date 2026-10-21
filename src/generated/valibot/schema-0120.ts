@@ -2,8 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vProjectRole = v.picklist([
-    'maintainer',
-    'developer',
-    'viewer'
-]);
+export const vPlatformBuildCommands = v.strictObject({
+    android: v.nullish(v.string()),
+    ios: v.nullish(v.string()),
+    macos: v.nullish(v.string())
+});

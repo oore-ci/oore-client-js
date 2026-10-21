@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vApproveReleasePath = v.object({
-    release_id: v.string()
+export const vRotateProjectSecretPath = v.object({
+    project_id: v.string(),
+    name: v.string()
 });

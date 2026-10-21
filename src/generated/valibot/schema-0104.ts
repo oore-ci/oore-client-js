@@ -2,7 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vOidcStartResponse = v.object({
-    authorization_url: v.string(),
-    state: v.string()
-});
+export const vNotificationDeliveryStatus = v.picklist([
+    'pending',
+    'delivered',
+    'failed'
+]);

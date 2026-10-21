@@ -2,8 +2,22 @@
 
 import * as v from 'valibot'
 
-export const vIosCertificateInput = v.object({
-    p12_base64: v.nullish(v.string()),
-    p12_filename: v.nullish(v.string()),
-    p12_password: v.nullish(v.string())
+export const vIntegrationRepository = v.object({
+    avatar_url: v.nullish(v.string()),
+    created_at: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    default_branch: v.nullish(v.string()),
+    external_id: v.string(),
+    full_name: v.string(),
+    id: v.string(),
+    installation_id: v.string(),
+    is_private: v.boolean(),
+    updated_at: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))
 });

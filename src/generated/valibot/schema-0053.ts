@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vExternalAccessNetworkSource = v.picklist([
-    'database',
-    'environment',
-    'default'
-]);
+export const vCreateSecretRequest = v.strictObject({
+    name: v.string(),
+    value: v.string()
+});

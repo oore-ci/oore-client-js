@@ -2,4 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vIosExportMethod = v.picklist(['ad_hoc', 'app_store']);
+export const vIntegrationStatus = v.picklist([
+    'active',
+    'inactive',
+    'error'
+]);

@@ -2,8 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vArtifactStorageSource = v.picklist([
-    'database',
-    'environment',
-    'default'
+export const vArtifactStorageProvider = v.picklist([
+    'disabled',
+    'local',
+    's3',
+    'r2'
 ]);

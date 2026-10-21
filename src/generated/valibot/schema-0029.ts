@@ -2,8 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vBuildPlatform = v.picklist([
-    'android',
-    'ios',
-    'macos'
-]);
+export const vBuildLogStream = v.picklist(['stdout', 'stderr']);

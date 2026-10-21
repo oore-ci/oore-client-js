@@ -2,8 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitlabCheckoutDiscoveryPath = v.object({
-    runner_id: v.string(),
-    job_id: v.string(),
-    git_path: v.string()
+export const vGetJobAndroidSigningHeaders = v.object({
+    'x-oore-signing-token': v.string()
 });
