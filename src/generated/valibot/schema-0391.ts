@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vGithubInstalledHeaders = v.object({
-    Cookie: v.nullish(v.string())
+export const vGithubCallbackQuery = v.object({
+    code: v.optional(v.string()),
+    state: v.optional(v.string())
 });

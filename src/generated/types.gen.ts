@@ -244,6 +244,11 @@ export type Build = {
     pipeline_id: string;
     project_id: string;
     queued_at: number;
+    /**
+     * Steps this build retries against `source_build_id`'s stored artifacts.
+     * Absent for a full build.
+     */
+    retry_steps?: Array<string> | null;
     runner_id?: string | null;
     runner_policy_block_reason?: null | RunnerPolicyBlockReason;
     source_build_id?: string | null;
@@ -309,6 +314,11 @@ export type BuildContext = {
 export type BuildDetailResponse = {
     build: Build;
     events: Array<BuildEvent>;
+    /**
+     * Steps of this finished build that `POST /v1/builds/{build_id}/retry-step`
+     * can run again without rebuilding.
+     */
+    retryable_steps?: Array<string>;
 };
 
 export type BuildEvent = {
@@ -403,6 +413,11 @@ export type ClaimedJob = {
     lease_expires_at: number;
     pipeline_id: string;
     project_id: string;
+    /**
+     * Set when the job only retries these steps with the source build's
+     * stored artifacts, instead of building.
+     */
+    retry_steps?: Array<string> | null;
     /**
      * Ephemeral capability required for runner-owned signing material fetches.
      * It is scoped to this job and revoked when the job leaves active execution.
@@ -1599,6 +1614,13 @@ export type RetentionPolicyResponse = {
     policy: RetentionPolicy;
 };
 
+export type RetryBuildStepRequest = {
+    /**
+     * One of the build's `retryable_steps`, such as `publish-play`.
+     */
+    step: string;
+};
+
 export type RevokeApiTokenResponse = {
     revoked: boolean;
 };
@@ -1799,6 +1821,27 @@ export type RunnerPublishResult = {
     track: string;
     version_code: number;
     version_name?: string | null;
+};
+
+/**
+ * A stored artifact of the build a retry job reuses.
+ */
+export type RunnerRetryArtifact = {
+    artifact_type: string;
+    checksum?: string | null;
+    /**
+     * Short-lived download URL, relative to the daemon for local storage.
+     */
+    download_url: string;
+    id: string;
+    metadata: {
+        [key: string]: unknown;
+    };
+    name: string;
+};
+
+export type RunnerRetryArtifactsResponse = {
+    artifacts: Array<RunnerRetryArtifact>;
 };
 
 export type RunnerStatus = 'online' | 'offline' | 'busy' | 'draining';
@@ -3520,6 +3563,48 @@ export type RerunBuildResponses = {
 };
 
 export type RerunBuildResponse2 = RerunBuildResponses[keyof RerunBuildResponses];
+
+export type RetryBuildStepData = {
+    body: RetryBuildStepRequest;
+    path: {
+        /**
+         * Build whose step to retry
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/retry-step';
+};
+
+export type RetryBuildStepErrors = {
+    /**
+     * The step can never be retried on its own
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Build not found
+     */
+    404: ApiError;
+    /**
+     * The build is still running, or this step cannot be retried for it
+     */
+    409: ApiError;
+};
+
+export type RetryBuildStepError = RetryBuildStepErrors[keyof RetryBuildStepErrors];
+
+export type RetryBuildStepResponses = {
+    /**
+     * Retry build queued
+     */
+    201: RerunBuildResponse;
+};
+
+export type RetryBuildStepResponse = RetryBuildStepResponses[keyof RetryBuildStepResponses];
 
 export type CreateStreamTokenData = {
     body?: never;
@@ -6843,6 +6928,54 @@ export type ReportJobPublishResultResponses = {
 };
 
 export type ReportJobPublishResultResponse = ReportJobPublishResultResponses[keyof ReportJobPublishResultResponses];
+
+export type GetJobRetryArtifactsData = {
+    body?: never;
+    headers: {
+        /**
+         * Job-scoped signing grant
+         */
+        'x-oore-signing-token': string;
+    };
+    path: {
+        /**
+         * Runner ID
+         */
+        runner_id: string;
+        /**
+         * Build/Job ID
+         */
+        job_id: string;
+    };
+    query?: never;
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/retry-artifacts';
+};
+
+export type GetJobRetryArtifactsErrors = {
+    /**
+     * Runner authentication or signing grant is missing or invalid
+     */
+    401: ApiError;
+    /**
+     * Runner does not match the active assignment
+     */
+    403: ApiError;
+    /**
+     * Job is not active or is not a step retry
+     */
+    409: ApiError;
+};
+
+export type GetJobRetryArtifactsError = GetJobRetryArtifactsErrors[keyof GetJobRetryArtifactsErrors];
+
+export type GetJobRetryArtifactsResponses = {
+    /**
+     * Artifacts to reuse
+     */
+    200: RunnerRetryArtifactsResponse;
+};
+
+export type GetJobRetryArtifactsResponse = GetJobRetryArtifactsResponses[keyof GetJobRetryArtifactsResponses];
 
 export type GetJobSecretsData = {
     body?: never;

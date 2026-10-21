@@ -2,7 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vWebhookResponse = v.object({
-    duplicate: v.nullish(v.boolean()),
-    ok: v.boolean()
-});
+export const vWarpgateTicketSource = v.picklist(['database', 'environment']);

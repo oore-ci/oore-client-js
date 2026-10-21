@@ -2,11 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vListIntegrationsQuery = v.object({
-    provider: v.optional(v.string()),
+export const vListSourceRepositoriesQuery = v.object({
     q: v.optional(v.string()),
-    sort: v.optional(v.string()),
-    direction: v.optional(v.string()),
     limit: v.optional(v.pipe(v.union([
         v.number(),
         v.string(),

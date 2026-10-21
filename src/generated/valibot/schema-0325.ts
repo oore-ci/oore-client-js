@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vUploadLocalArtifactPath = v.object({
+export const vDownloadLocalArtifactLegacyPath = v.object({
     token: v.string()
 });
