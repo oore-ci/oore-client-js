@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGithubCreatePageQuery = v.object({
-    state: v.string()
+export const vRotateGitlabRepositoryWebhookSecretPath = v.object({
+    id: v.string()
 });

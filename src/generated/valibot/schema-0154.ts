@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRemoveProjectMemberResponse = v.object({
-    ok: v.boolean()
-});
+export const vRemoteAuthMode = v.picklist(['oidc', 'trusted_proxy']);

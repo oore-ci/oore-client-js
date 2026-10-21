@@ -2,7 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vInviteUserRequest = v.object({
-    email: v.string(),
-    role: v.string()
-});
+export const vIntegrationStatus = v.picklist([
+    'active',
+    'inactive',
+    'error'
+]);

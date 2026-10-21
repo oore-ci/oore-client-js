@@ -2,9 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vReleaseHealth = v.picklist([
-    'unknown',
-    'healthy',
-    'warning',
-    'breached'
+export const vReleaseApprovalGate = v.picklist([
+    'none',
+    'before_upload',
+    'before_production'
 ]);

@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRepositoryAvatarPath = v.object({
-    id: v.string()
+export const vGetBuildTestResultsPath = v.object({
+    build_id: v.string()
 });

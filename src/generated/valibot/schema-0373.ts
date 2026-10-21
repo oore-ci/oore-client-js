@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRotateGitlabRepositoryWebhookSecretPath = v.object({
-    id: v.string()
+export const vStreamEventsQuery = v.object({
+    project_id: v.optional(v.string())
 });

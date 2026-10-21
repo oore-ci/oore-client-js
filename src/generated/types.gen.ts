@@ -343,6 +343,43 @@ export type BuildPlatform = 'android' | 'ios' | 'macos';
 
 export type BuildStatus = 'queued' | 'scheduled' | 'assigned' | 'running' | 'succeeded' | 'failed' | 'canceled' | 'timed_out' | 'expired';
 
+export type BuildTestFailure = {
+    duration_ms?: number | null;
+    /**
+     * The test failed, passed, then failed again within the history window.
+     */
+    flaky: boolean;
+    /**
+     * Recent builds of this pipeline that reported tests, oldest first, ending with this build.
+     */
+    history: Array<TestRunOutcome>;
+    message?: string | null;
+    name: string;
+    stack_trace?: string | null;
+    step: string;
+    suite: string;
+};
+
+export type BuildTestResultsResponse = {
+    failures: Array<BuildTestFailure>;
+    /**
+     * How many recent test-reporting builds the history and flaky check cover.
+     */
+    history_window: number;
+    summary?: null | BuildTestSummary;
+};
+
+/**
+ * Totals across every test report of a build.
+ */
+export type BuildTestSummary = {
+    duration_ms: number;
+    failed: number;
+    passed: number;
+    skipped: number;
+    total: number;
+};
+
 export type CancelBuildResponse = {
     build: Build;
 };
@@ -1766,6 +1803,39 @@ export type RunnerPublishResult = {
 
 export type RunnerStatus = 'online' | 'offline' | 'busy' | 'draining';
 
+export type RunnerTestFailure = {
+    duration_ms?: number | null;
+    message?: string | null;
+    /**
+     * Full test name, including group names.
+     */
+    name: string;
+    stack_trace?: string | null;
+    /**
+     * Test file or suite, such as `test/login_test.dart`.
+     */
+    suite: string;
+};
+
+/**
+ * Test results parsed by the runner from one build step.
+ */
+export type RunnerTestReport = {
+    duration_ms: number;
+    failed: number;
+    /**
+     * Failed tests. The daemon keeps at most 500 per build.
+     */
+    failures: Array<RunnerTestFailure>;
+    passed: number;
+    skipped: number;
+    /**
+     * Step that produced the report, such as `build-2`.
+     */
+    step: string;
+    total: number;
+};
+
 export type RuntimeMode = 'local' | 'remote';
 
 export type RuntimeUpdateCheck = {
@@ -1996,6 +2066,18 @@ export type TestOidcConnectionResponse = {
     success: boolean;
     token_endpoint: string;
     userinfo_endpoint?: string | null;
+};
+
+/**
+ * One earlier run of a test in the same pipeline.
+ */
+export type TestRunOutcome = {
+    build_id: string;
+    build_number: number;
+    /**
+     * `failed`, or `passed` when the build reported tests and this one did not fail.
+     */
+    status: string;
 };
 
 export type TriggerConfig = {
@@ -3459,6 +3541,36 @@ export type CreateStreamTokenResponses = {
 };
 
 export type CreateStreamTokenResponse = CreateStreamTokenResponses[keyof CreateStreamTokenResponses];
+
+export type GetBuildTestResultsData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/tests';
+};
+
+export type GetBuildTestResultsErrors = {
+    /**
+     * Build not found
+     */
+    404: ApiError;
+};
+
+export type GetBuildTestResultsError = GetBuildTestResultsErrors[keyof GetBuildTestResultsErrors];
+
+export type GetBuildTestResultsResponses = {
+    /**
+     * Test results
+     */
+    200: BuildTestResultsResponse;
+};
+
+export type GetBuildTestResultsResponse = GetBuildTestResultsResponses[keyof GetBuildTestResultsResponses];
 
 export type StreamEventsData = {
     body?: never;
@@ -6821,6 +6933,48 @@ export type UpdateJobStatusResponses = {
 };
 
 export type UpdateJobStatusResponse = UpdateJobStatusResponses[keyof UpdateJobStatusResponses];
+
+export type ReportJobTestResultsData = {
+    body: RunnerTestReport;
+    path: {
+        /**
+         * Runner ID
+         */
+        runner_id: string;
+        /**
+         * Build/Job ID
+         */
+        job_id: string;
+    };
+    query?: never;
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/test-results';
+};
+
+export type ReportJobTestResultsErrors = {
+    /**
+     * Runner does not match the assignment
+     */
+    403: ApiError;
+    /**
+     * Build not found
+     */
+    404: ApiError;
+    /**
+     * Build is not running
+     */
+    409: ApiError;
+};
+
+export type ReportJobTestResultsError = ReportJobTestResultsErrors[keyof ReportJobTestResultsErrors];
+
+export type ReportJobTestResultsResponses = {
+    /**
+     * Recorded
+     */
+    200: OkResponse;
+};
+
+export type ReportJobTestResultsResponse = ReportJobTestResultsResponses[keyof ReportJobTestResultsResponses];
 
 export type ListInstanceSecretsData = {
     body?: never;

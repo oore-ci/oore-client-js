@@ -2,12 +2,10 @@
 
 import * as v from 'valibot'
 
-export const vTestOidcConnectionResponse = v.object({
-    authorization_endpoint: v.string(),
-    discovered_issuer: v.string(),
-    jwks_uri: v.string(),
-    scopes_supported: v.array(v.string()),
-    success: v.boolean(),
-    token_endpoint: v.string(),
-    userinfo_endpoint: v.nullish(v.string())
+export const vSyncPipelineIosSigningResponse = v.object({
+    ok: v.boolean(),
+    pipeline_id: v.string(),
+    synced_bundle_ids: v.array(v.string()),
+    updated_profiles: v.pipe(v.number(), v.integer(), v.minValue(0)),
+    warnings: v.array(v.string())
 });

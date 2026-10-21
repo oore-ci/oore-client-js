@@ -2,8 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vUserStatus = v.picklist([
-    'active',
-    'disabled',
-    'invited'
+export const vUserRole = v.picklist([
+    'owner',
+    'admin',
+    'developer',
+    'qa_viewer'
 ]);
