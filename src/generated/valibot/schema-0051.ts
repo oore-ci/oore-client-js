@@ -2,7 +2,11 @@
 
 import * as v from 'valibot'
 
-export const vEventStreamReady = v.object({
-    project_id: v.nullish(v.string()),
-    runners: v.boolean()
+export const vCreateScopedDownloadTokenRequest = v.object({
+    single_use: v.optional(v.boolean()),
+    ttl_secs: v.nullish(v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')))
 });

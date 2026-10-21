@@ -2,6 +2,10 @@
 
 import * as v from 'valibot'
 
-export const vDeleteNotificationChannelResponse = v.object({
-    deleted: v.boolean()
+export const vCreateProjectRequest = v.object({
+    default_branch: v.nullish(v.string()),
+    description: v.nullish(v.string()),
+    local_repository_path: v.nullish(v.string()),
+    name: v.string(),
+    repository_id: v.nullish(v.string())
 });

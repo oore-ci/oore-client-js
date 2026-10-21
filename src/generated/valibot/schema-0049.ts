@@ -2,7 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vCreateSecretRequest = v.strictObject({
-    name: v.string(),
-    value: v.string()
+export const vCreateLocalGitIntegrationRequest = v.object({
+    display_name: v.nullish(v.string()),
+    repository_path: v.string()
 });

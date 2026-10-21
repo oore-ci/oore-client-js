@@ -107,6 +107,19 @@ export type AppendBuildLogsResponse = {
     appended: number;
 };
 
+/**
+ * Which builds of a pipeline wait for a maintainer before a runner may
+ * claim them.
+ */
+export type ApprovalPolicy = {
+    /**
+     * Trigger events that need approval: `push`, `pull_request`,
+     * `tag_push`, `manual` or `schedule`. Empty means every build.
+     */
+    events?: Array<string>;
+    required: boolean;
+};
+
 export type Artifact = {
     artifact_type: ArtifactType;
     build_id: string;
@@ -215,6 +228,7 @@ export type BrowseLocalGitDirectoriesResponse = {
 };
 
 export type Build = {
+    approval?: null | BuildApproval;
     branch?: string | null;
     build_number: number;
     changelog?: string | null;
@@ -242,6 +256,27 @@ export type Build = {
     trigger_type: TriggerType;
     updated_at: number;
 };
+
+export type BuildApproval = {
+    decided_at?: number | null;
+    decided_by?: string | null;
+    reason?: string | null;
+    requested_at: number;
+    state: BuildApprovalState;
+};
+
+export type BuildApprovalRequest = {
+    reason?: string | null;
+};
+
+export type BuildApprovalResponse = {
+    build: Build;
+};
+
+/**
+ * Build approval state. Pending builds stay `queued` but no runner claims them.
+ */
+export type BuildApprovalState = 'pending' | 'approved' | 'rejected';
 
 /**
  * `build` event on `GET /v1/events`: a build was created or changed.
@@ -448,11 +483,13 @@ export type CreateNotificationChannelRequest = {
 };
 
 export type CreatePipelineRequest = {
+    approval?: null | ApprovalPolicy;
     concurrency?: null | ConcurrencyPolicy;
     config_path?: string | null;
     config_path_explicit?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
     name: string;
+    timeout_minutes?: number | null;
     trigger_config?: null | TriggerConfig;
 };
 
@@ -1083,6 +1120,7 @@ export type OperatorIncidentSeverity = 'info' | 'warning' | 'critical';
 export type OperatorIncidentStatus = 'open' | 'resolved';
 
 export type Pipeline = {
+    approval: ApprovalPolicy;
     concurrency: ConcurrencyPolicy;
     config_path: string;
     config_path_explicit: boolean;
@@ -1092,6 +1130,10 @@ export type Pipeline = {
     id: string;
     name: string;
     project_id: string;
+    /**
+     * Minutes a running build may take before it is marked `timed_out`.
+     */
+    timeout_minutes: number;
     trigger_config: TriggerConfig;
     updated_at: number;
 };
@@ -1762,6 +1804,21 @@ export type RuntimeUpdateStatus = {
     phase: RuntimeUpdatePhase;
 };
 
+/**
+ * A cron schedule that starts a build on a branch.
+ */
+export type ScheduleTrigger = {
+    /**
+     * Branch to build. Defaults to the project's default branch.
+     */
+    branch?: string | null;
+    /**
+     * Five-field cron expression (`minute hour day month weekday`) in UTC,
+     * or `@hourly`, `@daily`, `@weekly`, `@monthly`.
+     */
+    cron: string;
+};
+
 export type ScmProvider = 'github' | 'gitlab' | 'local_git';
 
 export type SecretResponse = {
@@ -1942,8 +1999,31 @@ export type TestOidcConnectionResponse = {
 };
 
 export type TriggerConfig = {
+    /**
+     * Branch globs for push and pull request events. When only `tags` is
+     * set, branch events do not trigger.
+     */
     branches: Array<string>;
     events: Array<string>;
+    /**
+     * Push and pull request events trigger only when a changed file matches
+     * one of these globs (`**` spans directories).
+     */
+    paths?: Array<string>;
+    /**
+     * Push and pull request events are skipped when every changed file
+     * matches one of these globs.
+     */
+    paths_ignore?: Array<string>;
+    /**
+     * Cron schedules, evaluated in UTC.
+     */
+    schedules?: Array<ScheduleTrigger>;
+    /**
+     * Tag globs for tag push events. When only `branches` is set, tag
+     * events do not trigger.
+     */
+    tags?: Array<string>;
 };
 
 export type TriggerType = 'manual' | 'api' | 'webhook' | 'schedule';
@@ -2029,12 +2109,14 @@ export type UpdatePipelineIosSigningRequest = {
 };
 
 export type UpdatePipelineRequest = {
+    approval?: null | ApprovalPolicy;
     concurrency?: null | ConcurrencyPolicy;
     config_path?: string | null;
     config_path_explicit?: boolean | null;
     enabled?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
     name?: string | null;
+    timeout_minutes?: number | null;
     trigger_config?: null | TriggerConfig;
 };
 
@@ -2135,11 +2217,13 @@ export type UserRole = 'owner' | 'admin' | 'developer' | 'qa_viewer';
 export type UserStatus = 'active' | 'disabled' | 'invited';
 
 export type ValidatePipelineRequest = {
+    approval?: null | ApprovalPolicy;
     concurrency?: null | ConcurrencyPolicy;
     config_path?: string | null;
     config_path_explicit?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
     repository_yaml?: string | null;
+    timeout_minutes?: number | null;
     trigger_config?: null | TriggerConfig;
 };
 
@@ -3119,6 +3203,47 @@ export type GetBuildResponses = {
 
 export type GetBuildResponse = GetBuildResponses[keyof GetBuildResponses];
 
+export type ApproveBuildData = {
+    /**
+     * Optional note for the audit log
+     */
+    body: BuildApprovalRequest;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/approve';
+};
+
+export type ApproveBuildErrors = {
+    /**
+     * Not a project maintainer
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Build is not waiting for approval
+     */
+    409: ApiError;
+};
+
+export type ApproveBuildError = ApproveBuildErrors[keyof ApproveBuildErrors];
+
+export type ApproveBuildResponses = {
+    /**
+     * Build approved and queued
+     */
+    200: BuildApprovalResponse;
+};
+
+export type ApproveBuildResponse = ApproveBuildResponses[keyof ApproveBuildResponses];
+
 export type ListArtifactsData = {
     body?: never;
     path: {
@@ -3238,6 +3363,47 @@ export type StreamBuildLogsResponses = {
 };
 
 export type StreamBuildLogsResponse = StreamBuildLogsResponses[keyof StreamBuildLogsResponses];
+
+export type RejectBuildData = {
+    /**
+     * Optional reason, shown on the build
+     */
+    body: BuildApprovalRequest;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/reject';
+};
+
+export type RejectBuildErrors = {
+    /**
+     * Not a project maintainer
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Build is not waiting for approval
+     */
+    409: ApiError;
+};
+
+export type RejectBuildError = RejectBuildErrors[keyof RejectBuildErrors];
+
+export type RejectBuildResponses = {
+    /**
+     * Build rejected and canceled
+     */
+    200: BuildApprovalResponse;
+};
+
+export type RejectBuildResponse = RejectBuildResponses[keyof RejectBuildResponses];
 
 export type RerunBuildData = {
     body?: never;

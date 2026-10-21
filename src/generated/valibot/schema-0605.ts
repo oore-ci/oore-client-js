@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRotateInstanceSecretPath = v.object({
-    name: v.string()
+export const vGetJobSecretsHeaders = v.object({
+    'x-oore-signing-token': v.string()
 });

@@ -2,8 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vIntegrationStatus = v.picklist([
-    'active',
-    'inactive',
-    'error'
+export const vIntegrationAuthMode = v.picklist([
+    'github_app',
+    'oauth_app',
+    'personal_token',
+    'local_path'
 ]);

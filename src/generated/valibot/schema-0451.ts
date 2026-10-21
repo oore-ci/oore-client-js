@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vDeletePipelineSecretPath = v.object({
-    pipeline_id: v.string(),
-    name: v.string()
+export const vUpdatePipelineAppStorePublishPath = v.object({
+    pipeline_id: v.string()
 });

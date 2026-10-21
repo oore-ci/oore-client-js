@@ -2,4 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vGetIosInstallManifestResponse = v.string();
+export const vWebhookResponse = v.object({
+    duplicate: v.nullish(v.boolean()),
+    ok: v.boolean()
+});

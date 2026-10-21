@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vBootstrapTokenVerifyRequest = v.object({
-    token: v.string()
-});
+export const vBinaryPayload = v.string();

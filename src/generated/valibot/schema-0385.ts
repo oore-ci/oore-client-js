@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vBrowseLocalGitDirectoriesQuery = v.object({
-    path: v.optional(v.string())
-});
+export const vGithubInstalledResponse = v.string();
