@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRunnerPolicyBlockReason = v.picklist(['instance_paused', 'repository_unavailable']);
+export const vRunnerDiskPressure = v.picklist(['warning', 'critical']);

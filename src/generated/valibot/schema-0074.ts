@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vGooglePlayReleaseNotesSource = v.picklist([
-    'none',
-    'changelog',
-    'repo_files'
-]);
+export const vGitLabAuthorizeRequest = v.object({
+    integration_id: v.string(),
+    redirect_url: v.string()
+});

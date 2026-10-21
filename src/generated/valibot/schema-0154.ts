@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRemoteAuthMode = v.picklist(['oidc', 'trusted_proxy']);
+export const vReleaseStore = v.picklist(['google_play', 'app_store']);

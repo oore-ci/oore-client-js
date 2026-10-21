@@ -2,17 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vIosProvisioningProfileSummary = v.object({
-    bundle_id: v.string(),
-    checksum: v.nullish(v.string()),
-    expires_at: v.nullish(v.pipe(v.union([
-        v.number(),
-        v.string(),
-        v.bigint()
-    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
-    has_profile: v.boolean(),
-    profile_filename: v.nullish(v.string()),
-    profile_name: v.nullish(v.string()),
-    profile_uuid: v.nullish(v.string()),
-    team_id: v.nullish(v.string())
+export const vInviteUserRequest = v.object({
+    email: v.string(),
+    role: v.string()
 });

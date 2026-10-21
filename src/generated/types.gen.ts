@@ -332,6 +332,70 @@ export type BuildEvent = {
 };
 
 /**
+ * One day of finished builds, in the caller's UTC offset.
+ */
+export type BuildInsightsDay = {
+    /**
+     * Unix seconds at the start of the day.
+     */
+    day_start: number;
+    /**
+     * Failed and timed-out builds.
+     */
+    failed: number;
+    /**
+     * Canceled and expired builds.
+     */
+    other: number;
+    /**
+     * Median run time of the day's succeeded builds.
+     */
+    p50_duration_seconds?: number | null;
+    succeeded: number;
+};
+
+export type BuildInsightsResponse = {
+    /**
+     * One entry per day of the window, oldest first.
+     */
+    daily: Array<BuildInsightsDay>;
+    /**
+     * Run time (start to finish) of succeeded builds in the window.
+     */
+    duration: DurationPercentiles;
+    /**
+     * Up to five pipelines with the most failures in the window.
+     */
+    failing_pipelines: Array<FailingPipelineInsights>;
+    /**
+     * Run time of succeeded builds in the previous window.
+     */
+    previous_duration: DurationPercentiles;
+    /**
+     * The same window length immediately before `since`, for comparison.
+     */
+    previous_totals: BuildOutcomeTotals;
+    /**
+     * Projects with finished builds in the window, most builds first.
+     */
+    projects: Array<ProjectBuildInsights>;
+    queue: BuildQueueSnapshot;
+    /**
+     * Time from queued to started for builds that started in the window.
+     */
+    queue_wait: DurationPercentiles;
+    /**
+     * Start of the window, in unix seconds.
+     */
+    since: number;
+    /**
+     * Builds that finished in the window.
+     */
+    totals: BuildOutcomeTotals;
+    window_days: number;
+};
+
+/**
  * Where a build's steps run.
  */
 export type BuildIsolation = 'host' | 'vm';
@@ -349,7 +413,47 @@ export type BuildLogsResponse = {
     total: number;
 };
 
+/**
+ * Outcome counts for builds that finished in a window.
+ */
+export type BuildOutcomeTotals = {
+    canceled: number;
+    expired: number;
+    failed: number;
+    finished: number;
+    succeeded: number;
+    /**
+     * `succeeded / (succeeded + failed + timed_out)`. Canceled and expired
+     * builds never ran to a verdict, so they are left out. Absent when no
+     * build reached a verdict.
+     */
+    success_rate?: number | null;
+    timed_out: number;
+};
+
 export type BuildPlatform = 'android' | 'ios' | 'macos';
+
+/**
+ * Builds waiting or running right now.
+ */
+export type BuildQueueSnapshot = {
+    /**
+     * Queued builds held for a maintainer's approval.
+     */
+    awaiting_approval: number;
+    /**
+     * When the longest-waiting build was queued, in unix seconds.
+     */
+    oldest_waiting_since?: number | null;
+    /**
+     * Assigned and running builds.
+     */
+    running: number;
+    /**
+     * Queued and scheduled builds that a runner can pick up.
+     */
+    waiting: number;
+};
 
 export type BuildStatus = 'queued' | 'scheduled' | 'assigned' | 'running' | 'succeeded' | 'failed' | 'canceled' | 'timed_out' | 'expired';
 
@@ -621,6 +725,18 @@ export type DiscoverRepositoryWorkflowsResponse = {
     workflows: Array<RepositoryWorkflowPreview>;
 };
 
+/**
+ * Median and 90th percentile of a duration, in seconds.
+ */
+export type DurationPercentiles = {
+    p50_seconds?: number | null;
+    p90_seconds?: number | null;
+    /**
+     * Builds the percentiles cover.
+     */
+    samples: number;
+};
+
 export type EffectiveProjectRetentionResponse = {
     effective: RetentionPolicy;
     has_override: boolean;
@@ -672,6 +788,25 @@ export type ExternalAccessPreflightCheck = {
 export type ExternalAccessPreflightResponse = {
     checks: Array<ExternalAccessPreflightCheck>;
     ready: boolean;
+};
+
+/**
+ * A pipeline with failed or timed-out builds in the window.
+ */
+export type FailingPipelineInsights = {
+    /**
+     * Failures in a row ending with the newest finished build; 0 once it passed again.
+     */
+    current_streak: number;
+    failures: number;
+    finished: number;
+    last_failed_at: number;
+    last_failed_build_id: string;
+    last_failed_build_number: number;
+    pipeline_id: string;
+    pipeline_name: string;
+    project_id: string;
+    project_name: string;
 };
 
 export type FrontendPairRequest = {
@@ -1303,6 +1438,18 @@ export type Project = {
         [key: string]: unknown;
     };
     updated_at: number;
+};
+
+export type ProjectBuildInsights = {
+    duration: DurationPercentiles;
+    last_finished_at: number;
+    /**
+     * Status of the project's newest finished build in the window.
+     */
+    last_status: BuildStatus;
+    project_id: string;
+    project_name: string;
+    totals: BuildOutcomeTotals;
 };
 
 export type ProjectDetailResponse = {
@@ -3297,6 +3444,44 @@ export type ListBuildsResponses = {
 };
 
 export type ListBuildsResponse2 = ListBuildsResponses[keyof ListBuildsResponses];
+
+export type GetBuildInsightsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Window length in days: 7 (default), 14, 30 or 90
+         */
+        days?: number;
+        /**
+         * Limit to one project
+         */
+        project_id?: string;
+        /**
+         * Caller's UTC offset for daily buckets, -720 to 840 (default 0)
+         */
+        utc_offset_minutes?: number;
+    };
+    url: '/v1/builds/insights';
+};
+
+export type GetBuildInsightsErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+};
+
+export type GetBuildInsightsError = GetBuildInsightsErrors[keyof GetBuildInsightsErrors];
+
+export type GetBuildInsightsResponses = {
+    /**
+     * Build insights
+     */
+    200: BuildInsightsResponse;
+};
+
+export type GetBuildInsightsResponse = GetBuildInsightsResponses[keyof GetBuildInsightsResponses];
 
 export type GetBuildData = {
     body?: never;

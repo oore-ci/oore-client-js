@@ -2,6 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vSyncInstallationsRequest = v.object({
-    installation_id: v.nullish(v.string())
-});
+export const vSmtpTlsMode = v.picklist([
+    'none',
+    'start_tls',
+    'tls'
+]);

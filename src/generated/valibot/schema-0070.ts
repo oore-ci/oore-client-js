@@ -2,6 +2,17 @@
 
 import * as v from 'valibot'
 
-export const vGitLabAuthorizeResponse = v.object({
-    authorize_url: v.string()
+export const vGetExternalAccessOidcResponse = v.object({
+    authorization_endpoint: v.string(),
+    client_id: v.string(),
+    configured_at: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    has_client_secret: v.boolean(),
+    issuer_url: v.string(),
+    jwks_uri: v.string(),
+    token_endpoint: v.string(),
+    userinfo_endpoint: v.nullish(v.string())
 });

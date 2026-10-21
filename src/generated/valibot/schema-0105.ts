@@ -2,8 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vNotificationDeliveryStatus = v.picklist([
-    'pending',
-    'delivered',
-    'failed'
-]);
+export const vLogoutResponse = v.object({
+    ok: v.boolean()
+});

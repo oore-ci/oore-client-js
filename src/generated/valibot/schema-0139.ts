@@ -2,8 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vReleaseApprovalGate = v.picklist([
-    'none',
-    'before_upload',
-    'before_production'
-]);
+export const vRegisterIosDeviceRequest = v.object({
+    name: v.string(),
+    platform: v.nullish(v.string()),
+    udid: v.string()
+});

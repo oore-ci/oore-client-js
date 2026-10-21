@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRetentionCleanupTarget = v.picklist(['artifacts_only', 'full']);
+export const vRemoteAuthMode = v.picklist(['oidc', 'trusted_proxy']);

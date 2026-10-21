@@ -2,7 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vDiscoverRepositoryWorkflowsQuery = v.object({
-    ref: v.optional(v.string()),
-    path: v.optional(v.string())
+export const vUpdateProjectMemberPath = v.object({
+    project_id: v.string(),
+    user_id: v.string()
 });

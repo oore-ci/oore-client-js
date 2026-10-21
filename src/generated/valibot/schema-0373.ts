@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRetryBuildStepPath = v.object({
+export const vStreamBuildLogsPath = v.object({
     build_id: v.string()
 });

@@ -2,7 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vGitLabAuthorizeRequest = v.object({
-    integration_id: v.string(),
-    redirect_url: v.string()
+export const vFrontendPairResponse = v.object({
+    backend_proof: v.string(),
+    user_email_header: v.string()
 });

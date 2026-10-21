@@ -2,11 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vReleaseAction = v.picklist([
-    'raise',
-    'pause',
-    'resume',
-    'halt',
-    'complete',
-    'approve'
-]);
+export const vPublishStore = v.picklist(['google_play', 'app_store']);

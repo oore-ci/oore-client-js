@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vBuildLogStream = v.picklist(['stdout', 'stderr']);
+export const vBuildIsolation = v.picklist(['host', 'vm']);

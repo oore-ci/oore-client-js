@@ -2,9 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vNotificationChannelType = v.picklist([
-    'webhook',
-    'mattermost',
-    'email',
-    'slack'
-]);
+export const vLocalGitDirectoryEntry = v.object({
+    is_git_repository: v.boolean(),
+    name: v.string(),
+    path: v.string()
+});

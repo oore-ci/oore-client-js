@@ -2,9 +2,10 @@
 
 import * as v from 'valibot'
 
-export const vUpdateTrustedProxySettingsRequest = v.object({
-    shared_secret: v.nullish(v.string()),
-    trusted_proxy_cidrs: v.optional(v.array(v.string())),
-    user_email_header: v.nullish(v.string()),
-    warpgate_ticket: v.nullish(v.string())
+export const vUpdateProjectRequest = v.object({
+    default_branch: v.nullish(v.string()),
+    description: v.nullish(v.string()),
+    name: v.nullish(v.string()),
+    repository_id: v.nullish(v.string()),
+    settings: v.nullish(v.record(v.string(), v.unknown()))
 });

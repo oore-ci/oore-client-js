@@ -2,7 +2,10 @@
 
 import * as v from 'valibot'
 
-export const vCreateSecretRequest = v.strictObject({
+export const vCreateProjectRequest = v.object({
+    default_branch: v.nullish(v.string()),
+    description: v.nullish(v.string()),
+    local_repository_path: v.nullish(v.string()),
     name: v.string(),
-    value: v.string()
+    repository_id: v.nullish(v.string())
 });

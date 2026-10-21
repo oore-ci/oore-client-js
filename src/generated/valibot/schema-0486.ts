@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vDeleteProjectPath = v.object({
-    project_id: v.string()
+export const vDeletePipelineSecretPath = v.object({
+    pipeline_id: v.string(),
+    name: v.string()
 });
