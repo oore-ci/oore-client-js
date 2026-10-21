@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGetRunnerPath = v.object({
-    runner_id: v.string()
+export const vRaiseReleasePath = v.object({
+    release_id: v.string()
 });

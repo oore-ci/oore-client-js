@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vIosProvisioningProfileInput = v.object({
-    bundle_id: v.string(),
-    profile_base64: v.nullish(v.string()),
-    profile_filename: v.nullish(v.string())
+export const vInviteUserRequest = v.object({
+    email: v.string(),
+    role: v.string()
 });

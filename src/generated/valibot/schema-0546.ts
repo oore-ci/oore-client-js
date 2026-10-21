@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRunnerHeartbeatResponse = v.void();
+export const vDeleteRunnerResponse = v.void();

@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vCheckGitlabPersonalTokenPath = v.object({
-    id: v.string()
+export const vBrowseLocalGitDirectoriesQuery = v.object({
+    path: v.optional(v.string())
 });

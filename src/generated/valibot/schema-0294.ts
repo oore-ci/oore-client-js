@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRevokeScopedDownloadTokenPath = v.object({
-    token_id: v.string()
-});
+export const vGetIosInstallManifestResponse = v.string();

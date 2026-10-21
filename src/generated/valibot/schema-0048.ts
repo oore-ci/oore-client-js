@@ -2,6 +2,15 @@
 
 import * as v from 'valibot'
 
-export const vDeleteNotificationChannelResponse = v.object({
-    deleted: v.boolean()
+export const vCreateScopedDownloadTokenResponse = v.object({
+    download_url: v.string(),
+    expires_at: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    id: v.string(),
+    prefix: v.string(),
+    single_use: v.boolean(),
+    token: v.string()
 });

@@ -2,14 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vBuildStatus = v.picklist([
-    'queued',
-    'scheduled',
-    'assigned',
-    'running',
-    'succeeded',
-    'failed',
-    'canceled',
-    'timed_out',
-    'expired'
+export const vBuildPlatform = v.picklist([
+    'android',
+    'ios',
+    'macos'
 ]);

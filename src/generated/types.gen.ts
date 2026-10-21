@@ -243,6 +243,17 @@ export type Build = {
     updated_at: number;
 };
 
+/**
+ * `build` event on `GET /v1/events`: a build was created or changed.
+ */
+export type BuildChangedEvent = {
+    build_id: string;
+    build_number: number;
+    project_id: string;
+    status: BuildStatus;
+    updated_at: number;
+};
+
 export type BuildChangelogPreviewResponse = {
     base_commit?: string | null;
     markdown: string;
@@ -274,6 +285,11 @@ export type BuildEvent = {
     reason?: string | null;
     to_status: string;
 };
+
+/**
+ * Where a build's steps run.
+ */
+export type BuildIsolation = 'host' | 'vm';
 
 export type BuildLogChunk = {
     content: string;
@@ -520,6 +536,26 @@ export type EffectiveProjectRetentionResponse = {
     effective: RetentionPolicy;
     has_override: boolean;
     override_fields?: null | ProjectRetentionOverride;
+};
+
+/**
+ * `ready` event, the first event on every `GET /v1/events` connection.
+ * Clients refetch once on `ready` after a reconnect, since events sent while
+ * disconnected are not replayed.
+ */
+export type EventStreamReady = {
+    project_id?: string | null;
+    /**
+     * Whether this stream carries `runner` events.
+     */
+    runners: boolean;
+};
+
+/**
+ * `resync` event: events were dropped, so clients should refetch.
+ */
+export type EventStreamResync = {
+    reason: string;
 };
 
 export type ExternalAccessNetworkSettings = {
@@ -884,8 +920,16 @@ export type ListRepositoriesResponse = {
 
 export type ListRunnersResponse = {
     online_total: number;
+    /**
+     * Builds waiting for a runner.
+     */
+    queued_total?: number;
     runners: Array<Runner>;
     total: number;
+    /**
+     * Queued builds whose `runs_on` labels no online runner has.
+     */
+    unmatched_queued_total?: number;
 };
 
 export type ListSecretsResponse = {
@@ -1098,9 +1142,14 @@ export type PipelineExecutionConfig = {
     commands: PipelineCommandStages;
     env?: Array<PipelineEnvVar>;
     flutter_version?: string | null;
+    isolation?: BuildIsolation;
     platform_build_args?: PlatformBuildArgs;
     platform_commands?: PlatformBuildCommands;
     platforms: Array<BuildPlatform>;
+    /**
+     * Runner labels a build needs, all of them. Empty means `macos`.
+     */
+    runs_on?: Array<string>;
 };
 
 export type PipelineGooglePlayPublishResponse = {
@@ -1241,6 +1290,10 @@ export type RegisterRunnerRequest = {
     capabilities?: {
         [key: string]: unknown;
     };
+    /**
+     * Operator labels for the new runner, added to the detected labels.
+     */
+    labels?: Array<string>;
     name: string;
 };
 
@@ -1332,6 +1385,22 @@ export type ReleaseActivityEvent = ReleaseHistoryEntry & {
  */
 export type ReleaseApprovalGate = 'none' | 'before_upload' | 'before_production';
 
+/**
+ * `release` event on `GET /v1/events`: a release was created or its state
+ * or rollout changed.
+ */
+export type ReleaseChangedEvent = {
+    build_id: string;
+    project_id: string;
+    release_id: string;
+    /**
+     * Fraction of users, 0..1.
+     */
+    rollout_fraction: number;
+    state: ReleaseState;
+    updated_at: number;
+};
+
 export type ReleaseDetailResponse = {
     history: Array<ReleaseHistoryEntry>;
     release: Release;
@@ -1399,9 +1468,11 @@ export type RepositoryWorkflowExecutionPreview = {
     commands: PipelineCommandStages;
     env_keys: Array<string>;
     flutter_version?: string | null;
+    isolation: BuildIsolation;
     platform_build_args: PlatformBuildArgs;
     platform_commands: PlatformBuildCommands;
     platforms: Array<BuildPlatform>;
+    runs_on?: Array<string>;
 };
 
 /**
@@ -1465,12 +1536,27 @@ export type RotateSecretRequest = {
 };
 
 export type Runner = {
+    /**
+     * Set while a dependency cache purge waits for the runner to pick it up.
+     */
+    cache_purge_requested_at?: number | null;
     capabilities: {
         [key: string]: unknown;
     };
     created_at: number;
+    /**
+     * Labels an operator assigned to this runner.
+     */
+    custom_labels?: Array<string>;
+    disk_pressure?: null | RunnerDiskPressure;
     id: string;
+    /**
+     * Every label the scheduler matches `runs_on` against: the labels detected
+     * from capabilities plus `custom_labels`.
+     */
+    labels?: Array<string>;
     last_heartbeat_at?: number | null;
+    metrics?: null | RunnerMetrics;
     name: string;
     registered_by?: string | null;
     status: RunnerStatus;
@@ -1509,11 +1595,37 @@ export type RunnerAppStoreUploadCredentials = {
     private_key_pem: string;
 };
 
+/**
+ * `runner` event on `GET /v1/events`: a runner was registered, removed,
+ * renamed or changed status. Sent only to users who can read runners.
+ */
+export type RunnerChangedEvent = {
+    name: string;
+    /**
+     * True when the runner no longer exists; `status` is its last known one.
+     */
+    removed: boolean;
+    runner_id: string;
+    status: RunnerStatus;
+};
+
+export type RunnerDiskPressure = 'warning' | 'critical';
+
 export type RunnerHeartbeatRequest = {
     capabilities?: {
         [key: string]: unknown;
     };
+    metrics?: null | RunnerMetrics;
     status: string;
+};
+
+/**
+ * Heartbeat answer. Runners purge their dependency caches when
+ * `cache_purge_requested_at` is newer than their last purge, then report
+ * `capabilities.caches.purged_at` to clear the request.
+ */
+export type RunnerHeartbeatResponse = {
+    cache_purge_requested_at?: number | null;
 };
 
 export type RunnerIosProvisioningProfile = {
@@ -1550,6 +1662,31 @@ export type RunnerJobSecret = {
 
 export type RunnerJobSecretsResponse = {
     secrets: Array<RunnerJobSecret>;
+};
+
+/**
+ * Host utilisation a runner reports with each heartbeat.
+ */
+export type RunnerMetrics = {
+    /**
+     * Size of the runner's dependency caches, when measured.
+     */
+    cache_bytes?: number | null;
+    /**
+     * When the backend received these metrics. Set by the backend.
+     */
+    collected_at?: number | null;
+    /**
+     * One-minute load average as a share of logical CPUs, capped at 100.
+     */
+    cpu_percent: number;
+    /**
+     * Free space on the volume that holds build workspaces.
+     */
+    disk_free_bytes: number;
+    disk_total_bytes: number;
+    memory_total_bytes: number;
+    memory_used_bytes: number;
 };
 
 export type RunnerPolicyBlockReason = 'instance_paused' | 'repository_unavailable';
@@ -1942,6 +2079,10 @@ export type UpdateRetentionPolicyRequest = {
 };
 
 export type UpdateRunnerRequest = {
+    /**
+     * Replaces the runner's operator labels. Detected labels are kept.
+     */
+    custom_labels?: Array<string> | null;
     name?: string | null;
 };
 
@@ -3152,6 +3293,44 @@ export type CreateStreamTokenResponses = {
 };
 
 export type CreateStreamTokenResponse = CreateStreamTokenResponses[keyof CreateStreamTokenResponses];
+
+export type StreamEventsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Only send build and release events for this project
+         */
+        project_id?: string;
+    };
+    url: '/v1/events';
+};
+
+export type StreamEventsErrors = {
+    /**
+     * Missing or invalid token
+     */
+    401: ApiError;
+    /**
+     * No read access to the project
+     */
+    403: ApiError;
+    /**
+     * Too many open event streams
+     */
+    429: ApiError;
+};
+
+export type StreamEventsError = StreamEventsErrors[keyof StreamEventsErrors];
+
+export type StreamEventsResponses = {
+    /**
+     * SSE event stream
+     */
+    200: string;
+};
+
+export type StreamEventsResponse = StreamEventsResponses[keyof StreamEventsResponses];
 
 export type FrontendPairData = {
     body: FrontendPairRequest;
@@ -5910,6 +6089,40 @@ export type UpdateRunnerResponses = {
 
 export type UpdateRunnerResponse2 = UpdateRunnerResponses[keyof UpdateRunnerResponses];
 
+export type PurgeRunnerCachesData = {
+    body?: never;
+    path: {
+        /**
+         * Runner ID
+         */
+        runner_id: string;
+    };
+    query?: never;
+    url: '/v1/runners/{runner_id}/caches/purge';
+};
+
+export type PurgeRunnerCachesErrors = {
+    /**
+     * Insufficient permissions
+     */
+    403: ApiError;
+    /**
+     * Runner not found
+     */
+    404: ApiError;
+};
+
+export type PurgeRunnerCachesError = PurgeRunnerCachesErrors[keyof PurgeRunnerCachesErrors];
+
+export type PurgeRunnerCachesResponses = {
+    /**
+     * Purge requested
+     */
+    200: UpdateRunnerResponse;
+};
+
+export type PurgeRunnerCachesResponse = PurgeRunnerCachesResponses[keyof PurgeRunnerCachesResponses];
+
 export type ClaimJobData = {
     body: ClaimJobRequest;
     path: {
@@ -5947,10 +6160,10 @@ export type RunnerHeartbeatResponses = {
     /**
      * Heartbeat recorded
      */
-    204: void;
+    200: RunnerHeartbeatResponse;
 };
 
-export type RunnerHeartbeatResponse = RunnerHeartbeatResponses[keyof RunnerHeartbeatResponses];
+export type RunnerHeartbeatResponse2 = RunnerHeartbeatResponses[keyof RunnerHeartbeatResponses];
 
 export type GetJobStatusData = {
     body?: never;

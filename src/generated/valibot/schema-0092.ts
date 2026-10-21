@@ -2,9 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vNotificationChannelType = v.picklist([
-    'webhook',
-    'mattermost',
-    'email',
-    'slack'
-]);
+export const vLocalGitPathSuggestion = v.object({
+    label: v.string(),
+    path: v.string()
+});

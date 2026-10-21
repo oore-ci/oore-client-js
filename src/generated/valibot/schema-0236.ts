@@ -2,9 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vTriggerType = v.picklist([
-    'manual',
-    'api',
-    'webhook',
-    'schedule'
-]);
+export const vTestNotificationChannelResponse = v.object({
+    error: v.nullish(v.string()),
+    success: v.boolean()
+});

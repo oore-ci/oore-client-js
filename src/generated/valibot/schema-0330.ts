@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vListArtifactsPath = v.object({
-    build_id: v.string()
+export const vOidcCallbackBody = v.object({
+    code: v.string(),
+    state: v.string()
 });

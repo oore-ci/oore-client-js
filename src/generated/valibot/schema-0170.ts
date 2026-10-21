@@ -2,9 +2,10 @@
 
 import * as v from 'valibot'
 
-export const vRunnerStatus = v.picklist([
-    'online',
-    'offline',
-    'busy',
-    'draining'
-]);
+export const vRunnerIosProvisioningProfile = v.object({
+    bundle_id: v.string(),
+    profile_base64: v.string(),
+    profile_filename: v.string(),
+    profile_name: v.nullish(v.string()),
+    profile_uuid: v.nullish(v.string())
+});

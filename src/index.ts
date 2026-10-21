@@ -13,6 +13,11 @@ export {
   type OoreToken,
 } from './client.js'
 export {
+  streamLiveEvents,
+  type LiveEvent,
+  type StreamLiveEventsOptions,
+} from './events.js'
+export {
   streamBuildLogEvents,
   type BuildLogEvent,
   type StreamBuildLogEventsOptions,

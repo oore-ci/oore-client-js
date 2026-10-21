@@ -2,9 +2,10 @@
 
 import * as v from 'valibot'
 
-export const vUserRole = v.picklist([
-    'owner',
-    'admin',
-    'developer',
-    'qa_viewer'
-]);
+export const vUpdateProjectRequest = v.object({
+    default_branch: v.nullish(v.string()),
+    description: v.nullish(v.string()),
+    name: v.nullish(v.string()),
+    repository_id: v.nullish(v.string()),
+    settings: v.nullish(v.record(v.string(), v.unknown()))
+});

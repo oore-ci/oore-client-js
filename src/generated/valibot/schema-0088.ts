@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vLocalGitPathSuggestion = v.object({
-    label: v.string(),
-    path: v.string()
+export const vListBuildArtifactsRequest = v.object({
+    build_ids: v.array(v.string())
 });

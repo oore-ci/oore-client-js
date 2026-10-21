@@ -2,4 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vWarpgateTicketSource = v.picklist(['database', 'environment']);
+export const vUserStatus = v.picklist([
+    'active',
+    'disabled',
+    'invited'
+]);
