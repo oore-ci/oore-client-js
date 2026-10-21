@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/oore-ci/oore-client-js/compare/v0.3.0...v0.4.0) (2026-10-21)
+
+
+### Features
+
+* **events:** add a typed live event subscriber ([#12](https://github.com/oore-ci/oore-client-js/issues/12)) ([1f6cd3e](https://github.com/oore-ci/oore-client-js/commit/1f6cd3e1a8d3582ad7cc55659c6bbf4ccf0dae2d))
+* **schema:** add pipeline triggers, timeouts, approvals and isolation ([#14](https://github.com/oore-ci/oore-client-js/issues/14)) ([4a2078b](https://github.com/oore-ci/oore-client-js/commit/4a2078bbdd41606c9ccf6874ad96681b27aae257))
+
 ## [0.3.0](https://github.com/oore-ci/oore-client-js/compare/v0.2.0...v0.3.0) (2026-10-20)
 
 
