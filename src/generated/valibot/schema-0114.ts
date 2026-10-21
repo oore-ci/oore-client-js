@@ -2,10 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vProjectMemberCandidate = v.object({
-    display_name: v.nullish(v.string()),
-    email: v.string(),
-    id: v.string(),
-    role: v.string(),
-    status: v.string()
+export const vPlatformBuildArgs = v.strictObject({
+    android: v.array(v.string()),
+    ios: v.array(v.string()),
+    macos: v.array(v.string())
 });

@@ -2,9 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRuntimeUpdatePhase = v.picklist([
-    'idle',
-    'updating',
-    'restarting',
-    'failed'
-]);
+export const vRuntimeMode = v.picklist(['local', 'remote']);

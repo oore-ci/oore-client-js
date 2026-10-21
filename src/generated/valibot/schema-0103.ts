@@ -2,4 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vOperatorIncidentStatus = v.picklist(['open', 'resolved']);
+export const vOidcStartResponse = v.object({
+    authorization_url: v.string(),
+    state: v.string()
+});

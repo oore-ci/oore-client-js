@@ -2,8 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vIosSigningMode = v.picklist([
-    'manual',
-    'api',
-    'hybrid'
-]);
+export const vIosExportMethod = v.picklist(['ad_hoc', 'app_store']);

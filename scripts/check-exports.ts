@@ -29,6 +29,7 @@ const packageJson = (await Bun.file(new URL('package.json', root)).json()) as Pa
 const expected = [
   '.',
   './client',
+  './events',
   './logs',
   './models',
   './msw',

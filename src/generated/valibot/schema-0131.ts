@@ -2,9 +2,11 @@
 
 import * as v from 'valibot'
 
-export const vReleaseHealth = v.picklist([
-    'unknown',
-    'healthy',
-    'warning',
-    'breached'
+export const vReleaseAction = v.picklist([
+    'raise',
+    'pause',
+    'resume',
+    'halt',
+    'complete',
+    'approve'
 ]);

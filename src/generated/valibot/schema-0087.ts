@@ -2,8 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vLocalGitDirectoryEntry = v.object({
-    is_git_repository: v.boolean(),
-    name: v.string(),
-    path: v.string()
+export const vListBuildArtifactsRequest = v.object({
+    build_ids: v.array(v.string())
 });

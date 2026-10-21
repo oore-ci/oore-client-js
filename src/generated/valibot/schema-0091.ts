@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vLogoutResponse = v.object({
-    ok: v.boolean()
+export const vLocalGitPathSuggestion = v.object({
+    label: v.string(),
+    path: v.string()
 });

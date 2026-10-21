@@ -2,8 +2,10 @@
 
 import * as v from 'valibot'
 
-export const vGooglePlayReleaseNotesSource = v.picklist([
-    'none',
-    'changelog',
-    'repo_files'
+export const vGitLabCredentialStatus = v.picklist([
+    'valid',
+    'expiring',
+    'expired',
+    'rejected',
+    'unknown'
 ]);

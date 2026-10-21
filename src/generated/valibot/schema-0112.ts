@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vPlatformBuildCommands = v.strictObject({
-    android: v.nullish(v.string()),
-    ios: v.nullish(v.string()),
-    macos: v.nullish(v.string())
+export const vPipelineEnvVar = v.strictObject({
+    key: v.string(),
+    value: v.string()
 });

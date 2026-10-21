@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRunnerHeartbeatResponse = v.void();
+export const vUpdateRunnerPath = v.object({
+    runner_id: v.string()
+});

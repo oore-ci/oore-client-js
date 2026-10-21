@@ -243,6 +243,17 @@ export type Build = {
     updated_at: number;
 };
 
+/**
+ * `build` event on `GET /v1/events`: a build was created or changed.
+ */
+export type BuildChangedEvent = {
+    build_id: string;
+    build_number: number;
+    project_id: string;
+    status: BuildStatus;
+    updated_at: number;
+};
+
 export type BuildChangelogPreviewResponse = {
     base_commit?: string | null;
     markdown: string;
@@ -520,6 +531,26 @@ export type EffectiveProjectRetentionResponse = {
     effective: RetentionPolicy;
     has_override: boolean;
     override_fields?: null | ProjectRetentionOverride;
+};
+
+/**
+ * `ready` event, the first event on every `GET /v1/events` connection.
+ * Clients refetch once on `ready` after a reconnect, since events sent while
+ * disconnected are not replayed.
+ */
+export type EventStreamReady = {
+    project_id?: string | null;
+    /**
+     * Whether this stream carries `runner` events.
+     */
+    runners: boolean;
+};
+
+/**
+ * `resync` event: events were dropped, so clients should refetch.
+ */
+export type EventStreamResync = {
+    reason: string;
 };
 
 export type ExternalAccessNetworkSettings = {
@@ -1332,6 +1363,22 @@ export type ReleaseActivityEvent = ReleaseHistoryEntry & {
  */
 export type ReleaseApprovalGate = 'none' | 'before_upload' | 'before_production';
 
+/**
+ * `release` event on `GET /v1/events`: a release was created or its state
+ * or rollout changed.
+ */
+export type ReleaseChangedEvent = {
+    build_id: string;
+    project_id: string;
+    release_id: string;
+    /**
+     * Fraction of users, 0..1.
+     */
+    rollout_fraction: number;
+    state: ReleaseState;
+    updated_at: number;
+};
+
 export type ReleaseDetailResponse = {
     history: Array<ReleaseHistoryEntry>;
     release: Release;
@@ -1507,6 +1554,20 @@ export type RunnerAppStoreUploadCredentials = {
     issuer_id: string;
     key_id: string;
     private_key_pem: string;
+};
+
+/**
+ * `runner` event on `GET /v1/events`: a runner was registered, removed,
+ * renamed or changed status. Sent only to users who can read runners.
+ */
+export type RunnerChangedEvent = {
+    name: string;
+    /**
+     * True when the runner no longer exists; `status` is its last known one.
+     */
+    removed: boolean;
+    runner_id: string;
+    status: RunnerStatus;
 };
 
 export type RunnerHeartbeatRequest = {
@@ -3152,6 +3213,44 @@ export type CreateStreamTokenResponses = {
 };
 
 export type CreateStreamTokenResponse = CreateStreamTokenResponses[keyof CreateStreamTokenResponses];
+
+export type StreamEventsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Only send build and release events for this project
+         */
+        project_id?: string;
+    };
+    url: '/v1/events';
+};
+
+export type StreamEventsErrors = {
+    /**
+     * Missing or invalid token
+     */
+    401: ApiError;
+    /**
+     * No read access to the project
+     */
+    403: ApiError;
+    /**
+     * Too many open event streams
+     */
+    429: ApiError;
+};
+
+export type StreamEventsError = StreamEventsErrors[keyof StreamEventsErrors];
+
+export type StreamEventsResponses = {
+    /**
+     * SSE event stream
+     */
+    200: string;
+};
+
+export type StreamEventsResponse = StreamEventsResponses[keyof StreamEventsResponses];
 
 export type FrontendPairData = {
     body: FrontendPairRequest;

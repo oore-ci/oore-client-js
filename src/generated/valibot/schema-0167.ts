@@ -2,4 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vRunnerPolicyBlockReason = v.picklist(['instance_paused', 'repository_unavailable']);
+export const vRunnerHeartbeatRequest = v.object({
+    capabilities: v.optional(v.record(v.string(), v.unknown())),
+    status: v.string()
+});

@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vDownloadLocalArtifactPath = v.object({
-    token: v.string()
+export const vRevokeApiTokenPath = v.object({
+    token_id: v.string()
 });

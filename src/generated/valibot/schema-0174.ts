@@ -2,4 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vRuntimeMode = v.picklist(['local', 'remote']);
+export const vRunnerStatus = v.picklist([
+    'online',
+    'offline',
+    'busy',
+    'draining'
+]);

@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vMarkOperatorIncidentReadPath = v.object({
+export const vSyncInstallationsPath = v.object({
     id: v.string()
 });

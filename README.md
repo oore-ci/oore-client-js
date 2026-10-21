@@ -121,6 +121,16 @@ const plist = await getIosInstallManifestText({
 })
 ```
 
+`streamLiveEvents` opens one `GET /v1/events` connection and yields typed `build`, `release` and `runner` changes. It ends when the connection closes, so reconnect with your own backoff. Events are not replayed, so refetch on every `ready` after the first and on `resync`:
+
+```ts
+import { streamLiveEvents } from '@oore/client/events'
+
+for await (const event of streamLiveEvents({ client, signal })) {
+  if (event.type === 'build') console.log(event.build.build_id, event.build.status)
+}
+```
+
 The manifest helper parses Oore's XML response as text. The generated low-level operation remains available when a `Blob` is preferred.
 
 ## Entrypoints
@@ -131,6 +141,7 @@ The manifest helper parses Oore's XML response as text. The generated low-level 
 | `@oore/client/client` | Client setup and errors only |
 | `@oore/client/operations` | Generated operation functions |
 | `@oore/client/models` | Generated TypeScript models |
+| `@oore/client/events` | Typed live event stream helper |
 | `@oore/client/logs` | Typed build-log stream helper |
 | `@oore/client/react-query` | React Query keys, option factories, and hooks |
 | `@oore/client/msw` | Generated MSW handler factories |
