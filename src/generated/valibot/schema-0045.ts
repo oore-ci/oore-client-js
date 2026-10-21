@@ -2,12 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vCreateApiTokenRequest = v.object({
-    expires_at: v.nullish(v.pipe(v.union([
-        v.number(),
-        v.string(),
-        v.bigint()
-    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
-    name: v.string(),
-    role: v.string()
+export const vConfigureExternalAccessOidcRequest = v.object({
+    client_id: v.string(),
+    client_secret: v.nullish(v.string()),
+    issuer_url: v.string()
 });

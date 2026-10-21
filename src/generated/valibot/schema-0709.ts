@@ -2,8 +2,18 @@
 
 import * as v from 'valibot'
 
-export const vGithubWebhookHeaders = v.object({
-    'X-Hub-Signature-256': v.string(),
-    'X-GitHub-Delivery': v.nullish(v.string()),
-    'X-GitHub-Event': v.nullish(v.string())
+export const vListUsersQuery = v.object({
+    q: v.optional(v.string()),
+    sort: v.optional(v.string()),
+    direction: v.optional(v.string()),
+    limit: v.optional(v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
+    offset: v.optional(v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')))
 });

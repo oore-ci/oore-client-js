@@ -2,6 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vJobStatusResponse = v.object({
-    status: v.string()
+export const vIosProvisioningProfileInput = v.object({
+    bundle_id: v.string(),
+    profile_base64: v.nullish(v.string()),
+    profile_filename: v.nullish(v.string())
 });

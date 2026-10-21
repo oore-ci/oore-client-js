@@ -2,4 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vBuildIsolation = v.picklist(['host', 'vm']);
+export const vBuildChangelogPreviewResponse = v.object({
+    base_commit: v.nullish(v.string()),
+    markdown: v.string(),
+    target_commit: v.string()
+});

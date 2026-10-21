@@ -2,8 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vScmProvider = v.picklist([
-    'github',
-    'gitlab',
-    'local_git'
+export const vRuntimeUpdatePhase = v.picklist([
+    'idle',
+    'updating',
+    'restarting',
+    'failed'
 ]);

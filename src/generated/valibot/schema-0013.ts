@@ -2,9 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vArtifactStorageProvider = v.picklist([
-    'disabled',
-    'local',
-    's3',
-    'r2'
-]);
+export const vArtifactInstallPlatform = v.picklist(['android', 'ios']);
