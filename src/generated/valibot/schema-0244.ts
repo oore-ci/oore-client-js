@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vTestNotificationChannelResponse = v.object({
-    error: v.nullish(v.string()),
-    success: v.boolean()
+export const vSyncInstallationsRequest = v.object({
+    installation_id: v.nullish(v.string())
 });

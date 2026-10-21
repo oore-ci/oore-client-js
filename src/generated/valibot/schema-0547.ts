@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vCompleteReleasePath = v.object({
+export const vGetReleasePath = v.object({
     release_id: v.string()
 });

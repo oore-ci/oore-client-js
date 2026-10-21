@@ -19,5 +19,6 @@ export const vClaimedJob = v.object({
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
     pipeline_id: v.string(),
     project_id: v.string(),
+    retry_steps: v.nullish(v.array(v.string())),
     signing_token: v.string()
 });

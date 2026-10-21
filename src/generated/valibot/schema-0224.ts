@@ -2,10 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vSetupState = v.picklist([
-    'uninitialized',
-    'bootstrap_pending',
-    'idp_configured',
-    'owner_created',
-    'ready'
-]);
+export const vSetupOidcVerifyRequest = v.object({
+    code: v.string(),
+    state: v.string()
+});
