@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/oore-ci/oore-client-js/compare/v0.5.0...v0.6.0) (2026-10-21)
+
+
+### Features
+
+* **schema:** add build step retry ([#17](https://github.com/oore-ci/oore-client-js/issues/17)) ([ca5de72](https://github.com/oore-ci/oore-client-js/commit/ca5de728726df5150c1c1d81854f267e6f86b341))
+
 ## [0.5.0](https://github.com/oore-ci/oore-client-js/compare/v0.4.0...v0.5.0) (2026-10-21)
 
 
