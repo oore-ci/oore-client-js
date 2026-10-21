@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vGetPipelinePath = v.object({
-    pipeline_id: v.string()
+export const vListOperatorIncidentsQuery = v.object({
+    status: v.optional(v.string()),
+    resource_id: v.optional(v.string())
 });

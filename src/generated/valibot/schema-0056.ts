@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vEventStreamResync = v.object({
-    reason: v.string()
+export const vEventStreamReady = v.object({
+    project_id: v.nullish(v.string()),
+    runners: v.boolean()
 });

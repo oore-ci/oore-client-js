@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vClaimJobPath = v.object({
+export const vGetRunnerPath = v.object({
     runner_id: v.string()
 });

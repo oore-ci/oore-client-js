@@ -2,8 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRuntimeUpdateCheckStatus = v.picklist([
-    'pass',
-    'warn',
-    'fail'
-]);
+export const vRuntimeMode = v.picklist(['local', 'remote']);

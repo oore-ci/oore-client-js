@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vCreatePipelineSecretPath = v.object({
+export const vGetPipelineGooglePlayPublishPath = v.object({
     pipeline_id: v.string()
 });

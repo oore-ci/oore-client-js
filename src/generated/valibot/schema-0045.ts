@@ -2,20 +2,12 @@
 
 import * as v from 'valibot'
 
-export const vCreateApiTokenResponse = v.object({
-    created_at: v.pipe(v.union([
-        v.number(),
-        v.string(),
-        v.bigint()
-    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+export const vCreateApiTokenRequest = v.object({
     expires_at: v.nullish(v.pipe(v.union([
         v.number(),
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
-    id: v.string(),
     name: v.string(),
-    prefix: v.string(),
-    role: v.string(),
-    token: v.string()
+    role: v.string()
 });

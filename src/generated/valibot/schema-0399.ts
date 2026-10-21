@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vDeleteLocalGitIntegrationPath = v.object({
-    id: v.string()
-});
+export const vGitlabCallbackResponse = v.string();

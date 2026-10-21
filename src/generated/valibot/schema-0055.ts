@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vEventStreamReady = v.object({
-    project_id: v.nullish(v.string()),
-    runners: v.boolean()
+export const vDeleteNotificationChannelResponse = v.object({
+    deleted: v.boolean()
 });

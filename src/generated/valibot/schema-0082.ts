@@ -2,8 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vIosCertificateInput = v.object({
-    p12_base64: v.nullish(v.string()),
-    p12_filename: v.nullish(v.string()),
-    p12_password: v.nullish(v.string())
+export const vIosApiCredentialInput = v.object({
+    issuer_id: v.nullish(v.string()),
+    key_id: v.nullish(v.string()),
+    private_key_base64: v.nullish(v.string())
 });

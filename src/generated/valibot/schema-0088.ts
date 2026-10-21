@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vKeyStorageMode = v.picklist(['keychain', 'file']);
+export const vJobStatusResponse = v.object({
+    status: v.string()
+});

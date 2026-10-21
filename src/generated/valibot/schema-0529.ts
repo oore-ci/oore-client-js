@@ -2,18 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vListReleasesQuery = v.object({
-    project_id: v.optional(v.string()),
-    build_id: v.optional(v.string()),
-    state: v.optional(v.string()),
-    limit: v.optional(v.pipe(v.union([
-        v.number(),
-        v.string(),
-        v.bigint()
-    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
-    offset: v.optional(v.pipe(v.union([
-        v.number(),
-        v.string(),
-        v.bigint()
-    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')))
+export const vDeleteProjectSecretPath = v.object({
+    project_id: v.string(),
+    name: v.string()
 });
