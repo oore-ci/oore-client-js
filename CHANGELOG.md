@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/oore-ci/oore-client-js/compare/v0.4.0...v0.5.0) (2026-10-21)
+
+
+### Features
+
+* **schema:** add build test results ([#15](https://github.com/oore-ci/oore-client-js/issues/15)) ([754e005](https://github.com/oore-ci/oore-client-js/commit/754e005b70bbe35253c22540b70040919a2d1bea))
+
 ## [0.4.0](https://github.com/oore-ci/oore-client-js/compare/v0.3.0...v0.4.0) (2026-10-21)
 
 
