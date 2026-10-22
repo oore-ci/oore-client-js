@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: Publish this existing release tag (e.g. v0.9.0) when its npm publish failed
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -17,22 +22,40 @@ jobs:
     steps:
       - name: Open or update release pull request
         id: release
+        if: inputs.tag == ''
         uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
 
+      # A release whose npm publish failed (say, a registry outage) is already
+      # tagged, so release-please won't report it again; publish it by tag.
+      - name: Pick the release to publish
+        id: pick
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          RELEASE_CREATED: ${{ steps.release.outputs.release_created }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag_name }}
+        run: |
+          if [ -n "$INPUT_TAG" ]; then
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+            echo "tag=$INPUT_TAG" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=${RELEASE_CREATED:-false}" >> "$GITHUB_OUTPUT"
+            echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Check out released source
-        if: steps.release.outputs.release_created == 'true'
+        if: steps.pick.outputs.publish == 'true'
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ steps.release.outputs.tag_name }}
+          ref: ${{ steps.pick.outputs.tag }}
 
       - name: Set up Bun
-        if: steps.release.outputs.release_created == 'true'
+        if: steps.pick.outputs.publish == 'true'
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version: 1.3.14
 
       - name: Set up Node and npm registry
-        if: steps.release.outputs.release_created == 'true'
+        if: steps.pick.outputs.publish == 'true'
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '24'
@@ -40,23 +63,23 @@ jobs:
           package-manager-cache: false
 
       - name: Install trusted-publishing npm CLI
-        if: steps.release.outputs.release_created == 'true'
+        if: steps.pick.outputs.publish == 'true'
         run: npm install --global npm@12.0.2
 
       - name: Install exact dependencies
-        if: steps.release.outputs.release_created == 'true'
+        if: steps.pick.outputs.publish == 'true'
         run: bun ci
 
       - name: Check released package
-        if: steps.release.outputs.release_created == 'true'
+        if: steps.pick.outputs.publish == 'true'
         run: bun run check
 
       - name: Match tag and package version
-        if: steps.release.outputs.release_created == 'true'
+        if: steps.pick.outputs.publish == 'true'
         env:
-          RELEASE_TAG: ${{ steps.release.outputs.tag_name }}
+          RELEASE_TAG: ${{ steps.pick.outputs.tag }}
         run: test "v$(node --print "require('./package.json').version")" = "$RELEASE_TAG"
 
       - name: Publish public package
-        if: steps.release.outputs.release_created == 'true'
+        if: steps.pick.outputs.publish == 'true'
         run: npm publish --access public
