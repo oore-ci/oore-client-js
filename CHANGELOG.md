@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.0](https://github.com/oore-ci/oore-client-js/compare/v0.9.0...v0.10.0) (2026-10-22)
+
+
+### Features
+
+* ship the OpenAPI spec as @oore/client/openapi.json ([#36](https://github.com/oore-ci/oore-client-js/issues/36)) ([bfdea85](https://github.com/oore-ci/oore-client-js/commit/bfdea85c0c370a8f18b47a4f1f79a4ebfa28bccf))
+
+
+### Bug Fixes
+
+* client stability audit (SSE errors, client defaults, release CI) ([#35](https://github.com/oore-ci/oore-client-js/issues/35)) ([be58bea](https://github.com/oore-ci/oore-client-js/commit/be58beae387fad53b54eb560fc99c90a7eddc0c6))
+
 ## [0.9.0](https://github.com/oore-ci/oore-client-js/compare/v0.8.0...v0.9.0) (2026-10-22)
 
 
