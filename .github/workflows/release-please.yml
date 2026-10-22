@@ -35,11 +35,15 @@ jobs:
       # PRs opened with GITHUB_TOKEN don't trigger pull_request workflows, so
       # start CI on the release branch explicitly; its checks show on the PR.
       - name: Dispatch CI for release pull request
-        if: steps.release.outputs.pr
+        # The runner evaluates this env even when the step is skipped, so
+        # parse the PR JSON in the shell instead of with fromJSON.
+        if: steps.release.outputs.pr != ''
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_BRANCH: ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
-        run: gh workflow run ci.yml --repo "$GITHUB_REPOSITORY" --ref "$RELEASE_BRANCH"
+          RELEASE_PR: ${{ steps.release.outputs.pr }}
+        run: |
+          release_branch=$(jq -r '.headBranchName' <<<"$RELEASE_PR")
+          gh workflow run ci.yml --repo "$GITHUB_REPOSITORY" --ref "$release_branch"
 
       # A release whose npm publish failed (say, a registry outage) is already
       # tagged, so release-please won't report it again; publish it by tag.
