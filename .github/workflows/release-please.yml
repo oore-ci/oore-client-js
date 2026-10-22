@@ -11,19 +11,35 @@ on:
         type: string
 
 permissions:
+  actions: write
   contents: write
   id-token: write
   issues: write
   pull-requests: write
 
+# Two pushes to main in a row must not publish the same version twice.
+concurrency:
+  group: release-please
+  cancel-in-progress: false
+
 jobs:
   release:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Open or update release pull request
         id: release
         if: inputs.tag == ''
         uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+
+      # PRs opened with GITHUB_TOKEN don't trigger pull_request workflows, so
+      # start CI on the release branch explicitly; its checks show on the PR.
+      - name: Dispatch CI for release pull request
+        if: steps.release.outputs.pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_BRANCH: ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
+        run: gh workflow run ci.yml --repo "$GITHUB_REPOSITORY" --ref "$RELEASE_BRANCH"
 
       # A release whose npm publish failed (say, a registry outage) is already
       # tagged, so release-please won't report it again; publish it by tag.
@@ -80,6 +96,21 @@ jobs:
           RELEASE_TAG: ${{ steps.pick.outputs.tag }}
         run: test "v$(node --print "require('./package.json').version")" = "$RELEASE_TAG"
 
-      - name: Publish public package
+      # A retried release may already be on npm from an earlier attempt that
+      # timed out after the registry accepted it.
+      - name: Check whether this version is on npm
+        id: npm
         if: steps.pick.outputs.publish == 'true'
+        run: |
+          version="$(node --print "require('./package.json').version")"
+          if npm view "@oore/client@$version" version >/dev/null 2>&1; then
+            echo "::notice::@oore/client@$version is already on npm; skipping publish."
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish public package
+        if: steps.pick.outputs.publish == 'true' && steps.npm.outputs.published != 'true'
+        timeout-minutes: 10
         run: npm publish --access public
