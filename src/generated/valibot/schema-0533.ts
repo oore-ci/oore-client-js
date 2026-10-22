@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vCreateProjectSecretPath = v.object({
+export const vDiscoverRepositoryWorkflowsPath = v.object({
     project_id: v.string()
 });

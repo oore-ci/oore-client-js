@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vUpdateUserRoleRequest = v.object({
-    role: v.string()
+export const vUpdateRunnerRequest = v.object({
+    custom_labels: v.nullish(v.array(v.string())),
+    name: v.nullish(v.string())
 });

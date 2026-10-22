@@ -2,9 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vArtifactDownloadLinkResponse = v.object({
-    download_url: v.string(),
-    expires_at: v.pipe(v.union([
+export const vAppendBuildLogsResponse = v.object({
+    appended: v.pipe(v.union([
         v.number(),
         v.string(),
         v.bigint()

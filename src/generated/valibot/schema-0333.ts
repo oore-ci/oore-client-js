@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vCreateArtifactInstallLinkPath = v.object({
-    artifact_id: v.string()
+export const vDownloadViaScopedTokenV1Path = v.object({
+    token: v.string()
 });

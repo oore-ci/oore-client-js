@@ -2,7 +2,14 @@
 
 import * as v from 'valibot'
 
-export const vCreateLocalGitIntegrationRequest = v.object({
-    display_name: v.nullish(v.string()),
-    repository_path: v.string()
+export const vCreateArtifactRequest = v.object({
+    artifact_type: v.string(),
+    checksum: v.nullish(v.string()),
+    file_size: v.nullish(v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
+    metadata: v.optional(v.record(v.string(), v.unknown())),
+    name: v.string()
 });

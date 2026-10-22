@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRotatePipelineSecretPath = v.object({
-    pipeline_id: v.string(),
-    name: v.string()
+export const vGetPipelineGooglePlayPublishPath = v.object({
+    pipeline_id: v.string()
 });

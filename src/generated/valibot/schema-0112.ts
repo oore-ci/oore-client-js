@@ -2,4 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vOperatorIncidentStatus = v.picklist(['open', 'resolved']);
+export const vOidcConfigureRequest = v.object({
+    clear_client_secret: v.optional(v.boolean()),
+    client_id: v.string(),
+    client_secret: v.nullish(v.string()),
+    issuer_url: v.string()
+});

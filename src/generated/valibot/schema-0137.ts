@@ -2,11 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vReleaseAction = v.picklist([
-    'raise',
-    'pause',
-    'resume',
-    'halt',
-    'complete',
-    'approve'
-]);
+export const vRegisterRunnerRequest = v.object({
+    capabilities: v.optional(v.record(v.string(), v.unknown())),
+    labels: v.optional(v.array(v.string())),
+    name: v.string()
+});

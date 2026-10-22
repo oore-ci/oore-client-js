@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vBuildApprovalRequest = v.object({
-    reason: v.nullish(v.string())
+export const vBootstrapTokenVerifyRequest = v.object({
+    token: v.string()
 });

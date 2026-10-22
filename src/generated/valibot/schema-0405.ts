@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vGitlabCallbackResponse = v.string();
+export const vGithubCallbackResponse = v.string();

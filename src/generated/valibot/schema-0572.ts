@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vDeleteRunnerResponse = v.void();
+export const vPauseReleasePath = v.object({
+    release_id: v.string()
+});
