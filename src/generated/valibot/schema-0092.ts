@@ -2,4 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vKeyStorageMode = v.picklist(['keychain', 'file']);
+export const vIosExportMethod = v.picklist(['ad_hoc', 'app_store']);

@@ -2,8 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vConfigureExternalAccessOidcRequest = v.object({
-    client_id: v.string(),
-    client_secret: v.nullish(v.string()),
-    issuer_url: v.string()
+export const vCompleteArtifactRequest = v.object({
+    error_message: v.nullish(v.string())
 });

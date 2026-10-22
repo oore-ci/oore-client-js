@@ -2,10 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vHealthResponse = v.object({
-    channel: v.nullable(v.string()),
-    github_repo: v.nullable(v.string()),
-    ok: v.boolean(),
-    package_version: v.string(),
-    version: v.string()
+export const vGitLabAuthorizeResponse = v.object({
+    authorize_url: v.string()
 });

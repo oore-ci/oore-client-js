@@ -2,4 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vMetricsResponse = v.string();
+export const vWebhookResponse = v.object({
+    duplicate: v.nullish(v.boolean()),
+    ok: v.boolean()
+});

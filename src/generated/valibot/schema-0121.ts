@@ -2,8 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vPipelineCommandStages = v.strictObject({
-    build: v.array(v.string()),
-    post_build: v.array(v.string()),
-    pre_build: v.array(v.string())
-});
+export const vOperatorIncidentStatus = v.picklist(['open', 'resolved']);

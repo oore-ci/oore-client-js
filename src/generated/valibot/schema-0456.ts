@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vUpdatePipelinePath = v.object({
-    pipeline_id: v.string()
+export const vMarkOperatorIncidentReadPath = v.object({
+    id: v.string()
 });

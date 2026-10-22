@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRevokeArtifactDownloadTokenResponse = v.object({
-    revoked: v.boolean()
-});
+export const vRetentionCleanupTarget = v.picklist(['artifacts_only', 'full']);

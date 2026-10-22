@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGetBuildTestResultsPath = v.object({
+export const vRejectBuildPath = v.object({
     build_id: v.string()
 });

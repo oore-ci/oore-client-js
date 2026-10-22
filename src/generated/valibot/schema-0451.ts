@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vDeletePipelinePath = v.object({
-    pipeline_id: v.string()
+export const vListRepositoriesPath = v.object({
+    id: v.string()
 });

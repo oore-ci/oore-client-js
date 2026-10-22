@@ -2,8 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vUserStatus = v.picklist([
-    'active',
-    'disabled',
-    'invited'
-]);
+export const vUpdateUserRoleRequest = v.object({
+    role: v.string()
+});

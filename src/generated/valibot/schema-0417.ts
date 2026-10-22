@@ -2,9 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitlabCallbackQuery = v.object({
-    code: v.optional(v.string()),
-    state: v.optional(v.string()),
-    error: v.optional(v.string()),
-    error_description: v.optional(v.string())
+export const vGithubCreatePageQuery = v.object({
+    state: v.string()
 });

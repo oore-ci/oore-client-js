@@ -2,7 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vRemoveProjectMemberPath = v.object({
-    project_id: v.string(),
-    user_id: v.string()
+export const vPreviewBuildChangelogQuery = v.object({
+    pipeline_id: v.string(),
+    branch: v.optional(v.string()),
+    commit_sha: v.optional(v.string())
 });

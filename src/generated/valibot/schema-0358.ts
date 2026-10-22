@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vOidcCallbackBody = v.object({
-    code: v.string(),
-    state: v.string()
+export const vListScopedDownloadTokensPath = v.object({
+    artifact_id: v.string()
 });

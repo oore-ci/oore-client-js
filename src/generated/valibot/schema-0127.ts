@@ -2,10 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vProjectMemberCandidate = v.object({
-    display_name: v.nullish(v.string()),
-    email: v.string(),
-    id: v.string(),
-    role: v.string(),
-    status: v.string()
+export const vPipelineEnvVar = v.strictObject({
+    key: v.string(),
+    value: v.string()
 });

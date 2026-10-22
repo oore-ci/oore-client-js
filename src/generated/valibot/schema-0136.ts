@@ -2,8 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vRegisterIosDeviceRequest = v.object({
-    name: v.string(),
-    platform: v.nullish(v.string()),
-    udid: v.string()
-});
+export const vProjectRole = v.picklist([
+    'maintainer',
+    'developer',
+    'viewer'
+]);

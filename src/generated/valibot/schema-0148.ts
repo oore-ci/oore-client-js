@@ -2,13 +2,11 @@
 
 import * as v from 'valibot'
 
-export const vReleaseState = v.picklist([
-    'uploading',
-    'processing',
-    'in_review',
-    'rolling',
-    'paused',
-    'halted',
+export const vReleaseAction = v.picklist([
+    'raise',
+    'pause',
+    'resume',
+    'halt',
     'complete',
-    'failed'
+    'approve'
 ]);

@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGetIosInstallManifestV1Path = v.object({
-    token: v.string()
+export const vUpdateAppStoreConnectKeyPath = v.object({
+    id: v.string()
 });
