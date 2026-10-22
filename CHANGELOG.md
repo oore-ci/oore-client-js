@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/oore-ci/oore-client-js/compare/v0.8.0...v0.9.0) (2026-10-22)
+
+
+### Features
+
+* **schema:** add store vitals refresh ([#24](https://github.com/oore-ci/oore-client-js/issues/24)) ([bf3c3c1](https://github.com/oore-ci/oore-client-js/commit/bf3c3c19493635be7d3042b9e5af55aa8a7fcb27))
+
 ## [0.8.0](https://github.com/oore-ci/oore-client-js/compare/v0.7.0...v0.8.0) (2026-10-22)
 
 
