@@ -18,6 +18,12 @@ export const vIntegration = v.object({
     id: v.string(),
     provider: vScmProvider,
     status: v.string(),
+    status_checked_at: v.nullish(v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
+    status_reason: v.nullish(v.string()),
     updated_at: v.pipe(v.union([
         v.number(),
         v.string(),

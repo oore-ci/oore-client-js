@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 import { vNotificationChannelType } from './v-notification-channel-type.js'
+import { vSmtpConfigSummary } from './v-smtp-config-summary.js'
 
 export const vNotificationChannel = v.object({
     channel_type: vNotificationChannelType,
@@ -19,9 +20,11 @@ export const vNotificationChannel = v.object({
     id: v.string(),
     name: v.string(),
     project_id: v.nullish(v.string()),
+    smtp_summary: v.nullish(vSmtpConfigSummary),
     updated_at: v.pipe(v.union([
         v.number(),
         v.string(),
         v.bigint()
-    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    url_host: v.nullish(v.string())
 });

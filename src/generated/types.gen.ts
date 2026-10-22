@@ -138,6 +138,11 @@ export type ApprovalPolicy = {
      * `tag_push`, `manual` or `schedule`. Empty means every build.
      */
     events?: Array<string>;
+    /**
+     * Hours a build waits for a decision before it is canceled. Defaults
+     * to 168 (7 days).
+     */
+    expires_after_hours?: number | null;
     required: boolean;
 };
 
@@ -919,6 +924,43 @@ export type GitLabStartRequest = {
 };
 
 /**
+ * Which service account key to check against Google Play. The values come
+ * from the form, so a key can be checked before the settings are saved.
+ */
+export type GooglePlayCredentialsTestRequest = {
+    /**
+     * The app to open. When omitted, the saved expected package is used,
+     * then the package of the pipeline's latest Google Play release.
+     */
+    package_name?: string | null;
+    /**
+     * Name of the secret holding the service account JSON key.
+     */
+    service_account_secret: string;
+};
+
+/**
+ * Outcome of a Google Play credentials check. A failed check is a normal
+ * answer, with Google's reason in `message`, not an HTTP error.
+ */
+export type GooglePlayCredentialsTestResponse = {
+    checked_at: number;
+    /**
+     * What passed, or the exact failure.
+     */
+    message: string;
+    ok: boolean;
+    /**
+     * The app the check opened, when one was known.
+     */
+    package_name?: string | null;
+    /**
+     * The key's `client_email`, when the secret is a service account key.
+     */
+    service_account_email?: string | null;
+};
+
+/**
  * Per-pipeline Google Play upload settings. Credentials are referenced by
  * secret name and never stored here.
  */
@@ -995,6 +1037,15 @@ export type Integration = {
     id: string;
     provider: ScmProvider;
     status: string;
+    /**
+     * When Oore last checked the source's credentials.
+     */
+    status_checked_at?: number | null;
+    /**
+     * Why the source has its current status: `expired`, `rejected` or
+     * `refresh_failed` when credentials stopped working.
+     */
+    status_reason?: string | null;
     updated_at: number;
 };
 
@@ -1268,7 +1319,14 @@ export type NotificationChannel = {
      * offline.
      */
     project_id?: string | null;
+    smtp_summary?: null | SmtpConfigSummary;
     updated_at: number;
+    /**
+     * Host of the configured URL, so operators can tell which endpoint
+     * receives alerts. The full URL can carry a token and is never exposed.
+     * Returned when reading one channel.
+     */
+    url_host?: string | null;
 };
 
 export type NotificationChannelResponse = {
@@ -2235,6 +2293,19 @@ export type SmtpConfig = {
     from_address: string;
     host: string;
     password: string;
+    port: number;
+    recipients: Array<string>;
+    tls_mode: SmtpTlsMode;
+    username: string;
+};
+
+/**
+ * The SMTP settings an operator can read back. The password is never
+ * returned.
+ */
+export type SmtpConfigSummary = {
+    from_address: string;
+    host: string;
     port: number;
     recipients: Array<string>;
     tls_mode: SmtpTlsMode;
@@ -3696,6 +3767,14 @@ export type ListBuildsData = {
          * Filter by one status or up to 9 comma-separated statuses
          */
         status?: string;
+        /**
+         * Filter by exact branch name
+         */
+        branch?: string;
+        /**
+         * Search builds, case-insensitively, by build number (with or without #), part of the branch, the start of the commit SHA, or part of the pipeline or project name. At most 200 characters.
+         */
+        q?: string;
         /**
          * Sort by created_at, status, project_name, pipeline_name, or branch
          */
@@ -5368,6 +5447,44 @@ export type UpdatePipelineGooglePlayPublishResponses = {
 
 export type UpdatePipelineGooglePlayPublishResponse = UpdatePipelineGooglePlayPublishResponses[keyof UpdatePipelineGooglePlayPublishResponses];
 
+export type TestPipelineGooglePlayCredentialsData = {
+    body: GooglePlayCredentialsTestRequest;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/publish/google-play/test-credentials';
+};
+
+export type TestPipelineGooglePlayCredentialsErrors = {
+    /**
+     * Invalid request
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Pipeline not found
+     */
+    404: ApiError;
+};
+
+export type TestPipelineGooglePlayCredentialsError = TestPipelineGooglePlayCredentialsErrors[keyof TestPipelineGooglePlayCredentialsErrors];
+
+export type TestPipelineGooglePlayCredentialsResponses = {
+    /**
+     * Check result
+     */
+    200: GooglePlayCredentialsTestResponse;
+};
+
+export type TestPipelineGooglePlayCredentialsResponse = TestPipelineGooglePlayCredentialsResponses[keyof TestPipelineGooglePlayCredentialsResponses];
+
 export type ListPipelineSecretsData = {
     body?: never;
     path: {
@@ -5448,7 +5565,12 @@ export type DeletePipelineSecretData = {
          */
         name: string;
     };
-    query?: never;
+    query?: {
+        /**
+         * Delete even when Google Play publishing uses the secret
+         */
+        force?: boolean;
+    };
     url: '/v1/pipelines/{pipeline_id}/secrets/{name}';
 };
 
@@ -5461,6 +5583,10 @@ export type DeletePipelineSecretErrors = {
      * Secret not found
      */
     404: ApiError;
+    /**
+     * A pipeline uses the secret as its Google Play service account
+     */
+    409: ApiError;
 };
 
 export type DeletePipelineSecretError = DeletePipelineSecretErrors[keyof DeletePipelineSecretErrors];
@@ -5738,7 +5864,7 @@ export type CreateBuildErrors = {
      */
     404: ApiError;
     /**
-     * Project source is not configured or resolvable
+     * Project source is not configured or resolvable, or the Google Play service account secret is missing
      */
     409: ApiError;
 };
@@ -6246,7 +6372,12 @@ export type DeleteProjectSecretData = {
          */
         name: string;
     };
-    query?: never;
+    query?: {
+        /**
+         * Delete even when Google Play publishing uses the secret
+         */
+        force?: boolean;
+    };
     url: '/v1/projects/{project_id}/secrets/{name}';
 };
 
@@ -6259,6 +6390,10 @@ export type DeleteProjectSecretErrors = {
      * Secret not found
      */
     404: ApiError;
+    /**
+     * A pipeline uses the secret as its Google Play service account
+     */
+    409: ApiError;
 };
 
 export type DeleteProjectSecretError = DeleteProjectSecretErrors[keyof DeleteProjectSecretErrors];
@@ -7641,7 +7776,12 @@ export type DeleteInstanceSecretData = {
          */
         name: string;
     };
-    query?: never;
+    query?: {
+        /**
+         * Delete even when Google Play publishing uses the secret
+         */
+        force?: boolean;
+    };
     url: '/v1/secrets/{name}';
 };
 
@@ -7654,6 +7794,10 @@ export type DeleteInstanceSecretErrors = {
      * Secret not found
      */
     404: ApiError;
+    /**
+     * A pipeline uses the secret as its Google Play service account
+     */
+    409: ApiError;
 };
 
 export type DeleteInstanceSecretError = DeleteInstanceSecretErrors[keyof DeleteInstanceSecretErrors];
@@ -8659,15 +8803,6 @@ export type RefreshStoreVitalsData = {
     query?: never;
     url: '/v1/store-vitals/refresh';
 };
-
-export type RefreshStoreVitalsErrors = {
-    /**
-     * A refresh is running or just ran
-     */
-    429: ApiError;
-};
-
-export type RefreshStoreVitalsError = RefreshStoreVitalsErrors[keyof RefreshStoreVitalsErrors];
 
 export type RefreshStoreVitalsResponses = {
     /**
