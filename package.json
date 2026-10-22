@@ -60,10 +60,12 @@
       "types": "./dist/valibot.d.ts",
       "import": "./dist/valibot.js"
     },
+    "./openapi.json": "./openapi/openapi.json",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
+    "openapi/openapi.json",
     "LICENSE",
     "README.md"
   ],
