@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/oore-ci/oore-client-js/compare/v0.6.0...v0.7.0) (2026-10-22)
+
+
+### Features
+
+* **schema:** add build insights ([#20](https://github.com/oore-ci/oore-client-js/issues/20)) ([9f89845](https://github.com/oore-ci/oore-client-js/commit/9f8984584689bf1a82713aad055fa00635aa9b84))
+* **schema:** add shared App Store Connect keys ([#19](https://github.com/oore-ci/oore-client-js/issues/19)) ([c601ab0](https://github.com/oore-ci/oore-client-js/commit/c601ab06b3bff515876aed96a8d13a3132f158c4))
+
 ## [0.6.0](https://github.com/oore-ci/oore-client-js/compare/v0.5.0...v0.6.0) (2026-10-21)
 
 
