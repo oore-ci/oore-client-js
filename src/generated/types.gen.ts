@@ -8653,6 +8653,31 @@ export type GetStoreVitalsResponses = {
 
 export type GetStoreVitalsResponse = GetStoreVitalsResponses[keyof GetStoreVitalsResponses];
 
+export type RefreshStoreVitalsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/store-vitals/refresh';
+};
+
+export type RefreshStoreVitalsErrors = {
+    /**
+     * A refresh is running or just ran
+     */
+    429: ApiError;
+};
+
+export type RefreshStoreVitalsError = RefreshStoreVitalsErrors[keyof RefreshStoreVitalsErrors];
+
+export type RefreshStoreVitalsResponses = {
+    /**
+     * Store vitals after the refresh
+     */
+    200: StoreVitalsResponse;
+};
+
+export type RefreshStoreVitalsResponse = RefreshStoreVitalsResponses[keyof RefreshStoreVitalsResponses];
+
 export type GetRuntimeUpdateStatusData = {
     body?: never;
     path?: never;
