@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vListProjectMembersResponse } from './schema-0136.js'
 
-export const vListProjectMembersResponse2 = vListProjectMembersResponse;
+export const vPreviewBuildChangelogPath = v.object({
+    project_id: v.string()
+});

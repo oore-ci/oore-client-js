@@ -2,4 +2,11 @@
 
 import * as v from 'valibot'
 
-export const vRunnerPolicyBlockReason = v.picklist(['instance_paused', 'repository_unavailable']);
+export const vRunnerRetryArtifact = v.object({
+    artifact_type: v.string(),
+    checksum: v.nullish(v.string()),
+    download_url: v.string(),
+    id: v.string(),
+    metadata: v.record(v.string(), v.unknown()),
+    name: v.string()
+});

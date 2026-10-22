@@ -3,6 +3,6 @@
 import * as v from 'valibot'
 import { vReleaseActivityEvent } from './schema-0158.js'
 
-export const vListReleaseActivityResponse = v.object({
-    events: v.array(vReleaseActivityEvent)
+export const vRemoveProjectMemberResponse = v.object({
+    ok: v.boolean()
 });

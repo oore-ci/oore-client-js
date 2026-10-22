@@ -2,6 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vLogoutResponse = v.object({
-    ok: v.boolean()
-});
+export const vNotificationChannelType = v.picklist([
+    'webhook',
+    'mattermost',
+    'email',
+    'slack'
+]);

@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vCreateApiTokenRequest } from './schema-0048.js'
 
-export const vCreateApiTokenBody = vCreateApiTokenRequest;
+export const vRevokeApiTokenPath = v.object({
+    token_id: v.string()
+});

@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vUpdateRunnerRequest } from './schema-0286.js'
 
-export const vUpdateRunnerBody = vUpdateRunnerRequest;
+export const vDeleteRunnerPath = v.object({
+    runner_id: v.string()
+});

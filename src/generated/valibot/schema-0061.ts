@@ -2,6 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vEventStreamResync = v.object({
-    reason: v.string()
-});
+export const vExternalAccessNetworkSource = v.picklist([
+    'database',
+    'environment',
+    'default'
+]);

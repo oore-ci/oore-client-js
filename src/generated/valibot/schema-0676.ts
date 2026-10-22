@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vTestNotificationChannelPath = v.object({
+export const vUpdateNotificationChannelPath = v.object({
     id: v.string()
 });

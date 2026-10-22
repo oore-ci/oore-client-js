@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vListRepositoriesResponse } from './schema-0100.js'
 
-export const vListRepositoriesResponse2 = vListRepositoriesResponse;
+export const vSyncInstallationsPath = v.object({
+    id: v.string()
+});

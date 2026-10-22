@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vEffectiveProjectRetentionResponse } from './schema-0171.js'
 
-export const vUpdateProjectRetentionResponse = vEffectiveProjectRetentionResponse;
+export const vGetProjectRetentionPath = v.object({
+    project_id: v.string()
+});

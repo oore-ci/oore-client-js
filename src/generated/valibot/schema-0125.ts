@@ -2,8 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vPlatformBuildArgs = v.strictObject({
-    android: v.array(v.string()),
-    ios: v.array(v.string()),
-    macos: v.array(v.string())
+export const vPlatformBuildCommands = v.strictObject({
+    android: v.nullish(v.string()),
+    ios: v.nullish(v.string()),
+    macos: v.nullish(v.string())
 });

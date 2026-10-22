@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGithubInstalledResponse = v.string();
+export const vGithubCreatePageQuery = v.object({
+    state: v.string()
+});

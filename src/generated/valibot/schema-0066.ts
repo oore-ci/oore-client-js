@@ -3,7 +3,6 @@
 import * as v from 'valibot'
 import { vExternalAccessPreflightCheck } from './schema-0065.js'
 
-export const vExternalAccessPreflightResponse = v.object({
-    checks: v.array(vExternalAccessPreflightCheck),
-    ready: v.boolean()
+export const vFrontendPairRequest = v.object({
+    code: v.string()
 });

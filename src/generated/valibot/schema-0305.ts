@@ -6,13 +6,4 @@ import { vConcurrencyPolicy } from './schema-0045.js'
 import { vPipelineExecutionConfig } from './schema-0127.js'
 import { vTriggerConfig } from './schema-0260.js'
 
-export const vValidatePipelineRequest = v.object({
-    approval: v.nullish(vApprovalPolicy),
-    concurrency: v.nullish(vConcurrencyPolicy),
-    config_path: v.nullish(v.string()),
-    config_path_explicit: v.nullish(v.boolean()),
-    execution_config: v.nullish(vPipelineExecutionConfig),
-    repository_yaml: v.nullish(v.string()),
-    timeout_minutes: v.nullish(v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))),
-    trigger_config: v.nullish(vTriggerConfig)
-});
+export const vWarpgateTicketSource = v.picklist(['database', 'environment']);

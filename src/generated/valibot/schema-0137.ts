@@ -2,4 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vPublishStore = v.picklist(['google_play', 'app_store']);
+export const vRegisterRunnerRequest = v.object({
+    capabilities: v.optional(v.record(v.string(), v.unknown())),
+    labels: v.optional(v.array(v.string())),
+    name: v.string()
+});

@@ -4,13 +4,23 @@ import * as v from 'valibot'
 import { vNotificationChannelType } from './schema-0106.js'
 import { vSmtpConfig } from './schema-0245.js'
 
-export const vCreateNotificationChannelRequest = v.object({
-    channel_type: vNotificationChannelType,
-    enabled: v.optional(v.boolean()),
-    events: v.optional(v.array(v.string())),
+export const vStepResult = v.object({
+    duration_ms: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    exit_code: v.nullish(v.pipe(v.number(), v.integer(), v.minValue(-2147483648, 'Invalid value: Expected int32 to be >= -2147483648'), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))),
+    finished_at: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
     name: v.string(),
-    project_id: v.nullish(v.string()),
-    secret: v.nullish(v.string()),
-    smtp_config: v.nullish(vSmtpConfig),
-    url: v.nullish(v.string())
+    started_at: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    status: v.string()
 });

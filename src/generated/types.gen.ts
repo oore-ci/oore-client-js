@@ -56,6 +56,27 @@ export type ApiTokenSummary = {
     role: UserRole;
 };
 
+export type AppStoreConnectKeyResponse = {
+    key: AppStoreConnectKeySummary;
+};
+
+/**
+ * An App Store Connect API key stored once for the instance. Pipelines that
+ * sign or publish for the same Apple team can use it instead of their own key.
+ */
+export type AppStoreConnectKeySummary = {
+    created_at: number;
+    id: string;
+    issuer_id: string;
+    key_id: string;
+    name: string;
+    /**
+     * Pipelines whose iOS signing uses this key.
+     */
+    pipeline_count: number;
+    updated_at: number;
+};
+
 /**
  * Where an App Store Connect upload goes once Apple finishes processing it.
  */
@@ -573,6 +594,16 @@ export type CreateApiTokenResponse = {
     token: string;
 };
 
+export type CreateAppStoreConnectKeyRequest = {
+    issuer_id: string;
+    key_id: string;
+    name: string;
+    /**
+     * Base64 of the `.p8` file downloaded from App Store Connect.
+     */
+    private_key_base64: string;
+};
+
 export type CreateArtifactRequest = {
     artifact_type: string;
     checksum?: string | null;
@@ -1059,6 +1090,10 @@ export type ListApiTokensResponse = {
     total: number;
 };
 
+export type ListAppStoreConnectKeysResponse = {
+    keys: Array<AppStoreConnectKeySummary>;
+};
+
 export type ListArtifactDownloadTokensResponse = {
     tokens: Array<ArtifactDownloadTokenSummary>;
 };
@@ -1338,7 +1373,8 @@ export type PipelineAppStorePublishResponse = {
     app_store_export: boolean;
     config: AppStorePublishConfig;
     /**
-     * Whether the pipeline's iOS signing has an App Store Connect API key.
+     * Whether the pipeline's iOS signing has an App Store Connect API key,
+     * its own or a shared one.
      */
     has_api_key: boolean;
     pipeline_id: string;
@@ -1397,6 +1433,9 @@ export type PipelineIosSigningResponse = {
     bundle_ids: Array<string>;
     enabled: boolean;
     export_method: IosExportMethod;
+    /**
+     * Whether the pipeline stores its own App Store Connect API key.
+     */
     has_api_key: boolean;
     has_p12: boolean;
     has_p12_password: boolean;
@@ -1406,6 +1445,7 @@ export type PipelineIosSigningResponse = {
     p12_fingerprint?: string | null;
     pipeline_id: string;
     provisioning_profiles: Array<IosProvisioningProfileSummary>;
+    shared_api_key?: null | AppStoreConnectKeySummary;
     team_id?: string | null;
     updated_at?: number | null;
 };
@@ -2313,6 +2353,17 @@ export type TrustedProxySettingsResponse = {
     settings: TrustedProxySettingsPublic;
 };
 
+/**
+ * Rename a shared key or replace it. Omitted fields keep their stored value;
+ * a new `key_id` requires a new private key.
+ */
+export type UpdateAppStoreConnectKeyRequest = {
+    issuer_id?: string | null;
+    key_id?: string | null;
+    name?: string | null;
+    private_key_base64?: string | null;
+};
+
 export type UpdateArtifactStorageSettingsRequest = {
     access_key_id?: string | null;
     local_base_dir?: string | null;
@@ -2377,6 +2428,12 @@ export type UpdatePipelineIosSigningRequest = {
     export_method?: null | IosExportMethod;
     mode: IosSigningMode;
     provisioning_profiles?: Array<IosProvisioningProfileInput>;
+    /**
+     * Use a shared App Store Connect key instead of the pipeline's own.
+     * Omit to keep the current choice; an empty string switches back to the
+     * pipeline's own key.
+     */
+    shared_api_key_id?: string | null;
     team_id?: string | null;
 };
 
@@ -2805,6 +2862,144 @@ export type RevokeApiTokenResponses = {
 };
 
 export type RevokeApiTokenResponse2 = RevokeApiTokenResponses[keyof RevokeApiTokenResponses];
+
+export type ListAppStoreConnectKeysData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/app-store-connect-keys';
+};
+
+export type ListAppStoreConnectKeysErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+};
+
+export type ListAppStoreConnectKeysError = ListAppStoreConnectKeysErrors[keyof ListAppStoreConnectKeysErrors];
+
+export type ListAppStoreConnectKeysResponses = {
+    /**
+     * Shared keys
+     */
+    200: ListAppStoreConnectKeysResponse;
+};
+
+export type ListAppStoreConnectKeysResponse2 = ListAppStoreConnectKeysResponses[keyof ListAppStoreConnectKeysResponses];
+
+export type CreateAppStoreConnectKeyData = {
+    body: CreateAppStoreConnectKeyRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/app-store-connect-keys';
+};
+
+export type CreateAppStoreConnectKeyErrors = {
+    /**
+     * Invalid name, ID or private key
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * A key with this name already exists
+     */
+    409: ApiError;
+};
+
+export type CreateAppStoreConnectKeyError = CreateAppStoreConnectKeyErrors[keyof CreateAppStoreConnectKeyErrors];
+
+export type CreateAppStoreConnectKeyResponses = {
+    /**
+     * Key created
+     */
+    201: AppStoreConnectKeyResponse;
+};
+
+export type CreateAppStoreConnectKeyResponse = CreateAppStoreConnectKeyResponses[keyof CreateAppStoreConnectKeyResponses];
+
+export type DeleteAppStoreConnectKeyData = {
+    body?: never;
+    path: {
+        /**
+         * Shared key ID
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/v1/app-store-connect-keys/{id}';
+};
+
+export type DeleteAppStoreConnectKeyErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Key not found
+     */
+    404: ApiError;
+    /**
+     * Pipelines still use this key
+     */
+    409: ApiError;
+};
+
+export type DeleteAppStoreConnectKeyError = DeleteAppStoreConnectKeyErrors[keyof DeleteAppStoreConnectKeyErrors];
+
+export type DeleteAppStoreConnectKeyResponses = {
+    /**
+     * Key deleted
+     */
+    200: OkResponse;
+};
+
+export type DeleteAppStoreConnectKeyResponse = DeleteAppStoreConnectKeyResponses[keyof DeleteAppStoreConnectKeyResponses];
+
+export type UpdateAppStoreConnectKeyData = {
+    body: UpdateAppStoreConnectKeyRequest;
+    path: {
+        /**
+         * Shared key ID
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/v1/app-store-connect-keys/{id}';
+};
+
+export type UpdateAppStoreConnectKeyErrors = {
+    /**
+     * Invalid name, ID or private key
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Key not found
+     */
+    404: ApiError;
+    /**
+     * A key with this name already exists
+     */
+    409: ApiError;
+};
+
+export type UpdateAppStoreConnectKeyError = UpdateAppStoreConnectKeyErrors[keyof UpdateAppStoreConnectKeyErrors];
+
+export type UpdateAppStoreConnectKeyResponses = {
+    /**
+     * Key updated
+     */
+    200: AppStoreConnectKeyResponse;
+};
+
+export type UpdateAppStoreConnectKeyResponse = UpdateAppStoreConnectKeyResponses[keyof UpdateAppStoreConnectKeyResponses];
 
 export type RevokeScopedDownloadTokenData = {
     body?: never;

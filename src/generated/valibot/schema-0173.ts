@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRetryBuildStepRequest = v.object({
-    step: v.string()
+export const vRotateSecretRequest = v.strictObject({
+    value: v.string()
 });

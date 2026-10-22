@@ -3,6 +3,7 @@
 import * as v from 'valibot'
 import { vSecretSummary } from './schema-0225.js'
 
-export const vSecretResponse = v.object({
-    secret: vSecretSummary
+export const vSetupOidcStartResponse = v.object({
+    authorization_url: v.string(),
+    state: v.string()
 });

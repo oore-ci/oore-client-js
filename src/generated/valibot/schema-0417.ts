@@ -3,4 +3,9 @@
 import * as v from 'valibot'
 import { vListIntegrationsResponse } from './schema-0217.js'
 
-export const vListLocalGitIntegrationsResponse = vListIntegrationsResponse;
+export const vGitlabCallbackQuery = v.object({
+    code: v.optional(v.string()),
+    state: v.optional(v.string()),
+    error: v.optional(v.string()),
+    error_description: v.optional(v.string())
+});

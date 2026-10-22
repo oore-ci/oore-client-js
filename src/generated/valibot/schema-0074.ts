@@ -2,7 +2,10 @@
 
 import * as v from 'valibot'
 
-export const vGitLabAuthorizeRequest = v.object({
-    integration_id: v.string(),
-    redirect_url: v.string()
-});
+export const vGitLabCredentialStatus = v.picklist([
+    'valid',
+    'expiring',
+    'expired',
+    'rejected',
+    'unknown'
+]);

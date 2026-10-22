@@ -3,4 +3,7 @@
 import * as v from 'valibot'
 import { vAppendBuildLogsResponse } from './schema-0007.js'
 
-export const vAppendBuildLogsResponse2 = vAppendBuildLogsResponse;
+export const vGetJobIosSigningPath = v.object({
+    runner_id: v.string(),
+    job_id: v.string()
+});

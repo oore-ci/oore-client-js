@@ -2,6 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vRotateSecretRequest = v.strictObject({
-    value: v.string()
+export const vRunnerAppStoreUploadCredentials = v.object({
+    issuer_id: v.string(),
+    key_id: v.string(),
+    private_key_pem: v.string()
 });

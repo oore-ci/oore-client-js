@@ -2,7 +2,8 @@
 
 import * as v from 'valibot'
 
-export const vConcurrencyPolicy = v.object({
-    cancel_previous: v.boolean(),
-    max_concurrent: v.nullish(v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647')))
+export const vConfigureExternalAccessOidcRequest = v.object({
+    client_id: v.string(),
+    client_secret: v.nullish(v.string()),
+    issuer_url: v.string()
 });

@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vRegisterRunnerRequest } from './schema-0140.js'
 
-export const vRegisterRunnerBody = vRegisterRunnerRequest;
+export const vResumeReleasePath = v.object({
+    release_id: v.string()
+});

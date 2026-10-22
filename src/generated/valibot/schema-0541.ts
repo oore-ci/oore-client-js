@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vCreateSecretRequest } from './schema-0057.js'
 
-export const vCreateProjectSecretBody = vCreateSecretRequest;
+export const vUpdateProjectRetentionPath = v.object({
+    project_id: v.string()
+});

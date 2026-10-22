@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vSecretResponse } from './schema-0227.js'
 
-export const vCreateProjectSecretResponse = vSecretResponse;
+export const vListProjectSecretsPath = v.object({
+    project_id: v.string()
+});

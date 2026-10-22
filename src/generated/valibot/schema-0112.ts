@@ -3,11 +3,9 @@
 import * as v from 'valibot'
 import { vNotificationDelivery } from './schema-0111.js'
 
-export const vListNotificationDeliveriesResponse = v.object({
-    deliveries: v.array(vNotificationDelivery),
-    total: v.pipe(v.union([
-        v.number(),
-        v.string(),
-        v.bigint()
-    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))
+export const vOidcConfigureRequest = v.object({
+    clear_client_secret: v.optional(v.boolean()),
+    client_id: v.string(),
+    client_secret: v.nullish(v.string()),
+    issuer_url: v.string()
 });

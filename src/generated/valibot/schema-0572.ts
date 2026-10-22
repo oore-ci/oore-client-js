@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vRelease } from './schema-0156.js'
 
-export const vRaiseReleaseResponse = vRelease;
+export const vPauseReleasePath = v.object({
+    release_id: v.string()
+});

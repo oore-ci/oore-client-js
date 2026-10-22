@@ -3,23 +3,4 @@
 import * as v from 'valibot'
 import { vProjectRole } from './schema-0132.js'
 
-export const vProjectMember = v.object({
-    created_at: v.pipe(v.union([
-        v.number(),
-        v.string(),
-        v.bigint()
-    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
-    id: v.string(),
-    project_id: v.string(),
-    role: vProjectRole,
-    updated_at: v.pipe(v.union([
-        v.number(),
-        v.string(),
-        v.bigint()
-    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
-    user_avatar_url: v.nullish(v.string()),
-    user_display_name: v.nullish(v.string()),
-    user_email: v.string(),
-    user_id: v.string(),
-    user_role: v.string()
-});
+export const vPublishStore = v.picklist(['google_play', 'app_store']);

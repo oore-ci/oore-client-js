@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vBinaryPayload } from './schema-0020.js'
 
-export const vDownloadLocalArtifactLegacyResponse = vBinaryPayload;
+export const vDownloadViaScopedTokenV1Path = v.object({
+    token: v.string()
+});

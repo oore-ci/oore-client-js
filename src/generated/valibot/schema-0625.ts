@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vReportJobPublishResultHeaders = v.object({
+export const vGetJobPublishPlanHeaders = v.object({
     'x-oore-signing-token': v.string()
 });

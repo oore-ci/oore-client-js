@@ -3,6 +3,10 @@
 import * as v from 'valibot'
 import { vExternalAccessNetworkSettings } from './schema-0063.js'
 
-export const vExternalAccessNetworkSettingsResponse = v.object({
-    settings: vExternalAccessNetworkSettings
+export const vExternalAccessPreflightCheck = v.object({
+    failure_code: v.nullish(v.string()),
+    id: v.string(),
+    label: v.string(),
+    message: v.string(),
+    ok: v.boolean()
 });

@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vGitLabCredentialStatusResponse } from './schema-0077.js'
 
-export const vReplaceGitlabPersonalTokenResponse = vGitLabCredentialStatusResponse;
+export const vGetIntegrationPath = v.object({
+    id: v.string()
+});

@@ -3,6 +3,6 @@
 import * as v from 'valibot'
 import { vRetentionPolicy } from './schema-0170.js'
 
-export const vRetentionPolicyResponse = v.object({
-    policy: vRetentionPolicy
+export const vRevokeArtifactDownloadTokenResponse = v.object({
+    revoked: v.boolean()
 });

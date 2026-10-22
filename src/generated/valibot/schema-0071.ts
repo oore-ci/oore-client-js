@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitHubAppCompleteRequest = v.object({
-    code: v.string()
+export const vGitHubAppStartResponse = v.object({
+    create_url: v.string()
 });

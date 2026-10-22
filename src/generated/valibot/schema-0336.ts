@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vListBuildArtifactsRequest } from './schema-0098.js'
 
-export const vListBuildArtifactsBody = vListBuildArtifactsRequest;
+export const vGetIosInstallManifestV1Path = v.object({
+    token: v.string()
+});

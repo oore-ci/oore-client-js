@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vUpdateProjectRequest } from './schema-0283.js'
 
-export const vUpdateProjectBody = vUpdateProjectRequest;
+export const vDeleteProjectPath = v.object({
+    project_id: v.string()
+});

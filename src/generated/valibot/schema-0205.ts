@@ -2,9 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vRuntimeUpdatePhase = v.picklist([
-    'idle',
-    'updating',
-    'restarting',
-    'failed'
-]);
+export const vScheduleTrigger = v.strictObject({
+    branch: v.nullish(v.string()),
+    cron: v.string()
+});

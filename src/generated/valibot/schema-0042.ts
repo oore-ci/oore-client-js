@@ -3,6 +3,6 @@
 import * as v from 'valibot'
 import { vClaimedJob } from './schema-0041.js'
 
-export const vClaimJobResponse = v.object({
-    job: v.nullish(vClaimedJob)
+export const vCompleteArtifactRequest = v.object({
+    error_message: v.nullish(v.string())
 });

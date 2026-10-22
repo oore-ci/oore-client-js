@@ -2,6 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGitHubAppStartResponse = v.object({
-    create_url: v.string()
+export const vGitLabAuthorizeResponse = v.object({
+    authorize_url: v.string()
 });

@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vPipelineGooglePlayPublishResponse } from './schema-0150.js'
 
-export const vUpdatePipelineGooglePlayPublishResponse = vPipelineGooglePlayPublishResponse;
+export const vGetPipelineGooglePlayPublishPath = v.object({
+    pipeline_id: v.string()
+});

@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vBuildApprovalResponse } from './schema-0268.js'
 
-export const vApproveBuildResponse = vBuildApprovalResponse;
+export const vGetBuildPath = v.object({
+    build_id: v.string()
+});

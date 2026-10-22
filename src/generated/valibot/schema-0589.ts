@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vClaimJobRequest } from './schema-0040.js'
 
-export const vClaimJobBody = vClaimJobRequest;
+export const vUpdateRunnerPath = v.object({
+    runner_id: v.string()
+});

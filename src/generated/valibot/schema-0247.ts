@@ -4,8 +4,11 @@ import * as v from 'valibot'
 import { vIntegrationRepository } from './schema-0084.js'
 import { vScmProvider } from './schema-0209.js'
 
-export const vSourceRepository = v.intersect([vIntegrationRepository, v.object({
-        host_url: v.string(),
-        integration_id: v.string(),
-        provider: vScmProvider
-    })]);
+export const vStreamTokenResponse = v.object({
+    expires_at: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    token: v.string()
+});

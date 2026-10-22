@@ -3,4 +3,7 @@
 import * as v from 'valibot'
 import { vRunnerPublishPlan } from './schema-0189.js'
 
-export const vGetJobPublishPlanResponse = vRunnerPublishPlan;
+export const vAppendBuildLogsPath = v.object({
+    runner_id: v.string(),
+    job_id: v.string()
+});

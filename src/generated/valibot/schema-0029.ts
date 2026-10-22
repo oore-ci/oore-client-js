@@ -2,4 +2,16 @@
 
 import * as v from 'valibot'
 
-export const vBuildIsolation = v.picklist(['host', 'vm']);
+export const vBuildEvent = v.object({
+    actor: v.nullish(v.string()),
+    build_id: v.string(),
+    created_at: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    from_status: v.nullish(v.string()),
+    id: v.string(),
+    reason: v.nullish(v.string()),
+    to_status: v.string()
+});

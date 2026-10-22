@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vCreatePipelineResponse } from './schema-0263.js'
 
-export const vUpdatePipelineResponse = vCreatePipelineResponse;
+export const vGetPipelinePath = v.object({
+    pipeline_id: v.string()
+});

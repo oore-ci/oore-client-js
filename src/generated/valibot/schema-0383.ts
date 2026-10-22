@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vRerunBuildResponse } from './schema-0273.js'
 
-export const vRetryBuildStepResponse = vRerunBuildResponse;
+export const vRerunBuildPath = v.object({
+    build_id: v.string()
+});

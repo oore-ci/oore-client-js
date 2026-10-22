@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vRotateSecretRequest } from './schema-0176.js'
 
-export const vRotatePipelineSecretBody = vRotateSecretRequest;
+export const vCreatePipelineSecretPath = v.object({
+    pipeline_id: v.string()
+});

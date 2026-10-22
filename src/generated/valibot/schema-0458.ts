@@ -3,4 +3,6 @@
 import * as v from 'valibot'
 import { vPipelineAndroidSigningResponse } from './schema-0120.js'
 
-export const vUpdatePipelineAndroidSigningResponse = vPipelineAndroidSigningResponse;
+export const vGetPipelineAndroidSigningPath = v.object({
+    pipeline_id: v.string()
+});

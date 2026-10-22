@@ -3,4 +3,7 @@
 import * as v from 'valibot'
 import { vCreateProjectRequest } from './schema-0054.js'
 
-export const vCreateProjectBody = vCreateProjectRequest;
+export const vRotatePipelineSecretPath = v.object({
+    pipeline_id: v.string(),
+    name: v.string()
+});

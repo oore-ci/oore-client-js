@@ -3,6 +3,9 @@
 import * as v from 'valibot'
 import { vInstancePreferences } from './schema-0201.js'
 
-export const vInstancePreferencesResponse = v.object({
-    preferences: vInstancePreferences
-});
+export const vRuntimeUpdatePhase = v.picklist([
+    'idle',
+    'updating',
+    'restarting',
+    'failed'
+]);

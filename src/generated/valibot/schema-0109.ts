@@ -3,6 +3,8 @@
 import * as v from 'valibot'
 import { vNotificationChannel } from './schema-0107.js'
 
-export const vNotificationChannelResponse = v.object({
-    channel: vNotificationChannel
-});
+export const vNotificationDeliveryStatus = v.picklist([
+    'pending',
+    'delivered',
+    'failed'
+]);

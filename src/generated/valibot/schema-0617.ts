@@ -3,4 +3,8 @@
 import * as v from 'valibot'
 import { vRunnerIosSigningResponse } from './schema-0185.js'
 
-export const vGetJobIosSigningResponse = vRunnerIosSigningResponse;
+export const vGitlabCheckoutUploadPackPath = v.object({
+    runner_id: v.string(),
+    job_id: v.string(),
+    git_path: v.string()
+});
