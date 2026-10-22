@@ -160,6 +160,8 @@ bun run check
 
 Generation pins `@hey-api/openapi-ts`, TypeScript, and all adapter versions. The coverage check requires all OpenAPI operations and component schemas to appear in their matching package surfaces.
 
+The package ships the exact spec it was generated from as `@oore/client/openapi.json`, so consumers can check that the client matches the daemon they build against.
+
 ## Releases
 
 GitHub Actions checks every pull request and every push to `main`. A daily scheduled workflow fetches `https://docs.oore.build/openapi.json`; when the schema changes, it regenerates the package, runs the full check, and opens or updates a reviewable pull request.

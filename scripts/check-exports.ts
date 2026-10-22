@@ -34,6 +34,7 @@ const expected = [
   './models',
   './msw',
   './msw/scenarios',
+  './openapi.json',
   './operations',
   './package.json',
   './react-query',
@@ -59,7 +60,12 @@ if (
 if (packageJson.sideEffects !== false) throw new Error('sideEffects must be false')
 
 for (const [subpath, target] of Object.entries(packageJson.exports)) {
-  if (typeof target === 'string') continue
+  if (typeof target === 'string') {
+    if (!(await exists(new URL(target.replace(/^\.\//, ''), root)))) {
+      throw new Error(`Missing file export for ${subpath}`)
+    }
+    continue
+  }
 
   const runtime = new URL(target.import.replace(/^\.\//, ''), root)
   const declarations = new URL(target.types.replace(/^\.\//, ''), root)
