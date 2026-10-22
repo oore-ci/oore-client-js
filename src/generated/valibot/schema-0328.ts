@@ -2,6 +2,4 @@
 
 import * as v from 'valibot'
 
-export const vRevokeApiTokenPath = v.object({
-    token_id: v.string()
-});
+export const vMetricsResponse = v.string();

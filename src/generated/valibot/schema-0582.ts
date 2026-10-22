@@ -3,4 +3,4 @@
 import * as v from 'valibot'
 import { vRelease } from './schema-0160.js'
 
-export const vPauseReleaseResponse = vRelease;
+export const vCompleteReleaseResponse = vRelease;
