@@ -2,7 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGithubCallbackQuery = v.object({
-    code: v.optional(v.string()),
-    state: v.optional(v.string())
+export const vRepositoryAvatarPath = v.object({
+    id: v.string()
 });

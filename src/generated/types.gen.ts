@@ -2258,6 +2258,92 @@ export type StepResult = {
     status: string;
 };
 
+/**
+ * Store health of one app: a project shipped to one store under one package name or bundle id.
+ */
+export type StoreAppVitals = {
+    /**
+     * Package name on Google Play, bundle id on the App Store.
+     */
+    app_identifier: string;
+    /**
+     * Why the last read failed, such as missing credentials or access.
+     */
+    error?: string | null;
+    /**
+     * Most-reported issues of the last 28 days. Google Play only.
+     */
+    issues: Array<StoreErrorIssue>;
+    project_id: string;
+    project_name: string;
+    /**
+     * When Oore last read the store; absent until the first read finishes.
+     */
+    refreshed_at?: number | null;
+    store: ReleaseStore;
+    vitals: Array<StoreVital>;
+};
+
+/**
+ * A grouped crash or ANR reported by the store.
+ */
+export type StoreErrorIssue = {
+    cause: string;
+    /**
+     * `crash` or `anr`.
+     */
+    kind: string;
+    last_reported_at?: number | null;
+    location: string;
+    reports: number;
+    /**
+     * The issue in the store's console.
+     */
+    url?: string | null;
+    users: number;
+};
+
+export type StoreVital = {
+    kind: StoreVitalKind;
+    /**
+     * Oldest first.
+     */
+    points: Array<StoreVitalPoint>;
+    /**
+     * Where the store starts treating the value as bad: Play's bad-behavior
+     * threshold, or Apple's recommended goal.
+     */
+    threshold?: number | null;
+    /**
+     * Unit as the store names it; `ratio` for Play rates.
+     */
+    unit: string;
+    /**
+     * Headline value: Play's 28-day user-weighted rate, or the latest App Store version's value.
+     */
+    value?: number | null;
+};
+
+/**
+ * A store health metric shown on Home.
+ */
+export type StoreVitalKind = 'crash_rate' | 'anr_rate' | 'hang_rate' | 'launch_time';
+
+/**
+ * One point of a store metric: a day for Google Play, an app version for the App Store.
+ */
+export type StoreVitalPoint = {
+    /**
+     * `YYYY-MM-DD` for Google Play, the app version for the App Store.
+     */
+    label: string;
+    value?: number | null;
+};
+
+export type StoreVitalsResponse = {
+    apps: Array<StoreAppVitals>;
+};
+
 export type StreamTokenResponse = {
     expires_at: number;
     token: string;
@@ -8550,6 +8636,22 @@ export type SetupTrustedProxyConfigureResponses = {
 };
 
 export type SetupTrustedProxyConfigureResponse2 = SetupTrustedProxyConfigureResponses[keyof SetupTrustedProxyConfigureResponses];
+
+export type GetStoreVitalsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/store-vitals';
+};
+
+export type GetStoreVitalsResponses = {
+    /**
+     * Store vitals
+     */
+    200: StoreVitalsResponse;
+};
+
+export type GetStoreVitalsResponse = GetStoreVitalsResponses[keyof GetStoreVitalsResponses];
 
 export type GetRuntimeUpdateStatusData = {
     body?: never;

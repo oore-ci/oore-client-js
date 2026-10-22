@@ -2,6 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vSyncInstallationsRequest = v.object({
-    installation_id: v.nullish(v.string())
-});
+export const vStoreVitalKind = v.picklist([
+    'crash_rate',
+    'anr_rate',
+    'hang_rate',
+    'launch_time'
+]);

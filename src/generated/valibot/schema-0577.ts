@@ -3,4 +3,4 @@
 import * as v from 'valibot'
 import { vReleaseActionRequest } from './schema-0149.js'
 
-export const vHaltReleaseBody = v.nullable(vReleaseActionRequest);
+export const vApproveReleaseBody = v.nullable(vReleaseActionRequest);
