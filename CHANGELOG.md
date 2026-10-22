@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/oore-ci/oore-client-js/compare/v0.10.0...v0.11.0) (2026-10-22)
+
+
+### Features
+
+* **schema:** add the Google Play credentials test ([#40](https://github.com/oore-ci/oore-client-js/issues/40)) ([e90077d](https://github.com/oore-ci/oore-client-js/commit/e90077dd5d4761bf629ae9d625765da5ff248933))
+
 ## [0.10.0](https://github.com/oore-ci/oore-client-js/compare/v0.9.0...v0.10.0) (2026-10-22)
 
 
