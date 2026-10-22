@@ -16,6 +16,8 @@ export const vListBuildsQuery = v.object({
     project_id: v.optional(v.string()),
     pipeline_id: v.optional(v.string()),
     status: v.optional(v.string()),
+    branch: v.optional(v.string()),
+    q: v.optional(v.string()),
     sort: v.optional(v.string()),
     direction: v.optional(v.string())
 });
