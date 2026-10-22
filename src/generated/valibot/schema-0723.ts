@@ -3,4 +3,4 @@
 import * as v from 'valibot'
 import { vRuntimeUpdateStatus } from './schema-0211.js'
 
-export const vStartRuntimeUpdateResponse = vRuntimeUpdateStatus;
+export const vGetRuntimeUpdateStatusResponse = vRuntimeUpdateStatus;
