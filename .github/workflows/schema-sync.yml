@@ -32,6 +32,8 @@ jobs:
         run: bun ci
 
       - name: Fetch schema and generate package
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           bun run fetch-schema
           bun run generate
