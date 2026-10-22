@@ -2,9 +2,10 @@
 
 import * as v from 'valibot'
 
-export const vIntegrationAuthMode = v.picklist([
-    'github_app',
-    'oauth_app',
-    'personal_token',
-    'local_path'
+export const vGitLabCredentialStatus = v.picklist([
+    'valid',
+    'expiring',
+    'expired',
+    'rejected',
+    'unknown'
 ]);

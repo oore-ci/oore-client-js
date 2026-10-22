@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vRunnerDiskPressure = v.picklist(['warning', 'critical']);
+export const vRevokeApiTokenResponse = v.object({
+    revoked: v.boolean()
+});

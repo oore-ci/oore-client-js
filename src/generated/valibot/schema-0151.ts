@@ -2,4 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vReleaseStore = v.picklist(['google_play', 'app_store']);
+export const vReleaseHealth = v.picklist([
+    'unknown',
+    'healthy',
+    'warning',
+    'breached'
+]);

@@ -2,4 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vGithubCreatePageResponse = v.string();
+export const vRotateGitlabRepositoryWebhookSecretPath = v.object({
+    id: v.string()
+});

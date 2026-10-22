@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 
-export const vEventStreamResync = v.object({
-    reason: v.string()
+export const vCreateSecretRequest = v.strictObject({
+    name: v.string(),
+    value: v.string()
 });

@@ -2,7 +2,9 @@
 
 import * as v from 'valibot'
 
-export const vInviteUserRequest = v.object({
-    email: v.string(),
-    role: v.string()
-});
+export const vIntegrationAuthMode = v.picklist([
+    'github_app',
+    'oauth_app',
+    'personal_token',
+    'local_path'
+]);

@@ -2,8 +2,6 @@
 
 import * as v from 'valibot'
 
-export const vExternalAccessNetworkSource = v.picklist([
-    'database',
-    'environment',
-    'default'
-]);
+export const vDeleteNotificationChannelResponse = v.object({
+    deleted: v.boolean()
+});

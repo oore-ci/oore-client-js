@@ -2,6 +2,14 @@
 
 import * as v from 'valibot'
 
-export const vClaimJobRequest = v.object({
-    protocol_version: v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))
-});
+export const vBuildStatus = v.picklist([
+    'queued',
+    'scheduled',
+    'assigned',
+    'running',
+    'succeeded',
+    'failed',
+    'canceled',
+    'timed_out',
+    'expired'
+]);

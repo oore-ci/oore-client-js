@@ -2,7 +2,11 @@
 
 import * as v from 'valibot'
 
-export const vReleaseActionRequest = v.object({
-    fraction: v.nullish(v.number()),
-    reason: v.nullish(v.string())
+export const vReadinessResponse = v.object({
+    database: v.boolean(),
+    encryption: v.boolean(),
+    migrations: v.boolean(),
+    ok: v.boolean(),
+    package_version: v.string(),
+    version: v.string()
 });
