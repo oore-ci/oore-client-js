@@ -3,15 +3,7 @@ name: Sync OpenAPI schema
 on:
   schedule:
     - cron: '17 3 * * *'
-  # oore.build can trigger a sync as soon as its spec changes.
-  repository_dispatch:
-    types: [openapi-updated]
   workflow_dispatch:
-    inputs:
-      allow_removals:
-        description: Accept a schema that removes operations or schemas (a breaking release)
-        type: boolean
-        default: false
 
 concurrency:
   group: openapi-schema-sync
@@ -25,10 +17,6 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    env:
-      # Accepted removals break consumers, so release-please must cut a major.
-      SYNC_TITLE: "${{ inputs.allow_removals && 'feat(schema)!: sync OpenAPI schema, removing operations' || 'feat(schema): sync OpenAPI schema' }}"
     steps:
       - name: Check out main
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -44,8 +32,6 @@ jobs:
         run: bun ci
 
       - name: Fetch schema and generate package
-        env:
-          OORE_ALLOW_REMOVALS: ${{ inputs.allow_removals && 'true' || 'false' }}
         run: |
           bun run fetch-schema
           bun run generate
@@ -53,8 +39,7 @@ jobs:
       - name: Detect schema change
         id: changes
         run: |
-          # Untracked files count: a new schema adds generated modules.
-          if [ -z "$(git status --porcelain)" ]; then
+          if git diff --quiet; then
             echo 'changed=false' >> "$GITHUB_OUTPUT"
           else
             echo 'changed=true' >> "$GITHUB_OUTPUT"
@@ -71,7 +56,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git checkout -B automation/openapi-sync
           git add openapi src
-          git commit -m "$SYNC_TITLE"
+          git commit -m 'feat(schema): sync OpenAPI schema'
           git push --force origin HEAD:automation/openapi-sync
 
       - name: Open or update schema pull request
@@ -79,13 +64,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if gh pr view automation/openapi-sync --json url --jq .url; then
-            gh pr edit automation/openapi-sync --title "$SYNC_TITLE"
-          else
+          if ! gh pr view automation/openapi-sync --json url --jq .url; then
             gh pr create \
               --base main \
               --head automation/openapi-sync \
-              --title "$SYNC_TITLE" \
+              --title 'feat(schema): sync OpenAPI schema' \
               --body 'Updates the checked-in OpenAPI schema and all generated package surfaces. The sync job has run the full package check.'
           fi
 

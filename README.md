@@ -205,6 +205,6 @@ Generation pins `@hey-api/openapi-ts`, TypeScript, and all adapter versions. The
 
 ## Releases
 
-GitHub Actions checks every pull request and every push to `main`. A daily scheduled workflow (also triggerable with a `repository_dispatch` of type `openapi-updated`) fetches `apps/docs/public/openapi.json` from oore.build's default branch, which oore.build's CI keeps in sync with `oore-contract`. When the schema changes, it regenerates the package, runs the full check, and opens or updates a reviewable pull request. If the new schema removes an operation or component schema, the sync fails instead; run it manually with `allow_removals` to accept a breaking change, which opens the pull request as `feat(schema)!`.
+GitHub Actions checks every pull request and every push to `main`. A daily scheduled workflow fetches `https://docs.oore.build/openapi.json`; when the schema changes, it regenerates the package, runs the full check, and opens or updates a reviewable pull request.
 
 Conventional commits feed Release Please. Its version pull request is opened with the workflow token, which doesn't trigger `pull_request` workflows, so the release workflow dispatches CI on that branch. Merging the version pull request creates a GitHub Release, reruns the package checks from that tag, and publishes `@oore/client` through npm trusted publishing, skipping the publish when that version is already on npm. GitHub Actions are pinned to immutable commits and the publish job uses no long-lived npm token.
