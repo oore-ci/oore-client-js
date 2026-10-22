@@ -39,5 +39,8 @@ jobs:
       - name: Check generated package
         run: bun run check
 
+      # Untracked files count too: a new schema adds generated modules.
       - name: Require committed generation output
-        run: git diff --exit-code
+        run: |
+          git status --porcelain
+          test -z "$(git status --porcelain)"

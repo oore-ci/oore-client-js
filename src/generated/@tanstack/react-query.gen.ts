@@ -46,7 +46,7 @@ export const healthzQueryKey = (options?: Options<HealthzData>) => createQueryKe
  *
  * Returns daemon build metadata when the daemon is running.
  */
-export const healthzOptions = (options?: Options<HealthzData>) => queryOptions<HealthzResponse, DefaultError, HealthzResponse, ReturnType<typeof healthzQueryKey>>({
+export const healthzOptions = (options: Options<HealthzData>) => queryOptions<HealthzResponse, DefaultError, HealthzResponse, ReturnType<typeof healthzQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await healthz({
         ...options,
         ...queryKey[0],
@@ -61,7 +61,7 @@ export const healthzOptions = (options?: Options<HealthzData>) => queryOptions<H
  *
  * Returns daemon build metadata when the daemon is running.
  */
-export const useHealthzQuery = (options?: Options<HealthzData>) => useQuery(healthzOptions(options));
+export const useHealthzQuery = (options: Options<HealthzData>) => useQuery(healthzOptions(options));
 
 export const downloadViaScopedTokenQueryKey = (options: Options<DownloadViaScopedTokenData>) => createQueryKey('downloadViaScopedToken', options, false, ['Scoped Download Tokens']);
 
@@ -145,7 +145,7 @@ export const metricsQueryKey = (options?: Options<MetricsData>) => createQueryKe
  * Returns the daemon's Prometheus exposition payload without session
  * authentication.
  */
-export const metricsOptions = (options?: Options<MetricsData>) => queryOptions<MetricsResponse, DefaultError, MetricsResponse, ReturnType<typeof metricsQueryKey>>({
+export const metricsOptions = (options: Options<MetricsData>) => queryOptions<MetricsResponse, DefaultError, MetricsResponse, ReturnType<typeof metricsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await metrics({
         ...options,
         ...queryKey[0],
@@ -161,7 +161,7 @@ export const metricsOptions = (options?: Options<MetricsData>) => queryOptions<M
  * Returns the daemon's Prometheus exposition payload without session
  * authentication.
  */
-export const useMetricsQuery = (options?: Options<MetricsData>) => useQuery(metricsOptions(options));
+export const useMetricsQuery = (options: Options<MetricsData>) => useQuery(metricsOptions(options));
 
 export const readyzQueryKey = (options?: Options<ReadyzData>) => createQueryKey('readyz', options, false, ['Health']);
 
@@ -171,7 +171,7 @@ export const readyzQueryKey = (options?: Options<ReadyzData>) => createQueryKey(
  * Reports whether the database, migrations, and runtime encryption key are
  * ready to serve requests.
  */
-export const readyzOptions = (options?: Options<ReadyzData>) => queryOptions<ReadyzResponse, ReadyzError, ReadyzResponse, ReturnType<typeof readyzQueryKey>>({
+export const readyzOptions = (options: Options<ReadyzData>) => queryOptions<ReadyzResponse, ReadyzError, ReadyzResponse, ReturnType<typeof readyzQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await readyz({
         ...options,
         ...queryKey[0],
@@ -187,7 +187,7 @@ export const readyzOptions = (options?: Options<ReadyzData>) => queryOptions<Rea
  * Reports whether the database, migrations, and runtime encryption key are
  * ready to serve requests.
  */
-export const useReadyzQuery = (options?: Options<ReadyzData>) => useQuery(readyzOptions(options));
+export const useReadyzQuery = (options: Options<ReadyzData>) => useQuery(readyzOptions(options));
 
 export const listApiTokensQueryKey = (options?: Options<ListApiTokensData>) => createQueryKey('listApiTokens', options, false, ['API Tokens']);
 
@@ -197,7 +197,7 @@ export const listApiTokensQueryKey = (options?: Options<ListApiTokensData>) => c
  * Returns all API tokens visible to the caller. Admins and owners see all
  * tokens; other roles see only their own.
  */
-export const listApiTokensOptions = (options?: Options<ListApiTokensData>) => queryOptions<ListApiTokensResponse2, ListApiTokensError, ListApiTokensResponse2, ReturnType<typeof listApiTokensQueryKey>>({
+export const listApiTokensOptions = (options: Options<ListApiTokensData>) => queryOptions<ListApiTokensResponse2, ListApiTokensError, ListApiTokensResponse2, ReturnType<typeof listApiTokensQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listApiTokens({
         ...options,
         ...queryKey[0],
@@ -244,7 +244,7 @@ export const listApiTokensInfiniteQueryKey = (options?: Options<ListApiTokensDat
  * Returns all API tokens visible to the caller. Admins and owners see all
  * tokens; other roles see only their own.
  */
-export const listApiTokensInfiniteOptions = (options?: Options<ListApiTokensData>) => {
+export const listApiTokensInfiniteOptions = (options: Options<ListApiTokensData>) => {
     const opts = infiniteQueryOptions<ListApiTokensResponse2, ListApiTokensError, InfiniteData<ListApiTokensResponse2>, QueryKey<Options<ListApiTokensData>>, number | Pick<QueryKey<Options<ListApiTokensData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
     // @ts-ignore
     {
@@ -274,7 +274,7 @@ export const listApiTokensInfiniteOptions = (options?: Options<ListApiTokensData
  * Returns all API tokens visible to the caller. Admins and owners see all
  * tokens; other roles see only their own.
  */
-export const useListApiTokensQuery = (options?: Options<ListApiTokensData>) => useQuery(listApiTokensOptions(options));
+export const useListApiTokensQuery = (options: Options<ListApiTokensData>) => useQuery(listApiTokensOptions(options));
 
 export type MutationKey<TOptions extends Partial<Options>> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -368,7 +368,7 @@ export const listAppStoreConnectKeysQueryKey = (options?: Options<ListAppStoreCo
  *
  * Returns key names, IDs and how many pipelines use each. Private keys are never returned. Requires pipeline read access.
  */
-export const listAppStoreConnectKeysOptions = (options?: Options<ListAppStoreConnectKeysData>) => queryOptions<ListAppStoreConnectKeysResponse2, ListAppStoreConnectKeysError, ListAppStoreConnectKeysResponse2, ReturnType<typeof listAppStoreConnectKeysQueryKey>>({
+export const listAppStoreConnectKeysOptions = (options: Options<ListAppStoreConnectKeysData>) => queryOptions<ListAppStoreConnectKeysResponse2, ListAppStoreConnectKeysError, ListAppStoreConnectKeysResponse2, ReturnType<typeof listAppStoreConnectKeysQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listAppStoreConnectKeys({
         ...options,
         ...queryKey[0],
@@ -383,7 +383,7 @@ export const listAppStoreConnectKeysOptions = (options?: Options<ListAppStoreCon
  *
  * Returns key names, IDs and how many pipelines use each. Private keys are never returned. Requires pipeline read access.
  */
-export const useListAppStoreConnectKeysQuery = (options?: Options<ListAppStoreConnectKeysData>) => useQuery(listAppStoreConnectKeysOptions(options));
+export const useListAppStoreConnectKeysQuery = (options: Options<ListAppStoreConnectKeysData>) => useQuery(listAppStoreConnectKeysOptions(options));
 
 export const createAppStoreConnectKeyMutationKey = (options?: Partial<Options<CreateAppStoreConnectKeyData>>) => createMutationKey('createAppStoreConnectKey', options, ['Store Credentials']);
 
@@ -753,7 +753,7 @@ export const listAuditLogsQueryKey = (options?: Options<ListAuditLogsData>) => c
  * Returns a paginated, filterable list of audit log entries recording
  * user and system actions. Owner and admin roles only.
  */
-export const listAuditLogsOptions = (options?: Options<ListAuditLogsData>) => queryOptions<ListAuditLogsResponse2, ListAuditLogsError, ListAuditLogsResponse2, ReturnType<typeof listAuditLogsQueryKey>>({
+export const listAuditLogsOptions = (options: Options<ListAuditLogsData>) => queryOptions<ListAuditLogsResponse2, ListAuditLogsError, ListAuditLogsResponse2, ReturnType<typeof listAuditLogsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listAuditLogs({
         ...options,
         ...queryKey[0],
@@ -771,7 +771,7 @@ export const listAuditLogsInfiniteQueryKey = (options?: Options<ListAuditLogsDat
  * Returns a paginated, filterable list of audit log entries recording
  * user and system actions. Owner and admin roles only.
  */
-export const listAuditLogsInfiniteOptions = (options?: Options<ListAuditLogsData>) => {
+export const listAuditLogsInfiniteOptions = (options: Options<ListAuditLogsData>) => {
     const opts = infiniteQueryOptions<ListAuditLogsResponse2, ListAuditLogsError, InfiniteData<ListAuditLogsResponse2>, QueryKey<Options<ListAuditLogsData>>, number | Pick<QueryKey<Options<ListAuditLogsData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
     // @ts-ignore
     {
@@ -801,7 +801,7 @@ export const listAuditLogsInfiniteOptions = (options?: Options<ListAuditLogsData
  * Returns a paginated, filterable list of audit log entries recording
  * user and system actions. Owner and admin roles only.
  */
-export const useListAuditLogsQuery = (options?: Options<ListAuditLogsData>) => useQuery(listAuditLogsOptions(options));
+export const useListAuditLogsQuery = (options: Options<ListAuditLogsData>) => useQuery(listAuditLogsOptions(options));
 
 export const localLoginMutationKey = (options?: Partial<Options<LocalLoginData>>) => createMutationKey('localLogin', options, ['Auth']);
 
@@ -950,7 +950,7 @@ export const listBuildsQueryKey = (options?: Options<ListBuildsData>) => createQ
  *
  * Returns builds, optionally filtered by project, pipeline, or status.
  */
-export const listBuildsOptions = (options?: Options<ListBuildsData>) => queryOptions<ListBuildsResponse2, ListBuildsError, ListBuildsResponse2, ReturnType<typeof listBuildsQueryKey>>({
+export const listBuildsOptions = (options: Options<ListBuildsData>) => queryOptions<ListBuildsResponse2, ListBuildsError, ListBuildsResponse2, ReturnType<typeof listBuildsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listBuilds({
         ...options,
         ...queryKey[0],
@@ -967,7 +967,7 @@ export const listBuildsInfiniteQueryKey = (options?: Options<ListBuildsData>): Q
  *
  * Returns builds, optionally filtered by project, pipeline, or status.
  */
-export const listBuildsInfiniteOptions = (options?: Options<ListBuildsData>) => {
+export const listBuildsInfiniteOptions = (options: Options<ListBuildsData>) => {
     const opts = infiniteQueryOptions<ListBuildsResponse2, ListBuildsError, InfiniteData<ListBuildsResponse2>, QueryKey<Options<ListBuildsData>>, number | Pick<QueryKey<Options<ListBuildsData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
     // @ts-ignore
     {
@@ -996,7 +996,7 @@ export const listBuildsInfiniteOptions = (options?: Options<ListBuildsData>) => 
  *
  * Returns builds, optionally filtered by project, pipeline, or status.
  */
-export const useListBuildsQuery = (options?: Options<ListBuildsData>) => useQuery(listBuildsOptions(options));
+export const useListBuildsQuery = (options: Options<ListBuildsData>) => useQuery(listBuildsOptions(options));
 
 export const getBuildInsightsQueryKey = (options?: Options<GetBuildInsightsData>) => createQueryKey('getBuildInsights', options, false, ['Builds']);
 
@@ -1006,7 +1006,7 @@ export const getBuildInsightsQueryKey = (options?: Options<GetBuildInsightsData>
  * Success rate, run time, queue wait, a daily trend, per-project health
  * and the most-failing pipelines for builds the caller can see.
  */
-export const getBuildInsightsOptions = (options?: Options<GetBuildInsightsData>) => queryOptions<GetBuildInsightsResponse, GetBuildInsightsError, GetBuildInsightsResponse, ReturnType<typeof getBuildInsightsQueryKey>>({
+export const getBuildInsightsOptions = (options: Options<GetBuildInsightsData>) => queryOptions<GetBuildInsightsResponse, GetBuildInsightsError, GetBuildInsightsResponse, ReturnType<typeof getBuildInsightsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getBuildInsights({
         ...options,
         ...queryKey[0],
@@ -1022,7 +1022,7 @@ export const getBuildInsightsOptions = (options?: Options<GetBuildInsightsData>)
  * Success rate, run time, queue wait, a daily trend, per-project health
  * and the most-failing pipelines for builds the caller can see.
  */
-export const useGetBuildInsightsQuery = (options?: Options<GetBuildInsightsData>) => useQuery(getBuildInsightsOptions(options));
+export const useGetBuildInsightsQuery = (options: Options<GetBuildInsightsData>) => useQuery(getBuildInsightsOptions(options));
 
 export const getBuildQueryKey = (options: Options<GetBuildData>) => createQueryKey('getBuild', options, false, ['Builds']);
 
@@ -1319,7 +1319,7 @@ export const listSourceRepositoriesQueryKey = (options?: Options<ListSourceRepos
 /**
  * Search repositories across integrations
  */
-export const listSourceRepositoriesOptions = (options?: Options<ListSourceRepositoriesData>) => queryOptions<ListSourceRepositoriesResponse2, DefaultError, ListSourceRepositoriesResponse2, ReturnType<typeof listSourceRepositoriesQueryKey>>({
+export const listSourceRepositoriesOptions = (options: Options<ListSourceRepositoriesData>) => queryOptions<ListSourceRepositoriesResponse2, DefaultError, ListSourceRepositoriesResponse2, ReturnType<typeof listSourceRepositoriesQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listSourceRepositories({
         ...options,
         ...queryKey[0],
@@ -1334,7 +1334,7 @@ export const listSourceRepositoriesInfiniteQueryKey = (options?: Options<ListSou
 /**
  * Search repositories across integrations
  */
-export const listSourceRepositoriesInfiniteOptions = (options?: Options<ListSourceRepositoriesData>) => {
+export const listSourceRepositoriesInfiniteOptions = (options: Options<ListSourceRepositoriesData>) => {
     const opts = infiniteQueryOptions<ListSourceRepositoriesResponse2, DefaultError, InfiniteData<ListSourceRepositoriesResponse2>, QueryKey<Options<ListSourceRepositoriesData>>, number | Pick<QueryKey<Options<ListSourceRepositoriesData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
     // @ts-ignore
     {
@@ -1361,7 +1361,7 @@ export const listSourceRepositoriesInfiniteOptions = (options?: Options<ListSour
 /**
  * Search repositories across integrations
  */
-export const useListSourceRepositoriesQuery = (options?: Options<ListSourceRepositoriesData>) => useQuery(listSourceRepositoriesOptions(options));
+export const useListSourceRepositoriesQuery = (options: Options<ListSourceRepositoriesData>) => useQuery(listSourceRepositoriesOptions(options));
 
 export const repositoryAvatarQueryKey = (options: Options<RepositoryAvatarData>) => createQueryKey('repositoryAvatar', options, false, ['Integrations']);
 
@@ -1412,7 +1412,7 @@ export const listIntegrationsQueryKey = (options?: Options<ListIntegrationsData>
  *
  * Returns all SCM integrations, optionally filtered by provider.
  */
-export const listIntegrationsOptions = (options?: Options<ListIntegrationsData>) => queryOptions<ListIntegrationsResponse2, DefaultError, ListIntegrationsResponse2, ReturnType<typeof listIntegrationsQueryKey>>({
+export const listIntegrationsOptions = (options: Options<ListIntegrationsData>) => queryOptions<ListIntegrationsResponse2, DefaultError, ListIntegrationsResponse2, ReturnType<typeof listIntegrationsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listIntegrations({
         ...options,
         ...queryKey[0],
@@ -1429,7 +1429,7 @@ export const listIntegrationsInfiniteQueryKey = (options?: Options<ListIntegrati
  *
  * Returns all SCM integrations, optionally filtered by provider.
  */
-export const listIntegrationsInfiniteOptions = (options?: Options<ListIntegrationsData>) => {
+export const listIntegrationsInfiniteOptions = (options: Options<ListIntegrationsData>) => {
     const opts = infiniteQueryOptions<ListIntegrationsResponse2, DefaultError, InfiniteData<ListIntegrationsResponse2>, QueryKey<Options<ListIntegrationsData>>, number | Pick<QueryKey<Options<ListIntegrationsData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
     // @ts-ignore
     {
@@ -1458,7 +1458,7 @@ export const listIntegrationsInfiniteOptions = (options?: Options<ListIntegratio
  *
  * Returns all SCM integrations, optionally filtered by provider.
  */
-export const useListIntegrationsQuery = (options?: Options<ListIntegrationsData>) => useQuery(listIntegrationsOptions(options));
+export const useListIntegrationsQuery = (options: Options<ListIntegrationsData>) => useQuery(listIntegrationsOptions(options));
 
 export const githubCallbackQueryKey = (options?: Options<GithubCallbackData>) => createQueryKey('githubCallback', options, false, ['Integrations']);
 
@@ -1468,7 +1468,7 @@ export const githubCallbackQueryKey = (options?: Options<GithubCallbackData>) =>
  * Exchanges GitHub's manifest code, stores the integration, and redirects
  * the browser. Callback errors are rendered as HTML.
  */
-export const githubCallbackOptions = (options?: Options<GithubCallbackData>) => queryOptions<GithubCallbackResponse, DefaultError, GithubCallbackResponse, ReturnType<typeof githubCallbackQueryKey>>({
+export const githubCallbackOptions = (options: Options<GithubCallbackData>) => queryOptions<GithubCallbackResponse, DefaultError, GithubCallbackResponse, ReturnType<typeof githubCallbackQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await githubCallback({
         ...options,
         ...queryKey[0],
@@ -1484,7 +1484,7 @@ export const githubCallbackOptions = (options?: Options<GithubCallbackData>) => 
  * Exchanges GitHub's manifest code, stores the integration, and redirects
  * the browser. Callback errors are rendered as HTML.
  */
-export const useGithubCallbackQuery = (options?: Options<GithubCallbackData>) => useQuery(githubCallbackOptions(options));
+export const useGithubCallbackQuery = (options: Options<GithubCallbackData>) => useQuery(githubCallbackOptions(options));
 
 export const githubCompleteMutationKey = (options?: Partial<Options<GithubCompleteData>>) => createMutationKey('githubComplete', options, ['Integrations']);
 
@@ -1546,7 +1546,7 @@ export const githubInstalledQueryKey = (options?: Options<GithubInstalledData>) 
  * Consumes the optional sealed install-state cookie, synchronizes the
  * installation when authorized, and serves a browser redirect page.
  */
-export const githubInstalledOptions = (options?: Options<GithubInstalledData>) => queryOptions<GithubInstalledResponse, DefaultError, GithubInstalledResponse, ReturnType<typeof githubInstalledQueryKey>>({
+export const githubInstalledOptions = (options: Options<GithubInstalledData>) => queryOptions<GithubInstalledResponse, DefaultError, GithubInstalledResponse, ReturnType<typeof githubInstalledQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await githubInstalled({
         ...options,
         ...queryKey[0],
@@ -1562,7 +1562,7 @@ export const githubInstalledOptions = (options?: Options<GithubInstalledData>) =
  * Consumes the optional sealed install-state cookie, synchronizes the
  * installation when authorized, and serves a browser redirect page.
  */
-export const useGithubInstalledQuery = (options?: Options<GithubInstalledData>) => useQuery(githubInstalledOptions(options));
+export const useGithubInstalledQuery = (options: Options<GithubInstalledData>) => useQuery(githubInstalledOptions(options));
 
 export const githubStartMutationKey = (options?: Partial<Options<GithubStartData>>) => createMutationKey('githubStart', options, ['Integrations']);
 
@@ -1620,7 +1620,7 @@ export const gitlabCallbackQueryKey = (options?: Options<GitlabCallbackData>) =>
  * Exchanges GitLab's authorization code and redirects the browser.
  * Callback errors are rendered as HTML.
  */
-export const gitlabCallbackOptions = (options?: Options<GitlabCallbackData>) => queryOptions<GitlabCallbackResponse, DefaultError, GitlabCallbackResponse, ReturnType<typeof gitlabCallbackQueryKey>>({
+export const gitlabCallbackOptions = (options: Options<GitlabCallbackData>) => queryOptions<GitlabCallbackResponse, DefaultError, GitlabCallbackResponse, ReturnType<typeof gitlabCallbackQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await gitlabCallback({
         ...options,
         ...queryKey[0],
@@ -1636,7 +1636,7 @@ export const gitlabCallbackOptions = (options?: Options<GitlabCallbackData>) => 
  * Exchanges GitLab's authorization code and redirects the browser.
  * Callback errors are rendered as HTML.
  */
-export const useGitlabCallbackQuery = (options?: Options<GitlabCallbackData>) => useQuery(gitlabCallbackOptions(options));
+export const useGitlabCallbackQuery = (options: Options<GitlabCallbackData>) => useQuery(gitlabCallbackOptions(options));
 
 export const gitlabStartMutationKey = (options?: Partial<Options<GitlabStartData>>) => createMutationKey('gitlabStart', options, ['Integrations']);
 
@@ -1669,7 +1669,7 @@ export const listLocalGitIntegrationsQueryKey = (options?: Options<ListLocalGitI
 /**
  * List local git integrations
  */
-export const listLocalGitIntegrationsOptions = (options?: Options<ListLocalGitIntegrationsData>) => queryOptions<ListLocalGitIntegrationsResponse, ListLocalGitIntegrationsError, ListLocalGitIntegrationsResponse, ReturnType<typeof listLocalGitIntegrationsQueryKey>>({
+export const listLocalGitIntegrationsOptions = (options: Options<ListLocalGitIntegrationsData>) => queryOptions<ListLocalGitIntegrationsResponse, ListLocalGitIntegrationsError, ListLocalGitIntegrationsResponse, ReturnType<typeof listLocalGitIntegrationsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listLocalGitIntegrations({
         ...options,
         ...queryKey[0],
@@ -1682,7 +1682,7 @@ export const listLocalGitIntegrationsOptions = (options?: Options<ListLocalGitIn
 /**
  * List local git integrations
  */
-export const useListLocalGitIntegrationsQuery = (options?: Options<ListLocalGitIntegrationsData>) => useQuery(listLocalGitIntegrationsOptions(options));
+export const useListLocalGitIntegrationsQuery = (options: Options<ListLocalGitIntegrationsData>) => useQuery(listLocalGitIntegrationsOptions(options));
 
 export const createLocalGitIntegrationMutationKey = (options?: Partial<Options<CreateLocalGitIntegrationData>>) => createMutationKey('createLocalGitIntegration', options, ['Integrations']);
 
@@ -1711,7 +1711,7 @@ export const browseLocalGitDirectoriesQueryKey = (options?: Options<BrowseLocalG
 /**
  * Browse local directories for local repository registration
  */
-export const browseLocalGitDirectoriesOptions = (options?: Options<BrowseLocalGitDirectoriesData>) => queryOptions<BrowseLocalGitDirectoriesResponse2, BrowseLocalGitDirectoriesError, BrowseLocalGitDirectoriesResponse2, ReturnType<typeof browseLocalGitDirectoriesQueryKey>>({
+export const browseLocalGitDirectoriesOptions = (options: Options<BrowseLocalGitDirectoriesData>) => queryOptions<BrowseLocalGitDirectoriesResponse2, BrowseLocalGitDirectoriesError, BrowseLocalGitDirectoriesResponse2, ReturnType<typeof browseLocalGitDirectoriesQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await browseLocalGitDirectories({
         ...options,
         ...queryKey[0],
@@ -1724,7 +1724,7 @@ export const browseLocalGitDirectoriesOptions = (options?: Options<BrowseLocalGi
 /**
  * Browse local directories for local repository registration
  */
-export const useBrowseLocalGitDirectoriesQuery = (options?: Options<BrowseLocalGitDirectoriesData>) => useQuery(browseLocalGitDirectoriesOptions(options));
+export const useBrowseLocalGitDirectoriesQuery = (options: Options<BrowseLocalGitDirectoriesData>) => useQuery(browseLocalGitDirectoriesOptions(options));
 
 export const deleteLocalGitIntegrationMutationKey = (options?: Partial<Options<DeleteLocalGitIntegrationData>>) => createMutationKey('deleteLocalGitIntegration', options, ['Integrations']);
 
@@ -1936,7 +1936,7 @@ export const listOperatorIncidentsQueryKey = (options?: Options<ListOperatorInci
 /**
  * List durable operator incidents for the current source manager
  */
-export const listOperatorIncidentsOptions = (options?: Options<ListOperatorIncidentsData>) => queryOptions<ListOperatorIncidentsResponse2, ListOperatorIncidentsError, ListOperatorIncidentsResponse2, ReturnType<typeof listOperatorIncidentsQueryKey>>({
+export const listOperatorIncidentsOptions = (options: Options<ListOperatorIncidentsData>) => queryOptions<ListOperatorIncidentsResponse2, ListOperatorIncidentsError, ListOperatorIncidentsResponse2, ReturnType<typeof listOperatorIncidentsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listOperatorIncidents({
         ...options,
         ...queryKey[0],
@@ -1949,7 +1949,7 @@ export const listOperatorIncidentsOptions = (options?: Options<ListOperatorIncid
 /**
  * List durable operator incidents for the current source manager
  */
-export const useListOperatorIncidentsQuery = (options?: Options<ListOperatorIncidentsData>) => useQuery(listOperatorIncidentsOptions(options));
+export const useListOperatorIncidentsQuery = (options: Options<ListOperatorIncidentsData>) => useQuery(listOperatorIncidentsOptions(options));
 
 export const markOperatorIncidentReadMutationKey = (options?: Partial<Options<MarkOperatorIncidentReadData>>) => createMutationKey('markOperatorIncidentRead', options, ['Integrations']);
 
@@ -2438,7 +2438,7 @@ export const listProjectsQueryKey = (options?: Options<ListProjectsData>) => cre
 /**
  * List projects
  */
-export const listProjectsOptions = (options?: Options<ListProjectsData>) => queryOptions<ListProjectsResponse2, ListProjectsError, ListProjectsResponse2, ReturnType<typeof listProjectsQueryKey>>({
+export const listProjectsOptions = (options: Options<ListProjectsData>) => queryOptions<ListProjectsResponse2, ListProjectsError, ListProjectsResponse2, ReturnType<typeof listProjectsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listProjects({
         ...options,
         ...queryKey[0],
@@ -2453,7 +2453,7 @@ export const listProjectsInfiniteQueryKey = (options?: Options<ListProjectsData>
 /**
  * List projects
  */
-export const listProjectsInfiniteOptions = (options?: Options<ListProjectsData>) => {
+export const listProjectsInfiniteOptions = (options: Options<ListProjectsData>) => {
     const opts = infiniteQueryOptions<ListProjectsResponse2, ListProjectsError, InfiniteData<ListProjectsResponse2>, QueryKey<Options<ListProjectsData>>, number | Pick<QueryKey<Options<ListProjectsData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
     // @ts-ignore
     {
@@ -2480,7 +2480,7 @@ export const listProjectsInfiniteOptions = (options?: Options<ListProjectsData>)
 /**
  * List projects
  */
-export const useListProjectsQuery = (options?: Options<ListProjectsData>) => useQuery(listProjectsOptions(options));
+export const useListProjectsQuery = (options: Options<ListProjectsData>) => useQuery(listProjectsOptions(options));
 
 export const createProjectMutationKey = (options?: Partial<Options<CreateProjectData>>) => createMutationKey('createProject', options, ['Projects']);
 
@@ -3009,7 +3009,7 @@ export const getSetupStatusQueryKey = (options?: Options<GetSetupStatusData>) =>
  * Returns the current setup state and instance ID. This endpoint is
  * always public and contains no sensitive information.
  */
-export const getSetupStatusOptions = (options?: Options<GetSetupStatusData>) => queryOptions<GetSetupStatusResponse, GetSetupStatusError, GetSetupStatusResponse, ReturnType<typeof getSetupStatusQueryKey>>({
+export const getSetupStatusOptions = (options: Options<GetSetupStatusData>) => queryOptions<GetSetupStatusResponse, GetSetupStatusError, GetSetupStatusResponse, ReturnType<typeof getSetupStatusQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getSetupStatus({
         ...options,
         ...queryKey[0],
@@ -3025,7 +3025,7 @@ export const getSetupStatusOptions = (options?: Options<GetSetupStatusData>) => 
  * Returns the current setup state and instance ID. This endpoint is
  * always public and contains no sensitive information.
  */
-export const useGetSetupStatusQuery = (options?: Options<GetSetupStatusData>) => useQuery(getSetupStatusOptions(options));
+export const useGetSetupStatusQuery = (options: Options<GetSetupStatusData>) => useQuery(getSetupStatusOptions(options));
 
 export const listReleaseEventsQueryKey = (options?: Options<ListReleaseEventsData>) => createQueryKey('listReleaseEvents', options, false, ['Releases']);
 
@@ -3034,7 +3034,7 @@ export const listReleaseEventsQueryKey = (options?: Options<ListReleaseEventsDat
  *
  * Recent release history entries across projects the caller can read, newest first.
  */
-export const listReleaseEventsOptions = (options?: Options<ListReleaseEventsData>) => queryOptions<ListReleaseEventsResponse, ListReleaseEventsError, ListReleaseEventsResponse, ReturnType<typeof listReleaseEventsQueryKey>>({
+export const listReleaseEventsOptions = (options: Options<ListReleaseEventsData>) => queryOptions<ListReleaseEventsResponse, ListReleaseEventsError, ListReleaseEventsResponse, ReturnType<typeof listReleaseEventsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listReleaseEvents({
         ...options,
         ...queryKey[0],
@@ -3049,7 +3049,7 @@ export const listReleaseEventsOptions = (options?: Options<ListReleaseEventsData
  *
  * Recent release history entries across projects the caller can read, newest first.
  */
-export const useListReleaseEventsQuery = (options?: Options<ListReleaseEventsData>) => useQuery(listReleaseEventsOptions(options));
+export const useListReleaseEventsQuery = (options: Options<ListReleaseEventsData>) => useQuery(listReleaseEventsOptions(options));
 
 export const listReleasesQueryKey = (options?: Options<ListReleasesData>) => createQueryKey('listReleases', options, false, ['Releases']);
 
@@ -3058,7 +3058,7 @@ export const listReleasesQueryKey = (options?: Options<ListReleasesData>) => cre
  *
  * Releases in projects the caller can read, newest first.
  */
-export const listReleasesOptions = (options?: Options<ListReleasesData>) => queryOptions<ListReleasesResponse2, ListReleasesError, ListReleasesResponse2, ReturnType<typeof listReleasesQueryKey>>({
+export const listReleasesOptions = (options: Options<ListReleasesData>) => queryOptions<ListReleasesResponse2, ListReleasesError, ListReleasesResponse2, ReturnType<typeof listReleasesQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listReleases({
         ...options,
         ...queryKey[0],
@@ -3075,7 +3075,7 @@ export const listReleasesInfiniteQueryKey = (options?: Options<ListReleasesData>
  *
  * Releases in projects the caller can read, newest first.
  */
-export const listReleasesInfiniteOptions = (options?: Options<ListReleasesData>) => {
+export const listReleasesInfiniteOptions = (options: Options<ListReleasesData>) => {
     const opts = infiniteQueryOptions<ListReleasesResponse2, ListReleasesError, InfiniteData<ListReleasesResponse2>, QueryKey<Options<ListReleasesData>>, number | Pick<QueryKey<Options<ListReleasesData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
     // @ts-ignore
     {
@@ -3104,7 +3104,7 @@ export const listReleasesInfiniteOptions = (options?: Options<ListReleasesData>)
  *
  * Releases in projects the caller can read, newest first.
  */
-export const useListReleasesQuery = (options?: Options<ListReleasesData>) => useQuery(listReleasesOptions(options));
+export const useListReleasesQuery = (options: Options<ListReleasesData>) => useQuery(listReleasesOptions(options));
 
 export const createReleaseMutationKey = (options?: Partial<Options<CreateReleaseData>>) => createMutationKey('createRelease', options, ['Releases']);
 
@@ -3317,7 +3317,7 @@ export const listRunnersQueryKey = (options?: Options<ListRunnersData>) => creat
 /**
  * List runners
  */
-export const listRunnersOptions = (options?: Options<ListRunnersData>) => queryOptions<ListRunnersResponse2, DefaultError, ListRunnersResponse2, ReturnType<typeof listRunnersQueryKey>>({
+export const listRunnersOptions = (options: Options<ListRunnersData>) => queryOptions<ListRunnersResponse2, DefaultError, ListRunnersResponse2, ReturnType<typeof listRunnersQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listRunners({
         ...options,
         ...queryKey[0],
@@ -3332,7 +3332,7 @@ export const listRunnersInfiniteQueryKey = (options?: Options<ListRunnersData>):
 /**
  * List runners
  */
-export const listRunnersInfiniteOptions = (options?: Options<ListRunnersData>) => {
+export const listRunnersInfiniteOptions = (options: Options<ListRunnersData>) => {
     const opts = infiniteQueryOptions<ListRunnersResponse2, DefaultError, InfiniteData<ListRunnersResponse2>, QueryKey<Options<ListRunnersData>>, number | Pick<QueryKey<Options<ListRunnersData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
     // @ts-ignore
     {
@@ -3359,7 +3359,7 @@ export const listRunnersInfiniteOptions = (options?: Options<ListRunnersData>) =
 /**
  * List runners
  */
-export const useListRunnersQuery = (options?: Options<ListRunnersData>) => useQuery(listRunnersOptions(options));
+export const useListRunnersQuery = (options: Options<ListRunnersData>) => useQuery(listRunnersOptions(options));
 
 export const registerRunnerMutationKey = (options?: Partial<Options<RegisterRunnerData>>) => createMutationKey('registerRunner', options, ['Runners']);
 
@@ -3924,7 +3924,7 @@ export const listInstanceSecretsQueryKey = (options?: Options<ListInstanceSecret
  *
  * Returns secret names and timestamps. Values are never returned. Requires instance settings read access.
  */
-export const listInstanceSecretsOptions = (options?: Options<ListInstanceSecretsData>) => queryOptions<ListInstanceSecretsResponse, ListInstanceSecretsError, ListInstanceSecretsResponse, ReturnType<typeof listInstanceSecretsQueryKey>>({
+export const listInstanceSecretsOptions = (options: Options<ListInstanceSecretsData>) => queryOptions<ListInstanceSecretsResponse, ListInstanceSecretsError, ListInstanceSecretsResponse, ReturnType<typeof listInstanceSecretsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listInstanceSecrets({
         ...options,
         ...queryKey[0],
@@ -3939,7 +3939,7 @@ export const listInstanceSecretsOptions = (options?: Options<ListInstanceSecrets
  *
  * Returns secret names and timestamps. Values are never returned. Requires instance settings read access.
  */
-export const useListInstanceSecretsQuery = (options?: Options<ListInstanceSecretsData>) => useQuery(listInstanceSecretsOptions(options));
+export const useListInstanceSecretsQuery = (options: Options<ListInstanceSecretsData>) => useQuery(listInstanceSecretsOptions(options));
 
 export const createInstanceSecretMutationKey = (options?: Partial<Options<CreateInstanceSecretData>>) => createMutationKey('createInstanceSecret', options, ['Secrets']);
 
@@ -4020,7 +4020,7 @@ export const getArtifactStorageSettingsQueryKey = (options?: Options<GetArtifact
 /**
  * Get artifact storage settings
  */
-export const getArtifactStorageSettingsOptions = (options?: Options<GetArtifactStorageSettingsData>) => queryOptions<GetArtifactStorageSettingsResponse, DefaultError, GetArtifactStorageSettingsResponse, ReturnType<typeof getArtifactStorageSettingsQueryKey>>({
+export const getArtifactStorageSettingsOptions = (options: Options<GetArtifactStorageSettingsData>) => queryOptions<GetArtifactStorageSettingsResponse, DefaultError, GetArtifactStorageSettingsResponse, ReturnType<typeof getArtifactStorageSettingsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getArtifactStorageSettings({
         ...options,
         ...queryKey[0],
@@ -4033,7 +4033,7 @@ export const getArtifactStorageSettingsOptions = (options?: Options<GetArtifactS
 /**
  * Get artifact storage settings
  */
-export const useGetArtifactStorageSettingsQuery = (options?: Options<GetArtifactStorageSettingsData>) => useQuery(getArtifactStorageSettingsOptions(options));
+export const useGetArtifactStorageSettingsQuery = (options: Options<GetArtifactStorageSettingsData>) => useQuery(getArtifactStorageSettingsOptions(options));
 
 export const updateArtifactStorageSettingsMutationKey = (options?: Partial<Options<UpdateArtifactStorageSettingsData>>) => createMutationKey('updateArtifactStorageSettings', options, ['Instance Settings']);
 
@@ -4068,7 +4068,7 @@ export const getExternalAccessNetworkSettingsQueryKey = (options?: Options<GetEx
  *
  * Returns effective public URL and allowed frontend origins used by External Access checks.
  */
-export const getExternalAccessNetworkSettingsOptions = (options?: Options<GetExternalAccessNetworkSettingsData>) => queryOptions<GetExternalAccessNetworkSettingsResponse, GetExternalAccessNetworkSettingsError, GetExternalAccessNetworkSettingsResponse, ReturnType<typeof getExternalAccessNetworkSettingsQueryKey>>({
+export const getExternalAccessNetworkSettingsOptions = (options: Options<GetExternalAccessNetworkSettingsData>) => queryOptions<GetExternalAccessNetworkSettingsResponse, GetExternalAccessNetworkSettingsError, GetExternalAccessNetworkSettingsResponse, ReturnType<typeof getExternalAccessNetworkSettingsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getExternalAccessNetworkSettings({
         ...options,
         ...queryKey[0],
@@ -4083,7 +4083,7 @@ export const getExternalAccessNetworkSettingsOptions = (options?: Options<GetExt
  *
  * Returns effective public URL and allowed frontend origins used by External Access checks.
  */
-export const useGetExternalAccessNetworkSettingsQuery = (options?: Options<GetExternalAccessNetworkSettingsData>) => useQuery(getExternalAccessNetworkSettingsOptions(options));
+export const useGetExternalAccessNetworkSettingsQuery = (options: Options<GetExternalAccessNetworkSettingsData>) => useQuery(getExternalAccessNetworkSettingsOptions(options));
 
 export const updateExternalAccessNetworkSettingsMutationKey = (options?: Partial<Options<UpdateExternalAccessNetworkSettingsData>>) => createMutationKey('updateExternalAccessNetworkSettings', options, ['Instance Settings']);
 
@@ -4119,7 +4119,7 @@ export const getExternalAccessOidcQueryKey = (options?: Options<GetExternalAcces
  * Returns the current runtime OIDC provider configuration (issuer, client ID,
  * discovered endpoints). Never exposes the client secret.
  */
-export const getExternalAccessOidcOptions = (options?: Options<GetExternalAccessOidcData>) => queryOptions<GetExternalAccessOidcResponse2, GetExternalAccessOidcError, GetExternalAccessOidcResponse2, ReturnType<typeof getExternalAccessOidcQueryKey>>({
+export const getExternalAccessOidcOptions = (options: Options<GetExternalAccessOidcData>) => queryOptions<GetExternalAccessOidcResponse2, GetExternalAccessOidcError, GetExternalAccessOidcResponse2, ReturnType<typeof getExternalAccessOidcQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getExternalAccessOidc({
         ...options,
         ...queryKey[0],
@@ -4135,7 +4135,7 @@ export const getExternalAccessOidcOptions = (options?: Options<GetExternalAccess
  * Returns the current runtime OIDC provider configuration (issuer, client ID,
  * discovered endpoints). Never exposes the client secret.
  */
-export const useGetExternalAccessOidcQuery = (options?: Options<GetExternalAccessOidcData>) => useQuery(getExternalAccessOidcOptions(options));
+export const useGetExternalAccessOidcQuery = (options: Options<GetExternalAccessOidcData>) => useQuery(getExternalAccessOidcOptions(options));
 
 export const configureExternalAccessOidcMutationKey = (options?: Partial<Options<ConfigureExternalAccessOidcData>>) => createMutationKey('configureExternalAccessOidc', options, ['Instance Settings']);
 
@@ -4200,7 +4200,7 @@ export const getExternalAccessPreflightQueryKey = (options?: Options<GetExternal
  *
  * Returns check-by-check readiness required before enabling External Access (`runtime_mode=remote`).
  */
-export const getExternalAccessPreflightOptions = (options?: Options<GetExternalAccessPreflightData>) => queryOptions<GetExternalAccessPreflightResponse, DefaultError, GetExternalAccessPreflightResponse, ReturnType<typeof getExternalAccessPreflightQueryKey>>({
+export const getExternalAccessPreflightOptions = (options: Options<GetExternalAccessPreflightData>) => queryOptions<GetExternalAccessPreflightResponse, DefaultError, GetExternalAccessPreflightResponse, ReturnType<typeof getExternalAccessPreflightQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getExternalAccessPreflight({
         ...options,
         ...queryKey[0],
@@ -4215,14 +4215,14 @@ export const getExternalAccessPreflightOptions = (options?: Options<GetExternalA
  *
  * Returns check-by-check readiness required before enabling External Access (`runtime_mode=remote`).
  */
-export const useGetExternalAccessPreflightQuery = (options?: Options<GetExternalAccessPreflightData>) => useQuery(getExternalAccessPreflightOptions(options));
+export const useGetExternalAccessPreflightQuery = (options: Options<GetExternalAccessPreflightData>) => useQuery(getExternalAccessPreflightOptions(options));
 
 export const getExternalAccessTrustedProxySettingsQueryKey = (options?: Options<GetExternalAccessTrustedProxySettingsData>) => createQueryKey('getExternalAccessTrustedProxySettings', options, false, ['Instance Settings']);
 
 /**
  * Get trusted proxy runtime settings
  */
-export const getExternalAccessTrustedProxySettingsOptions = (options?: Options<GetExternalAccessTrustedProxySettingsData>) => queryOptions<GetExternalAccessTrustedProxySettingsResponse, GetExternalAccessTrustedProxySettingsError, GetExternalAccessTrustedProxySettingsResponse, ReturnType<typeof getExternalAccessTrustedProxySettingsQueryKey>>({
+export const getExternalAccessTrustedProxySettingsOptions = (options: Options<GetExternalAccessTrustedProxySettingsData>) => queryOptions<GetExternalAccessTrustedProxySettingsResponse, GetExternalAccessTrustedProxySettingsError, GetExternalAccessTrustedProxySettingsResponse, ReturnType<typeof getExternalAccessTrustedProxySettingsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getExternalAccessTrustedProxySettings({
         ...options,
         ...queryKey[0],
@@ -4235,7 +4235,7 @@ export const getExternalAccessTrustedProxySettingsOptions = (options?: Options<G
 /**
  * Get trusted proxy runtime settings
  */
-export const useGetExternalAccessTrustedProxySettingsQuery = (options?: Options<GetExternalAccessTrustedProxySettingsData>) => useQuery(getExternalAccessTrustedProxySettingsOptions(options));
+export const useGetExternalAccessTrustedProxySettingsQuery = (options: Options<GetExternalAccessTrustedProxySettingsData>) => useQuery(getExternalAccessTrustedProxySettingsOptions(options));
 
 export const updateExternalAccessTrustedProxySettingsMutationKey = (options?: Partial<Options<UpdateExternalAccessTrustedProxySettingsData>>) => createMutationKey('updateExternalAccessTrustedProxySettings', options, ['Instance Settings']);
 
@@ -4266,7 +4266,7 @@ export const listNotificationChannelsQueryKey = (options?: Options<ListNotificat
  *
  * Returns all configured notification channels.
  */
-export const listNotificationChannelsOptions = (options?: Options<ListNotificationChannelsData>) => queryOptions<ListNotificationChannelsResponse2, ListNotificationChannelsError, ListNotificationChannelsResponse2, ReturnType<typeof listNotificationChannelsQueryKey>>({
+export const listNotificationChannelsOptions = (options: Options<ListNotificationChannelsData>) => queryOptions<ListNotificationChannelsResponse2, ListNotificationChannelsError, ListNotificationChannelsResponse2, ReturnType<typeof listNotificationChannelsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listNotificationChannels({
         ...options,
         ...queryKey[0],
@@ -4283,7 +4283,7 @@ export const listNotificationChannelsInfiniteQueryKey = (options?: Options<ListN
  *
  * Returns all configured notification channels.
  */
-export const listNotificationChannelsInfiniteOptions = (options?: Options<ListNotificationChannelsData>) => {
+export const listNotificationChannelsInfiniteOptions = (options: Options<ListNotificationChannelsData>) => {
     const opts = infiniteQueryOptions<ListNotificationChannelsResponse2, ListNotificationChannelsError, InfiniteData<ListNotificationChannelsResponse2>, QueryKey<Options<ListNotificationChannelsData>>, number | Pick<QueryKey<Options<ListNotificationChannelsData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
     // @ts-ignore
     {
@@ -4312,7 +4312,7 @@ export const listNotificationChannelsInfiniteOptions = (options?: Options<ListNo
  *
  * Returns all configured notification channels.
  */
-export const useListNotificationChannelsQuery = (options?: Options<ListNotificationChannelsData>) => useQuery(listNotificationChannelsOptions(options));
+export const useListNotificationChannelsQuery = (options: Options<ListNotificationChannelsData>) => useQuery(listNotificationChannelsOptions(options));
 
 export const createNotificationChannelMutationKey = (options?: Partial<Options<CreateNotificationChannelData>>) => createMutationKey('createNotificationChannel', options, ['Notification Channels']);
 
@@ -4471,7 +4471,7 @@ export const getInstancePreferencesQueryKey = (options?: Options<GetInstancePref
 /**
  * Get instance preferences
  */
-export const getInstancePreferencesOptions = (options?: Options<GetInstancePreferencesData>) => queryOptions<GetInstancePreferencesResponse, DefaultError, GetInstancePreferencesResponse, ReturnType<typeof getInstancePreferencesQueryKey>>({
+export const getInstancePreferencesOptions = (options: Options<GetInstancePreferencesData>) => queryOptions<GetInstancePreferencesResponse, DefaultError, GetInstancePreferencesResponse, ReturnType<typeof getInstancePreferencesQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getInstancePreferences({
         ...options,
         ...queryKey[0],
@@ -4484,7 +4484,7 @@ export const getInstancePreferencesOptions = (options?: Options<GetInstancePrefe
 /**
  * Get instance preferences
  */
-export const useGetInstancePreferencesQuery = (options?: Options<GetInstancePreferencesData>) => useQuery(getInstancePreferencesOptions(options));
+export const useGetInstancePreferencesQuery = (options: Options<GetInstancePreferencesData>) => useQuery(getInstancePreferencesOptions(options));
 
 export const updateInstancePreferencesMutationKey = (options?: Partial<Options<UpdateInstancePreferencesData>>) => createMutationKey('updateInstancePreferences', options, ['Instance Settings']);
 
@@ -4517,7 +4517,7 @@ export const getRetentionPolicyQueryKey = (options?: Options<GetRetentionPolicyD
 /**
  * Get global retention policy
  */
-export const getRetentionPolicyOptions = (options?: Options<GetRetentionPolicyData>) => queryOptions<GetRetentionPolicyResponse, DefaultError, GetRetentionPolicyResponse, ReturnType<typeof getRetentionPolicyQueryKey>>({
+export const getRetentionPolicyOptions = (options: Options<GetRetentionPolicyData>) => queryOptions<GetRetentionPolicyResponse, DefaultError, GetRetentionPolicyResponse, ReturnType<typeof getRetentionPolicyQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getRetentionPolicy({
         ...options,
         ...queryKey[0],
@@ -4530,7 +4530,7 @@ export const getRetentionPolicyOptions = (options?: Options<GetRetentionPolicyDa
 /**
  * Get global retention policy
  */
-export const useGetRetentionPolicyQuery = (options?: Options<GetRetentionPolicyData>) => useQuery(getRetentionPolicyOptions(options));
+export const useGetRetentionPolicyQuery = (options: Options<GetRetentionPolicyData>) => useQuery(getRetentionPolicyOptions(options));
 
 export const updateRetentionPolicyMutationKey = (options?: Partial<Options<UpdateRetentionPolicyData>>) => createMutationKey('updateRetentionPolicy', options, ['Retention Policy']);
 
@@ -4559,7 +4559,7 @@ export const getRetentionLastCleanupQueryKey = (options?: Options<GetRetentionLa
 /**
  * Get last cleanup summary
  */
-export const getRetentionLastCleanupOptions = (options?: Options<GetRetentionLastCleanupData>) => queryOptions<GetRetentionLastCleanupResponse, DefaultError, GetRetentionLastCleanupResponse, ReturnType<typeof getRetentionLastCleanupQueryKey>>({
+export const getRetentionLastCleanupOptions = (options: Options<GetRetentionLastCleanupData>) => queryOptions<GetRetentionLastCleanupResponse, DefaultError, GetRetentionLastCleanupResponse, ReturnType<typeof getRetentionLastCleanupQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getRetentionLastCleanup({
         ...options,
         ...queryKey[0],
@@ -4572,7 +4572,7 @@ export const getRetentionLastCleanupOptions = (options?: Options<GetRetentionLas
 /**
  * Get last cleanup summary
  */
-export const useGetRetentionLastCleanupQuery = (options?: Options<GetRetentionLastCleanupData>) => useQuery(getRetentionLastCleanupOptions(options));
+export const useGetRetentionLastCleanupQuery = (options: Options<GetRetentionLastCleanupData>) => useQuery(getRetentionLastCleanupOptions(options));
 
 export const verifyBootstrapTokenMutationKey = (options?: Partial<Options<VerifyBootstrapTokenData>>) => createMutationKey('verifyBootstrapToken', options, ['Setup']);
 
@@ -4804,7 +4804,7 @@ export const getSetupSummaryQueryKey = (options?: Options<GetSetupSummaryData>) 
  * Returns a summary of current setup configuration. Requires a valid
  * setup session.
  */
-export const getSetupSummaryOptions = (options?: Options<GetSetupSummaryData>) => queryOptions<GetSetupSummaryResponse, GetSetupSummaryError, GetSetupSummaryResponse, ReturnType<typeof getSetupSummaryQueryKey>>({
+export const getSetupSummaryOptions = (options: Options<GetSetupSummaryData>) => queryOptions<GetSetupSummaryResponse, GetSetupSummaryError, GetSetupSummaryResponse, ReturnType<typeof getSetupSummaryQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getSetupSummary({
         ...options,
         ...queryKey[0],
@@ -4820,7 +4820,7 @@ export const getSetupSummaryOptions = (options?: Options<GetSetupSummaryData>) =
  * Returns a summary of current setup configuration. Requires a valid
  * setup session.
  */
-export const useGetSetupSummaryQuery = (options?: Options<GetSetupSummaryData>) => useQuery(getSetupSummaryOptions(options));
+export const useGetSetupSummaryQuery = (options: Options<GetSetupSummaryData>) => useQuery(getSetupSummaryOptions(options));
 
 export const setupTrustedProxyConfigureMutationKey = (options?: Partial<Options<SetupTrustedProxyConfigureData>>) => createMutationKey('setupTrustedProxyConfigure', options, ['Setup']);
 
@@ -4860,7 +4860,7 @@ export const getStoreVitalsQueryKey = (options?: Options<GetStoreVitalsData>) =>
  * store. The daemon reads the stores every few hours with the projects'
  * publishing credentials and serves its latest copy.
  */
-export const getStoreVitalsOptions = (options?: Options<GetStoreVitalsData>) => queryOptions<GetStoreVitalsResponse, DefaultError, GetStoreVitalsResponse, ReturnType<typeof getStoreVitalsQueryKey>>({
+export const getStoreVitalsOptions = (options: Options<GetStoreVitalsData>) => queryOptions<GetStoreVitalsResponse, DefaultError, GetStoreVitalsResponse, ReturnType<typeof getStoreVitalsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getStoreVitals({
         ...options,
         ...queryKey[0],
@@ -4878,7 +4878,7 @@ export const getStoreVitalsOptions = (options?: Options<GetStoreVitalsData>) => 
  * store. The daemon reads the stores every few hours with the projects'
  * publishing credentials and serves its latest copy.
  */
-export const useGetStoreVitalsQuery = (options?: Options<GetStoreVitalsData>) => useQuery(getStoreVitalsOptions(options));
+export const useGetStoreVitalsQuery = (options: Options<GetStoreVitalsData>) => useQuery(getStoreVitalsOptions(options));
 
 export const refreshStoreVitalsMutationKey = (options?: Partial<Options<RefreshStoreVitalsData>>) => createMutationKey('refreshStoreVitals', options, ['Releases']);
 
@@ -4918,7 +4918,7 @@ export const getRuntimeUpdateStatusQueryKey = (options?: Options<GetRuntimeUpdat
  * Reports whether the backend is managed by the supported macOS launchd
  * service and whether an update is currently running. Requires owner role.
  */
-export const getRuntimeUpdateStatusOptions = (options?: Options<GetRuntimeUpdateStatusData>) => queryOptions<GetRuntimeUpdateStatusResponse, GetRuntimeUpdateStatusError, GetRuntimeUpdateStatusResponse, ReturnType<typeof getRuntimeUpdateStatusQueryKey>>({
+export const getRuntimeUpdateStatusOptions = (options: Options<GetRuntimeUpdateStatusData>) => queryOptions<GetRuntimeUpdateStatusResponse, GetRuntimeUpdateStatusError, GetRuntimeUpdateStatusResponse, ReturnType<typeof getRuntimeUpdateStatusQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getRuntimeUpdateStatus({
         ...options,
         ...queryKey[0],
@@ -4934,7 +4934,7 @@ export const getRuntimeUpdateStatusOptions = (options?: Options<GetRuntimeUpdate
  * Reports whether the backend is managed by the supported macOS launchd
  * service and whether an update is currently running. Requires owner role.
  */
-export const useGetRuntimeUpdateStatusQuery = (options?: Options<GetRuntimeUpdateStatusData>) => useQuery(getRuntimeUpdateStatusOptions(options));
+export const useGetRuntimeUpdateStatusQuery = (options: Options<GetRuntimeUpdateStatusData>) => useQuery(getRuntimeUpdateStatusOptions(options));
 
 export const startRuntimeUpdateMutationKey = (options?: Partial<Options<StartRuntimeUpdateData>>) => createMutationKey('startRuntimeUpdate', options, ['System']);
 
@@ -4973,7 +4973,7 @@ export const getRuntimeUpdatePreflightQueryKey = (options?: Options<GetRuntimeUp
  * supervisor, each with a fix hint. Results are cached for 30 seconds.
  * Requires owner role.
  */
-export const getRuntimeUpdatePreflightOptions = (options?: Options<GetRuntimeUpdatePreflightData>) => queryOptions<GetRuntimeUpdatePreflightResponse, GetRuntimeUpdatePreflightError, GetRuntimeUpdatePreflightResponse, ReturnType<typeof getRuntimeUpdatePreflightQueryKey>>({
+export const getRuntimeUpdatePreflightOptions = (options: Options<GetRuntimeUpdatePreflightData>) => queryOptions<GetRuntimeUpdatePreflightResponse, GetRuntimeUpdatePreflightError, GetRuntimeUpdatePreflightResponse, ReturnType<typeof getRuntimeUpdatePreflightQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getRuntimeUpdatePreflight({
         ...options,
         ...queryKey[0],
@@ -4990,7 +4990,7 @@ export const getRuntimeUpdatePreflightOptions = (options?: Options<GetRuntimeUpd
  * supervisor, each with a fix hint. Results are cached for 30 seconds.
  * Requires owner role.
  */
-export const useGetRuntimeUpdatePreflightQuery = (options?: Options<GetRuntimeUpdatePreflightData>) => useQuery(getRuntimeUpdatePreflightOptions(options));
+export const useGetRuntimeUpdatePreflightQuery = (options: Options<GetRuntimeUpdatePreflightData>) => useQuery(getRuntimeUpdatePreflightOptions(options));
 
 export const listUsersQueryKey = (options?: Options<ListUsersData>) => createQueryKey('listUsers', options, false, ['Users']);
 
@@ -4999,7 +4999,7 @@ export const listUsersQueryKey = (options?: Options<ListUsersData>) => createQue
  *
  * Returns all users. Requires `owner` or `admin` role.
  */
-export const listUsersOptions = (options?: Options<ListUsersData>) => queryOptions<ListUsersResponse2, ListUsersError, ListUsersResponse2, ReturnType<typeof listUsersQueryKey>>({
+export const listUsersOptions = (options: Options<ListUsersData>) => queryOptions<ListUsersResponse2, ListUsersError, ListUsersResponse2, ReturnType<typeof listUsersQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await listUsers({
         ...options,
         ...queryKey[0],
@@ -5016,7 +5016,7 @@ export const listUsersInfiniteQueryKey = (options?: Options<ListUsersData>): Que
  *
  * Returns all users. Requires `owner` or `admin` role.
  */
-export const listUsersInfiniteOptions = (options?: Options<ListUsersData>) => {
+export const listUsersInfiniteOptions = (options: Options<ListUsersData>) => {
     const opts = infiniteQueryOptions<ListUsersResponse2, ListUsersError, InfiniteData<ListUsersResponse2>, QueryKey<Options<ListUsersData>>, number | Pick<QueryKey<Options<ListUsersData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
     // @ts-ignore
     {
@@ -5045,7 +5045,7 @@ export const listUsersInfiniteOptions = (options?: Options<ListUsersData>) => {
  *
  * Returns all users. Requires `owner` or `admin` role.
  */
-export const useListUsersQuery = (options?: Options<ListUsersData>) => useQuery(listUsersOptions(options));
+export const useListUsersQuery = (options: Options<ListUsersData>) => useQuery(listUsersOptions(options));
 
 export const inviteUserMutationKey = (options?: Partial<Options<InviteUserData>>) => createMutationKey('inviteUser', options, ['Users']);
 
@@ -5080,7 +5080,7 @@ export const getMeQueryKey = (options?: Options<GetMeData>) => createQueryKey('g
  *
  * Returns the profile of the currently authenticated user.
  */
-export const getMeOptions = (options?: Options<GetMeData>) => queryOptions<GetMeResponse, GetMeError, GetMeResponse, ReturnType<typeof getMeQueryKey>>({
+export const getMeOptions = (options: Options<GetMeData>) => queryOptions<GetMeResponse, GetMeError, GetMeResponse, ReturnType<typeof getMeQueryKey>>({
     queryFn: async ({ queryKey, signal }) => await getMe({
         ...options,
         ...queryKey[0],
@@ -5095,7 +5095,7 @@ export const getMeOptions = (options?: Options<GetMeData>) => queryOptions<GetMe
  *
  * Returns the profile of the currently authenticated user.
  */
-export const useGetMeQuery = (options?: Options<GetMeData>) => useQuery(getMeOptions(options));
+export const useGetMeQuery = (options: Options<GetMeData>) => useQuery(getMeOptions(options));
 
 export const deleteUserMutationKey = (options?: Partial<Options<DeleteUserData>>) => createMutationKey('deleteUser', options, ['Users']);
 

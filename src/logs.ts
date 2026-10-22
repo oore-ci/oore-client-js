@@ -1,11 +1,12 @@
 import { streamBuildLogs } from './generated/sdk.gen.js'
 import type { BuildLogChunk } from './generated/types.gen.js'
+import { runSse } from './sse.js'
 
 type GeneratedStreamOptions = Parameters<typeof streamBuildLogs>[0]
 
 export type StreamBuildLogEventsOptions = Omit<
   GeneratedStreamOptions,
-  'onSseEvent'
+  'onSseEvent' | 'sseSleepFn'
 >
 
 export type BuildLogEvent =
@@ -24,30 +25,34 @@ const isBuildLogChunk = (value: unknown): value is BuildLogChunk => {
   )
 }
 
-/** Streams typed Oore build-log events while preserving SSE event names. */
-export async function* streamBuildLogEvents(
+const toBuildLogEvent = ({
+  data,
+  event,
+}: {
+  data: unknown
+  event?: string | undefined
+}): BuildLogEvent => {
+  if (event === 'log' && isBuildLogChunk(data)) return { chunk: data, type: 'log' }
+  if (event === 'done') return { reason: String(data ?? ''), type: 'done' }
+  return { data, event, type: 'unknown' }
+}
+
+/**
+ * Streams typed Oore build-log events while preserving SSE event names.
+ *
+ * Network errors and 5xx responses are retried up to `sseMaxRetryAttempts`
+ * (default 3) with `Last-Event-ID` and a freshly resolved token. The generator
+ * then throws: an `OoreApiError` for HTTP errors (4xx are not retried), or the
+ * network error. It returns when the server closes the stream or `signal`
+ * aborts, and breaking out of the loop closes the connection.
+ */
+export function streamBuildLogEvents(
   options: StreamBuildLogEventsOptions,
 ): AsyncGenerator<BuildLogEvent, void, unknown> {
-  let nextEvent: BuildLogEvent | undefined
-
-  const { stream } = await streamBuildLogs({
-    sseMaxRetryAttempts: 3,
-    ...options,
-    onSseEvent: ({ data, event }) => {
-      if (event === 'log' && isBuildLogChunk(data)) {
-        nextEvent = { chunk: data, type: 'log' }
-      } else if (event === 'done') {
-        nextEvent = { reason: String(data ?? ''), type: 'done' }
-      } else {
-        nextEvent = { data, event, type: 'unknown' }
-      }
-    },
-  })
-
-  for await (const _data of stream) {
-    if (nextEvent) {
-      yield nextEvent
-      nextEvent = undefined
-    }
-  }
+  return runSse(
+    options,
+    3,
+    (attempt) => streamBuildLogs({ ...options, ...attempt }),
+    toBuildLogEvent,
+  )
 }

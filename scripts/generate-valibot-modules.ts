@@ -45,12 +45,18 @@ if (schemas.length === 0) {
 }
 
 const schemaNames = new Set(schemas.map(({ name }) => name))
+// Files are named after their schema, so a new schema adds one file instead of
+// renaming every later one. Upper-case letters become `-x`, which keeps names
+// such as vGitLab… and vGitlab… apart on case-insensitive file systems.
 const schemaFiles = new Map(
-  schemas.map(({ name }, index) => [
+  schemas.map(({ name }) => [
     name,
-    `schema-${index.toString().padStart(4, '0')}`,
+    name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`),
   ]),
 )
+if (new Set(schemaFiles.values()).size !== schemaFiles.size) {
+  throw new Error('Two Valibot schemas map to the same file name')
+}
 const outputDirectory = new URL('../src/generated/valibot/', import.meta.url)
 await rm(outputDirectory, { force: true, recursive: true })
 await mkdir(outputDirectory, { recursive: true })

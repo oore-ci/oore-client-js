@@ -1,4 +1,5 @@
 import { streamEvents } from './generated/sdk.gen.js'
+import { runSse } from './sse.js'
 import type {
   BuildChangedEvent,
   EventStreamReady,
@@ -8,7 +9,10 @@ import type {
 
 type GeneratedStreamOptions = NonNullable<Parameters<typeof streamEvents>[0]>
 
-export type StreamLiveEventsOptions = Omit<GeneratedStreamOptions, 'onSseEvent'>
+export type StreamLiveEventsOptions = Omit<
+  GeneratedStreamOptions,
+  'onSseEvent' | 'sseSleepFn'
+>
 
 /**
  * An event from `GET /v1/events`. Events are not replayed after a reconnect,
@@ -52,26 +56,20 @@ const toLiveEvent = (event: string | undefined, data: unknown): LiveEvent => {
 
 /**
  * Streams typed build, release and runner changes from one connection.
- * The generator ends when the connection closes; reconnecting is up to the
- * caller, which keeps backoff and polling fallback in one place.
+ *
+ * The generator returns when the server closes the stream or `signal` aborts,
+ * and throws when the connection fails: an `OoreApiError` for an HTTP error
+ * such as 401 after a token is revoked, or the network error otherwise. It
+ * does not reconnect by default (`sseMaxRetryAttempts: 1`); the caller owns
+ * backoff and polling fallback. Breaking out of the loop closes the connection.
  */
-export async function* streamLiveEvents(
+export function streamLiveEvents(
   options: StreamLiveEventsOptions,
 ): AsyncGenerator<LiveEvent, void, unknown> {
-  let nextEvent: LiveEvent | undefined
-
-  const { stream } = await streamEvents({
-    sseMaxRetryAttempts: 1,
-    ...options,
-    onSseEvent: ({ data, event }) => {
-      nextEvent = toLiveEvent(event, data)
-    },
-  })
-
-  for await (const _data of stream) {
-    if (nextEvent) {
-      yield nextEvent
-      nextEvent = undefined
-    }
-  }
+  return runSse(
+    options,
+    1,
+    (attempt) => streamEvents({ ...options, ...attempt }),
+    ({ data, event }) => toLiveEvent(event, data),
+  )
 }
