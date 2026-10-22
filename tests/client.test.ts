@@ -75,4 +75,103 @@ describe('Oore client', () => {
 
     expect(manifest).toBe('<plist><dict /></plist>')
   })
+
+  test('requires an explicit client instead of a localhost default', () => {
+    // @ts-expect-error every operation needs a client from createOoreClient
+    const call = () => listProjects({})
+
+    expect(call).toThrow(TypeError)
+  })
+
+  test('does not use an HTML error page as the message', async () => {
+    const html = '<html><body><h1>502 Bad Gateway</h1></body></html>'
+    const client = createOoreClient({
+      baseUrl: 'https://oore.test',
+      fetch: (async () =>
+        new Response(html, {
+          headers: { 'content-type': 'text/html' },
+          status: 502,
+          statusText: 'Bad Gateway',
+        })) as unknown as typeof globalThis.fetch,
+    })
+
+    const error = await listProjects({ client }).catch((e) => e)
+
+    expect(error).toBeInstanceOf(OoreApiError)
+    expect(error).toMatchObject({ cause: html, message: 'Bad Gateway', status: 502 })
+  })
+
+  test('falls back to the status when an HTML page has no status text', async () => {
+    const client = createOoreClient({
+      baseUrl: 'https://oore.test',
+      fetch: (async () =>
+        new Response('<!doctype html><title>oops</title>', {
+          status: 500,
+        })) as unknown as typeof globalThis.fetch,
+    })
+
+    const error = await listProjects({ client }).catch((e) => e)
+
+    expect(error.message).toBe('Oore request failed with status 500')
+  })
+
+  test('uses a short plain-text error body as the message', async () => {
+    const client = createOoreClient({
+      baseUrl: 'https://oore.test',
+      fetch: (async () =>
+        new Response('daemon is restarting', {
+          headers: { 'content-type': 'text/plain' },
+          status: 503,
+        })) as unknown as typeof globalThis.fetch,
+    })
+
+    const error = await listProjects({ client }).catch((e) => e)
+
+    expect(error).toMatchObject({ message: 'daemon is restarting', status: 503 })
+  })
+
+  test('passes network errors through unchanged', async () => {
+    const failure = new TypeError('fetch failed')
+    const client = createOoreClient({
+      baseUrl: 'https://oore.test',
+      fetch: (async () => {
+        throw failure
+      }) as unknown as typeof globalThis.fetch,
+    })
+
+    expect(listProjects({ client })).rejects.toBe(failure)
+  })
+
+  test('rejects when the token function throws', async () => {
+    let requests = 0
+    const client = createOoreClient({
+      baseUrl: 'https://oore.test',
+      fetch: (async () => {
+        requests += 1
+        return Response.json({ projects: [], total: 0 })
+      }) as unknown as typeof globalThis.fetch,
+      token: () => {
+        throw new Error('session expired')
+      },
+    })
+
+    await expect(listProjects({ client })).rejects.toThrow('session expired')
+    expect(requests).toBe(0)
+  })
+
+  test('parses an untyped JSON body and treats an empty one as empty JSON', async () => {
+    const bodies = ['{"projects":[],"total":0}', '']
+    const client = createOoreClient({
+      baseUrl: 'https://oore.test',
+      fetch: (async () => {
+        const response = new Response(bodies.shift())
+        response.headers.delete('content-type')
+        return response
+      }) as unknown as typeof globalThis.fetch,
+    })
+
+    expect(await listProjects({ client })).toEqual({ projects: [], total: 0 })
+    const empty: unknown = await listProjects({ client })
+    expect(empty).toEqual({})
+  })
 })

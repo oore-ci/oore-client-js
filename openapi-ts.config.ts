@@ -16,6 +16,7 @@ export default defineConfig({
       throwOnError: true,
     },
     {
+      client: false,
       name: '@hey-api/sdk',
       operations: { strategy: 'flat' },
       paramsStructure: 'grouped',
