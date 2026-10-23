@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.13.0](https://github.com/oore-ci/oore-client-js/compare/v0.12.0...v0.13.0) (2026-10-23)
+
+
+### Features
+
+* **cli:** oore-dev developer CLI (run, logs, install, status) ([#46](https://github.com/oore-ci/oore-client-js/issues/46)) ([dcb8bdb](https://github.com/oore-ci/oore-client-js/commit/dcb8bdb32db46dfe6b67c0719b5a4e4c6ad73911))
+* **msw:** rolling, halted and complete release scenarios ([#45](https://github.com/oore-ci/oore-client-js/issues/45)) ([c5228c0](https://github.com/oore-ci/oore-client-js/commit/c5228c00bb291857463332a538a810000055e246))
+* **schema:** add Slack member mappings to notification channels ([#48](https://github.com/oore-ci/oore-client-js/issues/48)) ([de33335](https://github.com/oore-ci/oore-client-js/commit/de33335fc7eacb0a8dbbffa784b072192dc4c8e3))
+
 ## [0.12.0](https://github.com/oore-ci/oore-client-js/compare/v0.11.0...v0.12.0) (2026-10-23)
 
 
