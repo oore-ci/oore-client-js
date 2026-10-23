@@ -667,6 +667,10 @@ export type CreateNotificationChannelRequest = {
      * `users:read.email`, used to mention the triggering user. Optional.
      */
     secret?: string | null;
+    /**
+     * Slack member IDs to mention (Slack only). Works without a bot token.
+     */
+    slack_mentions?: Array<SlackMention>;
     smtp_config?: null | SmtpConfig;
     /**
      * Incoming webhook URL (required for webhook, mattermost and slack).
@@ -1323,6 +1327,12 @@ export type NotificationChannel = {
      * offline.
      */
     project_id?: string | null;
+    /**
+     * Slack member IDs to mention, matched against the person behind each
+     * event (Slack only). Checked before the bot token lookup. Absent from
+     * daemons that predate it, which is the same as none.
+     */
+    slack_mentions?: Array<SlackMention>;
     smtp_summary?: null | SmtpConfigSummary;
     updated_at: number;
     /**
@@ -2294,6 +2304,21 @@ export type SetupTrustedProxyConfigureResponse = {
     state: SetupState;
 };
 
+/**
+ * Maps a person to the Slack member mentioned in their notifications.
+ */
+export type SlackMention = {
+    /**
+     * Oore sign-in email (manual and API builds, releases) or Git username
+     * (push and merge request builds). Matched without regard to case.
+     */
+    identity: string;
+    /**
+     * Slack member ID, such as `U0123ABCD`.
+     */
+    member_id: string;
+};
+
 export type SmtpConfig = {
     from_address: string;
     host: string;
@@ -2570,6 +2595,11 @@ export type UpdateNotificationChannelRequest = {
      * pass empty string to clear.
      */
     secret?: string | null;
+    /**
+     * New Slack member mappings (Slack only). Omit to keep existing; pass an
+     * empty list to clear.
+     */
+    slack_mentions?: Array<SlackMention> | null;
     smtp_config?: null | UpdateSmtpConfig;
     /**
      * New URL. Omit to keep existing.

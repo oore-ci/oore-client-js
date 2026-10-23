@@ -247,6 +247,7 @@ export { vSetupSummaryResponse } from './generated/valibot/v-setup-summary-respo
 export { vSetupTrustedProxyClaimOwnerResponse } from './generated/valibot/v-setup-trusted-proxy-claim-owner-response.js'
 export { vSetupTrustedProxyConfigureRequest } from './generated/valibot/v-setup-trusted-proxy-configure-request.js'
 export { vSetupTrustedProxyConfigureResponse } from './generated/valibot/v-setup-trusted-proxy-configure-response.js'
+export { vSlackMention } from './generated/valibot/v-slack-mention.js'
 export { vSmtpTlsMode } from './generated/valibot/v-smtp-tls-mode.js'
 export { vSmtpConfig } from './generated/valibot/v-smtp-config.js'
 export { vCreateNotificationChannelRequest } from './generated/valibot/v-create-notification-channel-request.js'
