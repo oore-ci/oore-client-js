@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://github.com/oore-ci/oore-client-js/compare/v0.13.0...v0.14.0) (2026-10-23)
+
+
+### Features
+
+* **schema:** filter builds by trigger, actor and creation time ([#49](https://github.com/oore-ci/oore-client-js/issues/49)) ([37104f4](https://github.com/oore-ci/oore-client-js/commit/37104f4e5c15851d27c3aec55620f72a4821fa17))
+
 ## [0.13.0](https://github.com/oore-ci/oore-client-js/compare/v0.12.0...v0.13.0) (2026-10-23)
 
 
