@@ -958,6 +958,10 @@ export type GooglePlayCredentialsTestResponse = {
      * The key's `client_email`, when the secret is a service account key.
      */
     service_account_email?: string | null;
+    /**
+     * The secret that was checked.
+     */
+    service_account_secret: string;
 };
 
 /**
@@ -1477,6 +1481,7 @@ export type PipelineExecutionConfig = {
 
 export type PipelineGooglePlayPublishResponse = {
     config?: null | GooglePlayPublishConfig;
+    last_credentials_check?: null | GooglePlayCredentialsTestResponse;
     pipeline_id: string;
     /**
      * Whether the referenced service account secret exists in a visible scope.
