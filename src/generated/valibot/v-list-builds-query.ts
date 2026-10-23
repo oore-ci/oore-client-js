@@ -17,6 +17,18 @@ export const vListBuildsQuery = v.object({
     pipeline_id: v.optional(v.string()),
     status: v.optional(v.string()),
     branch: v.optional(v.string()),
+    trigger: v.optional(v.string()),
+    actor: v.optional(v.string()),
+    created_after: v.optional(v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
+    created_before: v.optional(v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
     q: v.optional(v.string()),
     sort: v.optional(v.string()),
     direction: v.optional(v.string())

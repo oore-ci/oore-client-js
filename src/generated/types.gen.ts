@@ -1166,6 +1166,14 @@ export type ListAuditLogsResponse = {
     total: number;
 };
 
+/**
+ * Distinct `trigger_actor` values on builds the caller can see, most
+ * recently active first.
+ */
+export type ListBuildActorsResponse = {
+    actors: Array<string>;
+};
+
 export type ListBuildArtifactsRequest = {
     build_ids: Array<string>;
 };
@@ -3807,6 +3815,22 @@ export type ListBuildsData = {
          */
         branch?: string;
         /**
+         * Filter by one or more comma-separated trigger kinds: manual, api, schedule, push, pull_request, or tag_push. The last three are webhook events.
+         */
+        trigger?: string;
+        /**
+         * Filter by exact trigger actor (the user email for manual builds, the SCM login for webhook builds). At most 320 characters.
+         */
+        actor?: string;
+        /**
+         * Only builds created at or after this Unix time in seconds
+         */
+        created_after?: number;
+        /**
+         * Only builds created before this Unix time in seconds. Must be later than created_after.
+         */
+        created_before?: number;
+        /**
          * Search builds, case-insensitively, by build number (with or without #), part of the branch, the start of the commit SHA, or part of the pipeline or project name. At most 200 characters.
          */
         q?: string;
@@ -3839,6 +3863,44 @@ export type ListBuildsResponses = {
 };
 
 export type ListBuildsResponse2 = ListBuildsResponses[keyof ListBuildsResponses];
+
+export type ListBuildActorsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Only actors of this project's builds
+         */
+        project_id?: string;
+        /**
+         * Case-insensitive part of the actor. At most 200 characters.
+         */
+        q?: string;
+        /**
+         * Maximum actors (default 50, at most 200)
+         */
+        limit?: number;
+    };
+    url: '/v1/builds/actors';
+};
+
+export type ListBuildActorsErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+};
+
+export type ListBuildActorsError = ListBuildActorsErrors[keyof ListBuildActorsErrors];
+
+export type ListBuildActorsResponses = {
+    /**
+     * Build actors
+     */
+    200: ListBuildActorsResponse;
+};
+
+export type ListBuildActorsResponse2 = ListBuildActorsResponses[keyof ListBuildActorsResponses];
 
 export type GetBuildInsightsData = {
     body?: never;
