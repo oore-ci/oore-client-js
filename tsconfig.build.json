@@ -13,5 +13,6 @@
     "stripInternal": true,
     "types": []
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/cli/**/*.ts"]
 }

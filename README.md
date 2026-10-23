@@ -191,6 +191,28 @@ const link = await generateDownloadLink({ client, path: { artifact_id } })
 window.location.assign(link.download_url)
 ```
 
+## Developer CLI
+
+The package installs an `oore-dev` command for triggering and following builds from a terminal. It uses only Node's standard library and the operations above, and no package entrypoint imports it.
+
+```sh
+npm install --global @oore/client   # or: npx -p @oore/client oore-dev --help
+
+# Create an API token in the web app (Settings → API tokens), then:
+echo "$OORE_TOKEN" | oore-dev login --url https://ci.example.com
+
+oore-dev run Release --branch feature/login --platform android -f
+oore-dev logs -f <build-id>
+oore-dev install <build-id>      # prints the install link and a QR code
+oore-dev status
+```
+
+`run` takes a pipeline ID or name; when a name exists in more than one project, add `--project`. `run -f` and `logs -f` print the stored logs, stream new lines until the build finishes, and exit with status 1 unless it succeeded. They switch to polling if the live stream drops.
+
+`login` checks the token with `GET /v1/users/me` and saves it to `$XDG_CONFIG_HOME/oore-dev/config.json` (default `~/.config/oore-dev/config.json`, or `$OORE_DEV_CONFIG`), readable only by you. Save more than one daemon with `--name` and choose one with `--instance`; `OORE_URL` and `OORE_TOKEN` override the file, for example in CI. A session token works too, but API tokens don't expire when you sign out of the web app.
+
+The command is named `oore-dev` so it doesn't clash with `oore`, the operator CLI that installs and runs the Oore daemon.
+
 ## Entrypoints
 
 | Import | Contents |

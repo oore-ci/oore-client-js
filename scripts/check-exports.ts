@@ -7,6 +7,7 @@ interface PackageExport {
 }
 
 interface PackageJson {
+  bin?: Record<string, string>
   publishConfig?: { access?: string }
   repository?: { url?: string }
   exports: Record<string, PackageExport | string>
@@ -77,10 +78,26 @@ for (const [subpath, target] of Object.entries(packageJson.exports)) {
 }
 
 const rootRuntime = await Bun.file(new URL('dist/index.js', root)).text()
-for (const adapter of ['react-query.js', 'msw.js', 'valibot.js']) {
+for (const adapter of ['react-query.js', 'msw.js', 'valibot.js', 'cli/']) {
   if (rootRuntime.includes(adapter)) {
     throw new Error(`The root entrypoint must not import ${adapter}`)
   }
 }
 
-console.log(`Verified ${expected.length} isolated package entrypoints.`)
+// The developer CLI ships as a bin only; no export may reach it.
+if (JSON.stringify(packageJson.bin) !== JSON.stringify({ 'oore-dev': './dist/cli/main.js' })) {
+  throw new Error('The package bin must be exactly oore-dev -> ./dist/cli/main.js')
+}
+const bin = new URL('dist/cli/main.js', root)
+if (!(await exists(bin))) throw new Error('Missing CLI bin dist/cli/main.js')
+if (!(await Bun.file(bin).text()).startsWith('#!/usr/bin/env node\n')) {
+  throw new Error('The CLI bin must start with a node shebang')
+}
+// Prefer Node, which users run the bin with; fall back to Bun on runners without it.
+const runtime = Bun.which('node') ?? process.execPath
+const help = Bun.spawnSync([runtime, bin.pathname, '--help'])
+if (help.exitCode !== 0 || !help.stdout.toString().startsWith('Usage: oore-dev')) {
+  throw new Error(`The CLI bin does not run under ${runtime}:\n${help.stderr.toString()}`)
+}
+
+console.log(`Verified ${expected.length} isolated package entrypoints and the oore-dev bin.`)
