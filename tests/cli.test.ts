@@ -261,7 +261,8 @@ test('install prints the install link with a QR code', async () => {
         artifacts: [
           artifact('art-apk', 'apk', 'app-release.apk'),
           artifact('art-ipa', 'ipa', 'Runner.ipa'),
-          artifact('art-aab', 'generic', 'app-release.aab'),
+          artifact('art-aab', 'aab', 'app-release.aab'),
+          artifact('art-old-aab', 'generic', 'app-old.aab'),
         ],
       },
     }),
@@ -280,6 +281,7 @@ test('install prints the install link with a QR code', async () => {
   expect(ambiguous.code).toBe(1)
   expect(ambiguous.stderr).toContain('art-apk  apk  app-release.apk')
   expect(ambiguous.stderr).not.toContain('art-aab')
+  expect(ambiguous.stderr).not.toContain('art-old-aab')
 
   const result = await cli(['install', 'build-42', '--platform', 'android'], { isTTY: true })
   expect(result.code).toBe(0)
