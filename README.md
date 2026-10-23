@@ -99,6 +99,21 @@ const server = setupServer(...createOoreMockHandlers())
 
 The default scenario owns a fresh copy of its state each time. Creating a project changes later project-list responses. The data and timestamps are fixed, not random.
 
+It also has three releases: `rollingReleaseScenario` (Google Play at 20%), `haltedReleaseScenario` (halted at 5% after a crash spike) and `completeReleaseScenario` (App Store, fully rolled out). The release list, detail and activity handlers answer from that state, and raise, pause, resume, halt, complete and approve move it the way the daemon does: `allowed_actions` follows the state, and an action the state doesn't allow gets a 409. Pass your own `releases` to start from other states:
+
+```ts
+import {
+  createOoreMockHandlers,
+  defaultOoreScenario,
+  haltedReleaseScenario,
+} from '@oore/client/msw/scenarios'
+
+const handlers = createOoreMockHandlers({
+  ...defaultOoreScenario,
+  releases: [haltedReleaseScenario],
+})
+```
+
 ## Valibot
 
 Install `valibot` when using this entrypoint.
