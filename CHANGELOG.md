@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/oore-ci/oore-client-js/compare/v0.14.0...v0.15.0) (2026-10-23)
+
+
+### Features
+
+* **schema:** add aab artifact type ([#51](https://github.com/oore-ci/oore-client-js/issues/51)) ([7c96af2](https://github.com/oore-ci/oore-client-js/commit/7c96af2dc362849e6949cb5348248a1038d107dd))
+
 ## [0.14.0](https://github.com/oore-ci/oore-client-js/compare/v0.13.0...v0.14.0) (2026-10-23)
 
 
