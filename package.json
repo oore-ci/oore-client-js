@@ -19,6 +19,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "bin": {
+    "oore-dev": "./dist/cli/main.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -70,7 +73,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "bun run clean && bun run generate && bun run typecheck && bunx tsc -p tsconfig.build.json",
+    "build": "bun run clean && bun run generate && bun run typecheck && bunx tsc -p tsconfig.build.json && bunx tsc -p tsconfig.cli.json",
     "check": "bun run generate && bun run typecheck && bun run check:coverage && bun test && bun run build && bun run check:exports && bun run check:tree-shaking",
     "check:coverage": "bun run scripts/check-coverage.ts",
     "check:exports": "bun run scripts/check-exports.ts",
