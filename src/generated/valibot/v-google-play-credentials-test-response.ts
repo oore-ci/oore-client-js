@@ -11,5 +11,6 @@ export const vGooglePlayCredentialsTestResponse = v.object({
     message: v.string(),
     ok: v.boolean(),
     package_name: v.nullish(v.string()),
-    service_account_email: v.nullish(v.string())
+    service_account_email: v.nullish(v.string()),
+    service_account_secret: v.string()
 });
