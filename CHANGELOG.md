@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/oore-ci/oore-client-js/compare/v0.15.0...v0.16.0) (2026-10-23)
+
+
+### Features
+
+* **schema:** tester feedback on builds ([#53](https://github.com/oore-ci/oore-client-js/issues/53)) ([da0508c](https://github.com/oore-ci/oore-client-js/commit/da0508c13164a9fdc16de06e492ee5922f9a780b))
+
 ## [0.15.0](https://github.com/oore-ci/oore-client-js/compare/v0.14.0...v0.15.0) (2026-10-23)
 
 
