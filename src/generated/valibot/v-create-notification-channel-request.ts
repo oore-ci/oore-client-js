@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 import { vNotificationChannelType } from './v-notification-channel-type.js'
+import { vSlackMention } from './v-slack-mention.js'
 import { vSmtpConfig } from './v-smtp-config.js'
 
 export const vCreateNotificationChannelRequest = v.object({
@@ -11,6 +12,7 @@ export const vCreateNotificationChannelRequest = v.object({
     name: v.string(),
     project_id: v.nullish(v.string()),
     secret: v.nullish(v.string()),
+    slack_mentions: v.optional(v.array(vSlackMention)),
     smtp_config: v.nullish(vSmtpConfig),
     url: v.nullish(v.string())
 });
