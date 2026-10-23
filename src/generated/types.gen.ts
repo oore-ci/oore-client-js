@@ -357,6 +357,26 @@ export type BuildEvent = {
     to_status: string;
 };
 
+export type BuildFeedback = {
+    app_version?: string | null;
+    artifact_id?: string | null;
+    /**
+     * Email of the person who sent it.
+     */
+    author_email: string;
+    author_name?: string | null;
+    build_id: string;
+    created_at: number;
+    device?: string | null;
+    /**
+     * Fetch it from `GET /v1/builds/{build_id}/feedback/{feedback_id}/screenshot`.
+     */
+    has_screenshot: boolean;
+    id: string;
+    message: string;
+    os_version?: string | null;
+};
+
 /**
  * One day of finished builds, in the caller's UTC offset.
  */
@@ -622,6 +642,34 @@ export type CreateArtifactRequest = {
 export type CreateArtifactResponse = {
     artifact: Artifact;
     upload_url: string;
+};
+
+export type CreateBuildFeedbackRequest = {
+    /**
+     * App version the tester installed, such as `2.4.0+118`.
+     */
+    app_version?: string | null;
+    /**
+     * The build's artifact the tester installed. Must belong to this build.
+     */
+    artifact_id?: string | null;
+    /**
+     * Device model, such as `Pixel 8` or `iPhone`.
+     */
+    device?: string | null;
+    /**
+     * What the tester saw. 1 to 4000 characters.
+     */
+    message: string;
+    /**
+     * Operating system and version, such as `Android 15` or `iOS 18.1`.
+     */
+    os_version?: string | null;
+    /**
+     * Optional PNG, JPEG or WebP screenshot, base64 encoded, at most 5 MiB
+     * decoded. Requires artifact storage.
+     */
+    screenshot_base64?: string | null;
 };
 
 export type CreateBuildRequest = {
@@ -1176,6 +1224,13 @@ export type ListBuildActorsResponse = {
 
 export type ListBuildArtifactsRequest = {
     build_ids: Array<string>;
+};
+
+export type ListBuildFeedbackResponse = {
+    /**
+     * Oldest first.
+     */
+    feedback: Array<BuildFeedback>;
 };
 
 export type ListBuildsResponse = {
@@ -4065,6 +4120,128 @@ export type CancelBuildResponses = {
 };
 
 export type CancelBuildResponse2 = CancelBuildResponses[keyof CancelBuildResponses];
+
+export type ListBuildFeedbackData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/feedback';
+};
+
+export type ListBuildFeedbackErrors = {
+    /**
+     * Build not found
+     */
+    404: ApiError;
+};
+
+export type ListBuildFeedbackError = ListBuildFeedbackErrors[keyof ListBuildFeedbackErrors];
+
+export type ListBuildFeedbackResponses = {
+    /**
+     * Feedback for the build
+     */
+    200: ListBuildFeedbackResponse;
+};
+
+export type ListBuildFeedbackResponse2 = ListBuildFeedbackResponses[keyof ListBuildFeedbackResponses];
+
+export type CreateBuildFeedbackData = {
+    body: CreateBuildFeedbackRequest;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/feedback';
+};
+
+export type CreateBuildFeedbackErrors = {
+    /**
+     * Missing message, a field too long, or an artifact from another build
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Build not found
+     */
+    404: ApiError;
+    /**
+     * A screenshot was attached but artifact storage is not configured
+     */
+    409: ApiError;
+    /**
+     * Screenshot larger than 5 MiB
+     */
+    413: ApiError;
+    /**
+     * Screenshot is not a PNG, JPEG or WebP image
+     */
+    415: ApiError;
+    /**
+     * Too much feedback sent recently
+     */
+    429: ApiError;
+};
+
+export type CreateBuildFeedbackError = CreateBuildFeedbackErrors[keyof CreateBuildFeedbackErrors];
+
+export type CreateBuildFeedbackResponses = {
+    /**
+     * Feedback recorded
+     */
+    201: BuildFeedback;
+};
+
+export type CreateBuildFeedbackResponse = CreateBuildFeedbackResponses[keyof CreateBuildFeedbackResponses];
+
+export type GetBuildFeedbackScreenshotData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+        /**
+         * Feedback ID
+         */
+        feedback_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/feedback/{feedback_id}/screenshot';
+};
+
+export type GetBuildFeedbackScreenshotErrors = {
+    /**
+     * Build, feedback or screenshot not found
+     */
+    404: ApiError;
+    /**
+     * The screenshot could not be read from artifact storage
+     */
+    500: ApiError;
+};
+
+export type GetBuildFeedbackScreenshotError = GetBuildFeedbackScreenshotErrors[keyof GetBuildFeedbackScreenshotErrors];
+
+export type GetBuildFeedbackScreenshotResponses = {
+    /**
+     * Screenshot image
+     */
+    200: BinaryPayload;
+};
+
+export type GetBuildFeedbackScreenshotResponse = GetBuildFeedbackScreenshotResponses[keyof GetBuildFeedbackScreenshotResponses];
 
 export type GetBuildLogsData = {
     body?: never;
