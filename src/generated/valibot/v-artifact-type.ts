@@ -6,5 +6,6 @@ export const vArtifactType = v.picklist([
     'apk',
     'ipa',
     'app',
+    'aab',
     'generic'
 ]);

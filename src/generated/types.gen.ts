@@ -213,7 +213,7 @@ export type ArtifactStorageSettingsResponse = {
 
 export type ArtifactStorageSource = 'database' | 'environment' | 'default';
 
-export type ArtifactType = 'apk' | 'ipa' | 'app' | 'generic';
+export type ArtifactType = 'apk' | 'ipa' | 'app' | 'aab' | 'generic';
 
 export type AuditLogEntry = {
     action: string;
