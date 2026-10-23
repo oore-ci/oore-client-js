@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/oore-ci/oore-client-js/compare/v0.11.0...v0.12.0) (2026-10-23)
+
+
+### Features
+
+* **schema:** keep the latest Google Play credentials check ([#42](https://github.com/oore-ci/oore-client-js/issues/42)) ([a605368](https://github.com/oore-ci/oore-client-js/commit/a605368b61f1c4686663bb198016958a5d0daedb))
+
 ## [0.11.0](https://github.com/oore-ci/oore-client-js/compare/v0.10.0...v0.11.0) (2026-10-22)
 
 
