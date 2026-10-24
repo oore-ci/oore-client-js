@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.0](https://github.com/oore-ci/oore-client-js/compare/v0.21.0...v0.22.0) (2026-10-24)
+
+
+### Features
+
+* **schema:** export pipeline settings as `.oore.yaml` ([#65](https://github.com/oore-ci/oore-client-js/issues/65)) ([be41638](https://github.com/oore-ci/oore-client-js/commit/be416382ca0282a060acaf5c9579e0a3da7af5ad))
+
 ## [0.21.0](https://github.com/oore-ci/oore-client-js/compare/v0.20.0...v0.21.0) (2026-10-24)
 
 
