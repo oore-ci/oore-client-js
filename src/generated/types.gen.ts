@@ -2411,6 +2411,11 @@ export type RunnerPublishResult = {
     status: string;
     store: PublishStore;
     /**
+     * App Store uploads to TestFlight: the groups the build was uploaded
+     * for, which the daemon records instead of reading the settings again.
+     */
+    testflight_groups?: Array<string> | null;
+    /**
      * Store track as sent to the store (for Play: internal, alpha, beta, production or custom).
      */
     track: string;
@@ -2696,6 +2701,12 @@ export type StepResult = {
     exit_code?: number | null;
     finished_at: number;
     name: string;
+    /**
+     * Publish steps only: where to upload came from the repository's
+     * `.oore.yaml` `publish`, so a retry of the step reads the file at the
+     * build's commit again.
+     */
+    publish_from_file?: boolean;
     started_at: number;
     status: string;
 };

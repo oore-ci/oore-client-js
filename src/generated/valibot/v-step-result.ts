@@ -15,6 +15,7 @@ export const vStepResult = v.object({
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
     name: v.string(),
+    publish_from_file: v.optional(v.boolean()),
     started_at: v.pipe(v.union([
         v.number(),
         v.string(),
