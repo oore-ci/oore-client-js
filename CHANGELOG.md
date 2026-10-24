@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.0](https://github.com/oore-ci/oore-client-js/compare/v0.17.0...v0.18.0) (2026-10-24)
+
+
+### Features
+
+* **schema:** artifact size report with change from the base branch ([#57](https://github.com/oore-ci/oore-client-js/issues/57)) ([304f6fc](https://github.com/oore-ci/oore-client-js/commit/304f6fc392c9a9c0de2100aea927166860953af3))
+
 ## [0.17.0](https://github.com/oore-ci/oore-client-js/compare/v0.16.0...v0.17.0) (2026-10-24)
 
 
