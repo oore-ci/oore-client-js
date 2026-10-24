@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.25.0](https://github.com/oore-ci/oore-client-js/compare/v0.24.0...v0.25.0) (2026-10-24)
+
+
+### Features
+
+* **schema:** importPipelineYaml ([#71](https://github.com/oore-ci/oore-client-js/issues/71)) ([3d6d773](https://github.com/oore-ci/oore-client-js/commit/3d6d773862392a333c5d969f729bd2859f895da6))
+
 ## [0.24.0](https://github.com/oore-ci/oore-client-js/compare/v0.23.0...v0.24.0) (2026-10-24)
 
 
