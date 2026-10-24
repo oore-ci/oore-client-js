@@ -14,5 +14,6 @@ export const vValidatePipelineRequest = v.object({
     execution_config: v.nullish(vPipelineExecutionConfig),
     repository_yaml: v.nullish(v.string()),
     timeout_minutes: v.nullish(v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))),
-    trigger_config: v.nullish(vTriggerConfig)
+    trigger_config: v.nullish(vTriggerConfig),
+    workflow: v.nullish(v.string())
 });

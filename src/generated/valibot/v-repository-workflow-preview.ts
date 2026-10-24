@@ -7,5 +7,6 @@ export const vRepositoryWorkflowPreview = v.object({
     errors: v.array(v.string()),
     execution: v.nullish(vRepositoryWorkflowExecutionPreview),
     path: v.string(),
-    valid: v.boolean()
+    valid: v.boolean(),
+    workflows: v.array(v.string())
 });
