@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://github.com/oore-ci/oore-client-js/compare/v0.16.0...v0.17.0) (2026-10-24)
+
+
+### Features
+
+* **schema:** project environments and promotions ([#55](https://github.com/oore-ci/oore-client-js/issues/55)) ([aa2a3bf](https://github.com/oore-ci/oore-client-js/commit/aa2a3bfa7f8ffeffab3a66d02f3fff7c1271f434))
+
 ## [0.16.0](https://github.com/oore-ci/oore-client-js/compare/v0.15.0...v0.16.0) (2026-10-23)
 
 
