@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.0](https://github.com/oore-ci/oore-client-js/compare/v0.18.0...v0.19.0) (2026-10-24)
+
+
+### Features
+
+* **schema:** pipeline plan preview ([#59](https://github.com/oore-ci/oore-client-js/issues/59)) ([503917e](https://github.com/oore-ci/oore-client-js/commit/503917e4c9300cfe8c8d9e7f98d87d4017fe2a2f))
+
 ## [0.18.0](https://github.com/oore-ci/oore-client-js/compare/v0.17.0...v0.18.0) (2026-10-24)
 
 
