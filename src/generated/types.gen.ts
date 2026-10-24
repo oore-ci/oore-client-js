@@ -789,6 +789,11 @@ export type CreateProjectEnvironmentRequest = {
     name: string;
     rollout_policy?: null | ReleasePolicy;
     store: ReleaseStore;
+    /**
+     * App Store track only: submit the version for App Review after a
+     * promotion attaches the build.
+     */
+    submit_for_review?: boolean;
     track: string;
 };
 
@@ -1905,16 +1910,23 @@ export type ProjectEnvironment = {
     position: number;
     project_id: string;
     /**
-     * Whether builds can be promoted into this environment. App Store
-     * environments only group the releases that uploads record for now.
+     * Whether builds can be promoted into this environment.
      */
     promotable: boolean;
     /**
      * Staged rollout policy for releases promoted into this environment.
-     * Its `approval` is always `none`; use `approval_required`.
+     * Its `approval` is always `none`; use `approval_required`. On the App
+     * Store track, a policy with more than one step turns on Apple's phased
+     * release, which follows Apple's own seven-day schedule.
      */
     rollout_policy: ReleasePolicy;
     store: ReleaseStore;
+    /**
+     * App Store track only: submit the App Store version for App Review
+     * once a promotion attaches the build. Otherwise the version waits for
+     * someone to submit it in App Store Connect.
+     */
+    submit_for_review?: boolean;
     /**
      * Play track (`internal`, `closed`, `open`, `production` or a custom
      * track), or the App Store release track a store upload records.
@@ -3044,6 +3056,7 @@ export type UpdateProjectEnvironmentRequest = {
     name?: string | null;
     position?: number | null;
     rollout_policy?: null | ReleasePolicy;
+    submit_for_review?: boolean | null;
     track?: string | null;
 };
 
