@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.0](https://github.com/oore-ci/oore-client-js/compare/v0.26.0...v0.27.0) (2026-10-24)
+
+
+### Features
+
+* **schema:** build analysis and `.oore.yaml` target size budgets ([#75](https://github.com/oore-ci/oore-client-js/issues/75)) ([7afd60a](https://github.com/oore-ci/oore-client-js/commit/7afd60a17e107b76338fdacb5dd595e361e042d7))
+
 ## [0.26.0](https://github.com/oore-ci/oore-client-js/compare/v0.25.0...v0.26.0) (2026-10-24)
 
 
