@@ -8,6 +8,7 @@ export const vRunnerPublishResult = v.object({
     rollout_fraction: v.nullish(v.number()),
     status: v.string(),
     store: vPublishStore,
+    testflight_groups: v.nullish(v.array(v.string())),
     track: v.string(),
     version_code: v.pipe(v.union([
         v.number(),
