@@ -25,6 +25,7 @@ export const vProjectEnvironment = v.object({
     promotable: v.boolean(),
     rollout_policy: vReleasePolicy,
     store: vReleaseStore,
+    submit_for_review: v.optional(v.boolean()),
     track: v.string(),
     updated_at: v.pipe(v.union([
         v.number(),

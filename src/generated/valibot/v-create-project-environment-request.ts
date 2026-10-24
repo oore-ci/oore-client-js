@@ -10,5 +10,6 @@ export const vCreateProjectEnvironmentRequest = v.object({
     name: v.string(),
     rollout_policy: v.nullish(vReleasePolicy),
     store: vReleaseStore,
+    submit_for_review: v.optional(v.boolean()),
     track: v.string()
 });
