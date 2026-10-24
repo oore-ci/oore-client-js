@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.24.0](https://github.com/oore-ci/oore-client-js/compare/v0.23.0...v0.24.0) (2026-10-24)
+
+
+### Features
+
+* **schema:** size_budget on pipelines ([#69](https://github.com/oore-ci/oore-client-js/issues/69)) ([bbecff3](https://github.com/oore-ci/oore-client-js/commit/bbecff3b86d1d420b2b54dc29c4aba6969752933))
+
 ## [0.23.0](https://github.com/oore-ci/oore-client-js/compare/v0.22.0...v0.23.0) (2026-10-24)
 
 
