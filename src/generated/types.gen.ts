@@ -1216,6 +1216,68 @@ export type HealthResponse = {
     version: string;
 };
 
+/**
+ * A `version: 2` `.oore.yaml` to read back into the pipeline editor's form,
+ * with the settings the editor holds now.
+ */
+export type ImportPipelineYamlRequest = {
+    app_store?: null | AppStorePublishConfig;
+    execution_config?: null | PipelineExecutionConfig;
+    google_play?: null | GooglePlayPublishConfig;
+    trigger_config?: null | TriggerConfig;
+    /**
+     * The file's text.
+     */
+    yaml: string;
+};
+
+export type ImportPipelineYamlResponse = {
+    /**
+     * The file's validation errors, one per entry.
+     */
+    errors: Array<string>;
+    execution_config?: null | PipelineExecutionConfig;
+    google_play?: null | ImportedPlayPublish;
+    /**
+     * What the form drops without changing what runs, such as step names.
+     */
+    notes: Array<string>;
+    /**
+     * Valid, and the form can hold all of it: `execution_config` is set.
+     */
+    representable: boolean;
+    /**
+     * The file's `publish.testflight.group`.
+     */
+    testflight_group?: string | null;
+    trigger_config?: null | TriggerConfig;
+    /**
+     * What the form cannot hold, one per entry, such as workflows, vars,
+     * flavors or an `on` the trigger settings cannot express.
+     */
+    unsupported: Array<string>;
+    /**
+     * The file parses and validates as `oore pipeline validate` checks it.
+     */
+    valid: boolean;
+};
+
+/**
+ * A file's `publish.play`, as written.
+ */
+export type ImportedPlayPublish = {
+    /**
+     * Left out, the Publish settings decide.
+     */
+    draft?: boolean | null;
+    /**
+     * The staged rollout as a percentage. Left out, the Publish settings
+     * decide.
+     */
+    rollout_percent?: number | null;
+    track: string;
+};
+
 export type InstancePreferences = {
     direct_macos_runner_paused: boolean;
     key_storage_mode: KeyStorageMode;
@@ -5779,6 +5841,31 @@ export type ExportPipelineYamlResponses = {
 };
 
 export type ExportPipelineYamlResponse2 = ExportPipelineYamlResponses[keyof ExportPipelineYamlResponses];
+
+export type ImportPipelineYamlData = {
+    body: ImportPipelineYamlRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/pipelines/import-yaml';
+};
+
+export type ImportPipelineYamlErrors = {
+    /**
+     * The file is too large
+     */
+    400: ApiError;
+};
+
+export type ImportPipelineYamlError = ImportPipelineYamlErrors[keyof ImportPipelineYamlErrors];
+
+export type ImportPipelineYamlResponses = {
+    /**
+     * The form settings, or why the file cannot become them
+     */
+    200: ImportPipelineYamlResponse;
+};
+
+export type ImportPipelineYamlResponse2 = ImportPipelineYamlResponses[keyof ImportPipelineYamlResponses];
 
 export type PlanPipelineData = {
     body: PlanPipelineRequest;
