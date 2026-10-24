@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.0](https://github.com/oore-ci/oore-client-js/compare/v0.20.0...v0.21.0) (2026-10-24)
+
+
+### Features
+
+* **schema:** v2 publish step and TestFlight group fields ([#63](https://github.com/oore-ci/oore-client-js/issues/63)) ([db6f153](https://github.com/oore-ci/oore-client-js/commit/db6f153a9110c565c542fa7adc9b06abab25af44))
+
 ## [0.20.0](https://github.com/oore-ci/oore-client-js/compare/v0.19.0...v0.20.0) (2026-10-24)
 
 
