@@ -954,6 +954,44 @@ export type EventStreamResync = {
     reason: string;
 };
 
+/**
+ * The pipeline settings to write out as a `version: 2` `.oore.yaml`.
+ */
+export type ExportPipelineYamlRequest = {
+    app_store?: null | AppStorePublishConfig;
+    /**
+     * The pipeline's form settings, as `POST /v1/pipelines/validate` takes them.
+     */
+    execution_config: PipelineExecutionConfig;
+    google_play?: null | GooglePlayPublishConfig;
+    trigger_config?: null | TriggerConfig;
+};
+
+export type ExportPipelineYamlResponse = {
+    /**
+     * Why the settings cannot be exported, one per entry.
+     */
+    errors: Array<string>;
+    /**
+     * Settings that stay with the pipeline instead of moving to the file.
+     */
+    notes: Array<string>;
+    /**
+     * No errors: `yaml` is set.
+     */
+    valid: boolean;
+    /**
+     * Behaviour the file cannot reproduce exactly; each is also a
+     * `WARNING:` comment in the file.
+     */
+    warnings: Array<string>;
+    /**
+     * The generated file. Planned, it runs what the settings run. Secret
+     * values never appear in it; secret references stay as written.
+     */
+    yaml?: string | null;
+};
+
 export type ExternalAccessNetworkSettings = {
     allowed_origins: Array<string>;
     artifact_delivery_url?: string | null;
@@ -5666,6 +5704,22 @@ export type MarkOperatorIncidentReadResponses = {
 };
 
 export type MarkOperatorIncidentReadResponse = MarkOperatorIncidentReadResponses[keyof MarkOperatorIncidentReadResponses];
+
+export type ExportPipelineYamlData = {
+    body: ExportPipelineYamlRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/pipelines/export-yaml';
+};
+
+export type ExportPipelineYamlResponses = {
+    /**
+     * The file, or why the settings cannot be exported
+     */
+    200: ExportPipelineYamlResponse;
+};
+
+export type ExportPipelineYamlResponse2 = ExportPipelineYamlResponses[keyof ExportPipelineYamlResponses];
 
 export type PlanPipelineData = {
     body: PlanPipelineRequest;
