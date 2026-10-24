@@ -13,6 +13,38 @@ export type AddProjectMemberResponse = {
     member: ProjectMember;
 };
 
+/**
+ * Diagnostics counted by severity.
+ */
+export type AnalyzerCounts = {
+    errors: number;
+    infos: number;
+    warnings: number;
+};
+
+/**
+ * One `dart analyze` diagnostic.
+ */
+export type AnalyzerDiagnostic = {
+    /**
+     * The diagnostic code, such as `unused_import`.
+     */
+    code: string;
+    column: number;
+    /**
+     * Path relative to the build workspace, such as `lib/main.dart`.
+     */
+    file: string;
+    line: number;
+    message: string;
+    severity: AnalyzerSeverity;
+};
+
+/**
+ * Severity of a `dart analyze` diagnostic.
+ */
+export type AnalyzerSeverity = 'error' | 'warning' | 'info';
+
 export type AndroidSigningBuildType = 'debug' | 'release';
 
 export type AndroidSigningProfile = {
@@ -310,6 +342,39 @@ export type Build = {
     trigger_ref?: string | null;
     trigger_type: TriggerType;
     updated_at: number;
+};
+
+/**
+ * A build's analyzer summary.
+ */
+export type BuildAnalysis = {
+    counts: AnalyzerCounts;
+    /**
+     * The most severe diagnostics, errors first, at most 50.
+     */
+    diagnostics: Array<AnalyzerDiagnostic>;
+    recorded_at: number;
+};
+
+/**
+ * The earlier build an analysis compares with: the latest successful build
+ * of the same pipeline on the base branch that reported one, as for sizes.
+ */
+export type BuildAnalysisBaseline = {
+    branch: string;
+    build_id: string;
+    build_number: number;
+    counts: AnalyzerCounts;
+};
+
+export type BuildAnalysisResponse = {
+    analysis?: null | BuildAnalysis;
+    /**
+     * The branch the build compares with: a pull request's target branch,
+     * otherwise the default branch.
+     */
+    base_branch?: string | null;
+    baseline?: null | BuildAnalysisBaseline;
 };
 
 export type BuildApproval = {
@@ -2426,6 +2491,19 @@ export type Runner = {
     updated_at: number;
 };
 
+/**
+ * The summary of `dart analyze --format=json` a runner reports after the
+ * build's steps.
+ */
+export type RunnerAnalyzerReport = {
+    counts: AnalyzerCounts;
+    /**
+     * The most severe diagnostics, errors first. The daemon keeps at most
+     * 50.
+     */
+    diagnostics: Array<AnalyzerDiagnostic>;
+};
+
 export type RunnerAndroidSigningProfile = {
     build_type: AndroidSigningBuildType;
     enabled: boolean;
@@ -3024,6 +3102,20 @@ export type SyncPipelineIosSigningResponse = {
     warnings: Array<string>;
 };
 
+/**
+ * A size budget a repository's `.oore.yaml` version 2 file sets on one
+ * target, after workflow overrides. That platform's commit check enforces it
+ * on top of the pipeline's `size_budget`, which stays a floor.
+ */
+export type TargetSizeBudget = {
+    budget: SizeBudget;
+    platform: BuildPlatform;
+    /**
+     * Where the budget came from, such as `targets.android.budgets`.
+     */
+    source: string;
+};
+
 export type TestNotificationChannelResponse = {
     error?: string | null;
     success: boolean;
@@ -3135,6 +3227,12 @@ export type UpdateInstancePreferencesRequest = {
 export type UpdateJobStatusRequest = {
     error_message?: string | null;
     exit_code?: number | null;
+    /**
+     * The size budgets the build's `.oore.yaml` version 2 file sets, sent
+     * once the runner planned the build. An empty list means the file sets
+     * none; leaving it out keeps what the build has.
+     */
+    size_budgets?: Array<TargetSizeBudget> | null;
     status: string;
     steps?: Array<StepResult>;
 };
@@ -4543,6 +4641,36 @@ export type GetBuildResponses = {
 };
 
 export type GetBuildResponse = GetBuildResponses[keyof GetBuildResponses];
+
+export type GetBuildAnalysisData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/analysis';
+};
+
+export type GetBuildAnalysisErrors = {
+    /**
+     * Build not found
+     */
+    404: ApiError;
+};
+
+export type GetBuildAnalysisError = GetBuildAnalysisErrors[keyof GetBuildAnalysisErrors];
+
+export type GetBuildAnalysisResponses = {
+    /**
+     * Analyzer summary
+     */
+    200: BuildAnalysisResponse;
+};
+
+export type GetBuildAnalysisResponse = GetBuildAnalysisResponses[keyof GetBuildAnalysisResponses];
 
 export type ApproveBuildData = {
     /**
@@ -8338,6 +8466,48 @@ export type GetJobStatusResponses = {
 };
 
 export type GetJobStatusResponse = GetJobStatusResponses[keyof GetJobStatusResponses];
+
+export type ReportJobAnalysisData = {
+    body: RunnerAnalyzerReport;
+    path: {
+        /**
+         * Runner ID
+         */
+        runner_id: string;
+        /**
+         * Build/Job ID
+         */
+        job_id: string;
+    };
+    query?: never;
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/analysis';
+};
+
+export type ReportJobAnalysisErrors = {
+    /**
+     * Runner does not match the assignment
+     */
+    403: ApiError;
+    /**
+     * Build not found
+     */
+    404: ApiError;
+    /**
+     * Build is not running
+     */
+    409: ApiError;
+};
+
+export type ReportJobAnalysisError = ReportJobAnalysisErrors[keyof ReportJobAnalysisErrors];
+
+export type ReportJobAnalysisResponses = {
+    /**
+     * Recorded
+     */
+    200: OkResponse;
+};
+
+export type ReportJobAnalysisResponse = ReportJobAnalysisResponses[keyof ReportJobAnalysisResponses];
 
 export type GetJobAndroidSigningData = {
     body?: never;

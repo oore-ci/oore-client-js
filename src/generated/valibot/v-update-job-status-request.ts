@@ -2,10 +2,12 @@
 
 import * as v from 'valibot'
 import { vStepResult } from './v-step-result.js'
+import { vTargetSizeBudget } from './v-target-size-budget.js'
 
 export const vUpdateJobStatusRequest = v.object({
     error_message: v.nullish(v.string()),
     exit_code: v.nullish(v.pipe(v.number(), v.integer(), v.minValue(-2147483648, 'Invalid value: Expected int32 to be >= -2147483648'), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))),
+    size_budgets: v.nullish(v.array(vTargetSizeBudget)),
     status: v.string(),
     steps: v.optional(v.array(vStepResult))
 });
