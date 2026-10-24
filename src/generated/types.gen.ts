@@ -193,6 +193,25 @@ export type ArtifactInstallLinkResponse = {
 
 export type ArtifactInstallPlatform = 'android' | 'ios';
 
+/**
+ * One artifact's size, and its change from the matching baseline artifact.
+ */
+export type ArtifactSizeComparison = {
+    artifact_id: string;
+    artifact_type: ArtifactType;
+    /**
+     * Name of the baseline artifact this one was matched with.
+     */
+    baseline_name?: string | null;
+    baseline_size_bytes?: number | null;
+    /**
+     * `size_bytes - baseline_size_bytes`; absent when nothing matched.
+     */
+    delta_bytes?: number | null;
+    name: string;
+    size_bytes: number;
+};
+
 export type ArtifactStorageProvider = 'disabled' | 'local' | 's3' | 'r2';
 
 export type ArtifactStorageSettings = {
@@ -499,6 +518,25 @@ export type BuildQueueSnapshot = {
      * Queued and scheduled builds that a runner can pick up.
      */
     waiting: number;
+};
+
+/**
+ * The earlier build a size report compares against.
+ */
+export type BuildSizeBaseline = {
+    branch: string;
+    build_id: string;
+    build_number: number;
+};
+
+export type BuildSizeReport = {
+    artifacts: Array<ArtifactSizeComparison>;
+    /**
+     * Branch the build is compared with: a pull request's target branch,
+     * otherwise the project's default branch. Absent when neither is known.
+     */
+    base_branch?: string | null;
+    baseline?: null | BuildSizeBaseline;
 };
 
 export type BuildStatus = 'queued' | 'scheduled' | 'assigned' | 'running' | 'succeeded' | 'failed' | 'canceled' | 'timed_out' | 'expired';
@@ -4566,6 +4604,36 @@ export type RetryBuildStepResponses = {
 };
 
 export type RetryBuildStepResponse = RetryBuildStepResponses[keyof RetryBuildStepResponses];
+
+export type GetBuildSizeReportData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/sizes';
+};
+
+export type GetBuildSizeReportErrors = {
+    /**
+     * Build not found
+     */
+    404: ApiError;
+};
+
+export type GetBuildSizeReportError = GetBuildSizeReportErrors[keyof GetBuildSizeReportErrors];
+
+export type GetBuildSizeReportResponses = {
+    /**
+     * Artifact sizes and changes
+     */
+    200: BuildSizeReport;
+};
+
+export type GetBuildSizeReportResponse = GetBuildSizeReportResponses[keyof GetBuildSizeReportResponses];
 
 export type CreateStreamTokenData = {
     body?: never;
