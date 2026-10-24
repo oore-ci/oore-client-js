@@ -4,6 +4,7 @@ import * as v from 'valibot'
 import { vApprovalPolicy } from './v-approval-policy.js'
 import { vConcurrencyPolicy } from './v-concurrency-policy.js'
 import { vPipelineExecutionConfig } from './v-pipeline-execution-config.js'
+import { vSizeBudget } from './v-size-budget.js'
 import { vTriggerConfig } from './v-trigger-config.js'
 
 export const vValidatePipelineRequest = v.object({
@@ -13,6 +14,7 @@ export const vValidatePipelineRequest = v.object({
     config_path_explicit: v.nullish(v.boolean()),
     execution_config: v.nullish(vPipelineExecutionConfig),
     repository_yaml: v.nullish(v.string()),
+    size_budget: v.nullish(vSizeBudget),
     timeout_minutes: v.nullish(v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))),
     trigger_config: v.nullish(vTriggerConfig),
     workflow: v.nullish(v.string())
