@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.0](https://github.com/oore-ci/oore-client-js/compare/v0.22.0...v0.23.0) (2026-10-24)
+
+
+### Features
+
+* **schema:** submit_for_review on project environments ([#67](https://github.com/oore-ci/oore-client-js/issues/67)) ([286fa39](https://github.com/oore-ci/oore-client-js/commit/286fa39025598a1d13dff2e3cb1c7e0d54ab791e))
+
 ## [0.22.0](https://github.com/oore-ci/oore-client-js/compare/v0.21.0...v0.22.0) (2026-10-24)
 
 
