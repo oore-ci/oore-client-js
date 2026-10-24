@@ -741,6 +741,15 @@ export type CreatePipelineResponse = {
     pipeline: Pipeline;
 };
 
+export type CreateProjectEnvironmentRequest = {
+    approval_required?: boolean;
+    key: string;
+    name: string;
+    rollout_policy?: null | ReleasePolicy;
+    store: ReleaseStore;
+    track: string;
+};
+
 export type CreateProjectRequest = {
     default_branch?: string | null;
     description?: string | null;
@@ -751,6 +760,15 @@ export type CreateProjectRequest = {
 
 export type CreateProjectResponse = {
     project: Project;
+};
+
+export type CreatePromotionRequest = {
+    build_id: string;
+    /**
+     * The environment to promote into.
+     */
+    environment_id: string;
+    reason?: string | null;
 };
 
 export type CreateReleaseRequest = {
@@ -829,6 +847,49 @@ export type EffectiveProjectRetentionResponse = {
     effective: RetentionPolicy;
     has_override: boolean;
     override_fields?: null | ProjectRetentionOverride;
+};
+
+/**
+ * A request to put an existing build into an environment.
+ */
+export type EnvironmentPromotion = {
+    build_id: string;
+    build_number?: number | null;
+    /**
+     * Whether the caller may approve or reject this promotion now.
+     */
+    can_decide: boolean;
+    created_at: number;
+    decided_at?: number | null;
+    decided_by_email?: string | null;
+    decision_reason?: string | null;
+    environment_id: string;
+    environment_name: string;
+    /**
+     * Why the promotion failed.
+     */
+    error?: string | null;
+    id: string;
+    project_id: string;
+    reason?: string | null;
+    /**
+     * The release the promotion created, once completed.
+     */
+    release_id?: string | null;
+    requested_by_email?: string | null;
+    /**
+     * Where the source release was, when it belongs to an environment.
+     */
+    source_environment_name?: string | null;
+    /**
+     * The release the build is promoted from.
+     */
+    source_release_id: string;
+    source_track: string;
+    state: PromotionState;
+    updated_at: number;
+    version_code?: number | null;
+    version_name?: string | null;
 };
 
 /**
@@ -1272,6 +1333,17 @@ export type ListPipelinesResponse = {
     total: number;
 };
 
+export type ListProjectEnvironmentsResponse = {
+    /**
+     * Environments in promotion order.
+     */
+    environments: Array<ProjectEnvironment>;
+    /**
+     * Pending promotions and the most recent decided ones, newest first.
+     */
+    promotions: Array<EnvironmentPromotion>;
+};
+
 export type ListProjectMemberCandidatesResponse = {
     candidates: Array<ProjectMemberCandidate>;
 };
@@ -1635,6 +1707,49 @@ export type ProjectDetailResponse = {
     project: Project;
 };
 
+/**
+ * A release environment on a project, such as `internal` or `production`,
+ * with its store target, rollout policy and approval rule.
+ */
+export type ProjectEnvironment = {
+    /**
+     * A promotion into this environment waits for a maintainer's approval
+     * before anything changes at the store.
+     */
+    approval_required: boolean;
+    created_at: number;
+    id: string;
+    /**
+     * Stable identifier, unique in the project: lowercase letters, digits
+     * and dashes, starting with a letter.
+     */
+    key: string;
+    latest_release?: null | Release;
+    name: string;
+    /**
+     * Order on the promotion path, lowest first.
+     */
+    position: number;
+    project_id: string;
+    /**
+     * Whether builds can be promoted into this environment. App Store
+     * environments only group the releases that uploads record for now.
+     */
+    promotable: boolean;
+    /**
+     * Staged rollout policy for releases promoted into this environment.
+     * Its `approval` is always `none`; use `approval_required`.
+     */
+    rollout_policy: ReleasePolicy;
+    store: ReleaseStore;
+    /**
+     * Play track (`internal`, `closed`, `open`, `production` or a custom
+     * track), or the App Store release track a store upload records.
+     */
+    track: string;
+    updated_at: number;
+};
+
 export type ProjectMember = {
     created_at: number;
     id: string;
@@ -1669,6 +1784,12 @@ export type ProjectRetentionOverride = {
 };
 
 export type ProjectRole = 'maintainer' | 'developer' | 'viewer';
+
+export type PromotionDecisionRequest = {
+    reason?: string | null;
+};
+
+export type PromotionState = 'pending' | 'promoting' | 'completed' | 'rejected' | 'failed';
 
 export type PublishStore = 'google_play' | 'app_store';
 
@@ -1744,6 +1865,12 @@ export type Release = {
     crash_rate?: number | null;
     crash_rate_threshold?: number | null;
     created_at: number;
+    /**
+     * The project environment this release belongs to. Absent for projects
+     * without environments.
+     */
+    environment_id?: string | null;
+    environment_name?: string | null;
     health: ReleaseHealth;
     id: string;
     next_fraction?: number | null;
@@ -1756,6 +1883,10 @@ export type Release = {
     policy: ReleasePolicy;
     project_id: string;
     project_name?: string | null;
+    /**
+     * The release this one was promoted from, without a new build.
+     */
+    promoted_from_release_id?: string | null;
     /**
      * Fraction of users, 0..1.
      */
@@ -2702,6 +2833,17 @@ export type UpdatePipelineRequest = {
     name?: string | null;
     timeout_minutes?: number | null;
     trigger_config?: null | TriggerConfig;
+};
+
+/**
+ * Changes to an environment. The key and store are fixed once created.
+ */
+export type UpdateProjectEnvironmentRequest = {
+    approval_required?: boolean | null;
+    name?: string | null;
+    position?: number | null;
+    rollout_policy?: null | ReleasePolicy;
+    track?: string | null;
 };
 
 export type UpdateProjectMemberRequest = {
@@ -6201,6 +6343,166 @@ export type PreviewBuildChangelogResponses = {
 
 export type PreviewBuildChangelogResponse = PreviewBuildChangelogResponses[keyof PreviewBuildChangelogResponses];
 
+export type ListProjectEnvironmentsData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/environments';
+};
+
+export type ListProjectEnvironmentsErrors = {
+    /**
+     * Project not found
+     */
+    404: ApiError;
+};
+
+export type ListProjectEnvironmentsError = ListProjectEnvironmentsErrors[keyof ListProjectEnvironmentsErrors];
+
+export type ListProjectEnvironmentsResponses = {
+    /**
+     * Environments and promotions
+     */
+    200: ListProjectEnvironmentsResponse;
+};
+
+export type ListProjectEnvironmentsResponse2 = ListProjectEnvironmentsResponses[keyof ListProjectEnvironmentsResponses];
+
+export type CreateProjectEnvironmentData = {
+    body: CreateProjectEnvironmentRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/environments';
+};
+
+export type CreateProjectEnvironmentErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Project not found
+     */
+    404: ApiError;
+    /**
+     * Key, or store and track, already used
+     */
+    409: ApiError;
+};
+
+export type CreateProjectEnvironmentError = CreateProjectEnvironmentErrors[keyof CreateProjectEnvironmentErrors];
+
+export type CreateProjectEnvironmentResponses = {
+    /**
+     * Created environment
+     */
+    200: ProjectEnvironment;
+};
+
+export type CreateProjectEnvironmentResponse = CreateProjectEnvironmentResponses[keyof CreateProjectEnvironmentResponses];
+
+export type DeleteProjectEnvironmentData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Environment ID
+         */
+        environment_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/environments/{environment_id}';
+};
+
+export type DeleteProjectEnvironmentErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * A promotion is in progress
+     */
+    409: ApiError;
+};
+
+export type DeleteProjectEnvironmentError = DeleteProjectEnvironmentErrors[keyof DeleteProjectEnvironmentErrors];
+
+export type DeleteProjectEnvironmentResponses = {
+    /**
+     * Deleted
+     */
+    200: OkResponse;
+};
+
+export type DeleteProjectEnvironmentResponse = DeleteProjectEnvironmentResponses[keyof DeleteProjectEnvironmentResponses];
+
+export type UpdateProjectEnvironmentData = {
+    body: UpdateProjectEnvironmentRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Environment ID
+         */
+        environment_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/environments/{environment_id}';
+};
+
+export type UpdateProjectEnvironmentErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Store and track already used
+     */
+    409: ApiError;
+};
+
+export type UpdateProjectEnvironmentError = UpdateProjectEnvironmentErrors[keyof UpdateProjectEnvironmentErrors];
+
+export type UpdateProjectEnvironmentResponses = {
+    /**
+     * Updated environment
+     */
+    200: ProjectEnvironment;
+};
+
+export type UpdateProjectEnvironmentResponse = UpdateProjectEnvironmentResponses[keyof UpdateProjectEnvironmentResponses];
+
 export type ListProjectMembersData = {
     body?: never;
     path: {
@@ -6451,6 +6753,142 @@ export type CreatePipelineResponses = {
 };
 
 export type CreatePipelineResponse2 = CreatePipelineResponses[keyof CreatePipelineResponses];
+
+export type PromoteBuildData = {
+    body: CreatePromotionRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/promotions';
+};
+
+export type PromoteBuildErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Project, environment or build not found
+     */
+    404: ApiError;
+    /**
+     * Already in the environment, pending, unsupported store, or no live release to promote
+     */
+    409: ApiError;
+    /**
+     * The store rejected the promotion
+     */
+    502: ApiError;
+};
+
+export type PromoteBuildError = PromoteBuildErrors[keyof PromoteBuildErrors];
+
+export type PromoteBuildResponses = {
+    /**
+     * The promotion, completed or pending
+     */
+    200: EnvironmentPromotion;
+};
+
+export type PromoteBuildResponse = PromoteBuildResponses[keyof PromoteBuildResponses];
+
+export type ApprovePromotionData = {
+    /**
+     * Optional reason
+     */
+    body?: null | PromotionDecisionRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Promotion ID
+         */
+        promotion_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/promotions/{promotion_id}/approve';
+};
+
+export type ApprovePromotionErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not pending, or the build changed while it waited
+     */
+    409: ApiError;
+    /**
+     * The store rejected the promotion
+     */
+    502: ApiError;
+};
+
+export type ApprovePromotionError = ApprovePromotionErrors[keyof ApprovePromotionErrors];
+
+export type ApprovePromotionResponses = {
+    /**
+     * Completed promotion
+     */
+    200: EnvironmentPromotion;
+};
+
+export type ApprovePromotionResponse = ApprovePromotionResponses[keyof ApprovePromotionResponses];
+
+export type RejectPromotionData = {
+    /**
+     * Optional reason
+     */
+    body?: null | PromotionDecisionRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Promotion ID
+         */
+        promotion_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/promotions/{promotion_id}/reject';
+};
+
+export type RejectPromotionErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not pending
+     */
+    409: ApiError;
+};
+
+export type RejectPromotionError = RejectPromotionErrors[keyof RejectPromotionErrors];
+
+export type RejectPromotionResponses = {
+    /**
+     * Rejected promotion
+     */
+    200: EnvironmentPromotion;
+};
+
+export type RejectPromotionResponse = RejectPromotionResponses[keyof RejectPromotionResponses];
 
 export type DiscoverRepositoryWorkflowsData = {
     body?: never;

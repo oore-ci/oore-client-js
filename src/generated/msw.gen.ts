@@ -2,7 +2,7 @@
 
 import { type DefaultBodyType, http, type HttpHandler, HttpResponse, type HttpResponseResolver, type RequestHandlerOptions as RequestHandlerOptions2 } from 'msw';
 
-import type { AbortArtifactData, AbortArtifactResponses, AddProjectMemberData, AddProjectMemberResponses, AppendBuildLogsData, AppendBuildLogsResponses, ApproveBuildData, ApproveBuildResponses, ApproveReleaseData, ApproveReleaseResponses, BrowseLocalGitDirectoriesResponses, CancelBuildResponses, CheckGitlabPersonalTokenResponses, ClaimJobData, ClaimJobResponses, ClientOptions, CompleteArtifactData, CompleteArtifactResponses, CompleteReleaseData, CompleteReleaseResponses, CompleteSetupResponses, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcResponses, ConfigureOidcData, ConfigureOidcResponses, CreateApiTokenData, CreateApiTokenResponses, CreateAppStoreConnectKeyData, CreateAppStoreConnectKeyResponses, CreateArtifactData, CreateArtifactInstallLinkResponses, CreateArtifactResponses, CreateBuildData, CreateBuildFeedbackData, CreateBuildFeedbackResponses, CreateBuildResponses, CreateInstanceSecretData, CreateInstanceSecretResponses, CreateLocalGitIntegrationData, CreateLocalGitIntegrationResponses, CreateNotificationChannelData, CreateNotificationChannelResponses, CreatePipelineData, CreatePipelineResponses, CreatePipelineSecretData, CreatePipelineSecretResponses, CreateProjectData, CreateProjectResponses, CreateProjectSecretData, CreateProjectSecretResponses, CreateReleaseData, CreateReleaseResponses, CreateScopedDownloadTokenData, CreateScopedDownloadTokenResponses, CreateStreamTokenResponses, DeleteAppStoreConnectKeyResponses, DeleteInstanceSecretResponses, DeleteIntegrationResponses, DeleteLocalGitIntegrationResponses, DeleteNotificationChannelResponses, DeletePipelineResponses, DeletePipelineSecretResponses, DeleteProjectResponses, DeleteProjectRetentionResponses, DeleteProjectSecretResponses, DeleteRunnerResponses, DeleteUserResponses, DiscoverRepositoryWorkflowsResponses, DownloadLocalArtifactInstallResponses, DownloadLocalArtifactLegacyResponses, DownloadLocalArtifactResponses, FrontendPairData, FrontendPairResponses, GenerateDownloadLinkResponses, GetArtifactStorageSettingsResponses, GetBuildFeedbackScreenshotResponses, GetBuildInsightsResponses, GetBuildLogsResponses, GetBuildResponses, GetBuildTestResultsResponses, GetExternalAccessNetworkSettingsResponses, GetExternalAccessOidcResponses, GetExternalAccessPreflightResponses, GetExternalAccessTrustedProxySettingsResponses, GetInstancePreferencesResponses, GetIntegrationResponses, GetIosInstallManifestResponses, GetIosInstallManifestV1Responses, GetJobAndroidSigningResponses, GetJobIosSigningResponses, GetJobPublishPlanResponses, GetJobRetryArtifactsResponses, GetJobSecretsResponses, GetJobStatusResponses, GetMeResponses, GetNotificationChannelResponses, GetPipelineAndroidSigningResponses, GetPipelineAppStorePublishResponses, GetPipelineGooglePlayPublishResponses, GetPipelineIosSigningResponses, GetPipelineResponses, GetProjectResponses, GetProjectRetentionResponses, GetReleaseResponses, GetRetentionLastCleanupResponses, GetRetentionPolicyResponses, GetRunnerResponses, GetRuntimeUpdatePreflightResponses, GetRuntimeUpdateStatusResponses, GetSetupStatusResponses, GetSetupSummaryResponses, GetStoreVitalsResponses, GithubCallbackResponses, GithubCompleteData, GithubCompleteResponses, GithubCreatePageResponses, GithubInstalledResponses, GithubStartData, GithubStartResponses, GithubWebhookResponses, GitlabAuthorizeData, GitlabAuthorizeResponses, GitlabCallbackResponses, GitlabCheckoutDiscoveryResponses, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackResponses, GitlabStartData, GitlabStartResponses, GitlabWebhookResponses, HaltReleaseData, HaltReleaseResponses, HealthzResponses, InviteUserData, InviteUserResponses, ListApiTokensResponses, ListAppStoreConnectKeysResponses, ListArtifactsResponses, ListAuditLogsResponses, ListBuildActorsResponses, ListBuildArtifactsData, ListBuildArtifactsResponses, ListBuildFeedbackResponses, ListBuildsResponses, ListInstallationsResponses, ListInstanceSecretsResponses, ListIntegrationsResponses, ListLocalGitIntegrationsResponses, ListNotificationChannelsResponses, ListNotificationDeliveriesResponses, ListOperatorIncidentsResponses, ListPipelineIosDevicesResponses, ListPipelineSecretsResponses, ListPipelinesResponses, ListProjectArtifactsResponses, ListProjectMemberCandidatesResponses, ListProjectMembersResponses, ListProjectSecretsResponses, ListProjectsResponses, ListReleaseEventsResponses, ListReleasesResponses, ListRepositoriesResponses, ListRunnersResponses, ListScopedDownloadTokensResponses, ListSourceRepositoriesResponses, ListUsersResponses, LocalLoginData, LocalLoginResponses, LogoutResponses, MarkOperatorIncidentReadResponses, MetricsResponses, OidcCallbackData, OidcCallbackResponses, OidcStartResponses, PauseReleaseData, PauseReleaseResponses, PreviewBuildChangelogResponses, PurgeRunnerCachesResponses, RaiseReleaseData, RaiseReleaseResponses, ReadyzResponses, ReEnableUserResponses, RefreshStoreVitalsResponses, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponses, RegisterRunnerData, RegisterRunnerResponses, RejectBuildData, RejectBuildResponses, RemoveProjectMemberResponses, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenResponses, ReportJobPublishResultData, ReportJobPublishResultResponses, ReportJobTestResultsData, ReportJobTestResultsResponses, RepositoryAvatarResponses, RerunBuildResponses, ResumeReleaseData, ResumeReleaseResponses, RetryBuildStepData, RetryBuildStepResponses, RevokeApiTokenResponses, RevokeScopedDownloadTokenResponses, RotateGitlabRepositoryWebhookSecretResponses, RotateInstanceSecretData, RotateInstanceSecretResponses, RotatePipelineSecretData, RotatePipelineSecretResponses, RotateProjectSecretData, RotateProjectSecretResponses, RunnerHeartbeatData, RunnerHeartbeatResponses, SetupLocalOwnerCreateData, SetupLocalOwnerCreateResponses, SetupOidcStartData, SetupOidcStartResponses, SetupOidcVerifyData, SetupOidcVerifyResponses, SetupOwnerClaimTrustedProxyResponses, SetupPreferencesData, SetupPreferencesResponses, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureResponses, StartRuntimeUpdateResponses, StreamBuildLogsResponses, StreamEventsResponses, SyncInstallationsData, SyncInstallationsResponses, SyncPipelineIosSigningResponses, TestNotificationChannelResponses, TestOidcConnectionData, TestOidcConnectionResponses, TestPipelineGooglePlayCredentialsData, TestPipelineGooglePlayCredentialsResponses, TrustedProxyLoginResponses, UpdateAppStoreConnectKeyData, UpdateAppStoreConnectKeyResponses, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsResponses, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsResponses, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsResponses, UpdateInstancePreferencesData, UpdateInstancePreferencesResponses, UpdateJobStatusData, UpdateJobStatusResponses, UpdateNotificationChannelData, UpdateNotificationChannelResponses, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponses, UpdatePipelineAppStorePublishData, UpdatePipelineAppStorePublishResponses, UpdatePipelineData, UpdatePipelineGooglePlayPublishData, UpdatePipelineGooglePlayPublishResponses, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponses, UpdatePipelineResponses, UpdateProjectData, UpdateProjectMemberData, UpdateProjectMemberResponses, UpdateProjectResponses, UpdateProjectRetentionData, UpdateProjectRetentionResponses, UpdateRetentionPolicyData, UpdateRetentionPolicyResponses, UpdateRunnerData, UpdateRunnerResponses, UpdateUserRoleData, UpdateUserRoleResponses, UploadLocalArtifactData, UploadLocalArtifactResponses, ValidatePipelineData, ValidatePipelineResponses, VerifyBootstrapTokenData, VerifyBootstrapTokenResponses } from './types.gen.js';
+import type { AbortArtifactData, AbortArtifactResponses, AddProjectMemberData, AddProjectMemberResponses, AppendBuildLogsData, AppendBuildLogsResponses, ApproveBuildData, ApproveBuildResponses, ApprovePromotionData, ApprovePromotionResponses, ApproveReleaseData, ApproveReleaseResponses, BrowseLocalGitDirectoriesResponses, CancelBuildResponses, CheckGitlabPersonalTokenResponses, ClaimJobData, ClaimJobResponses, ClientOptions, CompleteArtifactData, CompleteArtifactResponses, CompleteReleaseData, CompleteReleaseResponses, CompleteSetupResponses, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcResponses, ConfigureOidcData, ConfigureOidcResponses, CreateApiTokenData, CreateApiTokenResponses, CreateAppStoreConnectKeyData, CreateAppStoreConnectKeyResponses, CreateArtifactData, CreateArtifactInstallLinkResponses, CreateArtifactResponses, CreateBuildData, CreateBuildFeedbackData, CreateBuildFeedbackResponses, CreateBuildResponses, CreateInstanceSecretData, CreateInstanceSecretResponses, CreateLocalGitIntegrationData, CreateLocalGitIntegrationResponses, CreateNotificationChannelData, CreateNotificationChannelResponses, CreatePipelineData, CreatePipelineResponses, CreatePipelineSecretData, CreatePipelineSecretResponses, CreateProjectData, CreateProjectEnvironmentData, CreateProjectEnvironmentResponses, CreateProjectResponses, CreateProjectSecretData, CreateProjectSecretResponses, CreateReleaseData, CreateReleaseResponses, CreateScopedDownloadTokenData, CreateScopedDownloadTokenResponses, CreateStreamTokenResponses, DeleteAppStoreConnectKeyResponses, DeleteInstanceSecretResponses, DeleteIntegrationResponses, DeleteLocalGitIntegrationResponses, DeleteNotificationChannelResponses, DeletePipelineResponses, DeletePipelineSecretResponses, DeleteProjectEnvironmentResponses, DeleteProjectResponses, DeleteProjectRetentionResponses, DeleteProjectSecretResponses, DeleteRunnerResponses, DeleteUserResponses, DiscoverRepositoryWorkflowsResponses, DownloadLocalArtifactInstallResponses, DownloadLocalArtifactLegacyResponses, DownloadLocalArtifactResponses, FrontendPairData, FrontendPairResponses, GenerateDownloadLinkResponses, GetArtifactStorageSettingsResponses, GetBuildFeedbackScreenshotResponses, GetBuildInsightsResponses, GetBuildLogsResponses, GetBuildResponses, GetBuildTestResultsResponses, GetExternalAccessNetworkSettingsResponses, GetExternalAccessOidcResponses, GetExternalAccessPreflightResponses, GetExternalAccessTrustedProxySettingsResponses, GetInstancePreferencesResponses, GetIntegrationResponses, GetIosInstallManifestResponses, GetIosInstallManifestV1Responses, GetJobAndroidSigningResponses, GetJobIosSigningResponses, GetJobPublishPlanResponses, GetJobRetryArtifactsResponses, GetJobSecretsResponses, GetJobStatusResponses, GetMeResponses, GetNotificationChannelResponses, GetPipelineAndroidSigningResponses, GetPipelineAppStorePublishResponses, GetPipelineGooglePlayPublishResponses, GetPipelineIosSigningResponses, GetPipelineResponses, GetProjectResponses, GetProjectRetentionResponses, GetReleaseResponses, GetRetentionLastCleanupResponses, GetRetentionPolicyResponses, GetRunnerResponses, GetRuntimeUpdatePreflightResponses, GetRuntimeUpdateStatusResponses, GetSetupStatusResponses, GetSetupSummaryResponses, GetStoreVitalsResponses, GithubCallbackResponses, GithubCompleteData, GithubCompleteResponses, GithubCreatePageResponses, GithubInstalledResponses, GithubStartData, GithubStartResponses, GithubWebhookResponses, GitlabAuthorizeData, GitlabAuthorizeResponses, GitlabCallbackResponses, GitlabCheckoutDiscoveryResponses, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackResponses, GitlabStartData, GitlabStartResponses, GitlabWebhookResponses, HaltReleaseData, HaltReleaseResponses, HealthzResponses, InviteUserData, InviteUserResponses, ListApiTokensResponses, ListAppStoreConnectKeysResponses, ListArtifactsResponses, ListAuditLogsResponses, ListBuildActorsResponses, ListBuildArtifactsData, ListBuildArtifactsResponses, ListBuildFeedbackResponses, ListBuildsResponses, ListInstallationsResponses, ListInstanceSecretsResponses, ListIntegrationsResponses, ListLocalGitIntegrationsResponses, ListNotificationChannelsResponses, ListNotificationDeliveriesResponses, ListOperatorIncidentsResponses, ListPipelineIosDevicesResponses, ListPipelineSecretsResponses, ListPipelinesResponses, ListProjectArtifactsResponses, ListProjectEnvironmentsResponses, ListProjectMemberCandidatesResponses, ListProjectMembersResponses, ListProjectSecretsResponses, ListProjectsResponses, ListReleaseEventsResponses, ListReleasesResponses, ListRepositoriesResponses, ListRunnersResponses, ListScopedDownloadTokensResponses, ListSourceRepositoriesResponses, ListUsersResponses, LocalLoginData, LocalLoginResponses, LogoutResponses, MarkOperatorIncidentReadResponses, MetricsResponses, OidcCallbackData, OidcCallbackResponses, OidcStartResponses, PauseReleaseData, PauseReleaseResponses, PreviewBuildChangelogResponses, PromoteBuildData, PromoteBuildResponses, PurgeRunnerCachesResponses, RaiseReleaseData, RaiseReleaseResponses, ReadyzResponses, ReEnableUserResponses, RefreshStoreVitalsResponses, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponses, RegisterRunnerData, RegisterRunnerResponses, RejectBuildData, RejectBuildResponses, RejectPromotionData, RejectPromotionResponses, RemoveProjectMemberResponses, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenResponses, ReportJobPublishResultData, ReportJobPublishResultResponses, ReportJobTestResultsData, ReportJobTestResultsResponses, RepositoryAvatarResponses, RerunBuildResponses, ResumeReleaseData, ResumeReleaseResponses, RetryBuildStepData, RetryBuildStepResponses, RevokeApiTokenResponses, RevokeScopedDownloadTokenResponses, RotateGitlabRepositoryWebhookSecretResponses, RotateInstanceSecretData, RotateInstanceSecretResponses, RotatePipelineSecretData, RotatePipelineSecretResponses, RotateProjectSecretData, RotateProjectSecretResponses, RunnerHeartbeatData, RunnerHeartbeatResponses, SetupLocalOwnerCreateData, SetupLocalOwnerCreateResponses, SetupOidcStartData, SetupOidcStartResponses, SetupOidcVerifyData, SetupOidcVerifyResponses, SetupOwnerClaimTrustedProxyResponses, SetupPreferencesData, SetupPreferencesResponses, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureResponses, StartRuntimeUpdateResponses, StreamBuildLogsResponses, StreamEventsResponses, SyncInstallationsData, SyncInstallationsResponses, SyncPipelineIosSigningResponses, TestNotificationChannelResponses, TestOidcConnectionData, TestOidcConnectionResponses, TestPipelineGooglePlayCredentialsData, TestPipelineGooglePlayCredentialsResponses, TrustedProxyLoginResponses, UpdateAppStoreConnectKeyData, UpdateAppStoreConnectKeyResponses, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsResponses, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsResponses, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsResponses, UpdateInstancePreferencesData, UpdateInstancePreferencesResponses, UpdateJobStatusData, UpdateJobStatusResponses, UpdateNotificationChannelData, UpdateNotificationChannelResponses, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponses, UpdatePipelineAppStorePublishData, UpdatePipelineAppStorePublishResponses, UpdatePipelineData, UpdatePipelineGooglePlayPublishData, UpdatePipelineGooglePlayPublishResponses, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponses, UpdatePipelineResponses, UpdateProjectData, UpdateProjectEnvironmentData, UpdateProjectEnvironmentResponses, UpdateProjectMemberData, UpdateProjectMemberResponses, UpdateProjectResponses, UpdateProjectRetentionData, UpdateProjectRetentionResponses, UpdateRetentionPolicyData, UpdateRetentionPolicyResponses, UpdateRunnerData, UpdateRunnerResponses, UpdateUserRoleData, UpdateUserRoleResponses, UploadLocalArtifactData, UploadLocalArtifactResponses, ValidatePipelineData, ValidatePipelineResponses, VerifyBootstrapTokenData, VerifyBootstrapTokenResponses } from './types.gen.js';
 
 export type RequestHandlerOptions = RequestHandlerOptions2 & {
     baseUrl?: ClientOptions['baseUrl'];
@@ -3033,6 +3033,134 @@ export function handlePreviewBuildChangelog(response?: HandlePreviewBuildChangel
     }, options);
 }
 
+export type HandleListProjectEnvironmentsResponse = {
+    body: ListProjectEnvironmentsResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `GET /v1/projects/{project_id}/environments` operation.
+ */
+export function handleListProjectEnvironments(response?: HandleListProjectEnvironmentsResponse | HttpResponseResolver<{
+    project_id: string;
+}, never>, options?: RequestHandlerOptions): HttpHandler {
+    return http.get<{
+        project_id: string;
+    }, never>(`${options?.baseUrl ?? '*'}/v1/projects/:project_id/environments`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandleCreateProjectEnvironmentResponse = {
+    body: CreateProjectEnvironmentResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/projects/{project_id}/environments` operation.
+ */
+export function handleCreateProjectEnvironment(response?: HandleCreateProjectEnvironmentResponse | HttpResponseResolver<{
+    project_id: string;
+}, CreateProjectEnvironmentData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        project_id: string;
+    }, CreateProjectEnvironmentData['body']>(`${options?.baseUrl ?? '*'}/v1/projects/:project_id/environments`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandleDeleteProjectEnvironmentResponse = {
+    body: DeleteProjectEnvironmentResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `DELETE /v1/projects/{project_id}/environments/{environment_id}` operation.
+ */
+export function handleDeleteProjectEnvironment(response?: HandleDeleteProjectEnvironmentResponse | HttpResponseResolver<{
+    project_id: string;
+    environment_id: string;
+}, never>, options?: RequestHandlerOptions): HttpHandler {
+    return http.delete<{
+        project_id: string;
+        environment_id: string;
+    }, never>(`${options?.baseUrl ?? '*'}/v1/projects/:project_id/environments/:environment_id`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandleUpdateProjectEnvironmentResponse = {
+    body: UpdateProjectEnvironmentResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `PATCH /v1/projects/{project_id}/environments/{environment_id}` operation.
+ */
+export function handleUpdateProjectEnvironment(response?: HandleUpdateProjectEnvironmentResponse | HttpResponseResolver<{
+    project_id: string;
+    environment_id: string;
+}, UpdateProjectEnvironmentData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.patch<{
+        project_id: string;
+        environment_id: string;
+    }, UpdateProjectEnvironmentData['body']>(`${options?.baseUrl ?? '*'}/v1/projects/:project_id/environments/:environment_id`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
 export type HandleListProjectMembersResponse = {
     body: ListProjectMembersResponses[200];
     status?: 200;
@@ -3243,6 +3371,103 @@ export function handleCreatePipeline(response?: HandleCreatePipelineResponse | H
         const body = response?.body;
         if (body !== undefined) {
             return HttpResponse.json(body, { status: response?.status ?? 201 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandlePromoteBuildResponse = {
+    body: PromoteBuildResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/projects/{project_id}/promotions` operation.
+ */
+export function handlePromoteBuild(response?: HandlePromoteBuildResponse | HttpResponseResolver<{
+    project_id: string;
+}, PromoteBuildData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        project_id: string;
+    }, PromoteBuildData['body']>(`${options?.baseUrl ?? '*'}/v1/projects/:project_id/promotions`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandleApprovePromotionResponse = {
+    body: ApprovePromotionResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/projects/{project_id}/promotions/{promotion_id}/approve` operation.
+ */
+export function handleApprovePromotion(response?: HandleApprovePromotionResponse | HttpResponseResolver<{
+    project_id: string;
+    promotion_id: string;
+}, ApprovePromotionData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        project_id: string;
+        promotion_id: string;
+    }, ApprovePromotionData['body']>(`${options?.baseUrl ?? '*'}/v1/projects/:project_id/promotions/:promotion_id/approve`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandleRejectPromotionResponse = {
+    body: RejectPromotionResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/projects/{project_id}/promotions/{promotion_id}/reject` operation.
+ */
+export function handleRejectPromotion(response?: HandleRejectPromotionResponse | HttpResponseResolver<{
+    project_id: string;
+    promotion_id: string;
+}, RejectPromotionData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        project_id: string;
+        promotion_id: string;
+    }, RejectPromotionData['body']>(`${options?.baseUrl ?? '*'}/v1/projects/:project_id/promotions/:promotion_id/reject`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
         }
         if (options?.responseFallback === 'passthrough') {
             return;
@@ -6347,6 +6572,22 @@ export type MswHandlerFactories = {
      */
     previewBuildChangelog: typeof handlePreviewBuildChangelog;
     /**
+     * Handler for the `GET /v1/projects/{project_id}/environments` operation.
+     */
+    listProjectEnvironments: typeof handleListProjectEnvironments;
+    /**
+     * Handler for the `POST /v1/projects/{project_id}/environments` operation.
+     */
+    createProjectEnvironment: typeof handleCreateProjectEnvironment;
+    /**
+     * Handler for the `DELETE /v1/projects/{project_id}/environments/{environment_id}` operation.
+     */
+    deleteProjectEnvironment: typeof handleDeleteProjectEnvironment;
+    /**
+     * Handler for the `PATCH /v1/projects/{project_id}/environments/{environment_id}` operation.
+     */
+    updateProjectEnvironment: typeof handleUpdateProjectEnvironment;
+    /**
      * Handler for the `GET /v1/projects/{project_id}/members` operation.
      */
     listProjectMembers: typeof handleListProjectMembers;
@@ -6374,6 +6615,18 @@ export type MswHandlerFactories = {
      * Handler for the `POST /v1/projects/{project_id}/pipelines` operation.
      */
     createPipeline: typeof handleCreatePipeline;
+    /**
+     * Handler for the `POST /v1/projects/{project_id}/promotions` operation.
+     */
+    promoteBuild: typeof handlePromoteBuild;
+    /**
+     * Handler for the `POST /v1/projects/{project_id}/promotions/{promotion_id}/approve` operation.
+     */
+    approvePromotion: typeof handleApprovePromotion;
+    /**
+     * Handler for the `POST /v1/projects/{project_id}/promotions/{promotion_id}/reject` operation.
+     */
+    rejectPromotion: typeof handleRejectPromotion;
     /**
      * Handler for the `GET /v1/projects/{project_id}/repository-workflows` operation.
      */
@@ -6857,6 +7110,10 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
         listProjectArtifacts: wrap(handleListProjectArtifacts),
         createBuild: wrap(handleCreateBuild),
         previewBuildChangelog: wrap(handlePreviewBuildChangelog),
+        listProjectEnvironments: wrap(handleListProjectEnvironments),
+        createProjectEnvironment: wrap(handleCreateProjectEnvironment),
+        deleteProjectEnvironment: wrap(handleDeleteProjectEnvironment),
+        updateProjectEnvironment: wrap(handleUpdateProjectEnvironment),
         listProjectMembers: wrap(handleListProjectMembers),
         addProjectMember: wrap(handleAddProjectMember),
         listProjectMemberCandidates: wrap(handleListProjectMemberCandidates),
@@ -6864,6 +7121,9 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
         updateProjectMember: wrap(handleUpdateProjectMember),
         listPipelines: wrap(handleListPipelines),
         createPipeline: wrap(handleCreatePipeline),
+        promoteBuild: wrap(handlePromoteBuild),
+        approvePromotion: wrap(handleApprovePromotion),
+        rejectPromotion: wrap(handleRejectPromotion),
         discoverRepositoryWorkflows: wrap(handleDiscoverRepositoryWorkflows),
         deleteProjectRetention: wrap(handleDeleteProjectRetention),
         getProjectRetention: wrap(handleGetProjectRetention),
@@ -6974,6 +7234,8 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
             invoke(pick.registerPipelineIosDevice, overrides.registerPipelineIosDevice),
             invoke(pick.testPipelineGooglePlayCredentials, overrides.testPipelineGooglePlayCredentials),
             invoke(pick.getBuildFeedbackScreenshot, overrides.getBuildFeedbackScreenshot),
+            invoke(pick.approvePromotion, overrides.approvePromotion),
+            invoke(pick.rejectPromotion, overrides.rejectPromotion),
             invoke(pick.getJobAndroidSigning, overrides.getJobAndroidSigning),
             invoke(pick.createArtifact, overrides.createArtifact),
             invoke(pick.getJobIosSigning, overrides.getJobIosSigning),
@@ -7000,6 +7262,8 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
             invoke(pick.purgeRunnerCaches, overrides.purgeRunnerCaches),
             invoke(pick.deletePipelineSecret, overrides.deletePipelineSecret),
             invoke(pick.rotatePipelineSecret, overrides.rotatePipelineSecret),
+            invoke(pick.deleteProjectEnvironment, overrides.deleteProjectEnvironment),
+            invoke(pick.updateProjectEnvironment, overrides.updateProjectEnvironment),
             invoke(pick.removeProjectMember, overrides.removeProjectMember),
             invoke(pick.updateProjectMember, overrides.updateProjectMember),
             invoke(pick.deleteProjectSecret, overrides.deleteProjectSecret),
@@ -7073,10 +7337,13 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
             invoke(pick.createPipelineSecret, overrides.createPipelineSecret),
             invoke(pick.listProjectArtifacts, overrides.listProjectArtifacts),
             invoke(pick.createBuild, overrides.createBuild),
+            invoke(pick.listProjectEnvironments, overrides.listProjectEnvironments),
+            invoke(pick.createProjectEnvironment, overrides.createProjectEnvironment),
             invoke(pick.listProjectMembers, overrides.listProjectMembers),
             invoke(pick.addProjectMember, overrides.addProjectMember),
             invoke(pick.listPipelines, overrides.listPipelines),
             invoke(pick.createPipeline, overrides.createPipeline),
+            invoke(pick.promoteBuild, overrides.promoteBuild),
             invoke(pick.discoverRepositoryWorkflows, overrides.discoverRepositoryWorkflows),
             invoke(pick.deleteProjectRetention, overrides.deleteProjectRetention),
             invoke(pick.getProjectRetention, overrides.getProjectRetention),
