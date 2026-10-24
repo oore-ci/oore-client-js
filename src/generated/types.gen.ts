@@ -1696,6 +1696,92 @@ export type PipelineIosSigningResponse = {
     updated_at?: number | null;
 };
 
+/**
+ * A resolved plan. Environment values are left out; only their keys are listed.
+ */
+export type PipelinePlanPreview = {
+    artifact_patterns: Array<string>;
+    build_number_offset: number;
+    env_keys: Array<string>;
+    flutter_version?: string | null;
+    isolation: BuildIsolation;
+    platforms: Array<BuildPlatform>;
+    runs_on: Array<string>;
+    steps: Array<PipelinePlanStep>;
+    workflow?: string | null;
+};
+
+/**
+ * One command a build runs. Secret references stay as written.
+ */
+export type PipelinePlanStep = {
+    flavor?: string | null;
+    name: string;
+    phase: StepPhase;
+    platform?: null | BuildPlatform;
+    run: string;
+    /**
+     * Where the command comes from in the configuration.
+     */
+    source: string;
+    /**
+     * Test report the step writes, when it declares one.
+     */
+    test_report?: string | null;
+};
+
+/**
+ * What to plan: a repository file or the pipeline's form settings, never both.
+ */
+export type PlanPipelineRequest = {
+    /**
+     * Google Play upload is on, so the default Android build also produces an
+     * App Bundle. Applies to form settings and version 1 files.
+     */
+    build_play_bundle?: boolean | null;
+    execution_config?: null | PipelineExecutionConfig;
+    /**
+     * Plan only these platforms, as a run that selects them would.
+     */
+    platforms?: Array<BuildPlatform> | null;
+    /**
+     * A `.oore.yaml` of either version.
+     */
+    repository_yaml?: string | null;
+    /**
+     * The version 2 workflow to plan. Defaults to the file's first workflow.
+     */
+    workflow?: string | null;
+};
+
+export type PlanPipelineResponse = {
+    /**
+     * Platforms the planned workflow builds before any platform selection.
+     */
+    available_platforms: Array<BuildPlatform>;
+    /**
+     * The errors `oore pipeline validate` reports, one per entry.
+     */
+    errors: Array<string>;
+    /**
+     * Settings the file declares that this release does not act on yet.
+     */
+    notices: Array<string>;
+    plan?: null | PipelinePlanPreview;
+    /**
+     * No errors: `plan` is set.
+     */
+    valid: boolean;
+    /**
+     * `.oore.yaml` version, or none for form settings and unparseable files.
+     */
+    version?: number | null;
+    /**
+     * Workflows the file defines, in file order. Empty without workflows.
+     */
+    workflows: Array<string>;
+};
+
 export type PlatformBuildArgs = {
     android: Array<string>;
     ios: Array<string>;
@@ -2581,6 +2667,12 @@ export type SourceRepository = IntegrationRepository & {
     integration_id: string;
     provider: ScmProvider;
 };
+
+/**
+ * Where a step sits relative to the platform builds. Android signing and the
+ * iOS export seam apply to `build` steps only.
+ */
+export type StepPhase = 'pre_build' | 'build' | 'post_build';
 
 export type StepResult = {
     duration_ms: number;
@@ -5537,6 +5629,31 @@ export type MarkOperatorIncidentReadResponses = {
 };
 
 export type MarkOperatorIncidentReadResponse = MarkOperatorIncidentReadResponses[keyof MarkOperatorIncidentReadResponses];
+
+export type PlanPipelineData = {
+    body: PlanPipelineRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/pipelines/plan';
+};
+
+export type PlanPipelineErrors = {
+    /**
+     * Neither or both sources given, or the file is too large
+     */
+    400: ApiError;
+};
+
+export type PlanPipelineError = PlanPipelineErrors[keyof PlanPipelineErrors];
+
+export type PlanPipelineResponses = {
+    /**
+     * Plan or validation errors
+     */
+    200: PlanPipelineResponse;
+};
+
+export type PlanPipelineResponse2 = PlanPipelineResponses[keyof PlanPipelineResponses];
 
 export type ValidatePipelineData = {
     body: ValidatePipelineRequest;
