@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.26.0](https://github.com/oore-ci/oore-client-js/compare/v0.25.0...v0.26.0) (2026-10-24)
+
+
+### Features
+
+* **schema:** per-environment promotion approvers ([#73](https://github.com/oore-ci/oore-client-js/issues/73)) ([c9a9d81](https://github.com/oore-ci/oore-client-js/commit/c9a9d817b48b2210bc14a367dbefdf29bd2ae3a4))
+
 ## [0.25.0](https://github.com/oore-ci/oore-client-js/compare/v0.24.0...v0.25.0) (2026-10-24)
 
 
