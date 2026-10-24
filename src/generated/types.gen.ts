@@ -773,6 +773,10 @@ export type CreatePipelineRequest = {
     name: string;
     timeout_minutes?: number | null;
     trigger_config?: null | TriggerConfig;
+    /**
+     * A workflow the repository's `version: 2` file defines.
+     */
+    workflow?: string | null;
 };
 
 export type CreatePipelineResponse = {
@@ -1603,6 +1607,13 @@ export type Pipeline = {
     timeout_minutes: number;
     trigger_config: TriggerConfig;
     updated_at: number;
+    /**
+     * The `.oore.yaml` version 2 workflow this pipeline builds. `null`
+     * builds the file's only workflow, or its top level when it defines
+     * none. That workflow's `on`, or the file's top-level `on`, replaces
+     * `trigger_config` for webhook events.
+     */
+    workflow?: string | null;
 };
 
 export type PipelineAndroidSigningResponse = {
@@ -2155,6 +2166,12 @@ export type RepositoryWorkflowPreview = {
     execution?: null | RepositoryWorkflowExecutionPreview;
     path: string;
     valid: boolean;
+    /**
+     * Workflows a valid `version: 2` file defines, in file order, which a
+     * pipeline can pick. Empty for version 1 files and files without
+     * workflows.
+     */
+    workflows: Array<string>;
 };
 
 export type RerunBuildResponse = {
@@ -2963,6 +2980,11 @@ export type UpdatePipelineRequest = {
     name?: string | null;
     timeout_minutes?: number | null;
     trigger_config?: null | TriggerConfig;
+    /**
+     * A workflow the repository's `version: 2` file defines. `null` clears
+     * it; leaving it out keeps the current one.
+     */
+    workflow?: string | null;
 };
 
 /**
@@ -3081,6 +3103,10 @@ export type ValidatePipelineRequest = {
     repository_yaml?: string | null;
     timeout_minutes?: number | null;
     trigger_config?: null | TriggerConfig;
+    /**
+     * Checked against the workflows `repository_yaml` defines.
+     */
+    workflow?: string | null;
 };
 
 export type ValidatePipelineResponse = {
