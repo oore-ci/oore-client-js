@@ -771,6 +771,7 @@ export type CreatePipelineRequest = {
     config_path_explicit?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
     name: string;
+    size_budget?: null | SizeBudget;
     timeout_minutes?: number | null;
     trigger_config?: null | TriggerConfig;
     /**
@@ -1644,6 +1645,10 @@ export type Pipeline = {
     id: string;
     name: string;
     project_id: string;
+    /**
+     * Artifact size limits the commit checks enforce.
+     */
+    size_budget: SizeBudget;
     /**
      * Minutes a running build may take before it is marked `timed_out`.
      */
@@ -2695,6 +2700,45 @@ export type SetupTrustedProxyConfigureResponse = {
 };
 
 /**
+ * Artifact size limits a pipeline's commit checks enforce. Increase limits
+ * compare with the same baseline as the build's size report; without a
+ * baseline only `max_bytes` applies. Empty `rules` turns the budget off.
+ */
+export type SizeBudget = {
+    mode: SizeBudgetMode;
+    rules: Array<SizeBudgetRule>;
+};
+
+/**
+ * What a pipeline's commit check does when an artifact is over its size
+ * budget. The build itself never fails.
+ */
+export type SizeBudgetMode = 'warn' | 'fail';
+
+/**
+ * Size limits for one kind of artifact. A rule needs at least one limit.
+ */
+export type SizeBudgetRule = {
+    /**
+     * The artifact kind: its lowercase file extension, such as `aab`,
+     * `apk` or `ipa`.
+     */
+    kind: string;
+    /**
+     * Largest size allowed, in bytes.
+     */
+    max_bytes?: number | null;
+    /**
+     * Largest growth allowed compared with the baseline build, in bytes.
+     */
+    max_increase_bytes?: number | null;
+    /**
+     * Largest growth allowed compared with the baseline build, in percent.
+     */
+    max_increase_percent?: number | null;
+};
+
+/**
  * Maps a person to the Slack member mentioned in their notifications.
  */
 export type SlackMention = {
@@ -3039,6 +3083,7 @@ export type UpdatePipelineRequest = {
     enabled?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
     name?: string | null;
+    size_budget?: null | SizeBudget;
     timeout_minutes?: number | null;
     trigger_config?: null | TriggerConfig;
     /**
@@ -3163,6 +3208,7 @@ export type ValidatePipelineRequest = {
     config_path_explicit?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
     repository_yaml?: string | null;
+    size_budget?: null | SizeBudget;
     timeout_minutes?: number | null;
     trigger_config?: null | TriggerConfig;
     /**
