@@ -1578,7 +1578,7 @@ export const promoteBuild = <ThrowOnError extends boolean = true>(options: Optio
 /**
  * Approve promotion
  *
- * Approves a pending promotion and makes the store change as the approver. Requires the maintainer role. Writes an audit log entry.
+ * Approves a pending promotion and makes the store change as the approver. Requires one of the environment's approvers (by default any maintainer). API tokens cannot decide promotions. Writes an audit log entry.
  */
 export const approvePromotion = <ThrowOnError extends boolean = true>(options: Options<ApprovePromotionData, ThrowOnError>): RequestResult<ApprovePromotionResponses, ApprovePromotionErrors, ThrowOnError, 'data'> => options.client.post<ApprovePromotionResponses, ApprovePromotionErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
@@ -1594,7 +1594,7 @@ export const approvePromotion = <ThrowOnError extends boolean = true>(options: O
 /**
  * Reject promotion
  *
- * Rejects a pending promotion; nothing changes at the store. Requires the maintainer role. Writes an audit log entry.
+ * Rejects a pending promotion; nothing changes at the store. Requires one of the environment's approvers (by default any maintainer). API tokens cannot decide promotions. Writes an audit log entry.
  */
 export const rejectPromotion = <ThrowOnError extends boolean = true>(options: Options<RejectPromotionData, ThrowOnError>): RequestResult<RejectPromotionResponses, RejectPromotionErrors, ThrowOnError, 'data'> => options.client.post<RejectPromotionResponses, RejectPromotionErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',

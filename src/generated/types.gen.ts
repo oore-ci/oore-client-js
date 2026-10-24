@@ -146,6 +146,11 @@ export type ApprovalPolicy = {
     required: boolean;
 };
 
+/**
+ * The lowest project role that may approve promotions into an environment.
+ */
+export type ApproverRole = 'maintainer' | 'developer';
+
 export type Artifact = {
     artifact_type: ArtifactType;
     build_id: string;
@@ -786,6 +791,7 @@ export type CreatePipelineResponse = {
 
 export type CreateProjectEnvironmentRequest = {
     approval_required?: boolean;
+    approvers?: null | EnvironmentApproversInput;
     key: string;
     name: string;
     rollout_policy?: null | ReleasePolicy;
@@ -895,6 +901,45 @@ export type EffectiveProjectRetentionResponse = {
     effective: RetentionPolicy;
     has_override: boolean;
     override_fields?: null | ProjectRetentionOverride;
+};
+
+/**
+ * A project member named as an approver.
+ */
+export type EnvironmentApprover = {
+    email: string;
+    user_id: string;
+};
+
+/**
+ * Who may approve or reject promotions into an environment.
+ *
+ * A member may decide when their project role is at least `role`, or when
+ * they are one of `users` (developers and maintainers only). With no role
+ * and no users, any project maintainer may decide, as before approvers
+ * existed. Instance owners and admins may always decide. API tokens never
+ * decide: approvals are interactive.
+ */
+export type EnvironmentApprovers = {
+    role?: null | ApproverRole;
+    /**
+     * Project members named as approvers. A user who leaves the project,
+     * or becomes a viewer, stops counting.
+     */
+    users: Array<EnvironmentApprover>;
+};
+
+/**
+ * Approvers to set on an environment. Replaces the whole set; send an empty
+ * object to go back to "any maintainer".
+ */
+export type EnvironmentApproversInput = {
+    role?: null | ApproverRole;
+    /**
+     * User ids of project members who are developers or maintainers. At
+     * most 20.
+     */
+    user_ids?: Array<string>;
 };
 
 /**
@@ -1958,10 +2003,15 @@ export type ProjectDetailResponse = {
  */
 export type ProjectEnvironment = {
     /**
-     * A promotion into this environment waits for a maintainer's approval
-     * before anything changes at the store.
+     * A promotion into this environment waits for an approval before
+     * anything changes at the store. `approvers` says who may give it.
      */
     approval_required: boolean;
+    /**
+     * Who may approve or reject promotions into this environment. With no
+     * role and no users, any project maintainer may.
+     */
+    approvers: EnvironmentApprovers;
     created_at: number;
     id: string;
     /**
@@ -3160,6 +3210,7 @@ export type UpdatePipelineRequest = {
  */
 export type UpdateProjectEnvironmentRequest = {
     approval_required?: boolean | null;
+    approvers?: null | EnvironmentApproversInput;
     name?: string | null;
     position?: number | null;
     rollout_policy?: null | ReleasePolicy;
@@ -7239,7 +7290,7 @@ export type ApprovePromotionData = {
 
 export type ApprovePromotionErrors = {
     /**
-     * Permission denied
+     * Not one of the environment's approvers, or an API token
      */
     403: ApiError;
     /**
@@ -7288,7 +7339,7 @@ export type RejectPromotionData = {
 
 export type RejectPromotionErrors = {
     /**
-     * Permission denied
+     * Not one of the environment's approvers, or an API token
      */
     403: ApiError;
     /**

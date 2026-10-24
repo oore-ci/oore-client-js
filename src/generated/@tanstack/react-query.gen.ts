@@ -3220,7 +3220,7 @@ export const approvePromotionMutationKey = (options?: Partial<Options<ApprovePro
 /**
  * Approve promotion
  *
- * Approves a pending promotion and makes the store change as the approver. Requires the maintainer role. Writes an audit log entry.
+ * Approves a pending promotion and makes the store change as the approver. Requires one of the environment's approvers (by default any maintainer). API tokens cannot decide promotions. Writes an audit log entry.
  */
 export const approvePromotionMutation = (options?: Partial<Options<ApprovePromotionData>>): UseMutationOptions<ApprovePromotionResponse, ApprovePromotionError, Options<ApprovePromotionData>> => {
     const mutationOptions: UseMutationOptions<ApprovePromotionResponse, ApprovePromotionError, Options<ApprovePromotionData>> = {
@@ -3237,7 +3237,7 @@ export const approvePromotionMutation = (options?: Partial<Options<ApprovePromot
 /**
  * Approve promotion
  *
- * Approves a pending promotion and makes the store change as the approver. Requires the maintainer role. Writes an audit log entry.
+ * Approves a pending promotion and makes the store change as the approver. Requires one of the environment's approvers (by default any maintainer). API tokens cannot decide promotions. Writes an audit log entry.
  */
 export const useApprovePromotionMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<ApprovePromotionResponse, ApprovePromotionError, Options<ApprovePromotionData>>, 'mutationFn'>>) => useMutation({ ...approvePromotionMutation(), ...mutationOptions });
 
@@ -3246,7 +3246,7 @@ export const rejectPromotionMutationKey = (options?: Partial<Options<RejectPromo
 /**
  * Reject promotion
  *
- * Rejects a pending promotion; nothing changes at the store. Requires the maintainer role. Writes an audit log entry.
+ * Rejects a pending promotion; nothing changes at the store. Requires one of the environment's approvers (by default any maintainer). API tokens cannot decide promotions. Writes an audit log entry.
  */
 export const rejectPromotionMutation = (options?: Partial<Options<RejectPromotionData>>): UseMutationOptions<RejectPromotionResponse, RejectPromotionError, Options<RejectPromotionData>> => {
     const mutationOptions: UseMutationOptions<RejectPromotionResponse, RejectPromotionError, Options<RejectPromotionData>> = {
@@ -3263,7 +3263,7 @@ export const rejectPromotionMutation = (options?: Partial<Options<RejectPromotio
 /**
  * Reject promotion
  *
- * Rejects a pending promotion; nothing changes at the store. Requires the maintainer role. Writes an audit log entry.
+ * Rejects a pending promotion; nothing changes at the store. Requires one of the environment's approvers (by default any maintainer). API tokens cannot decide promotions. Writes an audit log entry.
  */
 export const useRejectPromotionMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<RejectPromotionResponse, RejectPromotionError, Options<RejectPromotionData>>, 'mutationFn'>>) => useMutation({ ...rejectPromotionMutation(), ...mutationOptions });
 
