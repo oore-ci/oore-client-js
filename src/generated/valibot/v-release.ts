@@ -30,6 +30,8 @@ export const vRelease = v.object({
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    environment_id: v.nullish(v.string()),
+    environment_name: v.nullish(v.string()),
     health: vReleaseHealth,
     id: v.string(),
     next_fraction: v.nullish(v.number()),
@@ -43,6 +45,7 @@ export const vRelease = v.object({
     policy: vReleasePolicy,
     project_id: v.string(),
     project_name: v.nullish(v.string()),
+    promoted_from_release_id: v.nullish(v.string()),
     rollout_fraction: v.number(),
     state: vReleaseState,
     store: vReleaseStore,
