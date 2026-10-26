@@ -653,6 +653,11 @@ export type CancelBuildResponse = {
 };
 
 export type ClaimJobRequest = {
+    /**
+     * The builds the runner is still running. The backend releases any
+     * other build it holds, since the runner lost it.
+     */
+    active_build_ids?: Array<string>;
     protocol_version: number;
 };
 
@@ -2484,6 +2489,10 @@ export type Runner = {
      */
     labels?: Array<string>;
     last_heartbeat_at?: number | null;
+    /**
+     * How many builds the runner runs at the same time.
+     */
+    max_concurrent_builds?: number;
     metrics?: null | RunnerMetrics;
     name: string;
     registered_by?: string | null;
@@ -2567,6 +2576,11 @@ export type RunnerHeartbeatRequest = {
  */
 export type RunnerHeartbeatResponse = {
     cache_purge_requested_at?: number | null;
+    /**
+     * How many builds the runner may run at the same time. Older backends
+     * leave it out, which means one.
+     */
+    max_concurrent_builds?: number | null;
 };
 
 export type RunnerIosProvisioningProfile = {
@@ -3361,6 +3375,10 @@ export type UpdateRunnerRequest = {
      * Replaces the runner's operator labels. Detected labels are kept.
      */
     custom_labels?: Array<string> | null;
+    /**
+     * How many builds the runner runs at the same time, from 1 to 8.
+     */
+    max_concurrent_builds?: number | null;
     name?: string | null;
 };
 
