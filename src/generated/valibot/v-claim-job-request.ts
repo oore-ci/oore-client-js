@@ -3,5 +3,6 @@
 import * as v from 'valibot'
 
 export const vClaimJobRequest = v.object({
+    active_build_ids: v.optional(v.array(v.string())),
     protocol_version: v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))
 });

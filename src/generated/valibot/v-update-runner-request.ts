@@ -4,5 +4,6 @@ import * as v from 'valibot'
 
 export const vUpdateRunnerRequest = v.object({
     custom_labels: v.nullish(v.array(v.string())),
+    max_concurrent_builds: v.nullish(v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))),
     name: v.nullish(v.string())
 });

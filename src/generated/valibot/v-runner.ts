@@ -26,6 +26,7 @@ export const vRunner = v.object({
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
+    max_concurrent_builds: v.optional(v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))),
     metrics: v.nullish(vRunnerMetrics),
     name: v.string(),
     registered_by: v.nullish(v.string()),
