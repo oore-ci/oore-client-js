@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.28.0](https://github.com/oore-ci/oore-client-js/compare/v0.27.0...v0.28.0) (2026-10-26)
+
+
+### Features
+
+* **schema:** concurrent builds per runner ([#77](https://github.com/oore-ci/oore-client-js/issues/77)) ([dd08097](https://github.com/oore-ci/oore-client-js/commit/dd08097c177bd418a57c3d741e0b4fb14dfee8f8))
+
 ## [0.27.0](https://github.com/oore-ci/oore-client-js/compare/v0.26.0...v0.27.0) (2026-10-24)
 
 
