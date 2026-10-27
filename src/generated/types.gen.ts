@@ -854,6 +854,11 @@ export type CreatePipelineRequest = {
     approval?: null | ApprovalPolicy;
     concurrency?: null | ConcurrencyPolicy;
     config_path?: string | null;
+    /**
+     * Deprecated and ignored: `config_path` always names the file.
+     *
+     * @deprecated
+     */
     config_path_explicit?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
     name: string;
@@ -886,6 +891,11 @@ export type CreateProjectEnvironmentRequest = {
 };
 
 export type CreateProjectRequest = {
+    /**
+     * Add pipelines for config files found on the default branch.
+     * Defaults to true.
+     */
+    auto_add_pipelines?: boolean | null;
     default_branch?: string | null;
     description?: string | null;
     local_repository_path?: string | null;
@@ -1825,11 +1835,21 @@ export type OperatorIncidentStatus = 'open' | 'resolved';
 export type Pipeline = {
     approval: ApprovalPolicy;
     concurrency: ConcurrencyPolicy;
+    /**
+     * The repository file this pipeline builds from. When it is
+     * `.oore.yaml` and missing, a legacy `.oore.yml` is read instead.
+     */
     config_path: string;
+    /**
+     * Deprecated: always true. `config_path` always names the file.
+     *
+     * @deprecated
+     */
     config_path_explicit: boolean;
     created_at: number;
     enabled: boolean;
     execution_config: PipelineExecutionConfig;
+    health?: null | PipelineHealth;
     id: string;
     name: string;
     project_id: string;
@@ -1924,6 +1944,39 @@ export type PipelineGooglePlayPublishResponse = {
     service_account_secret_present: boolean;
     updated_at?: number | null;
 };
+
+/**
+ * A pipeline's health on the project's default branch. Read from the
+ * repository files Oore last saw there, never from the provider while
+ * listing.
+ */
+export type PipelineHealth = {
+    /**
+     * The branch and commit the repository was read at.
+     */
+    branch: string;
+    /**
+     * When Oore last read the branch, in Unix seconds.
+     */
+    checked_at: number;
+    commit_sha: string;
+    /**
+     * What is wrong, in one line. Absent when `state` is `ok`.
+     */
+    message?: string | null;
+    /**
+     * The file that was read, which differs from `config_path` when a
+     * legacy `.oore.yml` stands in for `.oore.yaml`.
+     */
+    path?: string | null;
+    state: PipelineHealthState;
+};
+
+/**
+ * Whether a pipeline's repository file is usable on the project's default
+ * branch, from the last time Oore read the repository.
+ */
+export type PipelineHealthState = 'ok' | 'file_missing' | 'file_invalid' | 'workflow_missing';
 
 export type PipelineIosSigningResponse = {
     api_issuer_id?: string | null;
@@ -2107,6 +2160,11 @@ export type PlatformBuildCommands = {
 };
 
 export type Project = {
+    /**
+     * Add a pipeline for each new config file that appears on the default
+     * branch and no pipeline uses.
+     */
+    auto_add_pipelines: boolean;
     created_at: number;
     created_by: string;
     current_user_role: ProjectRole;
@@ -2469,6 +2527,73 @@ export type RemoveProjectMemberResponse = {
 
 export type ReplaceGitLabTokenRequest = {
     access_token: string;
+};
+
+/**
+ * A config file Oore found in the repository on the project's default
+ * branch.
+ */
+export type RepositoryConfigFile = {
+    /**
+     * Why the file is invalid, one line each.
+     */
+    errors: Array<string>;
+    path: string;
+    /**
+     * Pipelines that build from this file. Empty when no pipeline uses it.
+     */
+    pipelines: Array<RepositoryConfigFilePipeline>;
+    /**
+     * When Oore first saw the file on this branch, in Unix seconds.
+     */
+    seen_at: number;
+    /**
+     * The name a pipeline added from this file gets, such as `Release`
+     * for `.oore.release.yaml`.
+     */
+    suggested_name: string;
+    valid: boolean;
+    /**
+     * Workflows a valid `version: 2` file defines, in file order.
+     */
+    workflows: Array<string>;
+};
+
+/**
+ * A pipeline that builds from a repository config file.
+ */
+export type RepositoryConfigFilePipeline = {
+    id: string;
+    name: string;
+};
+
+/**
+ * `GET /v1/projects/{project_id}/repository-config-files`: config files on
+ * the project's default branch, as Oore last read them.
+ */
+export type RepositoryConfigFilesResponse = {
+    /**
+     * The default branch read. Absent when the project has none.
+     */
+    branch?: string | null;
+    /**
+     * The commit the files were read at. Absent before the first read.
+     */
+    commit_sha?: string | null;
+    /**
+     * Why the last read failed. The files from the read before it remain.
+     */
+    error?: string | null;
+    files: Array<RepositoryConfigFile>;
+    project_id: string;
+    /**
+     * When Oore last read the branch. Absent before the first read.
+     */
+    scanned_at?: number | null;
+    /**
+     * True when the repository had more config files than Oore reads.
+     */
+    truncated: boolean;
 };
 
 /**
@@ -3395,6 +3520,11 @@ export type UpdatePipelineRequest = {
     approval?: null | ApprovalPolicy;
     concurrency?: null | ConcurrencyPolicy;
     config_path?: string | null;
+    /**
+     * Deprecated and ignored: `config_path` always names the file.
+     *
+     * @deprecated
+     */
     config_path_explicit?: boolean | null;
     enabled?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
@@ -3431,6 +3561,7 @@ export type UpdateProjectMemberResponse = {
 };
 
 export type UpdateProjectRequest = {
+    auto_add_pipelines?: boolean | null;
     default_branch?: string | null;
     description?: string | null;
     name?: string | null;
@@ -3526,6 +3657,11 @@ export type ValidatePipelineRequest = {
     approval?: null | ApprovalPolicy;
     concurrency?: null | ConcurrencyPolicy;
     config_path?: string | null;
+    /**
+     * Deprecated and ignored: `config_path` always names the file.
+     *
+     * @deprecated
+     */
     config_path_explicit?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
     repository_yaml?: string | null;
@@ -7643,6 +7779,74 @@ export type RejectPromotionResponses = {
 };
 
 export type RejectPromotionResponse = RejectPromotionResponses[keyof RejectPromotionResponses];
+
+export type ListRepositoryConfigFilesData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/repository-config-files';
+};
+
+export type ListRepositoryConfigFilesErrors = {
+    /**
+     * Read permission required
+     */
+    403: ApiError;
+    /**
+     * Project not found
+     */
+    404: ApiError;
+};
+
+export type ListRepositoryConfigFilesError = ListRepositoryConfigFilesErrors[keyof ListRepositoryConfigFilesErrors];
+
+export type ListRepositoryConfigFilesResponses = {
+    /**
+     * Cached repository config files
+     */
+    200: RepositoryConfigFilesResponse;
+};
+
+export type ListRepositoryConfigFilesResponse = ListRepositoryConfigFilesResponses[keyof ListRepositoryConfigFilesResponses];
+
+export type RefreshRepositoryConfigFilesData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/repository-config-files/refresh';
+};
+
+export type RefreshRepositoryConfigFilesErrors = {
+    /**
+     * Manage Pipelines permission required
+     */
+    403: ApiError;
+    /**
+     * Project or project source not found
+     */
+    404: ApiError;
+};
+
+export type RefreshRepositoryConfigFilesError = RefreshRepositoryConfigFilesErrors[keyof RefreshRepositoryConfigFilesErrors];
+
+export type RefreshRepositoryConfigFilesResponses = {
+    /**
+     * Refreshed repository config files
+     */
+    200: RepositoryConfigFilesResponse;
+};
+
+export type RefreshRepositoryConfigFilesResponse = RefreshRepositoryConfigFilesResponses[keyof RefreshRepositoryConfigFilesResponses];
 
 export type DiscoverRepositoryWorkflowsData = {
     body?: never;

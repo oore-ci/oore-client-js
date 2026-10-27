@@ -4,6 +4,7 @@ import * as v from 'valibot'
 import { vApprovalPolicy } from './v-approval-policy.js'
 import { vConcurrencyPolicy } from './v-concurrency-policy.js'
 import { vPipelineExecutionConfig } from './v-pipeline-execution-config.js'
+import { vPipelineHealth } from './v-pipeline-health.js'
 import { vSizeBudget } from './v-size-budget.js'
 import { vTriggerConfig } from './v-trigger-config.js'
 
@@ -19,6 +20,7 @@ export const vPipeline = v.object({
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
     enabled: v.boolean(),
     execution_config: vPipelineExecutionConfig,
+    health: v.nullish(vPipelineHealth),
     id: v.string(),
     name: v.string(),
     project_id: v.string(),
