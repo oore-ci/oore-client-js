@@ -2266,6 +2266,22 @@ export type Release = {
     state: ReleaseState;
     store: ReleaseStore;
     /**
+     * The store's last error while Oore moves this release forward, such as
+     * App Store Connect refusing a review submission. Oore keeps retrying;
+     * the next successful step clears it. App Store releases only.
+     */
+    store_error?: string | null;
+    /**
+     * When the store started failing for this release.
+     */
+    store_error_since?: number | null;
+    /**
+     * The store's own status for the release, such as App Store Connect's
+     * `WAITING_FOR_REVIEW` or `IN_REVIEW`, which the release state groups
+     * together. App Store releases only.
+     */
+    store_status?: string | null;
+    /**
      * Play track, or TestFlight group / `app_store`.
      */
     track: string;
