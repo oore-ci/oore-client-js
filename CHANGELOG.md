@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.29.0](https://github.com/oore-ci/oore-client-js/compare/v0.28.0...v0.29.0) (2026-10-27)
+
+
+### Features
+
+* **schema:** store errors and Apple's status on releases ([#79](https://github.com/oore-ci/oore-client-js/issues/79)) ([c489d9e](https://github.com/oore-ci/oore-client-js/commit/c489d9e31c74a7e481bfef35860a9827655caa51))
+
 ## [0.28.0](https://github.com/oore-ci/oore-client-js/compare/v0.27.0...v0.28.0) (2026-10-26)
 
 
