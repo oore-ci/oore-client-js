@@ -45,6 +45,14 @@ export type AnalyzerDiagnostic = {
  */
 export type AnalyzerSeverity = 'error' | 'warning' | 'info';
 
+export type AndroidKeystoreInput = {
+    key_alias: string;
+    key_password: string;
+    keystore_base64: string;
+    keystore_filename: string;
+    store_password: string;
+};
+
 export type AndroidSigningBuildType = 'debug' | 'release';
 
 export type AndroidSigningProfile = {
@@ -948,6 +956,16 @@ export type CreateSecretRequest = {
     value: string;
 };
 
+/**
+ * Create a signing identity. Set the input matching `kind`.
+ */
+export type CreateSigningIdentityRequest = {
+    android?: null | AndroidKeystoreInput;
+    ios?: null | IosDistributionInput;
+    kind: SigningIdentityKind;
+    name: string;
+};
+
 export type DeleteNotificationChannelResponse = {
     deleted: boolean;
 };
@@ -1493,6 +1511,16 @@ export type IosCertificateInput = {
     p12_password?: string | null;
 };
 
+export type IosDistributionInput = {
+    p12_base64: string;
+    p12_filename: string;
+    p12_password: string;
+    /**
+     * One provisioning profile per bundle id, all of the same distribution.
+     */
+    profiles: Array<IosProfileInput>;
+};
+
 /**
  * How a signed iOS archive is distributed.
  *
@@ -1501,6 +1529,11 @@ export type IosCertificateInput = {
  * to App Store Connect for TestFlight or App Store release.
  */
 export type IosExportMethod = 'ad_hoc' | 'app_store';
+
+export type IosProfileInput = {
+    profile_base64: string;
+    profile_filename: string;
+};
 
 export type IosProvisioningProfileInput = {
     bundle_id: string;
@@ -1602,6 +1635,11 @@ export type ListPipelineIosDevicesResponse = {
     pipeline_id: string;
 };
 
+export type ListPipelineWorkflowSettingsResponse = {
+    pipeline_id: string;
+    settings: Array<PipelineWorkflowSettings>;
+};
+
 export type ListPipelinesResponse = {
     pipelines: Array<Pipeline>;
     total: number;
@@ -1661,6 +1699,10 @@ export type ListRunnersResponse = {
 
 export type ListSecretsResponse = {
     secrets: Array<SecretSummary>;
+};
+
+export type ListSigningIdentitiesResponse = {
+    identities: Array<SigningIdentity>;
 };
 
 export type ListSourceRepositoriesResponse = {
@@ -1980,6 +2022,32 @@ export type PipelinePlanStep = {
      * Test report the step writes, when it declares one.
      */
     test_report?: string | null;
+};
+
+/**
+ * Settings a pipeline keeps for one workflow of its file. Unset fields
+ * follow the file, then the pipeline.
+ */
+export type PipelineWorkflowSettings = {
+    /**
+     * Replaces the file's `signing.android`.
+     */
+    android_identity_id?: string | null;
+    /**
+     * Replaces the pipeline's approval policy for the workflow's builds.
+     */
+    approval_required?: boolean | null;
+    /**
+     * Replaces the file's `signing.ios`.
+     */
+    ios_identity_id?: string | null;
+    /**
+     * `false` stops every store upload for the workflow. Unset follows
+     * the file and the pipeline's Publish settings.
+     */
+    publish_enabled?: boolean | null;
+    updated_at?: number | null;
+    workflow: string;
 };
 
 /**
@@ -2744,6 +2812,11 @@ export type RunnerPolicyBlockReason = 'instance_paused' | 'repository_unavailabl
 export type RunnerPublishPlan = {
     app_store?: null | RunnerAppStorePublishPlan;
     changelog?: string | null;
+    /**
+     * The build's workflow has publishing turned off in the pipeline's
+     * workflow settings, so nothing uploads, whatever the file says.
+     */
+    disabled?: boolean;
     google_play?: null | GooglePlayPublishConfig;
 };
 
@@ -2993,6 +3066,75 @@ export type SetupTrustedProxyConfigureResponse = {
     session_expires_at?: number | null;
     setup_owner_email?: string | null;
     state: SetupState;
+};
+
+/**
+ * A named signing identity. Key material is never returned.
+ */
+export type SigningIdentity = {
+    created_at: number;
+    /**
+     * iOS: certificate expiry, Unix seconds.
+     */
+    expires_at?: number | null;
+    export_method?: null | IosExportMethod;
+    /**
+     * Android: the keystore's file name. iOS: the certificate's.
+     */
+    filename?: string | null;
+    id: string;
+    /**
+     * Android: the key alias.
+     */
+    key_alias?: string | null;
+    kind: SigningIdentityKind;
+    /**
+     * Unique in the project. A v2 file names it under `signing`.
+     */
+    name: string;
+    profiles?: Array<SigningIdentityProfile>;
+    project_id: string;
+    /**
+     * iOS: the Apple team.
+     */
+    team_id?: string | null;
+    updated_at: number;
+    /**
+     * Pipeline workflows whose settings pick it. Files that name it are
+     * not listed.
+     */
+    used_by?: Array<SigningIdentityUse>;
+};
+
+/**
+ * What a signing identity in a project's credential library signs with.
+ */
+export type SigningIdentityKind = 'android_keystore' | 'ios_distribution';
+
+/**
+ * A provisioning profile in an iOS signing identity, without its contents.
+ */
+export type SigningIdentityProfile = {
+    bundle_id: string;
+    expires_at?: number | null;
+    profile_name?: string | null;
+    profile_uuid?: string | null;
+};
+
+export type SigningIdentityResponse = {
+    identity: SigningIdentity;
+};
+
+/**
+ * Where a signing identity is used.
+ */
+export type SigningIdentityUse = {
+    pipeline_id: string;
+    pipeline_name: string;
+    /**
+     * The workflow whose settings pick the identity.
+     */
+    workflow: string;
 };
 
 /**
@@ -3410,6 +3552,16 @@ export type UpdatePipelineRequest = {
 };
 
 /**
+ * Replace one workflow's settings. Omitted fields are cleared.
+ */
+export type UpdatePipelineWorkflowSettingsRequest = {
+    android_identity_id?: string | null;
+    approval_required?: boolean | null;
+    ios_identity_id?: string | null;
+    publish_enabled?: boolean | null;
+};
+
+/**
  * Changes to an environment. The key and store are fixed once created.
  */
 export type UpdateProjectEnvironmentRequest = {
@@ -3476,6 +3628,16 @@ export type UpdateRunnerRequest = {
 
 export type UpdateRunnerResponse = {
     runner: Runner;
+};
+
+/**
+ * Rename an identity, or replace its material (the whole input for its
+ * kind).
+ */
+export type UpdateSigningIdentityRequest = {
+    android?: null | AndroidKeystoreInput;
+    ios?: null | IosDistributionInput;
+    name?: string | null;
 };
 
 export type UpdateSmtpConfig = {
@@ -6769,6 +6931,74 @@ export type RotatePipelineSecretResponses = {
 
 export type RotatePipelineSecretResponse = RotatePipelineSecretResponses[keyof RotatePipelineSecretResponses];
 
+export type ListPipelineWorkflowSettingsData = {
+    body?: never;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/workflow-settings';
+};
+
+export type ListPipelineWorkflowSettingsErrors = {
+    /**
+     * Pipeline not found
+     */
+    404: ApiError;
+};
+
+export type ListPipelineWorkflowSettingsError = ListPipelineWorkflowSettingsErrors[keyof ListPipelineWorkflowSettingsErrors];
+
+export type ListPipelineWorkflowSettingsResponses = {
+    /**
+     * Workflow settings
+     */
+    200: ListPipelineWorkflowSettingsResponse;
+};
+
+export type ListPipelineWorkflowSettingsResponse2 = ListPipelineWorkflowSettingsResponses[keyof ListPipelineWorkflowSettingsResponses];
+
+export type UpdatePipelineWorkflowSettingsData = {
+    body: UpdatePipelineWorkflowSettingsRequest;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+        /**
+         * Workflow name in the pipeline's file
+         */
+        workflow: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/workflow-settings/{workflow}';
+};
+
+export type UpdatePipelineWorkflowSettingsErrors = {
+    /**
+     * Unknown identity or wrong kind
+     */
+    400: ApiError;
+    /**
+     * Permission required
+     */
+    403: ApiError;
+};
+
+export type UpdatePipelineWorkflowSettingsError = UpdatePipelineWorkflowSettingsErrors[keyof UpdatePipelineWorkflowSettingsErrors];
+
+export type UpdatePipelineWorkflowSettingsResponses = {
+    /**
+     * Saved settings
+     */
+    200: PipelineWorkflowSettings;
+};
+
+export type UpdatePipelineWorkflowSettingsResponse = UpdatePipelineWorkflowSettingsResponses[keyof UpdatePipelineWorkflowSettingsResponses];
+
 export type ListPipelineWorkflowsData = {
     body?: never;
     path: {
@@ -7910,6 +8140,129 @@ export type RotateProjectSecretResponses = {
 };
 
 export type RotateProjectSecretResponse = RotateProjectSecretResponses[keyof RotateProjectSecretResponses];
+
+export type ListSigningIdentitiesData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/signing-identities';
+};
+
+export type ListSigningIdentitiesResponses = {
+    /**
+     * Signing identities
+     */
+    200: ListSigningIdentitiesResponse;
+};
+
+export type ListSigningIdentitiesResponse2 = ListSigningIdentitiesResponses[keyof ListSigningIdentitiesResponses];
+
+export type CreateSigningIdentityData = {
+    body: CreateSigningIdentityRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/signing-identities';
+};
+
+export type CreateSigningIdentityErrors = {
+    /**
+     * Invalid material
+     */
+    400: ApiError;
+    /**
+     * Name taken
+     */
+    409: ApiError;
+};
+
+export type CreateSigningIdentityError = CreateSigningIdentityErrors[keyof CreateSigningIdentityErrors];
+
+export type CreateSigningIdentityResponses = {
+    /**
+     * Identity added
+     */
+    201: SigningIdentityResponse;
+};
+
+export type CreateSigningIdentityResponse = CreateSigningIdentityResponses[keyof CreateSigningIdentityResponses];
+
+export type DeleteSigningIdentityData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Identity ID
+         */
+        identity_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/signing-identities/{identity_id}';
+};
+
+export type DeleteSigningIdentityErrors = {
+    /**
+     * In use
+     */
+    409: ApiError;
+};
+
+export type DeleteSigningIdentityError = DeleteSigningIdentityErrors[keyof DeleteSigningIdentityErrors];
+
+export type DeleteSigningIdentityResponses = {
+    /**
+     * Deleted
+     */
+    200: OkResponse;
+};
+
+export type DeleteSigningIdentityResponse = DeleteSigningIdentityResponses[keyof DeleteSigningIdentityResponses];
+
+export type UpdateSigningIdentityData = {
+    body: UpdateSigningIdentityRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Identity ID
+         */
+        identity_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/signing-identities/{identity_id}';
+};
+
+export type UpdateSigningIdentityErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type UpdateSigningIdentityError = UpdateSigningIdentityErrors[keyof UpdateSigningIdentityErrors];
+
+export type UpdateSigningIdentityResponses = {
+    /**
+     * Identity saved
+     */
+    200: SigningIdentityResponse;
+};
+
+export type UpdateSigningIdentityResponse = UpdateSigningIdentityResponses[keyof UpdateSigningIdentityResponses];
 
 export type GetSetupStatusData = {
     body?: never;
