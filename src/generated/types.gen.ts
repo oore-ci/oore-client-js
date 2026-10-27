@@ -342,6 +342,11 @@ export type Build = {
     trigger_ref?: string | null;
     trigger_type: TriggerType;
     updated_at: number;
+    /**
+     * The `.oore.yaml` version 2 workflow this build plans. Absent for
+     * files without workflows and for pipelines configured in the UI.
+     */
+    workflow?: string | null;
 };
 
 /**
@@ -795,6 +800,12 @@ export type CreateBuildRequest = {
      */
     platforms?: Array<BuildPlatform> | null;
     trigger_ref?: string | null;
+    /**
+     * The `.oore.yaml` version 2 workflow to build. Omitted uses the
+     * pipeline's default workflow, then the file's only workflow. A file
+     * with several workflows and no default needs one named here.
+     */
+    workflow?: string | null;
 };
 
 export type CreateBuildResponse = {
@@ -1898,6 +1909,11 @@ export type PipelineExecutionConfig = {
     runs_on?: Array<string>;
 };
 
+/**
+ * What Oore found at a pipeline's config path.
+ */
+export type PipelineFileState = 'missing' | 'invalid' | 'valid' | 'unavailable';
+
 export type PipelineGooglePlayPublishResponse = {
     config?: null | GooglePlayPublishConfig;
     last_credentials_check?: null | GooglePlayCredentialsTestResponse;
@@ -1964,6 +1980,66 @@ export type PipelinePlanStep = {
      * Test report the step writes, when it declares one.
      */
     test_report?: string | null;
+};
+
+/**
+ * One workflow a pipeline's file defines, as a build of it would run.
+ */
+export type PipelineWorkflowSummary = {
+    /**
+     * Why the workflow cannot be planned, one line each.
+     */
+    errors?: Array<string>;
+    name: string;
+    /**
+     * Platforms the workflow builds. Empty when it cannot be planned.
+     */
+    platforms: Array<BuildPlatform>;
+    /**
+     * Store uploads the file asks for, one line each.
+     */
+    publishes: Array<string>;
+    /**
+     * When webhooks start it, one line per trigger, such as
+     * `push to main`. Empty with `uses_pipeline_triggers`.
+     */
+    triggers: Array<string>;
+    /**
+     * True when neither the workflow nor the file sets `on`, so the
+     * pipeline's trigger settings decide.
+     */
+    uses_pipeline_triggers: boolean;
+};
+
+/**
+ * `GET /v1/pipelines/{pipeline_id}/workflows`: the workflows a build of
+ * this pipeline can name at a ref.
+ */
+export type PipelineWorkflowsResponse = {
+    /**
+     * The pipeline's default workflow, if it sets one.
+     */
+    default_workflow?: string | null;
+    /**
+     * Why the file is invalid or could not be read, one line each.
+     */
+    errors?: Array<string>;
+    /**
+     * The file that was read. Absent when it is missing.
+     */
+    path?: string | null;
+    pipeline_id: string;
+    /**
+     * Branch, tag, or commit the file was read at. Absent when the project
+     * has no default branch and none was asked for.
+     */
+    reference?: string | null;
+    state: PipelineFileState;
+    /**
+     * Workflows in file order. Empty for v1 files and files without
+     * workflows, which build as one implicit workflow.
+     */
+    workflows: Array<PipelineWorkflowSummary>;
 };
 
 /**
@@ -4521,6 +4597,10 @@ export type ListBuildsData = {
          */
         branch?: string;
         /**
+         * Filter by exact .oore.yaml version 2 workflow name
+         */
+        workflow?: string;
+        /**
          * Filter by one or more comma-separated trigger kinds: manual, api, schedule, push, pull_request, or tag_push. The last three are webhook events.
          */
         trigger?: string;
@@ -6689,6 +6769,45 @@ export type RotatePipelineSecretResponses = {
 
 export type RotatePipelineSecretResponse = RotatePipelineSecretResponses[keyof RotatePipelineSecretResponses];
 
+export type ListPipelineWorkflowsData = {
+    body?: never;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: {
+        /**
+         * Branch, tag, or commit; defaults to the project default branch
+         */
+        ref?: string;
+    };
+    url: '/v1/pipelines/{pipeline_id}/workflows';
+};
+
+export type ListPipelineWorkflowsErrors = {
+    /**
+     * Invalid ref
+     */
+    400: ApiError;
+    /**
+     * Pipeline not found
+     */
+    404: ApiError;
+};
+
+export type ListPipelineWorkflowsError = ListPipelineWorkflowsErrors[keyof ListPipelineWorkflowsErrors];
+
+export type ListPipelineWorkflowsResponses = {
+    /**
+     * Workflows in the pipeline file
+     */
+    200: PipelineWorkflowsResponse;
+};
+
+export type ListPipelineWorkflowsResponse = ListPipelineWorkflowsResponses[keyof ListPipelineWorkflowsResponses];
+
 export type ListProjectsData = {
     body?: never;
     path?: never;
@@ -6907,7 +7026,7 @@ export type CreateBuildData = {
 
 export type CreateBuildErrors = {
     /**
-     * Invalid input
+     * Invalid input, or a workflow the pipeline file at the build commit does not define (`invalid_workflow`)
      */
     400: ApiError;
     /**

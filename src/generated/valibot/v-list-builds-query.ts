@@ -17,6 +17,7 @@ export const vListBuildsQuery = v.object({
     pipeline_id: v.optional(v.string()),
     status: v.optional(v.string()),
     branch: v.optional(v.string()),
+    workflow: v.optional(v.string()),
     trigger: v.optional(v.string()),
     actor: v.optional(v.string()),
     created_after: v.optional(v.pipe(v.union([
