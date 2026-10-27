@@ -211,6 +211,7 @@ export const defaultOoreScenario: OoreMockScenario = {
       repository_provider: 'github',
       settings: {},
       updated_at: 1_767_214_800,
+      auto_add_pipelines: true,
     },
     {
       created_at: 1_763_337_600,
@@ -225,6 +226,7 @@ export const defaultOoreScenario: OoreMockScenario = {
       repository_provider: 'github',
       settings: {},
       updated_at: 1_767_139_200,
+      auto_add_pipelines: false,
     },
   ],
   releases: [
@@ -443,6 +445,7 @@ export const createOoreMockHandlers = (
         repository_id: body.repository_id,
         settings: {},
         updated_at: scenario.now,
+        auto_add_pipelines: body.auto_add_pipelines ?? true,
       }
       projects.push(project)
 

@@ -3,6 +3,7 @@
 import * as v from 'valibot'
 
 export const vUpdateProjectRequest = v.object({
+    auto_add_pipelines: v.nullish(v.boolean()),
     default_branch: v.nullish(v.string()),
     description: v.nullish(v.string()),
     name: v.nullish(v.string()),

@@ -5,6 +5,7 @@ import { vProject } from '../src/valibot.js'
 
 test('the generated Project schema accepts the public Project shape', () => {
   const result = v.safeParse(vProject, {
+    auto_add_pipelines: true,
     created_at: 1_700_000_000,
     created_by: 'user-1',
     current_user_role: 'maintainer',
