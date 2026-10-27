@@ -49,6 +49,13 @@ export const vRelease = v.object({
     rollout_fraction: v.number(),
     state: vReleaseState,
     store: vReleaseStore,
+    store_error: v.nullish(v.string()),
+    store_error_since: v.nullish(v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
+    store_status: v.nullish(v.string()),
     track: v.string(),
     updated_at: v.pipe(v.union([
         v.number(),
