@@ -1,6 +1,6 @@
 {
   "name": "@oore/client",
-  "version": "0.30.0",
+  "version": "0.31.0",
   "description": "Typed, tree-shakeable client for the Oore API",
   "type": "module",
   "sideEffects": false,

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.31.0](https://github.com/oore-ci/oore-client-js/compare/v0.30.0...v0.31.0) (2026-10-27)
+
+
+### Features
+
+* **schema:** signing library, per-workflow settings, repository config files and pipeline health ([#85](https://github.com/oore-ci/oore-client-js/issues/85)) ([908d578](https://github.com/oore-ci/oore-client-js/commit/908d578113eecf311a1394f255bb48c2fccfc154))
+
 ## [0.30.0](https://github.com/oore-ci/oore-client-js/compare/v0.29.0...v0.30.0) (2026-10-27)
 
 
