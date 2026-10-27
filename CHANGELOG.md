@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.30.0](https://github.com/oore-ci/oore-client-js/compare/v0.29.0...v0.30.0) (2026-10-27)
+
+
+### Features
+
+* **schema:** choose a build's workflow and list a pipeline's workflows ([#81](https://github.com/oore-ci/oore-client-js/issues/81)) ([ead16b1](https://github.com/oore-ci/oore-client-js/commit/ead16b1773e7daee58ee65d83cfa592668fea03f))
+
 ## [0.29.0](https://github.com/oore-ci/oore-client-js/compare/v0.28.0...v0.29.0) (2026-10-27)
 
 
