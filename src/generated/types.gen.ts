@@ -45,6 +45,14 @@ export type AnalyzerDiagnostic = {
  */
 export type AnalyzerSeverity = 'error' | 'warning' | 'info';
 
+export type AndroidKeystoreInput = {
+    key_alias: string;
+    key_password: string;
+    keystore_base64: string;
+    keystore_filename: string;
+    store_password: string;
+};
+
 export type AndroidSigningBuildType = 'debug' | 'release';
 
 export type AndroidSigningProfile = {
@@ -854,6 +862,11 @@ export type CreatePipelineRequest = {
     approval?: null | ApprovalPolicy;
     concurrency?: null | ConcurrencyPolicy;
     config_path?: string | null;
+    /**
+     * Deprecated and ignored: `config_path` always names the file.
+     *
+     * @deprecated
+     */
     config_path_explicit?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
     name: string;
@@ -886,6 +899,11 @@ export type CreateProjectEnvironmentRequest = {
 };
 
 export type CreateProjectRequest = {
+    /**
+     * Add pipelines for config files found on the default branch.
+     * Defaults to true.
+     */
+    auto_add_pipelines?: boolean | null;
     default_branch?: string | null;
     description?: string | null;
     local_repository_path?: string | null;
@@ -946,6 +964,16 @@ export type CreateScopedDownloadTokenResponse = {
 export type CreateSecretRequest = {
     name: string;
     value: string;
+};
+
+/**
+ * Create a signing identity. Set the input matching `kind`.
+ */
+export type CreateSigningIdentityRequest = {
+    android?: null | AndroidKeystoreInput;
+    ios?: null | IosDistributionInput;
+    kind: SigningIdentityKind;
+    name: string;
 };
 
 export type DeleteNotificationChannelResponse = {
@@ -1493,6 +1521,16 @@ export type IosCertificateInput = {
     p12_password?: string | null;
 };
 
+export type IosDistributionInput = {
+    p12_base64: string;
+    p12_filename: string;
+    p12_password: string;
+    /**
+     * One provisioning profile per bundle id, all of the same distribution.
+     */
+    profiles: Array<IosProfileInput>;
+};
+
 /**
  * How a signed iOS archive is distributed.
  *
@@ -1501,6 +1539,11 @@ export type IosCertificateInput = {
  * to App Store Connect for TestFlight or App Store release.
  */
 export type IosExportMethod = 'ad_hoc' | 'app_store';
+
+export type IosProfileInput = {
+    profile_base64: string;
+    profile_filename: string;
+};
 
 export type IosProvisioningProfileInput = {
     bundle_id: string;
@@ -1602,6 +1645,11 @@ export type ListPipelineIosDevicesResponse = {
     pipeline_id: string;
 };
 
+export type ListPipelineWorkflowSettingsResponse = {
+    pipeline_id: string;
+    settings: Array<PipelineWorkflowSettings>;
+};
+
 export type ListPipelinesResponse = {
     pipelines: Array<Pipeline>;
     total: number;
@@ -1661,6 +1709,10 @@ export type ListRunnersResponse = {
 
 export type ListSecretsResponse = {
     secrets: Array<SecretSummary>;
+};
+
+export type ListSigningIdentitiesResponse = {
+    identities: Array<SigningIdentity>;
 };
 
 export type ListSourceRepositoriesResponse = {
@@ -1825,11 +1877,21 @@ export type OperatorIncidentStatus = 'open' | 'resolved';
 export type Pipeline = {
     approval: ApprovalPolicy;
     concurrency: ConcurrencyPolicy;
+    /**
+     * The repository file this pipeline builds from. When it is
+     * `.oore.yaml` and missing, a legacy `.oore.yml` is read instead.
+     */
     config_path: string;
+    /**
+     * Deprecated: always true. `config_path` always names the file.
+     *
+     * @deprecated
+     */
     config_path_explicit: boolean;
     created_at: number;
     enabled: boolean;
     execution_config: PipelineExecutionConfig;
+    health?: null | PipelineHealth;
     id: string;
     name: string;
     project_id: string;
@@ -1925,6 +1987,39 @@ export type PipelineGooglePlayPublishResponse = {
     updated_at?: number | null;
 };
 
+/**
+ * A pipeline's health on the project's default branch. Read from the
+ * repository files Oore last saw there, never from the provider while
+ * listing.
+ */
+export type PipelineHealth = {
+    /**
+     * The branch and commit the repository was read at.
+     */
+    branch: string;
+    /**
+     * When Oore last read the branch, in Unix seconds.
+     */
+    checked_at: number;
+    commit_sha: string;
+    /**
+     * What is wrong, in one line. Absent when `state` is `ok`.
+     */
+    message?: string | null;
+    /**
+     * The file that was read, which differs from `config_path` when a
+     * legacy `.oore.yml` stands in for `.oore.yaml`.
+     */
+    path?: string | null;
+    state: PipelineHealthState;
+};
+
+/**
+ * Whether a pipeline's repository file is usable on the project's default
+ * branch, from the last time Oore read the repository.
+ */
+export type PipelineHealthState = 'ok' | 'file_missing' | 'file_invalid' | 'workflow_missing';
+
 export type PipelineIosSigningResponse = {
     api_issuer_id?: string | null;
     api_key_id?: string | null;
@@ -1983,6 +2078,32 @@ export type PipelinePlanStep = {
 };
 
 /**
+ * Settings a pipeline keeps for one workflow of its file. Unset fields
+ * follow the file, then the pipeline.
+ */
+export type PipelineWorkflowSettings = {
+    /**
+     * Replaces the file's `signing.android`.
+     */
+    android_identity_id?: string | null;
+    /**
+     * Replaces the pipeline's approval policy for the workflow's builds.
+     */
+    approval_required?: boolean | null;
+    /**
+     * Replaces the file's `signing.ios`.
+     */
+    ios_identity_id?: string | null;
+    /**
+     * `false` stops every store upload for the workflow. Unset follows
+     * the file and the pipeline's Publish settings.
+     */
+    publish_enabled?: boolean | null;
+    updated_at?: number | null;
+    workflow: string;
+};
+
+/**
  * One workflow a pipeline's file defines, as a build of it would run.
  */
 export type PipelineWorkflowSummary = {
@@ -1999,6 +2120,11 @@ export type PipelineWorkflowSummary = {
      * Store uploads the file asks for, one line each.
      */
     publishes: Array<string>;
+    /**
+     * Signing identities the file names for this workflow, before the
+     * pipeline's workflow settings apply.
+     */
+    signing?: SigningSpec;
     /**
      * When webhooks start it, one line per trigger, such as
      * `push to main`. Empty with `uses_pipeline_triggers`.
@@ -2107,6 +2233,11 @@ export type PlatformBuildCommands = {
 };
 
 export type Project = {
+    /**
+     * Add a pipeline for each new config file that appears on the default
+     * branch and no pipeline uses.
+     */
+    auto_add_pipelines: boolean;
     created_at: number;
     created_by: string;
     current_user_role: ProjectRole;
@@ -2472,6 +2603,73 @@ export type ReplaceGitLabTokenRequest = {
 };
 
 /**
+ * A config file Oore found in the repository on the project's default
+ * branch.
+ */
+export type RepositoryConfigFile = {
+    /**
+     * Why the file is invalid, one line each.
+     */
+    errors: Array<string>;
+    path: string;
+    /**
+     * Pipelines that build from this file. Empty when no pipeline uses it.
+     */
+    pipelines: Array<RepositoryConfigFilePipeline>;
+    /**
+     * When Oore first saw the file on this branch, in Unix seconds.
+     */
+    seen_at: number;
+    /**
+     * The name a pipeline added from this file gets, such as `Release`
+     * for `.oore.release.yaml`.
+     */
+    suggested_name: string;
+    valid: boolean;
+    /**
+     * Workflows a valid `version: 2` file defines, in file order.
+     */
+    workflows: Array<string>;
+};
+
+/**
+ * A pipeline that builds from a repository config file.
+ */
+export type RepositoryConfigFilePipeline = {
+    id: string;
+    name: string;
+};
+
+/**
+ * `GET /v1/projects/{project_id}/repository-config-files`: config files on
+ * the project's default branch, as Oore last read them.
+ */
+export type RepositoryConfigFilesResponse = {
+    /**
+     * The default branch read. Absent when the project has none.
+     */
+    branch?: string | null;
+    /**
+     * The commit the files were read at. Absent before the first read.
+     */
+    commit_sha?: string | null;
+    /**
+     * Why the last read failed. The files from the read before it remain.
+     */
+    error?: string | null;
+    files: Array<RepositoryConfigFile>;
+    project_id: string;
+    /**
+     * When Oore last read the branch. Absent before the first read.
+     */
+    scanned_at?: number | null;
+    /**
+     * True when the repository had more config files than Oore reads.
+     */
+    truncated: boolean;
+};
+
+/**
  * Pipeline behavior safe to show before import. Environment values are never returned.
  */
 export type RepositoryWorkflowExecutionPreview = {
@@ -2744,6 +2942,11 @@ export type RunnerPolicyBlockReason = 'instance_paused' | 'repository_unavailabl
 export type RunnerPublishPlan = {
     app_store?: null | RunnerAppStorePublishPlan;
     changelog?: string | null;
+    /**
+     * The build's workflow has publishing turned off in the pipeline's
+     * workflow settings, so nothing uploads, whatever the file says.
+     */
+    disabled?: boolean;
     google_play?: null | GooglePlayPublishConfig;
 };
 
@@ -2993,6 +3196,89 @@ export type SetupTrustedProxyConfigureResponse = {
     session_expires_at?: number | null;
     setup_owner_email?: string | null;
     state: SetupState;
+};
+
+/**
+ * A named signing identity. Key material is never returned.
+ */
+export type SigningIdentity = {
+    created_at: number;
+    /**
+     * iOS: certificate expiry, Unix seconds.
+     */
+    expires_at?: number | null;
+    export_method?: null | IosExportMethod;
+    /**
+     * Android: the keystore's file name. iOS: the certificate's.
+     */
+    filename?: string | null;
+    id: string;
+    /**
+     * Android: the key alias.
+     */
+    key_alias?: string | null;
+    kind: SigningIdentityKind;
+    /**
+     * Unique in the project. A v2 file names it under `signing`.
+     */
+    name: string;
+    profiles?: Array<SigningIdentityProfile>;
+    project_id: string;
+    /**
+     * iOS: the Apple team.
+     */
+    team_id?: string | null;
+    updated_at: number;
+    /**
+     * Pipeline workflows whose settings pick it. Files that name it are
+     * not listed.
+     */
+    used_by?: Array<SigningIdentityUse>;
+};
+
+/**
+ * What a signing identity in a project's credential library signs with.
+ */
+export type SigningIdentityKind = 'android_keystore' | 'ios_distribution';
+
+/**
+ * A provisioning profile in an iOS signing identity, without its contents.
+ */
+export type SigningIdentityProfile = {
+    bundle_id: string;
+    expires_at?: number | null;
+    profile_name?: string | null;
+    profile_uuid?: string | null;
+};
+
+export type SigningIdentityResponse = {
+    identity: SigningIdentity;
+};
+
+/**
+ * Where a signing identity is used.
+ */
+export type SigningIdentityUse = {
+    pipeline_id: string;
+    pipeline_name: string;
+    /**
+     * The workflow whose settings pick the identity.
+     */
+    workflow: string;
+};
+
+/**
+ * `signing`: names of identities in the project's credential library.
+ */
+export type SigningSpec = {
+    /**
+     * An Android keystore. It signs release builds.
+     */
+    android?: string | null;
+    /**
+     * An iOS distribution certificate with its provisioning profiles.
+     */
+    ios?: string | null;
 };
 
 /**
@@ -3395,6 +3681,11 @@ export type UpdatePipelineRequest = {
     approval?: null | ApprovalPolicy;
     concurrency?: null | ConcurrencyPolicy;
     config_path?: string | null;
+    /**
+     * Deprecated and ignored: `config_path` always names the file.
+     *
+     * @deprecated
+     */
     config_path_explicit?: boolean | null;
     enabled?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
@@ -3407,6 +3698,16 @@ export type UpdatePipelineRequest = {
      * it; leaving it out keeps the current one.
      */
     workflow?: string | null;
+};
+
+/**
+ * Replace one workflow's settings. Omitted fields are cleared.
+ */
+export type UpdatePipelineWorkflowSettingsRequest = {
+    android_identity_id?: string | null;
+    approval_required?: boolean | null;
+    ios_identity_id?: string | null;
+    publish_enabled?: boolean | null;
 };
 
 /**
@@ -3431,6 +3732,7 @@ export type UpdateProjectMemberResponse = {
 };
 
 export type UpdateProjectRequest = {
+    auto_add_pipelines?: boolean | null;
     default_branch?: string | null;
     description?: string | null;
     name?: string | null;
@@ -3476,6 +3778,16 @@ export type UpdateRunnerRequest = {
 
 export type UpdateRunnerResponse = {
     runner: Runner;
+};
+
+/**
+ * Rename an identity, or replace its material (the whole input for its
+ * kind).
+ */
+export type UpdateSigningIdentityRequest = {
+    android?: null | AndroidKeystoreInput;
+    ios?: null | IosDistributionInput;
+    name?: string | null;
 };
 
 export type UpdateSmtpConfig = {
@@ -3526,6 +3838,11 @@ export type ValidatePipelineRequest = {
     approval?: null | ApprovalPolicy;
     concurrency?: null | ConcurrencyPolicy;
     config_path?: string | null;
+    /**
+     * Deprecated and ignored: `config_path` always names the file.
+     *
+     * @deprecated
+     */
     config_path_explicit?: boolean | null;
     execution_config?: null | PipelineExecutionConfig;
     repository_yaml?: string | null;
@@ -6769,6 +7086,74 @@ export type RotatePipelineSecretResponses = {
 
 export type RotatePipelineSecretResponse = RotatePipelineSecretResponses[keyof RotatePipelineSecretResponses];
 
+export type ListPipelineWorkflowSettingsData = {
+    body?: never;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/workflow-settings';
+};
+
+export type ListPipelineWorkflowSettingsErrors = {
+    /**
+     * Pipeline not found
+     */
+    404: ApiError;
+};
+
+export type ListPipelineWorkflowSettingsError = ListPipelineWorkflowSettingsErrors[keyof ListPipelineWorkflowSettingsErrors];
+
+export type ListPipelineWorkflowSettingsResponses = {
+    /**
+     * Workflow settings
+     */
+    200: ListPipelineWorkflowSettingsResponse;
+};
+
+export type ListPipelineWorkflowSettingsResponse2 = ListPipelineWorkflowSettingsResponses[keyof ListPipelineWorkflowSettingsResponses];
+
+export type UpdatePipelineWorkflowSettingsData = {
+    body: UpdatePipelineWorkflowSettingsRequest;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+        /**
+         * Workflow name in the pipeline's file
+         */
+        workflow: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/workflow-settings/{workflow}';
+};
+
+export type UpdatePipelineWorkflowSettingsErrors = {
+    /**
+     * Unknown identity or wrong kind
+     */
+    400: ApiError;
+    /**
+     * Permission required
+     */
+    403: ApiError;
+};
+
+export type UpdatePipelineWorkflowSettingsError = UpdatePipelineWorkflowSettingsErrors[keyof UpdatePipelineWorkflowSettingsErrors];
+
+export type UpdatePipelineWorkflowSettingsResponses = {
+    /**
+     * Saved settings
+     */
+    200: PipelineWorkflowSettings;
+};
+
+export type UpdatePipelineWorkflowSettingsResponse = UpdatePipelineWorkflowSettingsResponses[keyof UpdatePipelineWorkflowSettingsResponses];
+
 export type ListPipelineWorkflowsData = {
     body?: never;
     path: {
@@ -7644,6 +8029,74 @@ export type RejectPromotionResponses = {
 
 export type RejectPromotionResponse = RejectPromotionResponses[keyof RejectPromotionResponses];
 
+export type ListRepositoryConfigFilesData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/repository-config-files';
+};
+
+export type ListRepositoryConfigFilesErrors = {
+    /**
+     * Read permission required
+     */
+    403: ApiError;
+    /**
+     * Project not found
+     */
+    404: ApiError;
+};
+
+export type ListRepositoryConfigFilesError = ListRepositoryConfigFilesErrors[keyof ListRepositoryConfigFilesErrors];
+
+export type ListRepositoryConfigFilesResponses = {
+    /**
+     * Cached repository config files
+     */
+    200: RepositoryConfigFilesResponse;
+};
+
+export type ListRepositoryConfigFilesResponse = ListRepositoryConfigFilesResponses[keyof ListRepositoryConfigFilesResponses];
+
+export type RefreshRepositoryConfigFilesData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/repository-config-files/refresh';
+};
+
+export type RefreshRepositoryConfigFilesErrors = {
+    /**
+     * Manage Pipelines permission required
+     */
+    403: ApiError;
+    /**
+     * Project or project source not found
+     */
+    404: ApiError;
+};
+
+export type RefreshRepositoryConfigFilesError = RefreshRepositoryConfigFilesErrors[keyof RefreshRepositoryConfigFilesErrors];
+
+export type RefreshRepositoryConfigFilesResponses = {
+    /**
+     * Refreshed repository config files
+     */
+    200: RepositoryConfigFilesResponse;
+};
+
+export type RefreshRepositoryConfigFilesResponse = RefreshRepositoryConfigFilesResponses[keyof RefreshRepositoryConfigFilesResponses];
+
 export type DiscoverRepositoryWorkflowsData = {
     body?: never;
     path: {
@@ -7910,6 +8363,129 @@ export type RotateProjectSecretResponses = {
 };
 
 export type RotateProjectSecretResponse = RotateProjectSecretResponses[keyof RotateProjectSecretResponses];
+
+export type ListSigningIdentitiesData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/signing-identities';
+};
+
+export type ListSigningIdentitiesResponses = {
+    /**
+     * Signing identities
+     */
+    200: ListSigningIdentitiesResponse;
+};
+
+export type ListSigningIdentitiesResponse2 = ListSigningIdentitiesResponses[keyof ListSigningIdentitiesResponses];
+
+export type CreateSigningIdentityData = {
+    body: CreateSigningIdentityRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/signing-identities';
+};
+
+export type CreateSigningIdentityErrors = {
+    /**
+     * Invalid material
+     */
+    400: ApiError;
+    /**
+     * Name taken
+     */
+    409: ApiError;
+};
+
+export type CreateSigningIdentityError = CreateSigningIdentityErrors[keyof CreateSigningIdentityErrors];
+
+export type CreateSigningIdentityResponses = {
+    /**
+     * Identity added
+     */
+    201: SigningIdentityResponse;
+};
+
+export type CreateSigningIdentityResponse = CreateSigningIdentityResponses[keyof CreateSigningIdentityResponses];
+
+export type DeleteSigningIdentityData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Identity ID
+         */
+        identity_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/signing-identities/{identity_id}';
+};
+
+export type DeleteSigningIdentityErrors = {
+    /**
+     * In use
+     */
+    409: ApiError;
+};
+
+export type DeleteSigningIdentityError = DeleteSigningIdentityErrors[keyof DeleteSigningIdentityErrors];
+
+export type DeleteSigningIdentityResponses = {
+    /**
+     * Deleted
+     */
+    200: OkResponse;
+};
+
+export type DeleteSigningIdentityResponse = DeleteSigningIdentityResponses[keyof DeleteSigningIdentityResponses];
+
+export type UpdateSigningIdentityData = {
+    body: UpdateSigningIdentityRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Identity ID
+         */
+        identity_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/signing-identities/{identity_id}';
+};
+
+export type UpdateSigningIdentityErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type UpdateSigningIdentityError = UpdateSigningIdentityErrors[keyof UpdateSigningIdentityErrors];
+
+export type UpdateSigningIdentityResponses = {
+    /**
+     * Identity saved
+     */
+    200: SigningIdentityResponse;
+};
+
+export type UpdateSigningIdentityResponse = UpdateSigningIdentityResponses[keyof UpdateSigningIdentityResponses];
 
 export type GetSetupStatusData = {
     body?: never;

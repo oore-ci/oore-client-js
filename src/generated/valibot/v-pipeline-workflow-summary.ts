@@ -2,12 +2,14 @@
 
 import * as v from 'valibot'
 import { vBuildPlatform } from './v-build-platform.js'
+import { vSigningSpec } from './v-signing-spec.js'
 
 export const vPipelineWorkflowSummary = v.object({
     errors: v.optional(v.array(v.string())),
     name: v.string(),
     platforms: v.array(vBuildPlatform),
     publishes: v.array(v.string()),
+    signing: v.optional(vSigningSpec),
     triggers: v.array(v.string()),
     uses_pipeline_triggers: v.boolean()
 });

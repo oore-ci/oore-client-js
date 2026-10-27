@@ -5,6 +5,7 @@ import { vProjectRole } from './v-project-role.js'
 import { vScmProvider } from './v-scm-provider.js'
 
 export const vProject = v.object({
+    auto_add_pipelines: v.boolean(),
     created_at: v.pipe(v.union([
         v.number(),
         v.string(),
