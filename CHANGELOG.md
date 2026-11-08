@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.32.0](https://github.com/oore-ci/oore-client-js/compare/v0.31.0...v0.32.0) (2026-11-08)
+
+
+### Features
+
+* **schema:** release lifecycle, store actions, readiness and store sync ([#87](https://github.com/oore-ci/oore-client-js/issues/87)) ([8574a26](https://github.com/oore-ci/oore-client-js/commit/8574a26792d298f9e1844d02c392b7206bac7136))
+
 ## [0.31.0](https://github.com/oore-ci/oore-client-js/compare/v0.30.0...v0.31.0) (2026-10-27)
 
 
