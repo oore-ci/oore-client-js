@@ -5,7 +5,7 @@ import { vReleaseHistoryEntry } from './v-release-history-entry.js'
 import { vReleaseStore } from './v-release-store.js'
 
 export const vReleaseActivityEvent = v.intersect([vReleaseHistoryEntry, v.object({
-        build_id: v.string(),
+        build_id: v.nullish(v.string()),
         project_id: v.string(),
         project_name: v.nullish(v.string()),
         release_id: v.string(),

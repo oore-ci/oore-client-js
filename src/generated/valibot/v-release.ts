@@ -3,6 +3,7 @@
 import * as v from 'valibot'
 import { vReleaseAction } from './v-release-action.js'
 import { vReleaseHealth } from './v-release-health.js'
+import { vReleaseOrigin } from './v-release-origin.js'
 import { vReleasePolicy } from './v-release-policy.js'
 import { vReleaseState } from './v-release-state.js'
 import { vReleaseStore } from './v-release-store.js'
@@ -16,13 +17,15 @@ export const vRelease = v.object({
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
     approved_by_email: v.nullish(v.string()),
     artifact_id: v.nullish(v.string()),
+    auto_rollout: v.optional(v.boolean()),
     awaiting_approval: v.boolean(),
-    build_id: v.string(),
+    build_id: v.nullish(v.string()),
     build_number: v.nullish(v.pipe(v.union([
         v.number(),
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
+    console_url: v.nullish(v.string()),
     crash_rate: v.nullish(v.number()),
     crash_rate_threshold: v.nullish(v.number()),
     created_at: v.pipe(v.union([
@@ -40,6 +43,7 @@ export const vRelease = v.object({
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
+    origin: v.optional(vReleaseOrigin),
     package_name: v.nullish(v.string()),
     platform: v.string(),
     policy: vReleasePolicy,
@@ -48,6 +52,7 @@ export const vRelease = v.object({
     promoted_from_release_id: v.nullish(v.string()),
     rollout_fraction: v.number(),
     state: vReleaseState,
+    state_reason: v.nullish(v.string()),
     store: vReleaseStore,
     store_error: v.nullish(v.string()),
     store_error_since: v.nullish(v.pipe(v.union([

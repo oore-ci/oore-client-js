@@ -2,7 +2,7 @@
 
 import { type DefaultBodyType, http, type HttpHandler, HttpResponse, type HttpResponseResolver, type RequestHandlerOptions as RequestHandlerOptions2 } from 'msw';
 
-import type { AbortArtifactData, AbortArtifactResponses, AddProjectMemberData, AddProjectMemberResponses, AppendBuildLogsData, AppendBuildLogsResponses, ApproveBuildData, ApproveBuildResponses, ApprovePromotionData, ApprovePromotionResponses, ApproveReleaseData, ApproveReleaseResponses, BrowseLocalGitDirectoriesResponses, CancelBuildResponses, CheckGitlabPersonalTokenResponses, ClaimJobData, ClaimJobResponses, ClientOptions, CompleteArtifactData, CompleteArtifactResponses, CompleteReleaseData, CompleteReleaseResponses, CompleteSetupResponses, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcResponses, ConfigureOidcData, ConfigureOidcResponses, CreateApiTokenData, CreateApiTokenResponses, CreateAppStoreConnectKeyData, CreateAppStoreConnectKeyResponses, CreateArtifactData, CreateArtifactInstallLinkResponses, CreateArtifactResponses, CreateBuildData, CreateBuildFeedbackData, CreateBuildFeedbackResponses, CreateBuildResponses, CreateInstanceSecretData, CreateInstanceSecretResponses, CreateLocalGitIntegrationData, CreateLocalGitIntegrationResponses, CreateNotificationChannelData, CreateNotificationChannelResponses, CreatePipelineData, CreatePipelineResponses, CreatePipelineSecretData, CreatePipelineSecretResponses, CreateProjectData, CreateProjectEnvironmentData, CreateProjectEnvironmentResponses, CreateProjectResponses, CreateProjectSecretData, CreateProjectSecretResponses, CreateReleaseData, CreateReleaseResponses, CreateScopedDownloadTokenData, CreateScopedDownloadTokenResponses, CreateSigningIdentityData, CreateSigningIdentityResponses, CreateStreamTokenResponses, DeleteAppStoreConnectKeyResponses, DeleteInstanceSecretResponses, DeleteIntegrationResponses, DeleteLocalGitIntegrationResponses, DeleteNotificationChannelResponses, DeletePipelineResponses, DeletePipelineSecretResponses, DeleteProjectEnvironmentResponses, DeleteProjectResponses, DeleteProjectRetentionResponses, DeleteProjectSecretResponses, DeleteRunnerResponses, DeleteSigningIdentityResponses, DeleteUserResponses, DiscoverRepositoryWorkflowsResponses, DownloadLocalArtifactInstallResponses, DownloadLocalArtifactLegacyResponses, DownloadLocalArtifactResponses, ExportPipelineYamlData, ExportPipelineYamlResponses, FrontendPairData, FrontendPairResponses, GenerateDownloadLinkResponses, GetArtifactStorageSettingsResponses, GetBuildAnalysisResponses, GetBuildFeedbackScreenshotResponses, GetBuildInsightsResponses, GetBuildLogsResponses, GetBuildResponses, GetBuildSizeReportResponses, GetBuildTestResultsResponses, GetExternalAccessNetworkSettingsResponses, GetExternalAccessOidcResponses, GetExternalAccessPreflightResponses, GetExternalAccessTrustedProxySettingsResponses, GetInstancePreferencesResponses, GetIntegrationResponses, GetIosInstallManifestResponses, GetIosInstallManifestV1Responses, GetJobAndroidSigningResponses, GetJobIosSigningResponses, GetJobPublishPlanResponses, GetJobRetryArtifactsResponses, GetJobSecretsResponses, GetJobStatusResponses, GetMeResponses, GetNotificationChannelResponses, GetPipelineAndroidSigningResponses, GetPipelineAppStorePublishResponses, GetPipelineGooglePlayPublishResponses, GetPipelineIosSigningResponses, GetPipelineResponses, GetProjectResponses, GetProjectRetentionResponses, GetReleaseResponses, GetRetentionLastCleanupResponses, GetRetentionPolicyResponses, GetRunnerResponses, GetRuntimeUpdatePreflightResponses, GetRuntimeUpdateStatusResponses, GetSetupStatusResponses, GetSetupSummaryResponses, GetStoreVitalsResponses, GithubCallbackResponses, GithubCompleteData, GithubCompleteResponses, GithubCreatePageResponses, GithubInstalledResponses, GithubStartData, GithubStartResponses, GithubWebhookResponses, GitlabAuthorizeData, GitlabAuthorizeResponses, GitlabCallbackResponses, GitlabCheckoutDiscoveryResponses, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackResponses, GitlabStartData, GitlabStartResponses, GitlabWebhookResponses, HaltReleaseData, HaltReleaseResponses, HealthzResponses, ImportPipelineYamlData, ImportPipelineYamlResponses, InviteUserData, InviteUserResponses, ListApiTokensResponses, ListAppStoreConnectKeysResponses, ListArtifactsResponses, ListAuditLogsResponses, ListBuildActorsResponses, ListBuildArtifactsData, ListBuildArtifactsResponses, ListBuildFeedbackResponses, ListBuildsResponses, ListInstallationsResponses, ListInstanceSecretsResponses, ListIntegrationsResponses, ListLocalGitIntegrationsResponses, ListNotificationChannelsResponses, ListNotificationDeliveriesResponses, ListOperatorIncidentsResponses, ListPipelineIosDevicesResponses, ListPipelineSecretsResponses, ListPipelinesResponses, ListPipelineWorkflowSettingsResponses, ListPipelineWorkflowsResponses, ListProjectArtifactsResponses, ListProjectEnvironmentsResponses, ListProjectMemberCandidatesResponses, ListProjectMembersResponses, ListProjectSecretsResponses, ListProjectsResponses, ListReleaseEventsResponses, ListReleasesResponses, ListRepositoriesResponses, ListRepositoryConfigFilesResponses, ListRunnersResponses, ListScopedDownloadTokensResponses, ListSigningIdentitiesResponses, ListSourceRepositoriesResponses, ListUsersResponses, LocalLoginData, LocalLoginResponses, LogoutResponses, MarkOperatorIncidentReadResponses, MetricsResponses, OidcCallbackData, OidcCallbackResponses, OidcStartResponses, PauseReleaseData, PauseReleaseResponses, PlanPipelineData, PlanPipelineResponses, PreviewBuildChangelogResponses, PromoteBuildData, PromoteBuildResponses, PurgeRunnerCachesResponses, RaiseReleaseData, RaiseReleaseResponses, ReadyzResponses, ReEnableUserResponses, RefreshRepositoryConfigFilesResponses, RefreshStoreVitalsResponses, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponses, RegisterRunnerData, RegisterRunnerResponses, RejectBuildData, RejectBuildResponses, RejectPromotionData, RejectPromotionResponses, RemoveProjectMemberResponses, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenResponses, ReportJobAnalysisData, ReportJobAnalysisResponses, ReportJobPublishResultData, ReportJobPublishResultResponses, ReportJobTestResultsData, ReportJobTestResultsResponses, RepositoryAvatarResponses, RerunBuildResponses, ResumeReleaseData, ResumeReleaseResponses, RetryBuildStepData, RetryBuildStepResponses, RevokeApiTokenResponses, RevokeScopedDownloadTokenResponses, RotateGitlabRepositoryWebhookSecretResponses, RotateInstanceSecretData, RotateInstanceSecretResponses, RotatePipelineSecretData, RotatePipelineSecretResponses, RotateProjectSecretData, RotateProjectSecretResponses, RunnerHeartbeatData, RunnerHeartbeatResponses, SetupLocalOwnerCreateData, SetupLocalOwnerCreateResponses, SetupOidcStartData, SetupOidcStartResponses, SetupOidcVerifyData, SetupOidcVerifyResponses, SetupOwnerClaimTrustedProxyResponses, SetupPreferencesData, SetupPreferencesResponses, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureResponses, StartRuntimeUpdateResponses, StreamBuildLogsResponses, StreamEventsResponses, SyncInstallationsData, SyncInstallationsResponses, SyncPipelineIosSigningResponses, TestNotificationChannelResponses, TestOidcConnectionData, TestOidcConnectionResponses, TestPipelineGooglePlayCredentialsData, TestPipelineGooglePlayCredentialsResponses, TrustedProxyLoginResponses, UpdateAppStoreConnectKeyData, UpdateAppStoreConnectKeyResponses, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsResponses, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsResponses, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsResponses, UpdateInstancePreferencesData, UpdateInstancePreferencesResponses, UpdateJobStatusData, UpdateJobStatusResponses, UpdateNotificationChannelData, UpdateNotificationChannelResponses, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponses, UpdatePipelineAppStorePublishData, UpdatePipelineAppStorePublishResponses, UpdatePipelineData, UpdatePipelineGooglePlayPublishData, UpdatePipelineGooglePlayPublishResponses, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponses, UpdatePipelineResponses, UpdatePipelineWorkflowSettingsData, UpdatePipelineWorkflowSettingsResponses, UpdateProjectData, UpdateProjectEnvironmentData, UpdateProjectEnvironmentResponses, UpdateProjectMemberData, UpdateProjectMemberResponses, UpdateProjectResponses, UpdateProjectRetentionData, UpdateProjectRetentionResponses, UpdateRetentionPolicyData, UpdateRetentionPolicyResponses, UpdateRunnerData, UpdateRunnerResponses, UpdateSigningIdentityData, UpdateSigningIdentityResponses, UpdateUserRoleData, UpdateUserRoleResponses, UploadLocalArtifactData, UploadLocalArtifactResponses, ValidatePipelineData, ValidatePipelineResponses, VerifyBootstrapTokenData, VerifyBootstrapTokenResponses } from './types.gen.js';
+import type { AbortArtifactData, AbortArtifactResponses, AddProjectMemberData, AddProjectMemberResponses, AppendBuildLogsData, AppendBuildLogsResponses, ApproveBuildData, ApproveBuildResponses, ApprovePromotionData, ApprovePromotionResponses, ApproveReleaseData, ApproveReleaseResponses, AttachScheduleReleaseData, AttachScheduleReleaseResponses, BrowseLocalGitDirectoriesResponses, CancelBuildResponses, CheckGitlabPersonalTokenResponses, ClaimJobData, ClaimJobResponses, ClientOptions, CompleteArtifactData, CompleteArtifactResponses, CompleteReleaseData, CompleteReleaseResponses, CompleteSetupResponses, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcResponses, ConfigureOidcData, ConfigureOidcResponses, CreateApiTokenData, CreateApiTokenResponses, CreateAppStoreConnectKeyData, CreateAppStoreConnectKeyResponses, CreateArtifactData, CreateArtifactInstallLinkResponses, CreateArtifactResponses, CreateBuildData, CreateBuildFeedbackData, CreateBuildFeedbackResponses, CreateBuildResponses, CreateInstanceSecretData, CreateInstanceSecretResponses, CreateLocalGitIntegrationData, CreateLocalGitIntegrationResponses, CreateNotificationChannelData, CreateNotificationChannelResponses, CreatePipelineData, CreatePipelineResponses, CreatePipelineSecretData, CreatePipelineSecretResponses, CreateProjectData, CreateProjectEnvironmentData, CreateProjectEnvironmentResponses, CreateProjectResponses, CreateProjectSecretData, CreateProjectSecretResponses, CreateReleaseData, CreateReleaseResponses, CreateScopedDownloadTokenData, CreateScopedDownloadTokenResponses, CreateSigningIdentityData, CreateSigningIdentityResponses, CreateStreamTokenResponses, DeleteAppStoreConnectKeyResponses, DeleteInstanceSecretResponses, DeleteIntegrationResponses, DeleteLocalGitIntegrationResponses, DeleteNotificationChannelResponses, DeletePipelineResponses, DeletePipelineSecretResponses, DeleteProjectEnvironmentResponses, DeleteProjectResponses, DeleteProjectRetentionResponses, DeleteProjectSecretResponses, DeleteRunnerResponses, DeleteSigningIdentityResponses, DeleteUserResponses, DetachScheduleReleaseData, DetachScheduleReleaseResponses, DiscoverRepositoryWorkflowsResponses, DownloadLocalArtifactInstallResponses, DownloadLocalArtifactLegacyResponses, DownloadLocalArtifactResponses, ExportPipelineYamlData, ExportPipelineYamlResponses, FrontendPairData, FrontendPairResponses, GenerateDownloadLinkResponses, GetArtifactStorageSettingsResponses, GetBuildAnalysisResponses, GetBuildFeedbackScreenshotResponses, GetBuildInsightsResponses, GetBuildLogsResponses, GetBuildResponses, GetBuildSizeReportResponses, GetBuildTestResultsResponses, GetExternalAccessNetworkSettingsResponses, GetExternalAccessOidcResponses, GetExternalAccessPreflightResponses, GetExternalAccessTrustedProxySettingsResponses, GetInstancePreferencesResponses, GetIntegrationResponses, GetIosInstallManifestResponses, GetIosInstallManifestV1Responses, GetJobAndroidSigningResponses, GetJobIosSigningResponses, GetJobPublishPlanResponses, GetJobRetryArtifactsResponses, GetJobSecretsResponses, GetJobStatusResponses, GetMeResponses, GetNotificationChannelResponses, GetPipelineAndroidSigningResponses, GetPipelineAppStorePublishResponses, GetPipelineGooglePlayPublishResponses, GetPipelineIosSigningResponses, GetPipelinePublishReadinessResponses, GetPipelineResponses, GetProjectResponses, GetProjectRetentionResponses, GetReleaseResponses, GetRetentionLastCleanupResponses, GetRetentionPolicyResponses, GetRunnerResponses, GetRuntimeUpdatePreflightResponses, GetRuntimeUpdateStatusResponses, GetSetupStatusResponses, GetSetupSummaryResponses, GetStoreVitalsResponses, GithubCallbackResponses, GithubCompleteData, GithubCompleteResponses, GithubCreatePageResponses, GithubInstalledResponses, GithubStartData, GithubStartResponses, GithubWebhookResponses, GitlabAuthorizeData, GitlabAuthorizeResponses, GitlabCallbackResponses, GitlabCheckoutDiscoveryResponses, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackResponses, GitlabStartData, GitlabStartResponses, GitlabWebhookResponses, HaltReleaseData, HaltReleaseResponses, HealthzResponses, ImportPipelineYamlData, ImportPipelineYamlResponses, InviteUserData, InviteUserResponses, ListApiTokensResponses, ListAppStoreConnectKeysResponses, ListArtifactsResponses, ListAuditLogsResponses, ListBuildActorsResponses, ListBuildArtifactsData, ListBuildArtifactsResponses, ListBuildFeedbackResponses, ListBuildsResponses, ListInstallationsResponses, ListInstanceSecretsResponses, ListIntegrationsResponses, ListLocalGitIntegrationsResponses, ListNotificationChannelsResponses, ListNotificationDeliveriesResponses, ListOperatorIncidentsResponses, ListPipelineIosDevicesResponses, ListPipelineSecretsResponses, ListPipelinesResponses, ListPipelineWorkflowSettingsResponses, ListPipelineWorkflowsResponses, ListProjectArtifactsResponses, ListProjectEnvironmentsResponses, ListProjectMemberCandidatesResponses, ListProjectMembersResponses, ListProjectSecretsResponses, ListProjectsResponses, ListReleaseEventsResponses, ListReleasesResponses, ListRepositoriesResponses, ListRepositoryConfigFilesResponses, ListRunnersResponses, ListScopedDownloadTokensResponses, ListSigningIdentitiesResponses, ListSourceRepositoriesResponses, ListUsersResponses, LocalLoginData, LocalLoginResponses, LogoutResponses, MarkOperatorIncidentReadResponses, MarkRejectedReleaseData, MarkRejectedReleaseResponses, MarkSentForReviewReleaseData, MarkSentForReviewReleaseResponses, MetricsResponses, OidcCallbackData, OidcCallbackResponses, OidcStartResponses, PauseReleaseData, PauseReleaseResponses, PlanPipelineData, PlanPipelineResponses, PreviewBuildChangelogResponses, PromoteBuildData, PromoteBuildResponses, PullFromReviewReleaseData, PullFromReviewReleaseResponses, PurgeRunnerCachesResponses, RaiseReleaseData, RaiseReleaseResponses, ReadyzResponses, ReEnableUserResponses, RefreshRepositoryConfigFilesResponses, RefreshStoreVitalsResponses, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponses, RegisterRunnerData, RegisterRunnerResponses, RejectBuildData, RejectBuildResponses, RejectPromotionData, RejectPromotionResponses, ReleaseNowReleaseData, ReleaseNowReleaseResponses, RemoveProjectMemberResponses, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenResponses, ReportJobAnalysisData, ReportJobAnalysisResponses, ReportJobPublishResultData, ReportJobPublishResultResponses, ReportJobTestResultsData, ReportJobTestResultsResponses, RepositoryAvatarResponses, RerunBuildResponses, ResubmitReleaseData, ResubmitReleaseResponses, ResumeReleaseData, ResumeReleaseResponses, RetryBuildStepData, RetryBuildStepResponses, RetryReleaseData, RetryReleaseResponses, RevokeApiTokenResponses, RevokeScopedDownloadTokenResponses, RotateGitlabRepositoryWebhookSecretResponses, RotateInstanceSecretData, RotateInstanceSecretResponses, RotatePipelineSecretData, RotatePipelineSecretResponses, RotateProjectSecretData, RotateProjectSecretResponses, RunnerHeartbeatData, RunnerHeartbeatResponses, SetupLocalOwnerCreateData, SetupLocalOwnerCreateResponses, SetupOidcStartData, SetupOidcStartResponses, SetupOidcVerifyData, SetupOidcVerifyResponses, SetupOwnerClaimTrustedProxyResponses, SetupPreferencesData, SetupPreferencesResponses, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureResponses, StartRuntimeUpdateResponses, StreamBuildLogsResponses, StreamEventsResponses, SyncInstallationsData, SyncInstallationsResponses, SyncPipelineIosSigningResponses, SyncStoreReleasesData, SyncStoreReleasesResponses, TestNotificationChannelResponses, TestOidcConnectionData, TestOidcConnectionResponses, TestPipelineGooglePlayCredentialsData, TestPipelineGooglePlayCredentialsResponses, TrustedProxyLoginResponses, UpdateAppStoreConnectKeyData, UpdateAppStoreConnectKeyResponses, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsResponses, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsResponses, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsResponses, UpdateInstancePreferencesData, UpdateInstancePreferencesResponses, UpdateJobStatusData, UpdateJobStatusResponses, UpdateNotificationChannelData, UpdateNotificationChannelResponses, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponses, UpdatePipelineAppStorePublishData, UpdatePipelineAppStorePublishResponses, UpdatePipelineData, UpdatePipelineGooglePlayPublishData, UpdatePipelineGooglePlayPublishResponses, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponses, UpdatePipelineResponses, UpdatePipelineWorkflowSettingsData, UpdatePipelineWorkflowSettingsResponses, UpdateProjectData, UpdateProjectEnvironmentData, UpdateProjectEnvironmentResponses, UpdateProjectMemberData, UpdateProjectMemberResponses, UpdateProjectResponses, UpdateProjectRetentionData, UpdateProjectRetentionResponses, UpdateRetentionPolicyData, UpdateRetentionPolicyResponses, UpdateRunnerData, UpdateRunnerResponses, UpdateSigningIdentityData, UpdateSigningIdentityResponses, UpdateUserRoleData, UpdateUserRoleResponses, UploadLocalArtifactData, UploadLocalArtifactResponses, ValidatePipelineData, ValidatePipelineResponses, VerifyBootstrapTokenData, VerifyBootstrapTokenResponses } from './types.gen.js';
 
 export type RequestHandlerOptions = RequestHandlerOptions2 & {
     baseUrl?: ClientOptions['baseUrl'];
@@ -2808,6 +2808,37 @@ export function handleTestPipelineGooglePlayCredentials(response?: HandleTestPip
     }, options);
 }
 
+export type HandleGetPipelinePublishReadinessResponse = {
+    body: GetPipelinePublishReadinessResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `GET /v1/pipelines/{pipeline_id}/publish/readiness` operation.
+ */
+export function handleGetPipelinePublishReadiness(response?: HandleGetPipelinePublishReadinessResponse | HttpResponseResolver<{
+    pipeline_id: string;
+}, never>, options?: RequestHandlerOptions): HttpHandler {
+    return http.get<{
+        pipeline_id: string;
+    }, never>(`${options?.baseUrl ?? '*'}/v1/pipelines/:pipeline_id/publish/readiness`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
 export type HandleListPipelineSecretsResponse = {
     body: ListPipelineSecretsResponses[200];
     status?: 200;
@@ -4267,6 +4298,33 @@ export function handleCreateRelease(response?: HandleCreateReleaseResponse | Htt
     }, options);
 }
 
+export type HandleSyncStoreReleasesResponse = {
+    body: SyncStoreReleasesResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/releases/store-sync` operation.
+ */
+export function handleSyncStoreReleases(response?: HandleSyncStoreReleasesResponse | HttpResponseResolver<never, SyncStoreReleasesData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<never, SyncStoreReleasesData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/store-sync`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
 export type HandleGetReleaseResponse = {
     body: GetReleaseResponses[200];
     status?: 200;
@@ -4329,6 +4387,37 @@ export function handleApproveRelease(response?: HandleApproveReleaseResponse | H
     }, options);
 }
 
+export type HandleAttachScheduleReleaseResponse = {
+    body: AttachScheduleReleaseResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/releases/{release_id}/attach_schedule` operation.
+ */
+export function handleAttachScheduleRelease(response?: HandleAttachScheduleReleaseResponse | HttpResponseResolver<{
+    release_id: string;
+}, AttachScheduleReleaseData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        release_id: string;
+    }, AttachScheduleReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/attach_schedule`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
 export type HandleCompleteReleaseResponse = {
     body: CompleteReleaseResponses[200];
     status?: 200;
@@ -4343,6 +4432,37 @@ export function handleCompleteRelease(response?: HandleCompleteReleaseResponse |
     return http.post<{
         release_id: string;
     }, CompleteReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/complete`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandleDetachScheduleReleaseResponse = {
+    body: DetachScheduleReleaseResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/releases/{release_id}/detach_schedule` operation.
+ */
+export function handleDetachScheduleRelease(response?: HandleDetachScheduleReleaseResponse | HttpResponseResolver<{
+    release_id: string;
+}, DetachScheduleReleaseData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        release_id: string;
+    }, DetachScheduleReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/detach_schedule`, info => {
         if (typeof response === 'function') {
             return response(info);
         }
@@ -4391,6 +4511,68 @@ export function handleHaltRelease(response?: HandleHaltReleaseResponse | HttpRes
     }, options);
 }
 
+export type HandleMarkRejectedReleaseResponse = {
+    body: MarkRejectedReleaseResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/releases/{release_id}/mark_rejected` operation.
+ */
+export function handleMarkRejectedRelease(response?: HandleMarkRejectedReleaseResponse | HttpResponseResolver<{
+    release_id: string;
+}, MarkRejectedReleaseData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        release_id: string;
+    }, MarkRejectedReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/mark_rejected`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandleMarkSentForReviewReleaseResponse = {
+    body: MarkSentForReviewReleaseResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/releases/{release_id}/mark_sent_for_review` operation.
+ */
+export function handleMarkSentForReviewRelease(response?: HandleMarkSentForReviewReleaseResponse | HttpResponseResolver<{
+    release_id: string;
+}, MarkSentForReviewReleaseData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        release_id: string;
+    }, MarkSentForReviewReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/mark_sent_for_review`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
 export type HandlePauseReleaseResponse = {
     body: PauseReleaseResponses[200];
     status?: 200;
@@ -4405,6 +4587,37 @@ export function handlePauseRelease(response?: HandlePauseReleaseResponse | HttpR
     return http.post<{
         release_id: string;
     }, PauseReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/pause`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandlePullFromReviewReleaseResponse = {
+    body: PullFromReviewReleaseResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/releases/{release_id}/pull_from_review` operation.
+ */
+export function handlePullFromReviewRelease(response?: HandlePullFromReviewReleaseResponse | HttpResponseResolver<{
+    release_id: string;
+}, PullFromReviewReleaseData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        release_id: string;
+    }, PullFromReviewReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/pull_from_review`, info => {
         if (typeof response === 'function') {
             return response(info);
         }
@@ -4453,6 +4666,68 @@ export function handleRaiseRelease(response?: HandleRaiseReleaseResponse | HttpR
     }, options);
 }
 
+export type HandleReleaseNowReleaseResponse = {
+    body: ReleaseNowReleaseResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/releases/{release_id}/release_now` operation.
+ */
+export function handleReleaseNowRelease(response?: HandleReleaseNowReleaseResponse | HttpResponseResolver<{
+    release_id: string;
+}, ReleaseNowReleaseData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        release_id: string;
+    }, ReleaseNowReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/release_now`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandleResubmitReleaseResponse = {
+    body: ResubmitReleaseResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/releases/{release_id}/resubmit` operation.
+ */
+export function handleResubmitRelease(response?: HandleResubmitReleaseResponse | HttpResponseResolver<{
+    release_id: string;
+}, ResubmitReleaseData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        release_id: string;
+    }, ResubmitReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/resubmit`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
 export type HandleResumeReleaseResponse = {
     body: ResumeReleaseResponses[200];
     status?: 200;
@@ -4467,6 +4742,37 @@ export function handleResumeRelease(response?: HandleResumeReleaseResponse | Htt
     return http.post<{
         release_id: string;
     }, ResumeReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/resume`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandleRetryReleaseResponse = {
+    body: RetryReleaseResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/releases/{release_id}/retry` operation.
+ */
+export function handleRetryRelease(response?: HandleRetryReleaseResponse | HttpResponseResolver<{
+    release_id: string;
+}, RetryReleaseData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        release_id: string;
+    }, RetryReleaseData['body']>(`${options?.baseUrl ?? '*'}/v1/releases/:release_id/retry`, info => {
         if (typeof response === 'function') {
             return response(info);
         }
@@ -7005,6 +7311,10 @@ export type MswHandlerFactories = {
      */
     testPipelineGooglePlayCredentials: typeof handleTestPipelineGooglePlayCredentials;
     /**
+     * Handler for the `GET /v1/pipelines/{pipeline_id}/publish/readiness` operation.
+     */
+    getPipelinePublishReadiness: typeof handleGetPipelinePublishReadiness;
+    /**
      * Handler for the `GET /v1/pipelines/{pipeline_id}/secrets` operation.
      */
     listPipelineSecrets: typeof handleListPipelineSecrets;
@@ -7193,6 +7503,10 @@ export type MswHandlerFactories = {
      */
     createRelease: typeof handleCreateRelease;
     /**
+     * Handler for the `POST /v1/releases/store-sync` operation.
+     */
+    syncStoreReleases: typeof handleSyncStoreReleases;
+    /**
      * Handler for the `GET /v1/releases/{release_id}` operation.
      */
     getRelease: typeof handleGetRelease;
@@ -7201,25 +7515,57 @@ export type MswHandlerFactories = {
      */
     approveRelease: typeof handleApproveRelease;
     /**
+     * Handler for the `POST /v1/releases/{release_id}/attach_schedule` operation.
+     */
+    attachScheduleRelease: typeof handleAttachScheduleRelease;
+    /**
      * Handler for the `POST /v1/releases/{release_id}/complete` operation.
      */
     completeRelease: typeof handleCompleteRelease;
+    /**
+     * Handler for the `POST /v1/releases/{release_id}/detach_schedule` operation.
+     */
+    detachScheduleRelease: typeof handleDetachScheduleRelease;
     /**
      * Handler for the `POST /v1/releases/{release_id}/halt` operation.
      */
     haltRelease: typeof handleHaltRelease;
     /**
+     * Handler for the `POST /v1/releases/{release_id}/mark_rejected` operation.
+     */
+    markRejectedRelease: typeof handleMarkRejectedRelease;
+    /**
+     * Handler for the `POST /v1/releases/{release_id}/mark_sent_for_review` operation.
+     */
+    markSentForReviewRelease: typeof handleMarkSentForReviewRelease;
+    /**
      * Handler for the `POST /v1/releases/{release_id}/pause` operation.
      */
     pauseRelease: typeof handlePauseRelease;
+    /**
+     * Handler for the `POST /v1/releases/{release_id}/pull_from_review` operation.
+     */
+    pullFromReviewRelease: typeof handlePullFromReviewRelease;
     /**
      * Handler for the `POST /v1/releases/{release_id}/raise` operation.
      */
     raiseRelease: typeof handleRaiseRelease;
     /**
+     * Handler for the `POST /v1/releases/{release_id}/release_now` operation.
+     */
+    releaseNowRelease: typeof handleReleaseNowRelease;
+    /**
+     * Handler for the `POST /v1/releases/{release_id}/resubmit` operation.
+     */
+    resubmitRelease: typeof handleResubmitRelease;
+    /**
      * Handler for the `POST /v1/releases/{release_id}/resume` operation.
      */
     resumeRelease: typeof handleResumeRelease;
+    /**
+     * Handler for the `POST /v1/releases/{release_id}/retry` operation.
+     */
+    retryRelease: typeof handleRetryRelease;
     /**
      * Handler for the `GET /v1/runners` operation.
      */
@@ -7624,6 +7970,7 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
         getPipelineGooglePlayPublish: wrap(handleGetPipelineGooglePlayPublish),
         updatePipelineGooglePlayPublish: wrap(handleUpdatePipelineGooglePlayPublish),
         testPipelineGooglePlayCredentials: wrap(handleTestPipelineGooglePlayCredentials),
+        getPipelinePublishReadiness: wrap(handleGetPipelinePublishReadiness),
         listPipelineSecrets: wrap(handleListPipelineSecrets),
         createPipelineSecret: wrap(handleCreatePipelineSecret),
         deletePipelineSecret: wrap(handleDeletePipelineSecret),
@@ -7671,13 +8018,22 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
         listReleaseEvents: wrap(handleListReleaseEvents),
         listReleases: wrap(handleListReleases),
         createRelease: wrap(handleCreateRelease),
+        syncStoreReleases: wrap(handleSyncStoreReleases),
         getRelease: wrap(handleGetRelease),
         approveRelease: wrap(handleApproveRelease),
+        attachScheduleRelease: wrap(handleAttachScheduleRelease),
         completeRelease: wrap(handleCompleteRelease),
+        detachScheduleRelease: wrap(handleDetachScheduleRelease),
         haltRelease: wrap(handleHaltRelease),
+        markRejectedRelease: wrap(handleMarkRejectedRelease),
+        markSentForReviewRelease: wrap(handleMarkSentForReviewRelease),
         pauseRelease: wrap(handlePauseRelease),
+        pullFromReviewRelease: wrap(handlePullFromReviewRelease),
         raiseRelease: wrap(handleRaiseRelease),
+        releaseNowRelease: wrap(handleReleaseNowRelease),
+        resubmitRelease: wrap(handleResubmitRelease),
         resumeRelease: wrap(handleResumeRelease),
+        retryRelease: wrap(handleRetryRelease),
         listRunners: wrap(handleListRunners),
         registerRunner: wrap(handleRegisterRunner),
         deleteRunner: wrap(handleDeleteRunner),
@@ -7794,6 +8150,7 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
             invoke(pick.updatePipelineAppStorePublish, overrides.updatePipelineAppStorePublish),
             invoke(pick.getPipelineGooglePlayPublish, overrides.getPipelineGooglePlayPublish),
             invoke(pick.updatePipelineGooglePlayPublish, overrides.updatePipelineGooglePlayPublish),
+            invoke(pick.getPipelinePublishReadiness, overrides.getPipelinePublishReadiness),
             invoke(pick.previewBuildChangelog, overrides.previewBuildChangelog),
             invoke(pick.listProjectMemberCandidates, overrides.listProjectMemberCandidates),
             invoke(pick.refreshRepositoryConfigFiles, overrides.refreshRepositoryConfigFiles),
@@ -7899,11 +8256,19 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
             invoke(pick.listSigningIdentities, overrides.listSigningIdentities),
             invoke(pick.createSigningIdentity, overrides.createSigningIdentity),
             invoke(pick.approveRelease, overrides.approveRelease),
+            invoke(pick.attachScheduleRelease, overrides.attachScheduleRelease),
             invoke(pick.completeRelease, overrides.completeRelease),
+            invoke(pick.detachScheduleRelease, overrides.detachScheduleRelease),
             invoke(pick.haltRelease, overrides.haltRelease),
+            invoke(pick.markRejectedRelease, overrides.markRejectedRelease),
+            invoke(pick.markSentForReviewRelease, overrides.markSentForReviewRelease),
             invoke(pick.pauseRelease, overrides.pauseRelease),
+            invoke(pick.pullFromReviewRelease, overrides.pullFromReviewRelease),
             invoke(pick.raiseRelease, overrides.raiseRelease),
+            invoke(pick.releaseNowRelease, overrides.releaseNowRelease),
+            invoke(pick.resubmitRelease, overrides.resubmitRelease),
             invoke(pick.resumeRelease, overrides.resumeRelease),
+            invoke(pick.retryRelease, overrides.retryRelease),
             invoke(pick.claimJob, overrides.claimJob),
             invoke(pick.runnerHeartbeat, overrides.runnerHeartbeat),
             invoke(pick.reEnableUser, overrides.reEnableUser),
@@ -7920,6 +8285,7 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
             invoke(pick.planPipeline, overrides.planPipeline),
             invoke(pick.validatePipeline, overrides.validatePipeline),
             invoke(pick.getSetupStatus, overrides.getSetupStatus),
+            invoke(pick.syncStoreReleases, overrides.syncStoreReleases),
             invoke(pick.registerRunner, overrides.registerRunner),
             invoke(pick.getArtifactStorageSettings, overrides.getArtifactStorageSettings),
             invoke(pick.updateArtifactStorageSettings, overrides.updateArtifactStorageSettings),

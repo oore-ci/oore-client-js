@@ -4,7 +4,7 @@ import * as v from 'valibot'
 import { vReleaseState } from './v-release-state.js'
 
 export const vReleaseChangedEvent = v.object({
-    build_id: v.string(),
+    build_id: v.nullish(v.string()),
     project_id: v.string(),
     release_id: v.string(),
     rollout_fraction: v.number(),
