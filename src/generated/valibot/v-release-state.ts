@@ -5,7 +5,10 @@ import * as v from 'valibot'
 export const vReleaseState = v.picklist([
     'uploading',
     'processing',
+    'blocked',
     'in_review',
+    'approved',
+    'rejected',
     'rolling',
     'paused',
     'halted',

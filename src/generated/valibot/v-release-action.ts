@@ -8,5 +8,13 @@ export const vReleaseAction = v.picklist([
     'resume',
     'halt',
     'complete',
-    'approve'
+    'approve',
+    'retry',
+    'release_now',
+    'resubmit',
+    'pull_from_review',
+    'mark_sent_for_review',
+    'mark_rejected',
+    'attach_schedule',
+    'detach_schedule'
 ]);

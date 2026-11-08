@@ -6,6 +6,7 @@ export const vListReleasesQuery = v.object({
     project_id: v.optional(v.string()),
     build_id: v.optional(v.string()),
     state: v.optional(v.string()),
+    origin: v.optional(v.string()),
     limit: v.optional(v.pipe(v.union([
         v.number(),
         v.string(),

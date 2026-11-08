@@ -3,6 +3,7 @@
 import * as v from 'valibot'
 import { vBuildApproval } from './v-build-approval.js'
 import { vBuildContext } from './v-build-context.js'
+import { vBuildReleaseOutcome } from './v-build-release-outcome.js'
 import { vBuildStatus } from './v-build-status.js'
 import { vRunnerPolicyBlockReason } from './v-runner-policy-block-reason.js'
 import { vStepResult } from './v-step-result.js'
@@ -39,6 +40,7 @@ export const vBuild = v.object({
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    release_outcome: v.nullish(vBuildReleaseOutcome),
     retry_steps: v.nullish(v.array(v.string())),
     runner_id: v.nullish(v.string()),
     runner_policy_block_reason: v.nullish(vRunnerPolicyBlockReason),

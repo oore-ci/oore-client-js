@@ -128,16 +128,41 @@ export type AppStoreDestination = 'testflight' | 'app_store';
  * pipeline's iOS signing settings and require the `app_store` export method.
  */
 export type AppStorePublishConfig = {
+    /**
+     * Cancel an open review submission that holds other items (an in-app
+     * event, a custom product page) instead of waiting for someone to
+     * clear it, like Codemagic's `--cancel-previous-submissions`.
+     */
+    cancel_previous_submission?: boolean;
     destination?: AppStoreDestination;
+    /**
+     * `scheduled` only: the earliest release time, RFC 3339 (Apple rounds
+     * to the hour).
+     */
+    earliest_release_date?: string | null;
     enabled: boolean;
     /**
      * Release the approved version with Apple's seven-day phased release.
      */
     phased_release?: boolean;
     /**
+     * Checks before the upload.
+     */
+    preflight?: PublishPreflight;
+    /**
      * TestFlight "What to Test" or App Store "What's New", per locale.
      */
     release_notes: Array<AppStoreReleaseNote>;
+    /**
+     * A repository directory of `<locale>.txt` files, such as
+     * `ios/release-notes`, whose text replaces `release_notes` for the
+     * build. Relative to the repository root.
+     */
+    release_notes_dir?: string | null;
+    /**
+     * When Apple releases an approved version. App Store destination only.
+     */
+    release_type?: AppStoreReleaseType;
     /**
      * Submit the App Store version for review once the build is attached.
      */
@@ -159,6 +184,11 @@ export type AppStoreReleaseNote = {
     locale: string;
     whats_new: string;
 };
+
+/**
+ * When Apple releases a version App Review approved.
+ */
+export type AppStoreReleaseType = 'after_approval' | 'manual' | 'scheduled';
 
 export type AppendBuildLogsRequest = {
     chunks: Array<BuildLogChunk>;
@@ -334,6 +364,7 @@ export type Build = {
     pipeline_id: string;
     project_id: string;
     queued_at: number;
+    release_outcome?: null | BuildReleaseOutcome;
     /**
      * Steps this build retries against `source_build_id`'s stored artifacts.
      * Absent for a full build.
@@ -602,6 +633,12 @@ export type BuildQueueSnapshot = {
      */
     waiting: number;
 };
+
+/**
+ * The furthest-behind store release of a build, in words a build list can
+ * show beside the build status.
+ */
+export type BuildReleaseOutcome = 'waiting' | 'blocked' | 'in_review' | 'approved' | 'rejected' | 'live' | 'failed';
 
 /**
  * The earlier build a size report compares against.
@@ -1335,6 +1372,10 @@ export type GooglePlayPublishConfig = {
      * Expected application id. When omitted, the AAB's package is used.
      */
     package_name?: string | null;
+    /**
+     * Checks before the store sees the upload.
+     */
+    preflight?: PublishPreflight;
     release_notes?: GooglePlayReleaseNotesSource;
     release_notes_dir?: string | null;
     release_notes_locale?: string;
@@ -2370,11 +2411,21 @@ export type PromotionDecisionRequest = {
 
 export type PromotionState = 'pending' | 'promoting' | 'completed' | 'rejected' | 'failed';
 
+/**
+ * What a failed pre-flight check does to the publish step.
+ */
+export type PublishPreflight = 'auto' | 'block' | 'warn' | 'off';
+
 export type PublishStore = 'google_play' | 'app_store';
 
 export type ReEnableUserResponse = {
     user: User;
 };
+
+/**
+ * How serious a store readiness finding is.
+ */
+export type ReadinessLevel = 'ok' | 'warn' | 'block';
 
 export type ReadinessResponse = {
     database: boolean;
@@ -2438,9 +2489,22 @@ export type Release = {
     approved_at?: number | null;
     approved_by_email?: string | null;
     artifact_id?: string | null;
+    /**
+     * Google Play: whether Oore drives the rollout on `policy`'s schedule.
+     * Off for a release found in the store until a schedule is attached.
+     */
+    auto_rollout?: boolean;
     awaiting_approval: boolean;
-    build_id: string;
+    /**
+     * The build Oore uploaded. Absent for a release made outside Oore.
+     */
+    build_id?: string | null;
     build_number?: number | null;
+    /**
+     * The store console page for the release: the App Store Connect
+     * version, or the app's Play Console publishing overview.
+     */
+    console_url?: string | null;
     crash_rate?: number | null;
     crash_rate_threshold?: number | null;
     created_at: number;
@@ -2454,6 +2518,10 @@ export type Release = {
     id: string;
     next_fraction?: number | null;
     next_step_at?: number | null;
+    /**
+     * Whether Oore uploaded the release or found it in the store.
+     */
+    origin?: ReleaseOrigin;
     package_name?: string | null;
     /**
      * `android` or `ios`, derived from the store.
@@ -2471,6 +2539,11 @@ export type Release = {
      */
     rollout_fraction: number;
     state: ReleaseState;
+    /**
+     * Why the release is in its state, in the store's words where there
+     * are some: the reason of its latest history entry.
+     */
+    state_reason?: string | null;
     store: ReleaseStore;
     /**
      * The store's last error while Oore moves this release forward, such as
@@ -2500,13 +2573,14 @@ export type Release = {
 /**
  * Manual controls on a release.
  */
-export type ReleaseAction = 'raise' | 'pause' | 'resume' | 'halt' | 'complete' | 'approve';
+export type ReleaseAction = 'raise' | 'pause' | 'resume' | 'halt' | 'complete' | 'approve' | 'retry' | 'release_now' | 'resubmit' | 'pull_from_review' | 'mark_sent_for_review' | 'mark_rejected' | 'attach_schedule' | 'detach_schedule';
 
 export type ReleaseActionRequest = {
     /**
      * Raise only: target fraction (0..1]. Defaults to the next policy step.
      */
     fraction?: number | null;
+    policy?: null | ReleasePolicy;
     reason?: string | null;
 };
 
@@ -2514,7 +2588,7 @@ export type ReleaseActionRequest = {
  * A history entry with the release it belongs to, for activity feeds.
  */
 export type ReleaseActivityEvent = ReleaseHistoryEntry & {
-    build_id: string;
+    build_id?: string | null;
     project_id: string;
     project_name?: string | null;
     release_id: string;
@@ -2533,7 +2607,7 @@ export type ReleaseApprovalGate = 'none' | 'before_upload' | 'before_production'
  * or rollout changed.
  */
 export type ReleaseChangedEvent = {
-    build_id: string;
+    build_id?: string | null;
     project_id: string;
     release_id: string;
     /**
@@ -2567,6 +2641,11 @@ export type ReleaseHistoryEntry = {
 };
 
 /**
+ * Whether Oore uploaded a release or found it in the store.
+ */
+export type ReleaseOrigin = 'oore' | 'adopted';
+
+/**
  * Staged rollout policy stored with each release.
  */
 export type ReleasePolicy = {
@@ -2585,7 +2664,7 @@ export type ReleasePolicy = {
     steps?: Array<number>;
 };
 
-export type ReleaseState = 'uploading' | 'processing' | 'in_review' | 'rolling' | 'paused' | 'halted' | 'complete' | 'failed';
+export type ReleaseState = 'uploading' | 'processing' | 'blocked' | 'in_review' | 'approved' | 'rejected' | 'rolling' | 'paused' | 'halted' | 'complete' | 'failed';
 
 /**
  * Store a release is published to.
@@ -2954,7 +3033,17 @@ export type RunnerPublishPlan = {
  * Outcome of a store upload, reported by the runner.
  */
 export type RunnerPublishResult = {
+    /**
+     * Google Play only took the edit with `changesNotSentForReview=true`:
+     * the release waits in Play Console until someone sends it for review.
+     */
+    held_for_review?: boolean;
     package_name: string;
+    /**
+     * App Store uploads: "What's New" / "What to Test" read from the
+     * repository (`release_notes_dir`), which replace the saved notes.
+     */
+    release_notes?: Array<AppStoreReleaseNote> | null;
     /**
      * Staged rollout fraction, 0 < f <= 1. Absent for drafts.
      */
@@ -3430,6 +3519,66 @@ export type StoreErrorIssue = {
      */
     url?: string | null;
     users: number;
+};
+
+/**
+ * One store readiness finding for a pipeline's publishing.
+ */
+export type StoreReadinessItem = {
+    /**
+     * Stable identifier, such as `age_rating` or `version_live`.
+     */
+    code: string;
+    /**
+     * The store console page that fixes it.
+     */
+    console_url?: string | null;
+    detail?: string | null;
+    level: ReadinessLevel;
+    /**
+     * Remembered from the store's last refusal rather than read now.
+     */
+    remembered?: boolean;
+    store: ReleaseStore;
+    title: string;
+};
+
+/**
+ * `GET /v1/pipelines/{pipeline_id}/publish/readiness`.
+ */
+export type StoreReadinessResponse = {
+    checked_at: number;
+    items: Array<StoreReadinessItem>;
+    pipeline_id: string;
+    /**
+     * What a blocking finding does to the next build's publish step.
+     */
+    preflight: PublishPreflight;
+};
+
+/**
+ * `POST /v1/releases/store-sync`: read the stores now.
+ */
+export type StoreSyncRequest = {
+    /**
+     * Only this project's apps. Omitted reads every app the caller can see.
+     */
+    project_id?: string | null;
+};
+
+export type StoreSyncResponse = {
+    /**
+     * Store releases Oore had no record of and now follows.
+     */
+    adopted: number;
+    /**
+     * Apps read.
+     */
+    apps: number;
+    /**
+     * Apps that could not be read, with why.
+     */
+    errors: Array<string>;
 };
 
 export type StoreVital = {
@@ -6933,6 +7082,36 @@ export type TestPipelineGooglePlayCredentialsResponses = {
 
 export type TestPipelineGooglePlayCredentialsResponse = TestPipelineGooglePlayCredentialsResponses[keyof TestPipelineGooglePlayCredentialsResponses];
 
+export type GetPipelinePublishReadinessData = {
+    body?: never;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/publish/readiness';
+};
+
+export type GetPipelinePublishReadinessErrors = {
+    /**
+     * Pipeline not found
+     */
+    404: ApiError;
+};
+
+export type GetPipelinePublishReadinessError = GetPipelinePublishReadinessErrors[keyof GetPipelinePublishReadinessErrors];
+
+export type GetPipelinePublishReadinessResponses = {
+    /**
+     * Store readiness
+     */
+    200: StoreReadinessResponse;
+};
+
+export type GetPipelinePublishReadinessResponse = GetPipelinePublishReadinessResponses[keyof GetPipelinePublishReadinessResponses];
+
 export type ListPipelineSecretsData = {
     body?: never;
     path: {
@@ -8563,6 +8742,10 @@ export type ListReleasesData = {
          */
         state?: string;
         /**
+         * Filter by origin: oore or adopted
+         */
+        origin?: string;
+        /**
          * Page size, 1 to 200 (default 50)
          */
         limit?: number;
@@ -8628,6 +8811,34 @@ export type CreateReleaseResponses = {
 };
 
 export type CreateReleaseResponse = CreateReleaseResponses[keyof CreateReleaseResponses];
+
+export type SyncStoreReleasesData = {
+    /**
+     * Optional project
+     */
+    body: StoreSyncRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/releases/store-sync';
+};
+
+export type SyncStoreReleasesErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+};
+
+export type SyncStoreReleasesError = SyncStoreReleasesErrors[keyof SyncStoreReleasesErrors];
+
+export type SyncStoreReleasesResponses = {
+    /**
+     * What the sync read and adopted
+     */
+    200: StoreSyncResponse;
+};
+
+export type SyncStoreReleasesResponse = SyncStoreReleasesResponses[keyof SyncStoreReleasesResponses];
 
 export type GetReleaseData = {
     body?: never;
@@ -8708,6 +8919,55 @@ export type ApproveReleaseResponses = {
 
 export type ApproveReleaseResponse = ApproveReleaseResponses[keyof ApproveReleaseResponses];
 
+export type AttachScheduleReleaseData = {
+    /**
+     * Optional reason; `policy` is accepted by attach_schedule only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/attach_schedule';
+};
+
+export type AttachScheduleReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type AttachScheduleReleaseError = AttachScheduleReleaseErrors[keyof AttachScheduleReleaseErrors];
+
+export type AttachScheduleReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type AttachScheduleReleaseResponse = AttachScheduleReleaseResponses[keyof AttachScheduleReleaseResponses];
+
 export type CompleteReleaseData = {
     /**
      * Optional reason; `fraction` is accepted by raise only
@@ -8756,6 +9016,55 @@ export type CompleteReleaseResponses = {
 };
 
 export type CompleteReleaseResponse = CompleteReleaseResponses[keyof CompleteReleaseResponses];
+
+export type DetachScheduleReleaseData = {
+    /**
+     * Optional reason; `policy` is accepted by attach_schedule only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/detach_schedule';
+};
+
+export type DetachScheduleReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type DetachScheduleReleaseError = DetachScheduleReleaseErrors[keyof DetachScheduleReleaseErrors];
+
+export type DetachScheduleReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type DetachScheduleReleaseResponse = DetachScheduleReleaseResponses[keyof DetachScheduleReleaseResponses];
 
 export type HaltReleaseData = {
     /**
@@ -8806,6 +9115,104 @@ export type HaltReleaseResponses = {
 
 export type HaltReleaseResponse = HaltReleaseResponses[keyof HaltReleaseResponses];
 
+export type MarkRejectedReleaseData = {
+    /**
+     * Optional reason; `policy` is accepted by attach_schedule only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/mark_rejected';
+};
+
+export type MarkRejectedReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type MarkRejectedReleaseError = MarkRejectedReleaseErrors[keyof MarkRejectedReleaseErrors];
+
+export type MarkRejectedReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type MarkRejectedReleaseResponse = MarkRejectedReleaseResponses[keyof MarkRejectedReleaseResponses];
+
+export type MarkSentForReviewReleaseData = {
+    /**
+     * Optional reason; `policy` is accepted by attach_schedule only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/mark_sent_for_review';
+};
+
+export type MarkSentForReviewReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type MarkSentForReviewReleaseError = MarkSentForReviewReleaseErrors[keyof MarkSentForReviewReleaseErrors];
+
+export type MarkSentForReviewReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type MarkSentForReviewReleaseResponse = MarkSentForReviewReleaseResponses[keyof MarkSentForReviewReleaseResponses];
+
 export type PauseReleaseData = {
     /**
      * Optional reason; `fraction` is accepted by raise only
@@ -8854,6 +9261,55 @@ export type PauseReleaseResponses = {
 };
 
 export type PauseReleaseResponse = PauseReleaseResponses[keyof PauseReleaseResponses];
+
+export type PullFromReviewReleaseData = {
+    /**
+     * Optional reason; `policy` is accepted by attach_schedule only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/pull_from_review';
+};
+
+export type PullFromReviewReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type PullFromReviewReleaseError = PullFromReviewReleaseErrors[keyof PullFromReviewReleaseErrors];
+
+export type PullFromReviewReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type PullFromReviewReleaseResponse = PullFromReviewReleaseResponses[keyof PullFromReviewReleaseResponses];
 
 export type RaiseReleaseData = {
     /**
@@ -8904,6 +9360,104 @@ export type RaiseReleaseResponses = {
 
 export type RaiseReleaseResponse = RaiseReleaseResponses[keyof RaiseReleaseResponses];
 
+export type ReleaseNowReleaseData = {
+    /**
+     * Optional reason; `policy` is accepted by attach_schedule only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/release_now';
+};
+
+export type ReleaseNowReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type ReleaseNowReleaseError = ReleaseNowReleaseErrors[keyof ReleaseNowReleaseErrors];
+
+export type ReleaseNowReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type ReleaseNowReleaseResponse = ReleaseNowReleaseResponses[keyof ReleaseNowReleaseResponses];
+
+export type ResubmitReleaseData = {
+    /**
+     * Optional reason; `policy` is accepted by attach_schedule only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/resubmit';
+};
+
+export type ResubmitReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type ResubmitReleaseError = ResubmitReleaseErrors[keyof ResubmitReleaseErrors];
+
+export type ResubmitReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type ResubmitReleaseResponse = ResubmitReleaseResponses[keyof ResubmitReleaseResponses];
+
 export type ResumeReleaseData = {
     /**
      * Optional reason; `fraction` is accepted by raise only
@@ -8952,6 +9506,55 @@ export type ResumeReleaseResponses = {
 };
 
 export type ResumeReleaseResponse = ResumeReleaseResponses[keyof ResumeReleaseResponses];
+
+export type RetryReleaseData = {
+    /**
+     * Optional reason; `policy` is accepted by attach_schedule only
+     */
+    body?: null | ReleaseActionRequest;
+    path: {
+        /**
+         * Release ID
+         */
+        release_id: string;
+    };
+    query?: never;
+    url: '/v1/releases/{release_id}/retry';
+};
+
+export type RetryReleaseErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Not allowed in the current state
+     */
+    409: ApiError;
+    /**
+     * The store rejected the change
+     */
+    502: ApiError;
+};
+
+export type RetryReleaseError = RetryReleaseErrors[keyof RetryReleaseErrors];
+
+export type RetryReleaseResponses = {
+    /**
+     * Updated release
+     */
+    200: Release;
+};
+
+export type RetryReleaseResponse = RetryReleaseResponses[keyof RetryReleaseResponses];
 
 export type ListRunnersData = {
     body?: never;
