@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.34.0](https://github.com/oore-ci/oore-client-js/compare/v0.33.0...v0.34.0) (2026-11-09)
+
+
+### Features
+
+* **schema:** build store notes, workflow TestFlight groups, Slack release threads, typical review time ([#91](https://github.com/oore-ci/oore-client-js/issues/91)) ([26dfcd6](https://github.com/oore-ci/oore-client-js/commit/26dfcd6770b7b5baeb0d8603b3be54dabc73a790))
+
 ## [0.33.0](https://github.com/oore-ci/oore-client-js/compare/v0.32.0...v0.33.0) (2026-11-09)
 
 
