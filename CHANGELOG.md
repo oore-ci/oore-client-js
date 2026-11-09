@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.35.0](https://github.com/oore-ci/oore-client-js/compare/v0.34.0...v0.35.0) (2026-11-09)
+
+
+### Features
+
+* create a sample project ([#95](https://github.com/oore-ci/oore-client-js/issues/95)) ([99a0d3b](https://github.com/oore-ci/oore-client-js/commit/99a0d3b913650c771c152d4115707746203a040f))
+* **schema:** runner build tool checks, app detection, setup progress ([#93](https://github.com/oore-ci/oore-client-js/issues/93)) ([09a78f0](https://github.com/oore-ci/oore-client-js/commit/09a78f0a4489c0c036927778ca014efd4cc85ffd))
+
 ## [0.34.0](https://github.com/oore-ci/oore-client-js/compare/v0.33.0...v0.34.0) (2026-11-09)
 
 
