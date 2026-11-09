@@ -62,6 +62,11 @@ export const vRelease = v.object({
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
     store_status: v.nullish(v.string()),
     track: v.string(),
+    typical_review_seconds: v.nullish(v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
     updated_at: v.pipe(v.union([
         v.number(),
         v.string(),

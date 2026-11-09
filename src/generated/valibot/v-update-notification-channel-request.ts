@@ -10,6 +10,7 @@ export const vUpdateNotificationChannelRequest = v.object({
     name: v.nullish(v.string()),
     project_id: v.nullish(v.string()),
     secret: v.nullish(v.string()),
+    slack_channel_id: v.nullish(v.string()),
     slack_mentions: v.nullish(v.array(vSlackMention)),
     smtp_config: v.nullish(vUpdateSmtpConfig),
     url: v.nullish(v.string())
