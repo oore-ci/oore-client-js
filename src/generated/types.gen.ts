@@ -352,7 +352,16 @@ export type Build = {
     branch?: string | null;
     build_number: number;
     changelog?: string | null;
+    /**
+     * The built commit's author name, reported with `commit_title`.
+     */
+    commit_author?: string | null;
     commit_sha?: string | null;
+    /**
+     * The first line of the built commit's message. The runner reports it
+     * after checkout, so a queued build has none.
+     */
+    commit_title?: string | null;
     config_snapshot: {
         [key: string]: unknown;
     };
@@ -376,11 +385,21 @@ export type Build = {
     started_at?: number | null;
     status: BuildStatus;
     step_results?: Array<StepResult> | null;
+    superseded_by?: null | BuildReference;
     trigger_actor?: string | null;
     trigger_event?: string | null;
     trigger_ref?: string | null;
     trigger_type: TriggerType;
     updated_at: number;
+    /**
+     * The store version code (Android versionCode, iOS build number) the
+     * build makes.
+     */
+    version_code?: number | null;
+    /**
+     * The app version the build makes, from `pubspec.yaml`.
+     */
+    version_name?: string | null;
     /**
      * The `.oore.yaml` version 2 workflow this build plans. Absent for
      * files without workflows and for pipelines configured in the UI.
@@ -632,6 +651,14 @@ export type BuildQueueSnapshot = {
      * Queued and scheduled builds that a runner can pick up.
      */
     waiting: number;
+};
+
+/**
+ * Another build, by id and number.
+ */
+export type BuildReference = {
+    build_number: number;
+    id: string;
 };
 
 /**
@@ -2679,6 +2706,16 @@ export type RemoveProjectMemberResponse = {
 
 export type ReplaceGitLabTokenRequest = {
     access_token: string;
+};
+
+/**
+ * What a runner found out about a build after checkout.
+ */
+export type ReportBuildIdentityRequest = {
+    commit_author?: string | null;
+    commit_title?: string | null;
+    version_code?: number | null;
+    version_name?: string | null;
 };
 
 /**
@@ -10039,6 +10076,40 @@ export type GitlabCheckoutUploadPackResponses = {
 };
 
 export type GitlabCheckoutUploadPackResponse = GitlabCheckoutUploadPackResponses[keyof GitlabCheckoutUploadPackResponses];
+
+export type ReportBuildIdentityData = {
+    body: ReportBuildIdentityRequest;
+    path: {
+        /**
+         * Runner ID
+         */
+        runner_id: string;
+        /**
+         * Build/Job ID
+         */
+        job_id: string;
+    };
+    query?: never;
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/identity';
+};
+
+export type ReportBuildIdentityErrors = {
+    /**
+     * The build is not assigned to this runner
+     */
+    403: ApiError;
+};
+
+export type ReportBuildIdentityError = ReportBuildIdentityErrors[keyof ReportBuildIdentityErrors];
+
+export type ReportBuildIdentityResponses = {
+    /**
+     * Identity stored
+     */
+    204: void;
+};
+
+export type ReportBuildIdentityResponse = ReportBuildIdentityResponses[keyof ReportBuildIdentityResponses];
 
 export type GetJobIosSigningData = {
     body?: never;

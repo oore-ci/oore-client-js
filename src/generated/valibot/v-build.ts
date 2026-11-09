@@ -3,6 +3,7 @@
 import * as v from 'valibot'
 import { vBuildApproval } from './v-build-approval.js'
 import { vBuildContext } from './v-build-context.js'
+import { vBuildReference } from './v-build-reference.js'
 import { vBuildReleaseOutcome } from './v-build-release-outcome.js'
 import { vBuildStatus } from './v-build-status.js'
 import { vRunnerPolicyBlockReason } from './v-runner-policy-block-reason.js'
@@ -18,7 +19,9 @@ export const vBuild = v.object({
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
     changelog: v.nullish(v.string()),
+    commit_author: v.nullish(v.string()),
     commit_sha: v.nullish(v.string()),
+    commit_title: v.nullish(v.string()),
     config_snapshot: v.record(v.string(), v.unknown()),
     context: v.nullish(vBuildContext),
     created_at: v.pipe(v.union([
@@ -52,6 +55,7 @@ export const vBuild = v.object({
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
     status: vBuildStatus,
     step_results: v.nullish(v.array(vStepResult)),
+    superseded_by: v.nullish(vBuildReference),
     trigger_actor: v.nullish(v.string()),
     trigger_event: v.nullish(v.string()),
     trigger_ref: v.nullish(v.string()),
@@ -61,5 +65,11 @@ export const vBuild = v.object({
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    version_code: v.nullish(v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
+    version_name: v.nullish(v.string()),
     workflow: v.nullish(v.string())
 });
