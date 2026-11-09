@@ -629,6 +629,7 @@ export { vListProjectsQuery } from './generated/valibot/v-list-projects-query.js
 export { vListProjectsResponse2 } from './generated/valibot/v-list-projects-response2.js'
 export { vCreateProjectBody } from './generated/valibot/v-create-project-body.js'
 export { vCreateProjectResponse2 } from './generated/valibot/v-create-project-response2.js'
+export { vCreateSampleProjectResponse } from './generated/valibot/v-create-sample-project-response.js'
 export { vDeleteProjectPath } from './generated/valibot/v-delete-project-path.js'
 export { vDeleteProjectResponse } from './generated/valibot/v-delete-project-response.js'
 export { vGetProjectPath } from './generated/valibot/v-get-project-path.js'
