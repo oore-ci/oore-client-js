@@ -20,6 +20,7 @@ export const vListBuildsQuery = v.object({
     workflow: v.optional(v.string()),
     trigger: v.optional(v.string()),
     actor: v.optional(v.string()),
+    mine: v.optional(v.boolean()),
     created_after: v.optional(v.pipe(v.union([
         v.number(),
         v.string(),

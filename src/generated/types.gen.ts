@@ -5390,6 +5390,10 @@ export type ListBuildsData = {
          */
         actor?: string;
         /**
+         * Only builds you started or builds of apps you pinned.
+         */
+        mine?: boolean;
+        /**
          * Only builds created at or after this Unix time in seconds
          */
         created_after?: number;
