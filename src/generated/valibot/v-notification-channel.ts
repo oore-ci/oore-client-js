@@ -21,6 +21,7 @@ export const vNotificationChannel = v.object({
     id: v.string(),
     name: v.string(),
     project_id: v.nullish(v.string()),
+    slack_channel_id: v.nullish(v.string()),
     slack_mentions: v.optional(v.array(vSlackMention)),
     smtp_summary: v.nullish(vSmtpConfigSummary),
     updated_at: v.pipe(v.union([

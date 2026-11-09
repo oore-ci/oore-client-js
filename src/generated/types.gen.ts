@@ -385,6 +385,10 @@ export type Build = {
     started_at?: number | null;
     status: BuildStatus;
     step_results?: Array<StepResult> | null;
+    /**
+     * Release notes written for this build's store uploads.
+     */
+    store_notes?: string | null;
     superseded_by?: null | BuildReference;
     trigger_actor?: string | null;
     trigger_event?: string | null;
@@ -871,6 +875,13 @@ export type CreateBuildRequest = {
      * Optional one-run platform selection. Omitted builds every platform configured by the pipeline.
      */
     platforms?: Array<BuildPlatform> | null;
+    /**
+     * What's new in this release, as testers and store users read it. It
+     * replaces the pipeline's Google Play and App Store release notes for
+     * the build's uploads (Play's notes language, App Store's first
+     * locale). Omitted uses the pipeline's notes.
+     */
+    store_notes?: string | null;
     trigger_ref?: string | null;
     /**
      * The `.oore.yaml` version 2 workflow to build. Omitted uses the
@@ -911,6 +922,11 @@ export type CreateNotificationChannelRequest = {
      * `users:read.email`, used to mention the triggering user. Optional.
      */
     secret?: string | null;
+    /**
+     * Slack channel ID for one updating message per release (Slack only).
+     * Needs a bot token with `chat:write` that is in the channel.
+     */
+    slack_channel_id?: string | null;
     /**
      * Slack member IDs to mention (Slack only). Works without a bot token.
      */
@@ -1857,6 +1873,12 @@ export type NotificationChannel = {
      */
     project_id?: string | null;
     /**
+     * Slack channel ID, such as `C0123ABCD`, the bot token posts release
+     * updates to (Slack only). With it, each release gets one message that
+     * Oore edits as the release moves, with details in its thread.
+     */
+    slack_channel_id?: string | null;
+    /**
      * Slack member IDs to mention, matched against the person behind each
      * event (Slack only). Checked before the bot token lookup. Absent from
      * daemons that predate it, which is the same as none.
@@ -2167,6 +2189,12 @@ export type PipelineWorkflowSettings = {
      * the file and the pipeline's Publish settings.
      */
     publish_enabled?: boolean | null;
+    /**
+     * TestFlight groups the workflow's builds go to, replacing the file's
+     * and the pipeline's groups. Only used when the upload goes to
+     * TestFlight.
+     */
+    testflight_groups?: Array<string> | null;
     updated_at?: number | null;
     workflow: string;
 };
@@ -2592,6 +2620,13 @@ export type Release = {
      * Play track, or TestFlight group / `app_store`.
      */
     track: string;
+    /**
+     * How long store review usually takes for this app on this store, in
+     * seconds: the average of its last five finished reviews (App Store
+     * and TestFlight counted apart). Only on releases in review, and absent
+     * until the app has finished two reviews.
+     */
+    typical_review_seconds?: number | null;
     updated_at: number;
     version_code?: number | null;
     version_name?: string | null;
@@ -3830,6 +3865,11 @@ export type UpdateNotificationChannelRequest = {
      */
     secret?: string | null;
     /**
+     * New Slack channel ID for release updates. Omit to keep existing; pass
+     * an empty string to clear.
+     */
+    slack_channel_id?: string | null;
+    /**
      * New Slack member mappings (Slack only). Omit to keep existing; pass an
      * empty list to clear.
      */
@@ -3894,6 +3934,7 @@ export type UpdatePipelineWorkflowSettingsRequest = {
     approval_required?: boolean | null;
     ios_identity_id?: string | null;
     publish_enabled?: boolean | null;
+    testflight_groups?: Array<string> | null;
 };
 
 /**

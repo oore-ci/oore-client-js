@@ -55,6 +55,7 @@ export const vBuild = v.object({
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
     status: vBuildStatus,
     step_results: v.nullish(v.array(vStepResult)),
+    store_notes: v.nullish(v.string()),
     superseded_by: v.nullish(vBuildReference),
     trigger_actor: v.nullish(v.string()),
     trigger_event: v.nullish(v.string()),

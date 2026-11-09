@@ -6,5 +6,6 @@ export const vUpdatePipelineWorkflowSettingsRequest = v.object({
     android_identity_id: v.nullish(v.string()),
     approval_required: v.nullish(v.boolean()),
     ios_identity_id: v.nullish(v.string()),
-    publish_enabled: v.nullish(v.boolean())
+    publish_enabled: v.nullish(v.boolean()),
+    testflight_groups: v.nullish(v.array(v.string()))
 });

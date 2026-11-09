@@ -9,6 +9,7 @@ export const vCreateBuildRequest = v.object({
     commit_sha: v.nullish(v.string()),
     pipeline_id: v.string(),
     platforms: v.nullish(v.array(vBuildPlatform)),
+    store_notes: v.nullish(v.string()),
     trigger_ref: v.nullish(v.string()),
     workflow: v.nullish(v.string())
 });

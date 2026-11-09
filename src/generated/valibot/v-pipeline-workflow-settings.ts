@@ -7,6 +7,7 @@ export const vPipelineWorkflowSettings = v.object({
     approval_required: v.nullish(v.boolean()),
     ios_identity_id: v.nullish(v.string()),
     publish_enabled: v.nullish(v.boolean()),
+    testflight_groups: v.nullish(v.array(v.string())),
     updated_at: v.nullish(v.pipe(v.union([
         v.number(),
         v.string(),
