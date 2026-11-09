@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.33.0](https://github.com/oore-ci/oore-client-js/compare/v0.32.0...v0.33.0) (2026-11-09)
+
+
+### Features
+
+* **schema:** build commit title, author, version and replacing build ([#89](https://github.com/oore-ci/oore-client-js/issues/89)) ([bf125e5](https://github.com/oore-ci/oore-client-js/commit/bf125e5ca8e778f9ea7bb1853129832cbc39d732))
+
 ## [0.32.0](https://github.com/oore-ci/oore-client-js/compare/v0.31.0...v0.32.0) (2026-11-08)
 
 
