@@ -11,6 +11,8 @@ test('the generated Project schema accepts the public Project shape', () => {
     current_user_role: 'maintainer',
     id: 'project-1',
     name: 'Oore macOS',
+    is_favorite: false,
+    platforms: ['android'],
     settings: {},
     updated_at: 1_700_000_100,
   })
