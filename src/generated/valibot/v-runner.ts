@@ -4,6 +4,7 @@ import * as v from 'valibot'
 import { vRunnerDiskPressure } from './v-runner-disk-pressure.js'
 import { vRunnerMetrics } from './v-runner-metrics.js'
 import { vRunnerStatus } from './v-runner-status.js'
+import { vRunnerToolchainCheck } from './v-runner-toolchain-check.js'
 
 export const vRunner = v.object({
     cache_purge_requested_at: v.nullish(v.pipe(v.union([
@@ -31,6 +32,7 @@ export const vRunner = v.object({
     name: v.string(),
     registered_by: v.nullish(v.string()),
     status: vRunnerStatus,
+    toolchain: v.optional(v.array(vRunnerToolchainCheck)),
     updated_at: v.pipe(v.union([
         v.number(),
         v.string(),

@@ -2351,6 +2351,33 @@ export type Project = {
     updated_at: number;
 };
 
+/**
+ * What Oore found in an app's repository on its default branch, to propose
+ * its first pipelines.
+ */
+export type ProjectAppDetection = {
+    /**
+     * The `name` in `pubspec.yaml`.
+     */
+    app_name?: string | null;
+    /**
+     * Valid Oore config files found, such as `.oore.yaml`.
+     */
+    config_files: Array<string>;
+    /**
+     * The repository has a `pubspec.yaml` that depends on Flutter.
+     */
+    flutter: boolean;
+    /**
+     * Platform folders found, such as `android/` and `ios/`.
+     */
+    platforms: Array<BuildPlatform>;
+    /**
+     * The branch or commit Oore read.
+     */
+    reference: string;
+};
+
 export type ProjectBuildInsights = {
     duration: DurationPercentiles;
     last_finished_at: number;
@@ -2368,6 +2395,10 @@ export type ProjectDetailResponse = {
     current_user_role: ProjectRole;
     pipeline_count: number;
     project: Project;
+    /**
+     * The steps after the first install that the app has done.
+     */
+    setup?: ProjectSetupProgress;
 };
 
 /**
@@ -2459,6 +2490,26 @@ export type ProjectRetentionOverride = {
 };
 
 export type ProjectRole = 'maintainer' | 'developer' | 'viewer';
+
+/**
+ * What an app has set up beyond its first build, for the checklist that
+ * follows the first install.
+ */
+export type ProjectSetupProgress = {
+    /**
+     * A pipeline signs release builds, or the app's signing library holds
+     * an identity.
+     */
+    release_signing: boolean;
+    /**
+     * A pipeline uploads to Google Play or App Store Connect.
+     */
+    store_publishing: boolean;
+    /**
+     * Someone has viewer access to the app, as testers do.
+     */
+    testers: boolean;
+};
 
 export type PromotionDecisionRequest = {
     reason?: string | null;
@@ -2938,6 +2989,11 @@ export type Runner = {
     name: string;
     registered_by?: string | null;
     status: RunnerStatus;
+    /**
+     * What the runner found when it checked its build tools, as
+     * `oore doctor` would. Empty for runners that do not report them.
+     */
+    toolchain?: Array<RunnerToolchainCheck>;
     updated_at: number;
 };
 
@@ -3193,6 +3249,38 @@ export type RunnerTestReport = {
     step: string;
     total: number;
 };
+
+/**
+ * One build tool a runner checked, such as Xcode or the Android SDK.
+ */
+export type RunnerToolchainCheck = {
+    /**
+     * The version or path found, or what is wrong.
+     */
+    detail?: string | null;
+    /**
+     * How to fix a missing tool, often a command to run on the runner.
+     */
+    fix?: string | null;
+    /**
+     * Stable id, such as `xcode` or `android_sdk`.
+     */
+    id: string;
+    /**
+     * What people call the tool, such as "Android SDK".
+     */
+    label: string;
+    /**
+     * Platforms that need it. Empty when every build does.
+     */
+    platforms?: Array<BuildPlatform>;
+    status: RunnerToolchainStatus;
+};
+
+/**
+ * The outcome of one build tool check on a runner.
+ */
+export type RunnerToolchainStatus = 'ok' | 'missing' | 'warning';
 
 export type RuntimeMode = 'local' | 'remote';
 
@@ -7618,6 +7706,44 @@ export type UpdateProjectResponses = {
 };
 
 export type UpdateProjectResponse = UpdateProjectResponses[keyof UpdateProjectResponses];
+
+export type DetectProjectAppData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/app-detection';
+};
+
+export type DetectProjectAppErrors = {
+    /**
+     * Read permission required
+     */
+    403: ApiError;
+    /**
+     * Project or project source not found
+     */
+    404: ApiError;
+    /**
+     * Source provider request failed
+     */
+    502: ApiError;
+};
+
+export type DetectProjectAppError = DetectProjectAppErrors[keyof DetectProjectAppErrors];
+
+export type DetectProjectAppResponses = {
+    /**
+     * What Oore found in the repository
+     */
+    200: ProjectAppDetection;
+};
+
+export type DetectProjectAppResponse = DetectProjectAppResponses[keyof DetectProjectAppResponses];
 
 export type ListProjectArtifactsData = {
     body?: never;
