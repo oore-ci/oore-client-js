@@ -7613,6 +7613,35 @@ export type CreateProjectResponses = {
 
 export type CreateProjectResponse2 = CreateProjectResponses[keyof CreateProjectResponses];
 
+export type CreateSampleProjectData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/projects/sample';
+};
+
+export type CreateSampleProjectErrors = {
+    /**
+     * Owner or admin role and Local Only mode required
+     */
+    403: ApiError;
+    /**
+     * Flutter or Git could not create the sample
+     */
+    409: ApiError;
+};
+
+export type CreateSampleProjectError = CreateSampleProjectErrors[keyof CreateSampleProjectErrors];
+
+export type CreateSampleProjectResponses = {
+    /**
+     * Sample app created
+     */
+    201: CreateProjectResponse;
+};
+
+export type CreateSampleProjectResponse = CreateSampleProjectResponses[keyof CreateSampleProjectResponses];
+
 export type DeleteProjectData = {
     body?: never;
     path: {
