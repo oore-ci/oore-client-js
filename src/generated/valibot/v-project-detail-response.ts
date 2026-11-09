@@ -3,6 +3,7 @@
 import * as v from 'valibot'
 import { vProject } from './v-project.js'
 import { vProjectRole } from './v-project-role.js'
+import { vProjectSetupProgress } from './v-project-setup-progress.js'
 
 export const vProjectDetailResponse = v.object({
     build_count: v.pipe(v.union([
@@ -16,5 +17,6 @@ export const vProjectDetailResponse = v.object({
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
-    project: vProject
+    project: vProject,
+    setup: v.optional(vProjectSetupProgress)
 });
