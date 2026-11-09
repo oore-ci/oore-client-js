@@ -496,6 +496,7 @@ export type BuildContext = {
 export type BuildDetailResponse = {
     build: Build;
     events: Array<BuildEvent>;
+    queue?: null | BuildQueueEstimate;
     /**
      * Steps of this finished build that `POST /v1/builds/{build_id}/retry-step`
      * can run again without rebuilding.
@@ -634,6 +635,25 @@ export type BuildOutcomeTotals = {
 };
 
 export type BuildPlatform = 'android' | 'ios' | 'macos';
+
+/**
+ * A queued build's place in line, from the builds queued before it and
+ * each pipeline's median build time.
+ */
+export type BuildQueueEstimate = {
+    /**
+     * Queued builds that a runner takes first.
+     */
+    ahead: number;
+    /**
+     * Rough seconds until a runner takes this build; absent with no history.
+     */
+    estimated_wait_seconds?: number | null;
+    /**
+     * Builds running now.
+     */
+    running: number;
+};
 
 /**
  * Builds waiting or running right now.
@@ -1058,6 +1078,34 @@ export type CreateSigningIdentityRequest = {
 
 export type DeleteNotificationChannelResponse = {
     deleted: boolean;
+};
+
+export type DigestApp = {
+    builds: number;
+    failed: number;
+    name: string;
+    project_id: string;
+    releases: Array<DigestRelease>;
+    slowest_pipeline?: null | DigestPipeline;
+    succeeded: number;
+};
+
+export type DigestExpiry = {
+    expires_at: number;
+    name: string;
+    project_name: string;
+};
+
+export type DigestPipeline = {
+    median_seconds: number;
+    name: string;
+};
+
+export type DigestRelease = {
+    state: string;
+    store: string;
+    track: string;
+    version: string;
 };
 
 export type DiscoverRepositoryWorkflowsResponse = {
@@ -1516,6 +1564,31 @@ export type ImportedPlayPublish = {
     track: string;
 };
 
+/**
+ * Something for this person: an approval they can give, a build of theirs
+ * that failed, or a change to a release of an app they pinned.
+ */
+export type InboxItem = {
+    at: number;
+    build_id?: string | null;
+    detail: string;
+    id: string;
+    kind: InboxItemKind;
+    project_id: string;
+    project_name: string;
+    release_id?: string | null;
+    title: string;
+};
+
+export type InboxItemKind = 'approval' | 'failed_build' | 'release';
+
+export type InboxResponse = {
+    /**
+     * Newest first, from the last 7 days.
+     */
+    items: Array<InboxItem>;
+};
+
 export type InstancePreferences = {
     direct_macos_runner_paused: boolean;
     key_storage_mode: KeyStorageMode;
@@ -1915,6 +1988,48 @@ export type NotificationDelivery = {
 
 export type NotificationDeliveryStatus = 'pending' | 'delivered' | 'failed';
 
+/**
+ * One person's notification choices. Instance channels are unaffected.
+ */
+export type NotificationPreferences = {
+    /**
+     * Builds waiting for an approval this person can give.
+     */
+    approvals: boolean;
+    /**
+     * Show these as browser notifications while Oore is open.
+     */
+    browser: boolean;
+    /**
+     * Send these by email, using the instance's email channel server.
+     */
+    email: boolean;
+    /**
+     * Store release changes of the apps this person pinned.
+     */
+    followed_releases: boolean;
+    /**
+     * Builds this person started.
+     */
+    my_builds: PersonalBuildEvents;
+    /**
+     * A weekly summary email on Monday morning (UTC).
+     */
+    weekly_digest: boolean;
+};
+
+export type NotificationPreferencesResponse = {
+    /**
+     * Where personal email goes.
+     */
+    email_address: string;
+    /**
+     * An enabled email channel exists, so Oore can send personal email.
+     */
+    email_available: boolean;
+    preferences: NotificationPreferences;
+};
+
 export type OidcCallbackResponse = {
     expires_at: number;
     session_token: string;
@@ -1963,6 +2078,11 @@ export type OperatorIncident = {
 export type OperatorIncidentSeverity = 'info' | 'warning' | 'critical';
 
 export type OperatorIncidentStatus = 'open' | 'resolved';
+
+/**
+ * Which of their own builds a person hears about.
+ */
+export type PersonalBuildEvents = 'off' | 'failed' | 'all';
 
 export type Pipeline = {
     approval: ApprovalPolicy;
@@ -2340,7 +2460,23 @@ export type Project = {
     default_branch?: string | null;
     description?: string | null;
     id: string;
+    /**
+     * The signed-in person pinned this app; pinned apps sort first.
+     */
+    is_favorite: boolean;
+    /**
+     * When the app's newest build started, for sorting by activity.
+     */
+    last_build_at?: number | null;
+    /**
+     * Version of the newest store release that is rolling out or complete.
+     */
+    live_version?: string | null;
     name: string;
+    /**
+     * Platforms its pipelines build.
+     */
+    platforms: Array<BuildPlatform>;
     repository_avatar_url?: string | null;
     repository_full_name?: string | null;
     repository_id?: string | null;
@@ -4180,6 +4316,19 @@ export type WarpgateTicketSource = 'database' | 'environment';
 export type WebhookResponse = {
     duplicate?: boolean | null;
     ok: boolean;
+};
+
+/**
+ * What the weekly digest says for this person: their apps' last 7 days.
+ */
+export type WeeklyDigest = {
+    apps: Array<DigestApp>;
+    /**
+     * Signing certificates and profiles that expire in the next 30 days.
+     */
+    expiring: Array<DigestExpiry>;
+    period_end: number;
+    period_start: number;
 };
 
 export type HealthzData = {
@@ -7559,7 +7708,7 @@ export type ListProjectsData = {
          */
         integration_id?: string;
         /**
-         * Sort by created_at, updated_at, or name
+         * Sort by activity (pinned apps, then newest build), created_at, updated_at, or name
          */
         sort?: string;
         /**
@@ -8053,6 +8202,57 @@ export type UpdateProjectEnvironmentResponses = {
 };
 
 export type UpdateProjectEnvironmentResponse = UpdateProjectEnvironmentResponses[keyof UpdateProjectEnvironmentResponses];
+
+export type RemoveProjectFavoriteData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/favorite';
+};
+
+export type RemoveProjectFavoriteResponses = {
+    /**
+     * Unpinned
+     */
+    204: void;
+};
+
+export type RemoveProjectFavoriteResponse = RemoveProjectFavoriteResponses[keyof RemoveProjectFavoriteResponses];
+
+export type AddProjectFavoriteData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/favorite';
+};
+
+export type AddProjectFavoriteErrors = {
+    /**
+     * Project not found
+     */
+    404: ApiError;
+};
+
+export type AddProjectFavoriteError = AddProjectFavoriteErrors[keyof AddProjectFavoriteErrors];
+
+export type AddProjectFavoriteResponses = {
+    /**
+     * Pinned
+     */
+    204: void;
+};
+
+export type AddProjectFavoriteResponse = AddProjectFavoriteResponses[keyof AddProjectFavoriteResponses];
 
 export type ListProjectMembersData = {
     body?: never;
@@ -11961,6 +12161,102 @@ export type GetMeResponses = {
 };
 
 export type GetMeResponse = GetMeResponses[keyof GetMeResponses];
+
+export type GetWeeklyDigestData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/users/me/digest';
+};
+
+export type GetWeeklyDigestResponses = {
+    /**
+     * The last 7 days of my apps
+     */
+    200: WeeklyDigest;
+};
+
+export type GetWeeklyDigestResponse = GetWeeklyDigestResponses[keyof GetWeeklyDigestResponses];
+
+export type SendWeeklyDigestData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/users/me/digest/send';
+};
+
+export type SendWeeklyDigestErrors = {
+    /**
+     * No email channel to send through
+     */
+    409: ApiError;
+};
+
+export type SendWeeklyDigestError = SendWeeklyDigestErrors[keyof SendWeeklyDigestErrors];
+
+export type SendWeeklyDigestResponses = {
+    /**
+     * Queued
+     */
+    202: unknown;
+};
+
+export type GetInboxData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/users/me/inbox';
+};
+
+export type GetInboxResponses = {
+    /**
+     * Inbox
+     */
+    200: InboxResponse;
+};
+
+export type GetInboxResponse = GetInboxResponses[keyof GetInboxResponses];
+
+export type GetNotificationPreferencesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/users/me/notification-preferences';
+};
+
+export type GetNotificationPreferencesResponses = {
+    /**
+     * Notification preferences
+     */
+    200: NotificationPreferencesResponse;
+};
+
+export type GetNotificationPreferencesResponse = GetNotificationPreferencesResponses[keyof GetNotificationPreferencesResponses];
+
+export type UpdateNotificationPreferencesData = {
+    body: NotificationPreferences;
+    path?: never;
+    query?: never;
+    url: '/v1/users/me/notification-preferences';
+};
+
+export type UpdateNotificationPreferencesErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+};
+
+export type UpdateNotificationPreferencesError = UpdateNotificationPreferencesErrors[keyof UpdateNotificationPreferencesErrors];
+
+export type UpdateNotificationPreferencesResponses = {
+    /**
+     * Saved preferences
+     */
+    200: NotificationPreferencesResponse;
+};
+
+export type UpdateNotificationPreferencesResponse = UpdateNotificationPreferencesResponses[keyof UpdateNotificationPreferencesResponses];
 
 export type DeleteUserData = {
     body?: never;

@@ -3,9 +3,11 @@
 import * as v from 'valibot'
 import { vBuild } from './v-build.js'
 import { vBuildEvent } from './v-build-event.js'
+import { vBuildQueueEstimate } from './v-build-queue-estimate.js'
 
 export const vBuildDetailResponse = v.object({
     build: vBuild,
     events: v.array(vBuildEvent),
+    queue: v.nullish(vBuildQueueEstimate),
     retryable_steps: v.optional(v.array(v.string()))
 });
