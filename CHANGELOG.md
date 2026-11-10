@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.36.0](https://github.com/oore-ci/oore-client-js/compare/v0.35.0...v0.36.0) (2026-11-10)
+
+
+### Features
+
+* personal inbox, favorites, notification preferences, queue estimate, mine filter ([#96](https://github.com/oore-ci/oore-client-js/issues/96)) ([ad8733c](https://github.com/oore-ci/oore-client-js/commit/ad8733cd8421c35161f9cf75707ba041a39a49ba))
+
 ## [0.35.0](https://github.com/oore-ci/oore-client-js/compare/v0.34.0...v0.35.0) (2026-11-09)
 
 
