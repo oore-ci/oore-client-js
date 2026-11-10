@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.37.0](https://github.com/oore-ci/oore-client-js/compare/v0.36.0...v0.37.0) (2026-11-10)
+
+
+### Features
+
+* tester groups, latest-build links, installs, device registration, web push, build keep ([#98](https://github.com/oore-ci/oore-client-js/issues/98)) ([55591eb](https://github.com/oore-ci/oore-client-js/commit/55591ebe839d2ddace5d15f40113822e71756159))
+
 ## [0.36.0](https://github.com/oore-ci/oore-client-js/compare/v0.35.0...v0.36.0) (2026-11-10)
 
 
