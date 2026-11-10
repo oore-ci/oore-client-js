@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.38.0](https://github.com/oore-ci/oore-client-js/compare/v0.37.0...v0.38.0) (2026-11-10)
+
+
+### Features
+
+* release freezes, build trends, failure hints and store listing files ([#100](https://github.com/oore-ci/oore-client-js/issues/100)) ([80d8f37](https://github.com/oore-ci/oore-client-js/commit/80d8f37e39a37696604f8c8d867ee4b65f04a161))
+
 ## [0.37.0](https://github.com/oore-ci/oore-client-js/compare/v0.36.0...v0.37.0) (2026-11-10)
 
 
