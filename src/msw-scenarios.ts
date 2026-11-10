@@ -212,6 +212,8 @@ export const defaultOoreScenario: OoreMockScenario = {
       settings: {},
       updated_at: 1_767_214_800,
       auto_add_pipelines: true,
+      is_favorite: true,
+      platforms: ['android', 'ios'],
     },
     {
       created_at: 1_763_337_600,
@@ -227,6 +229,8 @@ export const defaultOoreScenario: OoreMockScenario = {
       settings: {},
       updated_at: 1_767_139_200,
       auto_add_pipelines: false,
+      is_favorite: false,
+      platforms: ['android'],
     },
   ],
   releases: [
@@ -446,6 +450,8 @@ export const createOoreMockHandlers = (
         settings: {},
         updated_at: scenario.now,
         auto_add_pipelines: body.auto_add_pipelines ?? true,
+        is_favorite: false,
+        platforms: [],
       }
       projects.push(project)
 
