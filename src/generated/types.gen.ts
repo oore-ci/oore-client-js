@@ -258,6 +258,19 @@ export type ArtifactDownloadTokenSummary = {
     used_at?: number | null;
 };
 
+/**
+ * Someone installing one of a build's artifacts.
+ */
+export type ArtifactInstall = {
+    artifact_id: string;
+    installed_at: number;
+    user_email?: string | null;
+    /**
+     * How it was installed: `install_page`, `share_link` or `latest_link`.
+     */
+    via: string;
+};
+
 export type ArtifactInstallLinkResponse = {
     download_url: string;
     expires_at: number;
@@ -497,6 +510,7 @@ export type BuildDetailResponse = {
     build: Build;
     events: Array<BuildEvent>;
     queue?: null | BuildQueueEstimate;
+    retention?: null | BuildRetention;
     /**
      * Steps of this finished build that `POST /v1/builds/{build_id}/retry-step`
      * can run again without rebuilding.
@@ -690,6 +704,59 @@ export type BuildReference = {
  * show beside the build status.
  */
 export type BuildReleaseOutcome = 'waiting' | 'blocked' | 'in_review' | 'approved' | 'rejected' | 'live' | 'failed';
+
+/**
+ * Why retention keeps a finished build, and until when.
+ */
+export type BuildRetention = {
+    /**
+     * When the age limit removes it, in unix seconds. Absent when it is
+     * kept or there is no age limit; count and size limits can remove it
+     * sooner.
+     */
+    expires_at?: number | null;
+    /**
+     * Someone chose to keep this build; retention never removes it.
+     */
+    kept: boolean;
+    /**
+     * A release keeps it: one still in progress, or the version live on a
+     * store track.
+     */
+    kept_by_release: boolean;
+    /**
+     * Its outcome is one the retention policy keeps.
+     */
+    kept_by_status: boolean;
+};
+
+/**
+ * A build sent to a tester group, with who installed it since.
+ */
+export type BuildShare = {
+    build_id: string;
+    group_id: string;
+    group_name: string;
+    id: string;
+    message?: string | null;
+    recipients: Array<BuildShareRecipient>;
+    sent_at: number;
+    sent_by_email?: string | null;
+};
+
+export type BuildShareRecipient = {
+    email: string;
+    /**
+     * First install of this build by this person.
+     */
+    installed_at?: number | null;
+    name?: string | null;
+    /**
+     * The person cannot open this app, so the email could not include it.
+     */
+    no_access: boolean;
+    user_id: string;
+};
 
 /**
  * The earlier build a size report compares against.
@@ -915,6 +982,21 @@ export type CreateBuildResponse = {
     build: Build;
 };
 
+export type CreateDeviceRegistrationRequest = {
+    /**
+     * A name for the device in Apple's list, such as `Asha's iPhone`.
+     */
+    device_name?: string | null;
+};
+
+export type CreateLatestInstallLinkRequest = {
+    /**
+     * Only builds from this branch. Empty or absent means any branch.
+     */
+    branch?: string | null;
+    platform: BuildPlatform;
+};
+
 export type CreateLocalGitIntegrationRequest = {
     display_name?: string | null;
     repository_path: string;
@@ -1079,6 +1161,26 @@ export type CreateSigningIdentityRequest = {
 export type DeleteNotificationChannelResponse = {
     deleted: boolean;
 };
+
+/**
+ * Registering an iPhone for a pipeline's ad hoc builds from the install
+ * page: the phone installs a profile that reports its UDID.
+ */
+export type DeviceRegistration = {
+    created_at: number;
+    device_name?: string | null;
+    error?: string | null;
+    expires_at: number;
+    id: string;
+    pipeline_id: string;
+    /**
+     * Open this on the iPhone, in Safari.
+     */
+    profile_url?: string | null;
+    state: DeviceRegistrationState;
+};
+
+export type DeviceRegistrationState = 'pending' | 'registered' | 'failed' | 'expired';
 
 export type DigestApp = {
     builds: number;
@@ -1727,6 +1829,28 @@ export type JobStatusResponse = {
 
 export type KeyStorageMode = 'keychain' | 'file';
 
+/**
+ * A link that always installs the newest succeeded build of a pipeline,
+ * optionally only from one branch.
+ */
+export type LatestInstallLink = {
+    branch?: string | null;
+    created_at: number;
+    created_by_email?: string | null;
+    id: string;
+    last_used_at?: number | null;
+    pipeline_id: string;
+    platform: BuildPlatform;
+    prefix: string;
+    project_id: string;
+    /**
+     * The full link. Only returned when the link is created; later lists
+     * show `prefix` only.
+     */
+    url?: string | null;
+    use_count: number;
+};
+
 export type ListApiTokensResponse = {
     tokens: Array<ApiTokenSummary>;
     total: number;
@@ -1738,6 +1862,10 @@ export type ListAppStoreConnectKeysResponse = {
 
 export type ListArtifactDownloadTokensResponse = {
     tokens: Array<ArtifactDownloadTokenSummary>;
+};
+
+export type ListArtifactInstallsResponse = {
+    installs: Array<ArtifactInstall>;
 };
 
 export type ListArtifactsResponse = {
@@ -1768,6 +1896,10 @@ export type ListBuildFeedbackResponse = {
     feedback: Array<BuildFeedback>;
 };
 
+export type ListBuildSharesResponse = {
+    shares: Array<BuildShare>;
+};
+
 export type ListBuildsResponse = {
     builds: Array<Build>;
     total: number;
@@ -1781,6 +1913,10 @@ export type ListIntegrationsResponse = {
     active_total: number;
     integrations: Array<Integration>;
     total: number;
+};
+
+export type ListLatestInstallLinksResponse = {
+    links: Array<LatestInstallLink>;
 };
 
 export type ListNotificationChannelsResponse = {
@@ -1836,6 +1972,10 @@ export type ListProjectsResponse = {
     total: number;
 };
 
+export type ListRecentFeedbackResponse = {
+    feedback: Array<RecentFeedback>;
+};
+
 export type ListReleaseActivityResponse = {
     events: Array<ReleaseActivityEvent>;
 };
@@ -1875,6 +2015,10 @@ export type ListSigningIdentitiesResponse = {
 export type ListSourceRepositoriesResponse = {
     repositories: Array<SourceRepository>;
     total: number;
+};
+
+export type ListTesterGroupsResponse = {
+    groups: Array<TesterGroup>;
 };
 
 export type ListUsersResponse = {
@@ -2682,6 +2826,16 @@ export type ReadinessResponse = {
      * Installed release version from the install root's `VERSION` file.
      */
     version: string;
+};
+
+/**
+ * Recent tester feedback across apps the caller can see.
+ */
+export type RecentFeedback = {
+    build_number: number;
+    feedback: BuildFeedback;
+    project_id: string;
+    project_name: string;
 };
 
 export type RegisterIosDeviceRequest = {
@@ -3495,6 +3649,14 @@ export type SecretSummary = {
     updated_at: number;
 };
 
+export type SendBuildToGroupRequest = {
+    group_id: string;
+    /**
+     * What to test, up to 1000 characters. Shown in the email.
+     */
+    message?: string | null;
+};
+
 export type SetupCompleteResponse = {
     instance_id: string;
     state: SetupState;
@@ -3984,6 +4146,31 @@ export type TestRunOutcome = {
     status: string;
 };
 
+/**
+ * A named set of people a build can be sent to, such as QA or design.
+ */
+export type TesterGroup = {
+    created_at: number;
+    id: string;
+    members: Array<TesterGroupMember>;
+    name: string;
+    updated_at: number;
+};
+
+export type TesterGroupMember = {
+    email: string;
+    name?: string | null;
+    user_id: string;
+};
+
+export type TesterGroupRequest = {
+    member_user_ids: Array<string>;
+    /**
+     * 1 to 80 characters, unique on the instance.
+     */
+    name: string;
+};
+
 export type TriggerConfig = {
     /**
      * Branch globs for push and pull request events. When only `tags` is
@@ -4312,6 +4499,36 @@ export type ValidatePipelineResponse = {
 };
 
 export type WarpgateTicketSource = 'database' | 'environment';
+
+/**
+ * Web push for the installed tester portal.
+ */
+export type WebPushConfig = {
+    /**
+     * VAPID public key, base64url, for `PushManager.subscribe`.
+     */
+    public_key: string;
+    /**
+     * Whether this browser endpoint is subscribed for the caller.
+     */
+    subscribed: boolean;
+};
+
+export type WebPushSubscriptionRequest = {
+    /**
+     * The subscription's `auth` secret, base64url.
+     */
+    auth: string;
+    endpoint: string;
+    /**
+     * The subscription's `p256dh` key, base64url.
+     */
+    p256dh: string;
+};
+
+export type WebPushUnsubscribeRequest = {
+    endpoint: string;
+};
 
 export type WebhookResponse = {
     duplicate?: boolean | null;
@@ -5789,6 +6006,96 @@ export type GetBuildFeedbackScreenshotResponses = {
 
 export type GetBuildFeedbackScreenshotResponse = GetBuildFeedbackScreenshotResponses[keyof GetBuildFeedbackScreenshotResponses];
 
+export type ListBuildInstallsData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/installs';
+};
+
+export type ListBuildInstallsErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type ListBuildInstallsError = ListBuildInstallsErrors[keyof ListBuildInstallsErrors];
+
+export type ListBuildInstallsResponses = {
+    /**
+     * Installs, newest first
+     */
+    200: ListArtifactInstallsResponse;
+};
+
+export type ListBuildInstallsResponse = ListBuildInstallsResponses[keyof ListBuildInstallsResponses];
+
+export type UnkeepBuildData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/keep';
+};
+
+export type UnkeepBuildErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type UnkeepBuildError = UnkeepBuildErrors[keyof UnkeepBuildErrors];
+
+export type UnkeepBuildResponses = {
+    /**
+     * No longer kept
+     */
+    204: void;
+};
+
+export type UnkeepBuildResponse = UnkeepBuildResponses[keyof UnkeepBuildResponses];
+
+export type KeepBuildData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/keep';
+};
+
+export type KeepBuildErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type KeepBuildError = KeepBuildErrors[keyof KeepBuildErrors];
+
+export type KeepBuildResponses = {
+    /**
+     * Kept
+     */
+    204: void;
+};
+
+export type KeepBuildResponse = KeepBuildResponses[keyof KeepBuildResponses];
+
 export type GetBuildLogsData = {
     body?: never;
     path: {
@@ -5971,6 +6278,74 @@ export type RetryBuildStepResponses = {
 
 export type RetryBuildStepResponse = RetryBuildStepResponses[keyof RetryBuildStepResponses];
 
+export type ListBuildSharesData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/shares';
+};
+
+export type ListBuildSharesErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type ListBuildSharesError = ListBuildSharesErrors[keyof ListBuildSharesErrors];
+
+export type ListBuildSharesResponses = {
+    /**
+     * Sends, newest first
+     */
+    200: ListBuildSharesResponse;
+};
+
+export type ListBuildSharesResponse2 = ListBuildSharesResponses[keyof ListBuildSharesResponses];
+
+export type SendBuildToGroupData = {
+    body: SendBuildToGroupRequest;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/shares';
+};
+
+export type SendBuildToGroupErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Build or group not found
+     */
+    404: ApiError;
+    /**
+     * Build has not succeeded
+     */
+    409: ApiError;
+};
+
+export type SendBuildToGroupError = SendBuildToGroupErrors[keyof SendBuildToGroupErrors];
+
+export type SendBuildToGroupResponses = {
+    /**
+     * Sent
+     */
+    200: BuildShare;
+};
+
+export type SendBuildToGroupResponse = SendBuildToGroupResponses[keyof SendBuildToGroupResponses];
+
 export type GetBuildSizeReportData = {
     body?: never;
     path: {
@@ -6052,6 +6427,36 @@ export type GetBuildTestResultsResponses = {
 
 export type GetBuildTestResultsResponse = GetBuildTestResultsResponses[keyof GetBuildTestResultsResponses];
 
+export type GetDeviceRegistrationData = {
+    body?: never;
+    path: {
+        /**
+         * Registration ID
+         */
+        registration_id: string;
+    };
+    query?: never;
+    url: '/v1/device-registrations/{registration_id}';
+};
+
+export type GetDeviceRegistrationErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type GetDeviceRegistrationError = GetDeviceRegistrationErrors[keyof GetDeviceRegistrationErrors];
+
+export type GetDeviceRegistrationResponses = {
+    /**
+     * Registration
+     */
+    200: DeviceRegistration;
+};
+
+export type GetDeviceRegistrationResponse = GetDeviceRegistrationResponses[keyof GetDeviceRegistrationResponses];
+
 export type StreamEventsData = {
     body?: never;
     path?: never;
@@ -6089,6 +6494,27 @@ export type StreamEventsResponses = {
 };
 
 export type StreamEventsResponse = StreamEventsResponses[keyof StreamEventsResponses];
+
+export type ListRecentFeedbackData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * How far back, 1 to 30 days. Default 7.
+         */
+        days?: number;
+    };
+    url: '/v1/feedback/recent';
+};
+
+export type ListRecentFeedbackResponses = {
+    /**
+     * Feedback
+     */
+    200: ListRecentFeedbackResponse;
+};
+
+export type ListRecentFeedbackResponse2 = ListRecentFeedbackResponses[keyof ListRecentFeedbackResponses];
 
 export type FrontendPairData = {
     body: FrontendPairRequest;
@@ -6840,6 +7266,36 @@ export type ListRepositoriesResponses = {
 
 export type ListRepositoriesResponse2 = ListRepositoriesResponses[keyof ListRepositoriesResponses];
 
+export type DeleteLatestInstallLinkData = {
+    body?: never;
+    path: {
+        /**
+         * Link ID
+         */
+        link_id: string;
+    };
+    query?: never;
+    url: '/v1/latest-links/{link_id}';
+};
+
+export type DeleteLatestInstallLinkErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type DeleteLatestInstallLinkError = DeleteLatestInstallLinkErrors[keyof DeleteLatestInstallLinkErrors];
+
+export type DeleteLatestInstallLinkResponses = {
+    /**
+     * Deleted
+     */
+    204: void;
+};
+
+export type DeleteLatestInstallLinkResponse = DeleteLatestInstallLinkResponses[keyof DeleteLatestInstallLinkResponses];
+
 export type ListOperatorIncidentsData = {
     body?: never;
     path?: never;
@@ -7126,6 +7582,44 @@ export type UpdatePipelineAndroidSigningResponses = {
 
 export type UpdatePipelineAndroidSigningResponse = UpdatePipelineAndroidSigningResponses[keyof UpdatePipelineAndroidSigningResponses];
 
+export type CreateDeviceRegistrationData = {
+    body: CreateDeviceRegistrationRequest;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/device-registrations';
+};
+
+export type CreateDeviceRegistrationErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Pipeline cannot register devices
+     */
+    409: ApiError;
+    /**
+     * Needs an HTTPS public URL
+     */
+    412: ApiError;
+};
+
+export type CreateDeviceRegistrationError = CreateDeviceRegistrationErrors[keyof CreateDeviceRegistrationErrors];
+
+export type CreateDeviceRegistrationResponses = {
+    /**
+     * Started
+     */
+    200: DeviceRegistration;
+};
+
+export type CreateDeviceRegistrationResponse = CreateDeviceRegistrationResponses[keyof CreateDeviceRegistrationResponses];
+
 export type GetPipelineIosSigningData = {
     body?: never;
     path: {
@@ -7230,6 +7724,70 @@ export type SyncPipelineIosSigningResponses = {
 };
 
 export type SyncPipelineIosSigningResponse2 = SyncPipelineIosSigningResponses[keyof SyncPipelineIosSigningResponses];
+
+export type ListLatestInstallLinksData = {
+    body?: never;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/latest-links';
+};
+
+export type ListLatestInstallLinksErrors = {
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type ListLatestInstallLinksError = ListLatestInstallLinksErrors[keyof ListLatestInstallLinksErrors];
+
+export type ListLatestInstallLinksResponses = {
+    /**
+     * Links
+     */
+    200: ListLatestInstallLinksResponse;
+};
+
+export type ListLatestInstallLinksResponse2 = ListLatestInstallLinksResponses[keyof ListLatestInstallLinksResponses];
+
+export type CreateLatestInstallLinkData = {
+    body: CreateLatestInstallLinkRequest;
+    path: {
+        /**
+         * Pipeline ID
+         */
+        pipeline_id: string;
+    };
+    query?: never;
+    url: '/v1/pipelines/{pipeline_id}/latest-links';
+};
+
+export type CreateLatestInstallLinkErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type CreateLatestInstallLinkError = CreateLatestInstallLinkErrors[keyof CreateLatestInstallLinkErrors];
+
+export type CreateLatestInstallLinkResponses = {
+    /**
+     * Created
+     */
+    200: LatestInstallLink;
+};
+
+export type CreateLatestInstallLinkResponse = CreateLatestInstallLinkResponses[keyof CreateLatestInstallLinkResponses];
 
 export type GetPipelineAppStorePublishData = {
     body?: never;
@@ -12062,6 +12620,131 @@ export type GetRuntimeUpdatePreflightResponses = {
 
 export type GetRuntimeUpdatePreflightResponse = GetRuntimeUpdatePreflightResponses[keyof GetRuntimeUpdatePreflightResponses];
 
+export type ListTesterGroupsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/tester-groups';
+};
+
+export type ListTesterGroupsResponses = {
+    /**
+     * Groups
+     */
+    200: ListTesterGroupsResponse;
+};
+
+export type ListTesterGroupsResponse2 = ListTesterGroupsResponses[keyof ListTesterGroupsResponses];
+
+export type CreateTesterGroupData = {
+    body: TesterGroupRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/tester-groups';
+};
+
+export type CreateTesterGroupErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Owner or admin only
+     */
+    403: ApiError;
+    /**
+     * Name already used
+     */
+    409: ApiError;
+};
+
+export type CreateTesterGroupError = CreateTesterGroupErrors[keyof CreateTesterGroupErrors];
+
+export type CreateTesterGroupResponses = {
+    /**
+     * Created
+     */
+    200: TesterGroup;
+};
+
+export type CreateTesterGroupResponse = CreateTesterGroupResponses[keyof CreateTesterGroupResponses];
+
+export type DeleteTesterGroupData = {
+    body?: never;
+    path: {
+        /**
+         * Group ID
+         */
+        group_id: string;
+    };
+    query?: never;
+    url: '/v1/tester-groups/{group_id}';
+};
+
+export type DeleteTesterGroupErrors = {
+    /**
+     * Owner or admin only
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type DeleteTesterGroupError = DeleteTesterGroupErrors[keyof DeleteTesterGroupErrors];
+
+export type DeleteTesterGroupResponses = {
+    /**
+     * Deleted
+     */
+    204: void;
+};
+
+export type DeleteTesterGroupResponse = DeleteTesterGroupResponses[keyof DeleteTesterGroupResponses];
+
+export type UpdateTesterGroupData = {
+    body: TesterGroupRequest;
+    path: {
+        /**
+         * Group ID
+         */
+        group_id: string;
+    };
+    query?: never;
+    url: '/v1/tester-groups/{group_id}';
+};
+
+export type UpdateTesterGroupErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Owner or admin only
+     */
+    403: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+    /**
+     * Name already used
+     */
+    409: ApiError;
+};
+
+export type UpdateTesterGroupError = UpdateTesterGroupErrors[keyof UpdateTesterGroupErrors];
+
+export type UpdateTesterGroupResponses = {
+    /**
+     * Updated
+     */
+    200: TesterGroup;
+};
+
+export type UpdateTesterGroupResponse = UpdateTesterGroupResponses[keyof UpdateTesterGroupResponses];
+
 export type ListUsersData = {
     body?: never;
     path?: never;
@@ -12367,6 +13050,91 @@ export type UpdateUserRoleResponses = {
 };
 
 export type UpdateUserRoleResponse2 = UpdateUserRoleResponses[keyof UpdateUserRoleResponses];
+
+export type GetWebPushConfigData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * This browser's push endpoint, to report whether it is subscribed.
+         */
+        endpoint?: string;
+    };
+    url: '/v1/web-push/config';
+};
+
+export type GetWebPushConfigResponses = {
+    /**
+     * VAPID public key
+     */
+    200: WebPushConfig;
+};
+
+export type GetWebPushConfigResponse = GetWebPushConfigResponses[keyof GetWebPushConfigResponses];
+
+export type SubscribeWebPushData = {
+    body: WebPushSubscriptionRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/web-push/subscriptions';
+};
+
+export type SubscribeWebPushErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+};
+
+export type SubscribeWebPushError = SubscribeWebPushErrors[keyof SubscribeWebPushErrors];
+
+export type SubscribeWebPushResponses = {
+    /**
+     * Subscribed
+     */
+    204: void;
+};
+
+export type SubscribeWebPushResponse = SubscribeWebPushResponses[keyof SubscribeWebPushResponses];
+
+export type SendTestWebPushData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/web-push/test';
+};
+
+export type SendTestWebPushErrors = {
+    /**
+     * No browser accepted it
+     */
+    502: ApiError;
+};
+
+export type SendTestWebPushError = SendTestWebPushErrors[keyof SendTestWebPushErrors];
+
+export type SendTestWebPushResponses = {
+    /**
+     * Sent
+     */
+    202: unknown;
+};
+
+export type UnsubscribeWebPushData = {
+    body: WebPushUnsubscribeRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/web-push/unsubscribe';
+};
+
+export type UnsubscribeWebPushResponses = {
+    /**
+     * Unsubscribed
+     */
+    204: void;
+};
+
+export type UnsubscribeWebPushResponse = UnsubscribeWebPushResponses[keyof UnsubscribeWebPushResponses];
 
 export type GithubWebhookData = {
     /**
