@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.39.0](https://github.com/oore-ci/oore-client-js/compare/v0.38.0...v0.39.0) (2026-11-10)
+
+
+### Features
+
+* release rehearsals ([#102](https://github.com/oore-ci/oore-client-js/issues/102)) ([40a7e21](https://github.com/oore-ci/oore-client-js/commit/40a7e21f146499aadb32b2a3e3349108e64bc8d9))
+
 ## [0.38.0](https://github.com/oore-ci/oore-client-js/compare/v0.37.0...v0.38.0) (2026-11-10)
 
 
