@@ -410,6 +410,12 @@ export type Build = {
     pipeline_id: string;
     project_id: string;
     queued_at: number;
+    /**
+     * A release rehearsal: the build signs and checks every store
+     * submission the real run would make, and submits nothing. Its findings
+     * are at `GET /v1/builds/{build_id}/rehearsal`.
+     */
+    rehearsal?: boolean;
     release_outcome?: null | BuildReleaseOutcome;
     /**
      * Steps this build retries against `source_build_id`'s stored artifacts.
@@ -760,6 +766,23 @@ export type BuildReference = {
 };
 
 /**
+ * `GET /v1/builds/{build_id}/rehearsal`.
+ */
+export type BuildRehearsalResponse = {
+    build_id: string;
+    /**
+     * Blocking findings first, then warnings, then passed checks.
+     */
+    checks: Array<StoreReadinessItem>;
+    /**
+     * The stores whose submission was checked. A store the pipeline
+     * publishes to but that is missing here was not reached, such as when
+     * the build failed first.
+     */
+    stores: Array<ReleaseStore>;
+};
+
+/**
  * The furthest-behind store release of a build, in words a build list can
  * show beside the build status.
  */
@@ -1034,6 +1057,12 @@ export type CreateBuildRequest = {
      * Optional one-run platform selection. Omitted builds every platform configured by the pipeline.
      */
     platforms?: Array<BuildPlatform> | null;
+    /**
+     * Rehearse a release: build and sign as the real run would, check each
+     * store submission with the store, and submit nothing. The pipeline
+     * must publish to at least one store.
+     */
+    rehearsal?: boolean | null;
     /**
      * What's new in this release, as testers and store users read it. It
      * replaces the pipeline's Google Play and App Store release notes for
@@ -2982,6 +3011,19 @@ export type RegisteredIosDevice = {
     udid: string;
 };
 
+/**
+ * One check a rehearsal ran, as the runner reports it.
+ */
+export type RehearsalCheck = {
+    /**
+     * Stable identifier, such as `play_validate` or `asc_validate`.
+     */
+    code: string;
+    detail?: string | null;
+    level: ReadinessLevel;
+    title: string;
+};
+
 export type Release = {
     /**
      * Actions the caller may take now, from their project role and the state.
@@ -3571,6 +3613,7 @@ export type RunnerPublishPlan = {
      */
     frozen?: string | null;
     google_play?: null | GooglePlayPublishConfig;
+    rehearsal?: null | RunnerRehearsalPlan;
 };
 
 /**
@@ -3613,6 +3656,36 @@ export type RunnerPublishResult = {
     track: string;
     version_code: number;
     version_name?: string | null;
+};
+
+/**
+ * The store submissions a rehearsal checks without making them.
+ */
+export type RunnerRehearsalPlan = {
+    app_store?: null | RunnerAppStorePublishPlan;
+    /**
+     * Publishing is off for the build's workflow, so there is nothing to
+     * check. The top-level `disabled` is always set for a rehearsal.
+     */
+    disabled?: boolean;
+    google_play?: null | GooglePlayPublishConfig;
+};
+
+/**
+ * `POST /v1/runners/{runner_id}/jobs/{job_id}/rehearsal` — what a
+ * rehearsal found for one store.
+ */
+export type RunnerRehearsalReport = {
+    checks: Array<RehearsalCheck>;
+    store: PublishStore;
+};
+
+/**
+ * The rehearsal findings for a store: the runner's checks plus what Oore
+ * reads from the store itself.
+ */
+export type RunnerRehearsalReportResponse = {
+    checks: Array<StoreReadinessItem>;
 };
 
 /**
@@ -6382,6 +6455,36 @@ export type StreamBuildLogsResponses = {
 };
 
 export type StreamBuildLogsResponse = StreamBuildLogsResponses[keyof StreamBuildLogsResponses];
+
+export type GetBuildRehearsalData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/rehearsal';
+};
+
+export type GetBuildRehearsalErrors = {
+    /**
+     * Build not found
+     */
+    404: ApiError;
+};
+
+export type GetBuildRehearsalError = GetBuildRehearsalErrors[keyof GetBuildRehearsalErrors];
+
+export type GetBuildRehearsalResponses = {
+    /**
+     * Rehearsal findings
+     */
+    200: BuildRehearsalResponse;
+};
+
+export type GetBuildRehearsalResponse = GetBuildRehearsalResponses[keyof GetBuildRehearsalResponses];
 
 export type RejectBuildData = {
     /**
@@ -11546,6 +11649,54 @@ export type ReportJobPublishResultResponses = {
 };
 
 export type ReportJobPublishResultResponse = ReportJobPublishResultResponses[keyof ReportJobPublishResultResponses];
+
+export type ReportJobRehearsalData = {
+    body: RunnerRehearsalReport;
+    headers: {
+        /**
+         * Job-scoped signing grant
+         */
+        'x-oore-signing-token': string;
+    };
+    path: {
+        /**
+         * Runner ID
+         */
+        runner_id: string;
+        /**
+         * Build/Job ID
+         */
+        job_id: string;
+    };
+    query?: never;
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/rehearsal';
+};
+
+export type ReportJobRehearsalErrors = {
+    /**
+     * Runner authentication or signing grant is missing or invalid
+     */
+    401: ApiError;
+    /**
+     * Runner does not match the active assignment
+     */
+    403: ApiError;
+    /**
+     * Job is not active or is not a rehearsal
+     */
+    409: ApiError;
+};
+
+export type ReportJobRehearsalError = ReportJobRehearsalErrors[keyof ReportJobRehearsalErrors];
+
+export type ReportJobRehearsalResponses = {
+    /**
+     * Recorded
+     */
+    200: RunnerRehearsalReportResponse;
+};
+
+export type ReportJobRehearsalResponse = ReportJobRehearsalResponses[keyof ReportJobRehearsalResponses];
 
 export type GetJobRetryArtifactsData = {
     body?: never;

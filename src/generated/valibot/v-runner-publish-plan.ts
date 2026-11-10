@@ -3,11 +3,13 @@
 import * as v from 'valibot'
 import { vGooglePlayPublishConfig } from './v-google-play-publish-config.js'
 import { vRunnerAppStorePublishPlan } from './v-runner-app-store-publish-plan.js'
+import { vRunnerRehearsalPlan } from './v-runner-rehearsal-plan.js'
 
 export const vRunnerPublishPlan = v.object({
     app_store: v.nullish(vRunnerAppStorePublishPlan),
     changelog: v.nullish(v.string()),
     disabled: v.optional(v.boolean()),
     frozen: v.nullish(v.string()),
-    google_play: v.nullish(vGooglePlayPublishConfig)
+    google_play: v.nullish(vGooglePlayPublishConfig),
+    rehearsal: v.nullish(vRunnerRehearsalPlan)
 });

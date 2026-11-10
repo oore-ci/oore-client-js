@@ -2,7 +2,7 @@
 
 import { type DefaultBodyType, http, type HttpHandler, HttpResponse, type HttpResponseResolver, type RequestHandlerOptions as RequestHandlerOptions2 } from 'msw';
 
-import type { AbortArtifactData, AbortArtifactResponses, AddProjectFavoriteResponses, AddProjectMemberData, AddProjectMemberResponses, AppendBuildLogsData, AppendBuildLogsResponses, ApproveBuildData, ApproveBuildResponses, ApprovePromotionData, ApprovePromotionResponses, ApproveReleaseData, ApproveReleaseResponses, AttachScheduleReleaseData, AttachScheduleReleaseResponses, BrowseLocalGitDirectoriesResponses, CancelBuildResponses, CheckGitlabPersonalTokenResponses, ClaimJobData, ClaimJobResponses, ClientOptions, CompleteArtifactData, CompleteArtifactResponses, CompleteReleaseData, CompleteReleaseResponses, CompleteSetupResponses, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcResponses, ConfigureOidcData, ConfigureOidcResponses, CreateApiTokenData, CreateApiTokenResponses, CreateAppStoreConnectKeyData, CreateAppStoreConnectKeyResponses, CreateArtifactData, CreateArtifactInstallLinkResponses, CreateArtifactResponses, CreateBuildData, CreateBuildFeedbackData, CreateBuildFeedbackResponses, CreateBuildResponses, CreateDeviceRegistrationData, CreateDeviceRegistrationResponses, CreateInstanceSecretData, CreateInstanceSecretResponses, CreateLatestInstallLinkData, CreateLatestInstallLinkResponses, CreateLocalGitIntegrationData, CreateLocalGitIntegrationResponses, CreateNotificationChannelData, CreateNotificationChannelResponses, CreatePipelineData, CreatePipelineResponses, CreatePipelineSecretData, CreatePipelineSecretResponses, CreateProjectData, CreateProjectEnvironmentData, CreateProjectEnvironmentResponses, CreateProjectResponses, CreateProjectSecretData, CreateProjectSecretResponses, CreateReleaseData, CreateReleaseResponses, CreateSampleProjectResponses, CreateScopedDownloadTokenData, CreateScopedDownloadTokenResponses, CreateSigningIdentityData, CreateSigningIdentityResponses, CreateStreamTokenResponses, CreateTesterGroupData, CreateTesterGroupResponses, DeleteAppStoreConnectKeyResponses, DeleteInstanceSecretResponses, DeleteIntegrationResponses, DeleteLatestInstallLinkResponses, DeleteLocalGitIntegrationResponses, DeleteNotificationChannelResponses, DeletePipelineResponses, DeletePipelineSecretResponses, DeleteProjectEnvironmentResponses, DeleteProjectResponses, DeleteProjectRetentionResponses, DeleteProjectSecretResponses, DeleteReleaseFreezeResponses, DeleteRunnerResponses, DeleteSigningIdentityResponses, DeleteTesterGroupResponses, DeleteUserResponses, DetachScheduleReleaseData, DetachScheduleReleaseResponses, DetectProjectAppResponses, DiscoverRepositoryWorkflowsResponses, DownloadLocalArtifactInstallResponses, DownloadLocalArtifactLegacyResponses, DownloadLocalArtifactResponses, ExportPipelineYamlData, ExportPipelineYamlResponses, FrontendPairData, FrontendPairResponses, GenerateDownloadLinkResponses, GetArtifactStorageSettingsResponses, GetBuildAnalysisResponses, GetBuildFailureHintResponses, GetBuildFeedbackScreenshotResponses, GetBuildInsightsResponses, GetBuildLogsResponses, GetBuildResponses, GetBuildSizeReportResponses, GetBuildTestResultsResponses, GetBuildTrendsResponses, GetDeviceRegistrationResponses, GetExternalAccessNetworkSettingsResponses, GetExternalAccessOidcResponses, GetExternalAccessPreflightResponses, GetExternalAccessTrustedProxySettingsResponses, GetInboxResponses, GetInstancePreferencesResponses, GetIntegrationResponses, GetIosInstallManifestResponses, GetIosInstallManifestV1Responses, GetJobAndroidSigningResponses, GetJobIosSigningResponses, GetJobPublishPlanResponses, GetJobRetryArtifactsResponses, GetJobSecretsResponses, GetJobStatusResponses, GetMeResponses, GetNotificationChannelResponses, GetNotificationPreferencesResponses, GetPipelineAndroidSigningResponses, GetPipelineAppStorePublishResponses, GetPipelineGooglePlayPublishResponses, GetPipelineIosSigningResponses, GetPipelinePublishReadinessResponses, GetPipelineResponses, GetProjectResponses, GetProjectRetentionResponses, GetReleaseResponses, GetRetentionLastCleanupResponses, GetRetentionPolicyResponses, GetRunnerResponses, GetRuntimeUpdatePreflightResponses, GetRuntimeUpdateStatusResponses, GetSetupStatusResponses, GetSetupSummaryResponses, GetStoreVitalsResponses, GetWebPushConfigResponses, GetWeeklyDigestResponses, GithubCallbackResponses, GithubCompleteData, GithubCompleteResponses, GithubCreatePageResponses, GithubInstalledResponses, GithubStartData, GithubStartResponses, GithubWebhookResponses, GitlabAuthorizeData, GitlabAuthorizeResponses, GitlabCallbackResponses, GitlabCheckoutDiscoveryResponses, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackResponses, GitlabStartData, GitlabStartResponses, GitlabWebhookResponses, HaltReleaseData, HaltReleaseResponses, HealthzResponses, ImportPipelineYamlData, ImportPipelineYamlResponses, InviteUserData, InviteUserResponses, KeepBuildResponses, ListApiTokensResponses, ListAppStoreConnectKeysResponses, ListArtifactsResponses, ListAuditLogsResponses, ListBuildActorsResponses, ListBuildArtifactsData, ListBuildArtifactsResponses, ListBuildFeedbackResponses, ListBuildInstallsResponses, ListBuildSharesResponses, ListBuildsResponses, ListInstallationsResponses, ListInstanceSecretsResponses, ListIntegrationsResponses, ListLatestInstallLinksResponses, ListLocalGitIntegrationsResponses, ListNotificationChannelsResponses, ListNotificationDeliveriesResponses, ListOperatorIncidentsResponses, ListPipelineIosDevicesResponses, ListPipelineSecretsResponses, ListPipelinesResponses, ListPipelineWorkflowSettingsResponses, ListPipelineWorkflowsResponses, ListProjectArtifactsResponses, ListProjectEnvironmentsResponses, ListProjectMemberCandidatesResponses, ListProjectMembersResponses, ListProjectSecretsResponses, ListProjectsResponses, ListRecentFeedbackResponses, ListReleaseEventsResponses, ListReleaseFreezesResponses, ListReleasesResponses, ListRepositoriesResponses, ListRepositoryConfigFilesResponses, ListRunnersResponses, ListScopedDownloadTokensResponses, ListSigningIdentitiesResponses, ListSourceRepositoriesResponses, ListTesterGroupsResponses, ListUsersResponses, LocalLoginData, LocalLoginResponses, LogoutResponses, MarkOperatorIncidentReadResponses, MarkRejectedReleaseData, MarkRejectedReleaseResponses, MarkSentForReviewReleaseData, MarkSentForReviewReleaseResponses, MetricsResponses, OidcCallbackData, OidcCallbackResponses, OidcStartResponses, PauseReleaseData, PauseReleaseResponses, PlanPipelineData, PlanPipelineResponses, PreviewBuildChangelogResponses, PromoteBuildData, PromoteBuildResponses, PullFromReviewReleaseData, PullFromReviewReleaseResponses, PurgeRunnerCachesResponses, RaiseReleaseData, RaiseReleaseResponses, ReadyzResponses, ReEnableUserResponses, RefreshRepositoryConfigFilesResponses, RefreshStoreVitalsResponses, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponses, RegisterRunnerData, RegisterRunnerResponses, RejectBuildData, RejectBuildResponses, RejectPromotionData, RejectPromotionResponses, ReleaseNowReleaseData, ReleaseNowReleaseResponses, RemoveProjectFavoriteResponses, RemoveProjectMemberResponses, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenResponses, ReportBuildIdentityData, ReportBuildIdentityResponses, ReportJobAnalysisData, ReportJobAnalysisResponses, ReportJobPublishResultData, ReportJobPublishResultResponses, ReportJobTestResultsData, ReportJobTestResultsResponses, RepositoryAvatarResponses, RerunBuildResponses, ResubmitReleaseData, ResubmitReleaseResponses, ResumeReleaseData, ResumeReleaseResponses, RetryBuildStepData, RetryBuildStepResponses, RetryReleaseData, RetryReleaseResponses, RevokeApiTokenResponses, RevokeScopedDownloadTokenResponses, RotateGitlabRepositoryWebhookSecretResponses, RotateInstanceSecretData, RotateInstanceSecretResponses, RotatePipelineSecretData, RotatePipelineSecretResponses, RotateProjectSecretData, RotateProjectSecretResponses, RunnerHeartbeatData, RunnerHeartbeatResponses, SendBuildToGroupData, SendBuildToGroupResponses, SendTestWebPushResponses, SendWeeklyDigestResponses, SetReleaseFreezeData, SetReleaseFreezeResponses, SetupLocalOwnerCreateData, SetupLocalOwnerCreateResponses, SetupOidcStartData, SetupOidcStartResponses, SetupOidcVerifyData, SetupOidcVerifyResponses, SetupOwnerClaimTrustedProxyResponses, SetupPreferencesData, SetupPreferencesResponses, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureResponses, StartRuntimeUpdateResponses, StreamBuildLogsResponses, StreamEventsResponses, SubscribeWebPushData, SubscribeWebPushResponses, SyncInstallationsData, SyncInstallationsResponses, SyncPipelineIosSigningResponses, SyncStoreReleasesData, SyncStoreReleasesResponses, TestNotificationChannelResponses, TestOidcConnectionData, TestOidcConnectionResponses, TestPipelineGooglePlayCredentialsData, TestPipelineGooglePlayCredentialsResponses, TrustedProxyLoginResponses, UnkeepBuildResponses, UnsubscribeWebPushData, UnsubscribeWebPushResponses, UpdateAppStoreConnectKeyData, UpdateAppStoreConnectKeyResponses, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsResponses, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsResponses, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsResponses, UpdateInstancePreferencesData, UpdateInstancePreferencesResponses, UpdateJobStatusData, UpdateJobStatusResponses, UpdateNotificationChannelData, UpdateNotificationChannelResponses, UpdateNotificationPreferencesData, UpdateNotificationPreferencesResponses, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponses, UpdatePipelineAppStorePublishData, UpdatePipelineAppStorePublishResponses, UpdatePipelineData, UpdatePipelineGooglePlayPublishData, UpdatePipelineGooglePlayPublishResponses, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponses, UpdatePipelineResponses, UpdatePipelineWorkflowSettingsData, UpdatePipelineWorkflowSettingsResponses, UpdateProjectData, UpdateProjectEnvironmentData, UpdateProjectEnvironmentResponses, UpdateProjectMemberData, UpdateProjectMemberResponses, UpdateProjectResponses, UpdateProjectRetentionData, UpdateProjectRetentionResponses, UpdateRetentionPolicyData, UpdateRetentionPolicyResponses, UpdateRunnerData, UpdateRunnerResponses, UpdateSigningIdentityData, UpdateSigningIdentityResponses, UpdateTesterGroupData, UpdateTesterGroupResponses, UpdateUserRoleData, UpdateUserRoleResponses, UploadLocalArtifactData, UploadLocalArtifactResponses, ValidatePipelineData, ValidatePipelineResponses, VerifyBootstrapTokenData, VerifyBootstrapTokenResponses } from './types.gen.js';
+import type { AbortArtifactData, AbortArtifactResponses, AddProjectFavoriteResponses, AddProjectMemberData, AddProjectMemberResponses, AppendBuildLogsData, AppendBuildLogsResponses, ApproveBuildData, ApproveBuildResponses, ApprovePromotionData, ApprovePromotionResponses, ApproveReleaseData, ApproveReleaseResponses, AttachScheduleReleaseData, AttachScheduleReleaseResponses, BrowseLocalGitDirectoriesResponses, CancelBuildResponses, CheckGitlabPersonalTokenResponses, ClaimJobData, ClaimJobResponses, ClientOptions, CompleteArtifactData, CompleteArtifactResponses, CompleteReleaseData, CompleteReleaseResponses, CompleteSetupResponses, ConfigureExternalAccessOidcData, ConfigureExternalAccessOidcResponses, ConfigureOidcData, ConfigureOidcResponses, CreateApiTokenData, CreateApiTokenResponses, CreateAppStoreConnectKeyData, CreateAppStoreConnectKeyResponses, CreateArtifactData, CreateArtifactInstallLinkResponses, CreateArtifactResponses, CreateBuildData, CreateBuildFeedbackData, CreateBuildFeedbackResponses, CreateBuildResponses, CreateDeviceRegistrationData, CreateDeviceRegistrationResponses, CreateInstanceSecretData, CreateInstanceSecretResponses, CreateLatestInstallLinkData, CreateLatestInstallLinkResponses, CreateLocalGitIntegrationData, CreateLocalGitIntegrationResponses, CreateNotificationChannelData, CreateNotificationChannelResponses, CreatePipelineData, CreatePipelineResponses, CreatePipelineSecretData, CreatePipelineSecretResponses, CreateProjectData, CreateProjectEnvironmentData, CreateProjectEnvironmentResponses, CreateProjectResponses, CreateProjectSecretData, CreateProjectSecretResponses, CreateReleaseData, CreateReleaseResponses, CreateSampleProjectResponses, CreateScopedDownloadTokenData, CreateScopedDownloadTokenResponses, CreateSigningIdentityData, CreateSigningIdentityResponses, CreateStreamTokenResponses, CreateTesterGroupData, CreateTesterGroupResponses, DeleteAppStoreConnectKeyResponses, DeleteInstanceSecretResponses, DeleteIntegrationResponses, DeleteLatestInstallLinkResponses, DeleteLocalGitIntegrationResponses, DeleteNotificationChannelResponses, DeletePipelineResponses, DeletePipelineSecretResponses, DeleteProjectEnvironmentResponses, DeleteProjectResponses, DeleteProjectRetentionResponses, DeleteProjectSecretResponses, DeleteReleaseFreezeResponses, DeleteRunnerResponses, DeleteSigningIdentityResponses, DeleteTesterGroupResponses, DeleteUserResponses, DetachScheduleReleaseData, DetachScheduleReleaseResponses, DetectProjectAppResponses, DiscoverRepositoryWorkflowsResponses, DownloadLocalArtifactInstallResponses, DownloadLocalArtifactLegacyResponses, DownloadLocalArtifactResponses, ExportPipelineYamlData, ExportPipelineYamlResponses, FrontendPairData, FrontendPairResponses, GenerateDownloadLinkResponses, GetArtifactStorageSettingsResponses, GetBuildAnalysisResponses, GetBuildFailureHintResponses, GetBuildFeedbackScreenshotResponses, GetBuildInsightsResponses, GetBuildLogsResponses, GetBuildRehearsalResponses, GetBuildResponses, GetBuildSizeReportResponses, GetBuildTestResultsResponses, GetBuildTrendsResponses, GetDeviceRegistrationResponses, GetExternalAccessNetworkSettingsResponses, GetExternalAccessOidcResponses, GetExternalAccessPreflightResponses, GetExternalAccessTrustedProxySettingsResponses, GetInboxResponses, GetInstancePreferencesResponses, GetIntegrationResponses, GetIosInstallManifestResponses, GetIosInstallManifestV1Responses, GetJobAndroidSigningResponses, GetJobIosSigningResponses, GetJobPublishPlanResponses, GetJobRetryArtifactsResponses, GetJobSecretsResponses, GetJobStatusResponses, GetMeResponses, GetNotificationChannelResponses, GetNotificationPreferencesResponses, GetPipelineAndroidSigningResponses, GetPipelineAppStorePublishResponses, GetPipelineGooglePlayPublishResponses, GetPipelineIosSigningResponses, GetPipelinePublishReadinessResponses, GetPipelineResponses, GetProjectResponses, GetProjectRetentionResponses, GetReleaseResponses, GetRetentionLastCleanupResponses, GetRetentionPolicyResponses, GetRunnerResponses, GetRuntimeUpdatePreflightResponses, GetRuntimeUpdateStatusResponses, GetSetupStatusResponses, GetSetupSummaryResponses, GetStoreVitalsResponses, GetWebPushConfigResponses, GetWeeklyDigestResponses, GithubCallbackResponses, GithubCompleteData, GithubCompleteResponses, GithubCreatePageResponses, GithubInstalledResponses, GithubStartData, GithubStartResponses, GithubWebhookResponses, GitlabAuthorizeData, GitlabAuthorizeResponses, GitlabCallbackResponses, GitlabCheckoutDiscoveryResponses, GitlabCheckoutUploadPackData, GitlabCheckoutUploadPackResponses, GitlabStartData, GitlabStartResponses, GitlabWebhookResponses, HaltReleaseData, HaltReleaseResponses, HealthzResponses, ImportPipelineYamlData, ImportPipelineYamlResponses, InviteUserData, InviteUserResponses, KeepBuildResponses, ListApiTokensResponses, ListAppStoreConnectKeysResponses, ListArtifactsResponses, ListAuditLogsResponses, ListBuildActorsResponses, ListBuildArtifactsData, ListBuildArtifactsResponses, ListBuildFeedbackResponses, ListBuildInstallsResponses, ListBuildSharesResponses, ListBuildsResponses, ListInstallationsResponses, ListInstanceSecretsResponses, ListIntegrationsResponses, ListLatestInstallLinksResponses, ListLocalGitIntegrationsResponses, ListNotificationChannelsResponses, ListNotificationDeliveriesResponses, ListOperatorIncidentsResponses, ListPipelineIosDevicesResponses, ListPipelineSecretsResponses, ListPipelinesResponses, ListPipelineWorkflowSettingsResponses, ListPipelineWorkflowsResponses, ListProjectArtifactsResponses, ListProjectEnvironmentsResponses, ListProjectMemberCandidatesResponses, ListProjectMembersResponses, ListProjectSecretsResponses, ListProjectsResponses, ListRecentFeedbackResponses, ListReleaseEventsResponses, ListReleaseFreezesResponses, ListReleasesResponses, ListRepositoriesResponses, ListRepositoryConfigFilesResponses, ListRunnersResponses, ListScopedDownloadTokensResponses, ListSigningIdentitiesResponses, ListSourceRepositoriesResponses, ListTesterGroupsResponses, ListUsersResponses, LocalLoginData, LocalLoginResponses, LogoutResponses, MarkOperatorIncidentReadResponses, MarkRejectedReleaseData, MarkRejectedReleaseResponses, MarkSentForReviewReleaseData, MarkSentForReviewReleaseResponses, MetricsResponses, OidcCallbackData, OidcCallbackResponses, OidcStartResponses, PauseReleaseData, PauseReleaseResponses, PlanPipelineData, PlanPipelineResponses, PreviewBuildChangelogResponses, PromoteBuildData, PromoteBuildResponses, PullFromReviewReleaseData, PullFromReviewReleaseResponses, PurgeRunnerCachesResponses, RaiseReleaseData, RaiseReleaseResponses, ReadyzResponses, ReEnableUserResponses, RefreshRepositoryConfigFilesResponses, RefreshStoreVitalsResponses, RegisterPipelineIosDeviceData, RegisterPipelineIosDeviceResponses, RegisterRunnerData, RegisterRunnerResponses, RejectBuildData, RejectBuildResponses, RejectPromotionData, RejectPromotionResponses, ReleaseNowReleaseData, ReleaseNowReleaseResponses, RemoveProjectFavoriteResponses, RemoveProjectMemberResponses, ReplaceGitlabPersonalTokenData, ReplaceGitlabPersonalTokenResponses, ReportBuildIdentityData, ReportBuildIdentityResponses, ReportJobAnalysisData, ReportJobAnalysisResponses, ReportJobPublishResultData, ReportJobPublishResultResponses, ReportJobRehearsalData, ReportJobRehearsalResponses, ReportJobTestResultsData, ReportJobTestResultsResponses, RepositoryAvatarResponses, RerunBuildResponses, ResubmitReleaseData, ResubmitReleaseResponses, ResumeReleaseData, ResumeReleaseResponses, RetryBuildStepData, RetryBuildStepResponses, RetryReleaseData, RetryReleaseResponses, RevokeApiTokenResponses, RevokeScopedDownloadTokenResponses, RotateGitlabRepositoryWebhookSecretResponses, RotateInstanceSecretData, RotateInstanceSecretResponses, RotatePipelineSecretData, RotatePipelineSecretResponses, RotateProjectSecretData, RotateProjectSecretResponses, RunnerHeartbeatData, RunnerHeartbeatResponses, SendBuildToGroupData, SendBuildToGroupResponses, SendTestWebPushResponses, SendWeeklyDigestResponses, SetReleaseFreezeData, SetReleaseFreezeResponses, SetupLocalOwnerCreateData, SetupLocalOwnerCreateResponses, SetupOidcStartData, SetupOidcStartResponses, SetupOidcVerifyData, SetupOidcVerifyResponses, SetupOwnerClaimTrustedProxyResponses, SetupPreferencesData, SetupPreferencesResponses, SetupTrustedProxyConfigureData, SetupTrustedProxyConfigureResponses, StartRuntimeUpdateResponses, StreamBuildLogsResponses, StreamEventsResponses, SubscribeWebPushData, SubscribeWebPushResponses, SyncInstallationsData, SyncInstallationsResponses, SyncPipelineIosSigningResponses, SyncStoreReleasesData, SyncStoreReleasesResponses, TestNotificationChannelResponses, TestOidcConnectionData, TestOidcConnectionResponses, TestPipelineGooglePlayCredentialsData, TestPipelineGooglePlayCredentialsResponses, TrustedProxyLoginResponses, UnkeepBuildResponses, UnsubscribeWebPushData, UnsubscribeWebPushResponses, UpdateAppStoreConnectKeyData, UpdateAppStoreConnectKeyResponses, UpdateArtifactStorageSettingsData, UpdateArtifactStorageSettingsResponses, UpdateExternalAccessNetworkSettingsData, UpdateExternalAccessNetworkSettingsResponses, UpdateExternalAccessTrustedProxySettingsData, UpdateExternalAccessTrustedProxySettingsResponses, UpdateInstancePreferencesData, UpdateInstancePreferencesResponses, UpdateJobStatusData, UpdateJobStatusResponses, UpdateNotificationChannelData, UpdateNotificationChannelResponses, UpdateNotificationPreferencesData, UpdateNotificationPreferencesResponses, UpdatePipelineAndroidSigningData, UpdatePipelineAndroidSigningResponses, UpdatePipelineAppStorePublishData, UpdatePipelineAppStorePublishResponses, UpdatePipelineData, UpdatePipelineGooglePlayPublishData, UpdatePipelineGooglePlayPublishResponses, UpdatePipelineIosSigningData, UpdatePipelineIosSigningResponses, UpdatePipelineResponses, UpdatePipelineWorkflowSettingsData, UpdatePipelineWorkflowSettingsResponses, UpdateProjectData, UpdateProjectEnvironmentData, UpdateProjectEnvironmentResponses, UpdateProjectMemberData, UpdateProjectMemberResponses, UpdateProjectResponses, UpdateProjectRetentionData, UpdateProjectRetentionResponses, UpdateRetentionPolicyData, UpdateRetentionPolicyResponses, UpdateRunnerData, UpdateRunnerResponses, UpdateSigningIdentityData, UpdateSigningIdentityResponses, UpdateTesterGroupData, UpdateTesterGroupResponses, UpdateUserRoleData, UpdateUserRoleResponses, UploadLocalArtifactData, UploadLocalArtifactResponses, ValidatePipelineData, ValidatePipelineResponses, VerifyBootstrapTokenData, VerifyBootstrapTokenResponses } from './types.gen.js';
 
 export type RequestHandlerOptions = RequestHandlerOptions2 & {
     baseUrl?: ClientOptions['baseUrl'];
@@ -1416,6 +1416,37 @@ export function handleStreamBuildLogs(response?: HandleStreamBuildLogsResponse |
         const body = response?.body;
         if (body !== undefined) {
             return HttpResponse.text(typeof body === 'string' ? body : JSON.stringify(body), { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
+export type HandleGetBuildRehearsalResponse = {
+    body: GetBuildRehearsalResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `GET /v1/builds/{build_id}/rehearsal` operation.
+ */
+export function handleGetBuildRehearsal(response?: HandleGetBuildRehearsalResponse | HttpResponseResolver<{
+    build_id: string;
+}, never>, options?: RequestHandlerOptions): HttpHandler {
+    return http.get<{
+        build_id: string;
+    }, never>(`${options?.baseUrl ?? '*'}/v1/builds/:build_id/rehearsal`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
         }
         if (options?.responseFallback === 'passthrough') {
             return;
@@ -6067,6 +6098,39 @@ export function handleReportJobPublishResult(response?: HandleReportJobPublishRe
     }, options);
 }
 
+export type HandleReportJobRehearsalResponse = {
+    body: ReportJobRehearsalResponses[200];
+    status?: 200;
+};
+
+/**
+ * Handler for the `POST /v1/runners/{runner_id}/jobs/{job_id}/rehearsal` operation.
+ */
+export function handleReportJobRehearsal(response?: HandleReportJobRehearsalResponse | HttpResponseResolver<{
+    runner_id: string;
+    job_id: string;
+}, ReportJobRehearsalData['body']>, options?: RequestHandlerOptions): HttpHandler {
+    return http.post<{
+        runner_id: string;
+        job_id: string;
+    }, ReportJobRehearsalData['body']>(`${options?.baseUrl ?? '*'}/v1/runners/:runner_id/jobs/:job_id/rehearsal`, info => {
+        if (typeof response === 'function') {
+            return response(info);
+        }
+        const body = response?.body;
+        if (body !== undefined) {
+            return HttpResponse.json(body, { status: response?.status ?? 200 });
+        }
+        if (options?.responseFallback === 'passthrough') {
+            return;
+        }
+        return new Response('Not Implemented', {
+            status: 501,
+            statusText: 'Not Implemented'
+        });
+    }, options);
+}
+
 export type HandleGetJobRetryArtifactsResponse = {
     body: GetJobRetryArtifactsResponses[200];
     status?: 200;
@@ -8115,6 +8179,10 @@ export type MswHandlerFactories = {
      */
     streamBuildLogs: typeof handleStreamBuildLogs;
     /**
+     * Handler for the `GET /v1/builds/{build_id}/rehearsal` operation.
+     */
+    getBuildRehearsal: typeof handleGetBuildRehearsal;
+    /**
      * Handler for the `POST /v1/builds/{build_id}/reject` operation.
      */
     rejectBuild: typeof handleRejectBuild;
@@ -8723,6 +8791,10 @@ export type MswHandlerFactories = {
      */
     reportJobPublishResult: typeof handleReportJobPublishResult;
     /**
+     * Handler for the `POST /v1/runners/{runner_id}/jobs/{job_id}/rehearsal` operation.
+     */
+    reportJobRehearsal: typeof handleReportJobRehearsal;
+    /**
      * Handler for the `GET /v1/runners/{runner_id}/jobs/{job_id}/retry-artifacts` operation.
      */
     getJobRetryArtifacts: typeof handleGetJobRetryArtifacts;
@@ -9051,6 +9123,7 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
         keepBuild: wrap(handleKeepBuild),
         getBuildLogs: wrap(handleGetBuildLogs),
         streamBuildLogs: wrap(handleStreamBuildLogs),
+        getBuildRehearsal: wrap(handleGetBuildRehearsal),
         rejectBuild: wrap(handleRejectBuild),
         rerunBuild: wrap(handleRerunBuild),
         retryBuildStep: wrap(handleRetryBuildStep),
@@ -9203,6 +9276,7 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
         appendBuildLogs: wrap(handleAppendBuildLogs),
         getJobPublishPlan: wrap(handleGetJobPublishPlan),
         reportJobPublishResult: wrap(handleReportJobPublishResult),
+        reportJobRehearsal: wrap(handleReportJobRehearsal),
         getJobRetryArtifacts: wrap(handleGetJobRetryArtifacts),
         getJobSecrets: wrap(handleGetJobSecrets),
         updateJobStatus: wrap(handleUpdateJobStatus),
@@ -9298,6 +9372,7 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
             invoke(pick.appendBuildLogs, overrides.appendBuildLogs),
             invoke(pick.getJobPublishPlan, overrides.getJobPublishPlan),
             invoke(pick.reportJobPublishResult, overrides.reportJobPublishResult),
+            invoke(pick.reportJobRehearsal, overrides.reportJobRehearsal),
             invoke(pick.getJobRetryArtifacts, overrides.getJobRetryArtifacts),
             invoke(pick.getJobSecrets, overrides.getJobSecrets),
             invoke(pick.updateJobStatus, overrides.updateJobStatus),
@@ -9388,6 +9463,7 @@ export function createMswHandlers(config: RequestHandlerOptions = {}): CreateMsw
             invoke(pick.unkeepBuild, overrides.unkeepBuild),
             invoke(pick.keepBuild, overrides.keepBuild),
             invoke(pick.getBuildLogs, overrides.getBuildLogs),
+            invoke(pick.getBuildRehearsal, overrides.getBuildRehearsal),
             invoke(pick.rejectBuild, overrides.rejectBuild),
             invoke(pick.rerunBuild, overrides.rerunBuild),
             invoke(pick.retryBuildStep, overrides.retryBuildStep),
