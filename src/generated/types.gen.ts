@@ -123,6 +123,19 @@ export type AppStoreConnectKeySummary = {
 export type AppStoreDestination = 'testflight' | 'app_store';
 
 /**
+ * One language of an App Store listing, read from the repository. Absent
+ * fields are left as they are in App Store Connect.
+ */
+export type AppStoreListing = {
+    description?: string | null;
+    keywords?: string | null;
+    locale: string;
+    marketing_url?: string | null;
+    promotional_text?: string | null;
+    support_url?: string | null;
+};
+
+/**
  * App Store publishing settings for a pipeline, stored as the `app_store`
  * publish target. Uploads use the App Store Connect API key from the
  * pipeline's iOS signing settings and require the `app_store` export method.
@@ -141,6 +154,17 @@ export type AppStorePublishConfig = {
      */
     earliest_release_date?: string | null;
     enabled: boolean;
+    /**
+     * The listing the runner read from `listing_dir` for this upload.
+     */
+    listing?: Array<AppStoreListing>;
+    /**
+     * A repository directory with the store listing in fastlane's layout,
+     * `<locale>/description.txt`, `keywords.txt`, `promotional_text.txt`,
+     * `marketing_url.txt` and `support_url.txt`, such as
+     * `fastlane/metadata`. Each submitted version gets it.
+     */
+    listing_dir?: string | null;
     /**
      * Release the approved version with Apple's seven-day phased release.
      */
@@ -528,6 +552,42 @@ export type BuildEvent = {
     to_status: string;
 };
 
+/**
+ * The first line of a failed build's log that explains the failure, with
+ * the likely cause.
+ */
+export type BuildFailureHint = {
+    /**
+     * `gradle`, `xcode`, `cocoapods`, `signing`, `dart`, `flutter`,
+     * `network`, `disk` or `other`.
+     */
+    category: string;
+    /**
+     * What probably went wrong, in plain words.
+     */
+    cause: string;
+    /**
+     * What usually fixes it.
+     */
+    fix?: string | null;
+    /**
+     * The log line, trimmed.
+     */
+    line: string;
+    /**
+     * Its sequence in the build log, to jump to it.
+     */
+    sequence: number;
+    /**
+     * The step whose log the line is in.
+     */
+    step?: string | null;
+};
+
+export type BuildFailureHintResponse = {
+    hint?: null | BuildFailureHint;
+};
+
 export type BuildFeedback = {
     app_version?: string | null;
     artifact_id?: string | null;
@@ -814,6 +874,18 @@ export type BuildTestSummary = {
     passed: number;
     skipped: number;
     total: number;
+};
+
+export type BuildTrendsResponse = {
+    /**
+     * Most occurrences first, at most 20.
+     */
+    flaky_tests: Array<FlakyTest>;
+    /**
+     * Largest slowdown first, at most 10.
+     */
+    slower_steps: Array<SlowerStep>;
+    window_days: number;
 };
 
 export type CancelBuildResponse = {
@@ -1428,6 +1500,28 @@ export type FailingPipelineInsights = {
     project_name: string;
 };
 
+/**
+ * A test that failed and then passed on the same commit, so the failure
+ * was not the code's.
+ */
+export type FlakyTest = {
+    failed_build_id: string;
+    failed_build_number: number;
+    last_seen_at: number;
+    name: string;
+    /**
+     * Times it failed and then passed on the same commit in the window.
+     */
+    occurrences: number;
+    passed_build_id: string;
+    passed_build_number: number;
+    pipeline_id: string;
+    pipeline_name: string;
+    project_id: string;
+    project_name: string;
+    suite: string;
+};
+
 export type FrontendPairRequest = {
     code: string;
 };
@@ -1561,6 +1655,13 @@ export type GooglePlayPublishConfig = {
      * In-app update priority, 0 to 5.
      */
     in_app_update_priority?: number | null;
+    /**
+     * A repository directory with the store listing in fastlane's layout,
+     * `<locale>/title.txt`, `short_description.txt`,
+     * `full_description.txt` and `video.txt`, such as
+     * `fastlane/metadata/android`. Sent with every upload.
+     */
+    listing_dir?: string | null;
     /**
      * Expected application id. When omitted, the AAB's package is used.
      */
@@ -1978,6 +2079,10 @@ export type ListRecentFeedbackResponse = {
 
 export type ListReleaseActivityResponse = {
     events: Array<ReleaseActivityEvent>;
+};
+
+export type ListReleaseFreezesResponse = {
+    freezes: Array<ReleaseFreeze>;
 };
 
 export type ListReleasesResponse = {
@@ -3026,6 +3131,22 @@ export type ReleaseDetailResponse = {
     release: Release;
 };
 
+/**
+ * Store submissions and promotions are held, for one app or the whole
+ * instance.
+ */
+export type ReleaseFreeze = {
+    created_at: number;
+    created_by_email?: string | null;
+    id: string;
+    /**
+     * Absent for a freeze of the whole instance.
+     */
+    project_id?: string | null;
+    project_name?: string | null;
+    reason: string;
+};
+
 export type ReleaseHealth = 'unknown' | 'healthy' | 'warning' | 'breached';
 
 export type ReleaseHistoryEntry = {
@@ -3444,6 +3565,11 @@ export type RunnerPublishPlan = {
      * workflow settings, so nothing uploads, whatever the file says.
      */
     disabled?: boolean;
+    /**
+     * A release freeze holds store uploads; its reason. Nothing uploads
+     * until it is lifted.
+     */
+    frozen?: string | null;
     google_play?: null | GooglePlayPublishConfig;
 };
 
@@ -3456,6 +3582,11 @@ export type RunnerPublishResult = {
      * the release waits in Play Console until someone sends it for review.
      */
     held_for_review?: boolean;
+    /**
+     * App Store uploads: the store listing read from the repository
+     * (`listing_dir`), applied to the version Oore submits.
+     */
+    listing?: Array<AppStoreListing> | null;
     package_name: string;
     /**
      * App Store uploads: "What's New" / "What to Test" read from the
@@ -3655,6 +3786,14 @@ export type SendBuildToGroupRequest = {
      * What to test, up to 1000 characters. Shown in the email.
      */
     message?: string | null;
+};
+
+export type SetReleaseFreezeRequest = {
+    /**
+     * The app to freeze; absent freezes the whole instance.
+     */
+    project_id?: string | null;
+    reason: string;
 };
 
 export type SetupCompleteResponse = {
@@ -3880,6 +4019,29 @@ export type SlackMention = {
      * Slack member ID, such as `U0123ABCD`.
      */
     member_id: string;
+};
+
+/**
+ * A build step whose run time grew over the window.
+ */
+export type SlowerStep = {
+    /**
+     * Median seconds in the second half of the window.
+     */
+    after_seconds: number;
+    /**
+     * Median seconds in the first half of the window.
+     */
+    before_seconds: number;
+    /**
+     * Succeeded builds the medians come from.
+     */
+    builds: number;
+    pipeline_id: string;
+    pipeline_name: string;
+    project_id: string;
+    project_name: string;
+    step: string;
 };
 
 export type SmtpConfig = {
@@ -5728,6 +5890,36 @@ export type GetBuildInsightsResponses = {
 
 export type GetBuildInsightsResponse = GetBuildInsightsResponses[keyof GetBuildInsightsResponses];
 
+export type GetBuildTrendsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Window length in days: 7, 14, 30 (default) or 90
+         */
+        days?: number;
+    };
+    url: '/v1/builds/trends';
+};
+
+export type GetBuildTrendsErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+};
+
+export type GetBuildTrendsError = GetBuildTrendsErrors[keyof GetBuildTrendsErrors];
+
+export type GetBuildTrendsResponses = {
+    /**
+     * Build trends
+     */
+    200: BuildTrendsResponse;
+};
+
+export type GetBuildTrendsResponse = GetBuildTrendsResponses[keyof GetBuildTrendsResponses];
+
 export type GetBuildData = {
     body?: never;
     path: {
@@ -5883,6 +6075,36 @@ export type CancelBuildResponses = {
 };
 
 export type CancelBuildResponse2 = CancelBuildResponses[keyof CancelBuildResponses];
+
+export type GetBuildFailureHintData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: never;
+    url: '/v1/builds/{build_id}/failure-hint';
+};
+
+export type GetBuildFailureHintErrors = {
+    /**
+     * Build not found
+     */
+    404: ApiError;
+};
+
+export type GetBuildFailureHintError = GetBuildFailureHintErrors[keyof GetBuildFailureHintErrors];
+
+export type GetBuildFailureHintResponses = {
+    /**
+     * Failure hint
+     */
+    200: BuildFailureHintResponse;
+};
+
+export type GetBuildFailureHintResponse = GetBuildFailureHintResponses[keyof GetBuildFailureHintResponses];
 
 export type ListBuildFeedbackData = {
     body?: never;
@@ -9719,6 +9941,85 @@ export type ListReleaseEventsResponses = {
 };
 
 export type ListReleaseEventsResponse = ListReleaseEventsResponses[keyof ListReleaseEventsResponses];
+
+export type ListReleaseFreezesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/release-freezes';
+};
+
+export type ListReleaseFreezesResponses = {
+    /**
+     * Release freezes
+     */
+    200: ListReleaseFreezesResponse;
+};
+
+export type ListReleaseFreezesResponse2 = ListReleaseFreezesResponses[keyof ListReleaseFreezesResponses];
+
+export type SetReleaseFreezeData = {
+    body: SetReleaseFreezeRequest;
+    path?: never;
+    query?: never;
+    url: '/v1/release-freezes';
+};
+
+export type SetReleaseFreezeErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Forbidden
+     */
+    403: ApiError;
+};
+
+export type SetReleaseFreezeError = SetReleaseFreezeErrors[keyof SetReleaseFreezeErrors];
+
+export type SetReleaseFreezeResponses = {
+    /**
+     * The freeze
+     */
+    200: ReleaseFreeze;
+};
+
+export type SetReleaseFreezeResponse = SetReleaseFreezeResponses[keyof SetReleaseFreezeResponses];
+
+export type DeleteReleaseFreezeData = {
+    body?: never;
+    path: {
+        /**
+         * Freeze ID
+         */
+        freeze_id: string;
+    };
+    query?: never;
+    url: '/v1/release-freezes/{freeze_id}';
+};
+
+export type DeleteReleaseFreezeErrors = {
+    /**
+     * Forbidden
+     */
+    403: ApiError;
+    /**
+     * Freeze not found
+     */
+    404: ApiError;
+};
+
+export type DeleteReleaseFreezeError = DeleteReleaseFreezeErrors[keyof DeleteReleaseFreezeErrors];
+
+export type DeleteReleaseFreezeResponses = {
+    /**
+     * Lifted
+     */
+    204: void;
+};
+
+export type DeleteReleaseFreezeResponse = DeleteReleaseFreezeResponses[keyof DeleteReleaseFreezeResponses];
 
 export type ListReleasesData = {
     body?: never;

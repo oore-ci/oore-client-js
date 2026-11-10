@@ -8,5 +8,6 @@ export const vRunnerPublishPlan = v.object({
     app_store: v.nullish(vRunnerAppStorePublishPlan),
     changelog: v.nullish(v.string()),
     disabled: v.optional(v.boolean()),
+    frozen: v.nullish(v.string()),
     google_play: v.nullish(vGooglePlayPublishConfig)
 });

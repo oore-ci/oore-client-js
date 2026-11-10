@@ -2,6 +2,7 @@
 
 import * as v from 'valibot'
 import { vAppStoreDestination } from './v-app-store-destination.js'
+import { vAppStoreListing } from './v-app-store-listing.js'
 import { vAppStoreReleaseNote } from './v-app-store-release-note.js'
 import { vAppStoreReleaseType } from './v-app-store-release-type.js'
 import { vPublishPreflight } from './v-publish-preflight.js'
@@ -11,6 +12,8 @@ export const vAppStorePublishConfig = v.object({
     destination: v.optional(vAppStoreDestination),
     earliest_release_date: v.nullish(v.string()),
     enabled: v.boolean(),
+    listing: v.optional(v.array(vAppStoreListing)),
+    listing_dir: v.nullish(v.string()),
     phased_release: v.optional(v.boolean()),
     preflight: v.optional(vPublishPreflight),
     release_notes: v.array(vAppStoreReleaseNote),

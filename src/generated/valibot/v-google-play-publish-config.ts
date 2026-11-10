@@ -9,6 +9,7 @@ export const vGooglePlayPublishConfig = v.strictObject({
     draft: v.optional(v.boolean()),
     enabled: v.optional(v.boolean()),
     in_app_update_priority: v.nullish(v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))),
+    listing_dir: v.nullish(v.string()),
     package_name: v.nullish(v.string()),
     preflight: v.optional(vPublishPreflight),
     release_notes: v.optional(vGooglePlayReleaseNotesSource),
