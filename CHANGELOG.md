@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.40.0](https://github.com/oore-ci/oore-client-js/compare/v0.39.0...v0.40.0) (2026-11-15)
+
+
+### Features
+
+* App Store pre-flight for runners and promotion readiness ([#104](https://github.com/oore-ci/oore-client-js/issues/104)) ([7ea605b](https://github.com/oore-ci/oore-client-js/commit/7ea605b4e4c2cca9a618f2e7e4695d95dd9e92a3))
+
 ## [0.39.0](https://github.com/oore-ci/oore-client-js/compare/v0.38.0...v0.39.0) (2026-11-10)
 
 
