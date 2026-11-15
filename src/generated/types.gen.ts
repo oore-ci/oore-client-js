@@ -3479,6 +3479,49 @@ export type RunnerAndroidSigningResponse = {
 };
 
 /**
+ * `POST /v1/runners/{runner_id}/jobs/{job_id}/app-store-preflight` — the
+ * signed IPA's identity, so Oore can read what App Store Connect already
+ * has for it before the upload.
+ */
+export type RunnerAppStorePreflightRequest = {
+    bundle_id: string;
+    /**
+     * CFBundleShortVersionString.
+     */
+    version: string;
+};
+
+/**
+ * What App Store Connect already has for an IPA's app and version. The
+ * runner turns it into pre-flight findings with the fix for its project.
+ */
+export type RunnerAppStorePreflightResponse = {
+    /**
+     * Whether App Store Connect has an app record for the bundle ID.
+     */
+    app_found: boolean;
+    /**
+     * The highest CFBundleVersion App Store Connect has for this version,
+     * expired builds included.
+     */
+    highest_build_number?: string | null;
+    /**
+     * The version that is live on the App Store now.
+     */
+    live_version?: string | null;
+    /**
+     * Why App Store Connect could not be read. The other fields are then
+     * empty and the checks did not run.
+     */
+    unavailable?: string | null;
+    /**
+     * Apple's state for the App Store version with this version string, such
+     * as `PREPARE_FOR_SUBMISSION` or `READY_FOR_DISTRIBUTION`.
+     */
+    version_state?: string | null;
+};
+
+/**
  * What the runner needs to upload the job's IPA to App Store Connect.
  */
 export type RunnerAppStorePublishPlan = {
@@ -9090,6 +9133,49 @@ export type UpdateProjectEnvironmentResponses = {
 
 export type UpdateProjectEnvironmentResponse = UpdateProjectEnvironmentResponses[keyof UpdateProjectEnvironmentResponses];
 
+export type GetPromotionReadinessData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * Environment ID
+         */
+        environment_id: string;
+    };
+    query: {
+        /**
+         * The build to promote
+         */
+        build_id: string;
+    };
+    url: '/v1/projects/{project_id}/environments/{environment_id}/readiness';
+};
+
+export type GetPromotionReadinessErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * Project, environment or build not found
+     */
+    404: ApiError;
+};
+
+export type GetPromotionReadinessError = GetPromotionReadinessErrors[keyof GetPromotionReadinessErrors];
+
+export type GetPromotionReadinessResponses = {
+    /**
+     * Store readiness for the promotion
+     */
+    200: StoreReadinessResponse;
+};
+
+export type GetPromotionReadinessResponse = GetPromotionReadinessResponses[keyof GetPromotionReadinessResponses];
+
 export type RemoveProjectFavoriteData = {
     body?: never;
     path: {
@@ -11295,6 +11381,54 @@ export type GetJobAndroidSigningResponses = {
 };
 
 export type GetJobAndroidSigningResponse = GetJobAndroidSigningResponses[keyof GetJobAndroidSigningResponses];
+
+export type CheckJobAppStorePreflightData = {
+    body: RunnerAppStorePreflightRequest;
+    headers: {
+        /**
+         * Job-scoped signing grant
+         */
+        'x-oore-signing-token': string;
+    };
+    path: {
+        /**
+         * Runner ID
+         */
+        runner_id: string;
+        /**
+         * Build/Job ID
+         */
+        job_id: string;
+    };
+    query?: never;
+    url: '/v1/runners/{runner_id}/jobs/{job_id}/app-store-preflight';
+};
+
+export type CheckJobAppStorePreflightErrors = {
+    /**
+     * Runner authentication or signing grant is missing or invalid
+     */
+    401: ApiError;
+    /**
+     * Runner does not match the active assignment
+     */
+    403: ApiError;
+    /**
+     * Job is not active
+     */
+    409: ApiError;
+};
+
+export type CheckJobAppStorePreflightError = CheckJobAppStorePreflightErrors[keyof CheckJobAppStorePreflightErrors];
+
+export type CheckJobAppStorePreflightResponses = {
+    /**
+     * What App Store Connect has
+     */
+    200: RunnerAppStorePreflightResponse;
+};
+
+export type CheckJobAppStorePreflightResponse = CheckJobAppStorePreflightResponses[keyof CheckJobAppStorePreflightResponses];
 
 export type CreateArtifactData = {
     body: CreateArtifactRequest;
