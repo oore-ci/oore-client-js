@@ -829,6 +829,15 @@ export {
   gitlabWebhookMutationKey,
   gitlabWebhookMutation,
   useGitlabWebhookMutation,
+  getReleaseNotesQueryKey,
+  getReleaseNotesOptions,
+  useGetReleaseNotesQuery,
+  updateReleaseNotesMutationKey,
+  updateReleaseNotesMutation,
+  useUpdateReleaseNotesMutation,
+  draftReleaseNotesQueryKey,
+  draftReleaseNotesOptions,
+  useDraftReleaseNotesQuery,
 } from './generated/@tanstack/react-query.gen.js'
 
 export type {
