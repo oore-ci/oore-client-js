@@ -3875,6 +3875,80 @@ export const rejectPromotionMutation = (options?: Partial<Options<RejectPromotio
  */
 export const useRejectPromotionMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<RejectPromotionResponse, RejectPromotionError, Options<RejectPromotionData>>, 'mutationFn'>>) => useMutation({ ...rejectPromotionMutation(), ...mutationOptions });
 
+export const getReleaseNotesQueryKey = (options: Options<GetReleaseNotesData>) => createQueryKey('getReleaseNotes', options, false, ['Releases']);
+
+/**
+ * Get a version's release notes
+ *
+ * The release notes of one app version, such as 2.5.1. Every build of the version shows them, and its store uploads and promotions send them: TestFlight "What to Test", App Store "What's New" and Google Play.
+ */
+export const getReleaseNotesOptions = (options: Options<GetReleaseNotesData>) => queryOptions<GetReleaseNotesResponse, GetReleaseNotesError, GetReleaseNotesResponse, ReturnType<typeof getReleaseNotesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await getReleaseNotes({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: getReleaseNotesQueryKey(options)
+});
+
+/**
+ * Get a version's release notes
+ *
+ * The release notes of one app version, such as 2.5.1. Every build of the version shows them, and its store uploads and promotions send them: TestFlight "What to Test", App Store "What's New" and Google Play.
+ */
+export const useGetReleaseNotesQuery = (options: Options<GetReleaseNotesData>) => useQuery(getReleaseNotesOptions(options));
+
+export const updateReleaseNotesMutationKey = (options?: Partial<Options<UpdateReleaseNotesData>>) => createMutationKey('updateReleaseNotes', options, ['Releases']);
+
+/**
+ * Write a version's release notes
+ *
+ * Replaces the notes and stops Oore drafting them from commits. Notes read from the repository are refused with 409 `notes_in_repository`: change the file instead.
+ */
+export const updateReleaseNotesMutation = (options?: Partial<Options<UpdateReleaseNotesData>>): UseMutationOptions<UpdateReleaseNotesResponse, UpdateReleaseNotesError, Options<UpdateReleaseNotesData>> => {
+    const mutationOptions: UseMutationOptions<UpdateReleaseNotesResponse, UpdateReleaseNotesError, Options<UpdateReleaseNotesData>> = {
+        mutationFn: async (fnOptions) => await updateReleaseNotes({
+            ...options,
+            ...fnOptions,
+            throwOnError: true
+        }),
+        mutationKey: updateReleaseNotesMutationKey(options)
+    };
+    return mutationOptions;
+};
+
+/**
+ * Write a version's release notes
+ *
+ * Replaces the notes and stops Oore drafting them from commits. Notes read from the repository are refused with 409 `notes_in_repository`: change the file instead.
+ */
+export const useUpdateReleaseNotesMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<UpdateReleaseNotesResponse, UpdateReleaseNotesError, Options<UpdateReleaseNotesData>>, 'mutationFn'>>) => useMutation({ ...updateReleaseNotesMutation(), ...mutationOptions });
+
+export const draftReleaseNotesQueryKey = (options: Options<DraftReleaseNotesData>) => createQueryKey('draftReleaseNotes', options, false, ['Releases']);
+
+/**
+ * Draft a version's release notes from commits
+ *
+ * Commit titles, without authors, since the last version that reached a store, up to the version's newest build. Nothing is saved.
+ */
+export const draftReleaseNotesOptions = (options: Options<DraftReleaseNotesData>) => queryOptions<DraftReleaseNotesResponse, DraftReleaseNotesError, DraftReleaseNotesResponse, ReturnType<typeof draftReleaseNotesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => await draftReleaseNotes({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true
+    }),
+    queryKey: draftReleaseNotesQueryKey(options)
+});
+
+/**
+ * Draft a version's release notes from commits
+ *
+ * Commit titles, without authors, since the last version that reached a store, up to the version's newest build. Nothing is saved.
+ */
+export const useDraftReleaseNotesQuery = (options: Options<DraftReleaseNotesData>) => useQuery(draftReleaseNotesOptions(options));
+
 export const listRepositoryConfigFilesQueryKey = (options: Options<ListRepositoryConfigFilesData>) => createQueryKey('listRepositoryConfigFiles', options, false, ['Pipelines']);
 
 /**
@@ -7156,77 +7230,3 @@ export const gitlabWebhookMutation = (options?: Partial<Options<GitlabWebhookDat
  * Authenticated via webhook secret token.
  */
 export const useGitlabWebhookMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<GitlabWebhookResponse, GitlabWebhookError, Options<GitlabWebhookData>>, 'mutationFn'>>) => useMutation({ ...gitlabWebhookMutation(), ...mutationOptions });
-
-export const getReleaseNotesQueryKey = (options: Options<GetReleaseNotesData>) => createQueryKey('getReleaseNotes', options, false, ['Releases']);
-
-/**
- * Get a version's release notes
- *
- * The release notes of one app version, such as 2.5.1. Every build of the version shows them, and its store uploads and promotions send them: TestFlight "What to Test", App Store "What's New" and Google Play.
- */
-export const getReleaseNotesOptions = (options: Options<GetReleaseNotesData>) => queryOptions<GetReleaseNotesResponse, GetReleaseNotesError, GetReleaseNotesResponse, ReturnType<typeof getReleaseNotesQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => await getReleaseNotes({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true
-    }),
-    queryKey: getReleaseNotesQueryKey(options)
-});
-
-/**
- * Get a version's release notes
- *
- * The release notes of one app version, such as 2.5.1. Every build of the version shows them, and its store uploads and promotions send them: TestFlight "What to Test", App Store "What's New" and Google Play.
- */
-export const useGetReleaseNotesQuery = (options: Options<GetReleaseNotesData>) => useQuery(getReleaseNotesOptions(options));
-
-export const updateReleaseNotesMutationKey = (options?: Partial<Options<UpdateReleaseNotesData>>) => createMutationKey('updateReleaseNotes', options, ['Releases']);
-
-/**
- * Write a version's release notes
- *
- * Replaces the notes and stops Oore drafting them from commits. Notes read from the repository are refused with 409 `notes_in_repository`: change the file instead.
- */
-export const updateReleaseNotesMutation = (options?: Partial<Options<UpdateReleaseNotesData>>): UseMutationOptions<UpdateReleaseNotesResponse, UpdateReleaseNotesError, Options<UpdateReleaseNotesData>> => {
-    const mutationOptions: UseMutationOptions<UpdateReleaseNotesResponse, UpdateReleaseNotesError, Options<UpdateReleaseNotesData>> = {
-        mutationFn: async (fnOptions) => await updateReleaseNotes({
-            ...options,
-            ...fnOptions,
-            throwOnError: true
-        }),
-        mutationKey: updateReleaseNotesMutationKey(options)
-    };
-    return mutationOptions;
-};
-
-/**
- * Write a version's release notes
- *
- * Replaces the notes and stops Oore drafting them from commits. Notes read from the repository are refused with 409 `notes_in_repository`: change the file instead.
- */
-export const useUpdateReleaseNotesMutation = (mutationOptions?: Partial<Omit<UseMutationOptions<UpdateReleaseNotesResponse, UpdateReleaseNotesError, Options<UpdateReleaseNotesData>>, 'mutationFn'>>) => useMutation({ ...updateReleaseNotesMutation(), ...mutationOptions });
-
-export const draftReleaseNotesQueryKey = (options: Options<DraftReleaseNotesData>) => createQueryKey('draftReleaseNotes', options, false, ['Releases']);
-
-/**
- * Draft a version's release notes from commits
- *
- * Commit titles, without authors, since the last version that reached a store, up to the version's newest build. Nothing is saved.
- */
-export const draftReleaseNotesOptions = (options: Options<DraftReleaseNotesData>) => queryOptions<DraftReleaseNotesResponse, DraftReleaseNotesError, DraftReleaseNotesResponse, ReturnType<typeof draftReleaseNotesQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => await draftReleaseNotes({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true
-    }),
-    queryKey: draftReleaseNotesQueryKey(options)
-});
-
-/**
- * Draft a version's release notes from commits
- *
- * Commit titles, without authors, since the last version that reached a store, up to the version's newest build. Nothing is saved.
- */
-export const useDraftReleaseNotesQuery = (options: Options<DraftReleaseNotesData>) => useQuery(draftReleaseNotesOptions(options));

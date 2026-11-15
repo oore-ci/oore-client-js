@@ -8622,6 +8622,205 @@
         ]
       }
     },
+    "/v1/projects/{project_id}/release-notes/{version_name}": {
+      "get": {
+        "tags": [
+          "Releases"
+        ],
+        "summary": "Get a version's release notes",
+        "description": "The release notes of one app version, such as 2.5.1. Every build of the version shows them, and its store uploads and promotions send them: TestFlight \"What to Test\", App Store \"What's New\" and Google Play.",
+        "operationId": "get_release_notes",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "description": "Project ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version_name",
+            "in": "path",
+            "description": "App version name, such as 2.5.1",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Release notes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionReleaseNotes"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The version has no notes yet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Releases"
+        ],
+        "summary": "Write a version's release notes",
+        "description": "Replaces the notes and stops Oore drafting them from commits. Notes read from the repository are refused with 409 `notes_in_repository`: change the file instead.",
+        "operationId": "update_release_notes",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "description": "Project ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version_name",
+            "in": "path",
+            "description": "App version name, such as 2.5.1",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVersionReleaseNotesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Release notes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionReleaseNotes"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No build of the app is this version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The notes come from the repository",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/projects/{project_id}/release-notes/{version_name}/draft": {
+      "get": {
+        "tags": [
+          "Releases"
+        ],
+        "summary": "Draft a version's release notes from commits",
+        "description": "Commit titles, without authors, since the last version that reached a store, up to the version's newest build. Nothing is saved.",
+        "operationId": "draft_release_notes",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "description": "Project ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version_name",
+            "in": "path",
+            "description": "App version name, such as 2.5.1",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Drafted notes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseNotesDraftResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No build of the app is this version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
     "/v1/projects/{project_id}/repository-config-files": {
       "get": {
         "tags": [
@@ -16617,205 +16816,6 @@
             }
           }
         }
-      }
-    },
-    "/v1/projects/{project_id}/release-notes/{version_name}": {
-      "get": {
-        "tags": [
-          "Releases"
-        ],
-        "summary": "Get a version's release notes",
-        "description": "The release notes of one app version, such as 2.5.1. Every build of the version shows them, and its store uploads and promotions send them: TestFlight \"What to Test\", App Store \"What's New\" and Google Play.",
-        "operationId": "get_release_notes",
-        "parameters": [
-          {
-            "name": "project_id",
-            "in": "path",
-            "description": "Project ID",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "version_name",
-            "in": "path",
-            "description": "App version name, such as 2.5.1",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Release notes",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VersionReleaseNotes"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "The version has no notes yet",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ]
-      },
-      "put": {
-        "tags": [
-          "Releases"
-        ],
-        "summary": "Write a version's release notes",
-        "description": "Replaces the notes and stops Oore drafting them from commits. Notes read from the repository are refused with 409 `notes_in_repository`: change the file instead.",
-        "operationId": "update_release_notes",
-        "parameters": [
-          {
-            "name": "project_id",
-            "in": "path",
-            "description": "Project ID",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "version_name",
-            "in": "path",
-            "description": "App version name, such as 2.5.1",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateVersionReleaseNotesRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Release notes",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VersionReleaseNotes"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No build of the app is this version",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "The notes come from the repository",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/projects/{project_id}/release-notes/{version_name}/draft": {
-      "get": {
-        "tags": [
-          "Releases"
-        ],
-        "summary": "Draft a version's release notes from commits",
-        "description": "Commit titles, without authors, since the last version that reached a store, up to the version's newest build. Nothing is saved.",
-        "operationId": "draft_release_notes",
-        "parameters": [
-          {
-            "name": "project_id",
-            "in": "path",
-            "description": "Project ID",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "version_name",
-            "in": "path",
-            "description": "App version name, such as 2.5.1",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Drafted notes",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseNotesDraftResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No build of the app is this version",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ]
       }
     }
   },
@@ -25519,6 +25519,51 @@
           }
         }
       },
+      "ReleaseNotesDraftResponse": {
+        "type": "object",
+        "description": "Release notes for a version that has none yet: commit titles since the\nlast released version.",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "since_version": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The released version the draft starts after."
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "ReleaseNotesLocale": {
+        "type": "object",
+        "description": "Release notes in one language.",
+        "required": [
+          "locale",
+          "text"
+        ],
+        "properties": {
+          "locale": {
+            "type": "string",
+            "description": "Such as `de-DE`."
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "ReleaseNotesSource": {
+        "type": "string",
+        "description": "Where an app version's release notes came from.",
+        "enum": [
+          "commits",
+          "manual",
+          "repository"
+        ]
+      },
       "ReleaseOrigin": {
         "type": "string",
         "description": "Whether Oore uploaded a release or found it in the store.",
@@ -25769,6 +25814,31 @@
           "truncated": {
             "type": "boolean",
             "description": "True when the repository had more config files than Oore reads."
+          }
+        }
+      },
+      "RepositoryReleaseNotes": {
+        "type": "object",
+        "description": "Release notes a runner read from the repository.",
+        "required": [
+          "path",
+          "text"
+        ],
+        "properties": {
+          "locales": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReleaseNotesLocale"
+            },
+            "description": "Other languages, from a directory of `<locale>.txt` files."
+          },
+          "path": {
+            "type": "string",
+            "description": "The changelog file or directory, relative to the repository root."
+          },
+          "text": {
+            "type": "string",
+            "description": "The default-language text: the changelog's section for the version,\nor the directory's first locale."
           }
         }
       },
@@ -29576,6 +29646,26 @@
           }
         }
       },
+      "UpdateVersionReleaseNotesRequest": {
+        "type": "object",
+        "description": "`PUT /v1/projects/{project_id}/release-notes/{version_name}`.",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "locales": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReleaseNotesLocale"
+            },
+            "description": "Other languages; replaces the saved ones."
+          },
+          "text": {
+            "type": "string",
+            "description": "The default-language text, at most 4,000 characters."
+          }
+        }
+      },
       "User": {
         "type": "object",
         "required": [
@@ -29757,6 +29847,65 @@
           }
         }
       },
+      "VersionReleaseNotes": {
+        "type": "object",
+        "description": "The release notes of one app version (such as 2.5.1). Every build of the\nversion shows them, and every store upload and promotion of it sends\nthem: TestFlight \"What to Test\", App Store \"What's New\" and Google Play.",
+        "required": [
+          "project_id",
+          "version_name",
+          "text",
+          "locales",
+          "source",
+          "updated_at"
+        ],
+        "properties": {
+          "drafted_since": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The version Oore drafted from, for `commits` notes."
+          },
+          "locales": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReleaseNotesLocale"
+            },
+            "description": "Other languages. Google Play and the App Store get each one."
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/ReleaseNotesSource"
+          },
+          "source_path": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The repository file or directory, for `repository` notes."
+          },
+          "text": {
+            "type": "string",
+            "description": "The default-language (en-US) text."
+          },
+          "updated_at": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updated_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Who last edited the notes in Oore."
+          },
+          "version_name": {
+            "type": "string"
+          }
+        }
+      },
       "WarpgateTicketSource": {
         "type": "string",
         "enum": [
@@ -29861,155 +30010,6 @@
           "period_start": {
             "type": "integer",
             "format": "int64"
-          }
-        }
-      },
-      "ReleaseNotesDraftResponse": {
-        "type": "object",
-        "description": "Release notes for a version that has none yet: commit titles since the\nlast released version.",
-        "required": [
-          "text"
-        ],
-        "properties": {
-          "since_version": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "description": "The released version the draft starts after."
-          },
-          "text": {
-            "type": "string"
-          }
-        }
-      },
-      "ReleaseNotesLocale": {
-        "type": "object",
-        "description": "Release notes in one language.",
-        "required": [
-          "locale",
-          "text"
-        ],
-        "properties": {
-          "locale": {
-            "type": "string",
-            "description": "Such as `de-DE`."
-          },
-          "text": {
-            "type": "string"
-          }
-        }
-      },
-      "ReleaseNotesSource": {
-        "type": "string",
-        "description": "Where an app version's release notes came from.",
-        "enum": [
-          "commits",
-          "manual",
-          "repository"
-        ]
-      },
-      "RepositoryReleaseNotes": {
-        "type": "object",
-        "description": "Release notes a runner read from the repository.",
-        "required": [
-          "path",
-          "text"
-        ],
-        "properties": {
-          "locales": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReleaseNotesLocale"
-            },
-            "description": "Other languages, from a directory of `<locale>.txt` files."
-          },
-          "path": {
-            "type": "string",
-            "description": "The changelog file or directory, relative to the repository root."
-          },
-          "text": {
-            "type": "string",
-            "description": "The default-language text: the changelog's section for the version,\nor the directory's first locale."
-          }
-        }
-      },
-      "UpdateVersionReleaseNotesRequest": {
-        "type": "object",
-        "description": "`PUT /v1/projects/{project_id}/release-notes/{version_name}`.",
-        "required": [
-          "text"
-        ],
-        "properties": {
-          "locales": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReleaseNotesLocale"
-            },
-            "description": "Other languages; replaces the saved ones."
-          },
-          "text": {
-            "type": "string",
-            "description": "The default-language text, at most 4,000 characters."
-          }
-        }
-      },
-      "VersionReleaseNotes": {
-        "type": "object",
-        "description": "The release notes of one app version (such as 2.5.1). Every build of the\nversion shows them, and every store upload and promotion of it sends\nthem: TestFlight \"What to Test\", App Store \"What's New\" and Google Play.",
-        "required": [
-          "project_id",
-          "version_name",
-          "text",
-          "locales",
-          "source",
-          "updated_at"
-        ],
-        "properties": {
-          "drafted_since": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "description": "The version Oore drafted from, for `commits` notes."
-          },
-          "locales": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReleaseNotesLocale"
-            },
-            "description": "Other languages. Google Play and the App Store get each one."
-          },
-          "project_id": {
-            "type": "string"
-          },
-          "source": {
-            "$ref": "#/components/schemas/ReleaseNotesSource"
-          },
-          "source_path": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "description": "The repository file or directory, for `repository` notes."
-          },
-          "text": {
-            "type": "string",
-            "description": "The default-language (en-US) text."
-          },
-          "updated_at": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "updated_by": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "description": "Who last edited the notes in Oore."
-          },
-          "version_name": {
-            "type": "string"
           }
         }
       }

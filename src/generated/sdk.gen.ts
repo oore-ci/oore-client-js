@@ -1918,6 +1918,46 @@ export const rejectPromotion = <ThrowOnError extends boolean = true>(options: Op
 });
 
 /**
+ * Get a version's release notes
+ *
+ * The release notes of one app version, such as 2.5.1. Every build of the version shows them, and its store uploads and promotions send them: TestFlight "What to Test", App Store "What's New" and Google Play.
+ */
+export const getReleaseNotes = <ThrowOnError extends boolean = true>(options: Options<GetReleaseNotesData, ThrowOnError>): RequestResult<GetReleaseNotesResponses, GetReleaseNotesErrors, ThrowOnError, 'data'> => options.client.get<GetReleaseNotesResponses, GetReleaseNotesErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/projects/{project_id}/release-notes/{version_name}',
+    ...options
+});
+
+/**
+ * Write a version's release notes
+ *
+ * Replaces the notes and stops Oore drafting them from commits. Notes read from the repository are refused with 409 `notes_in_repository`: change the file instead.
+ */
+export const updateReleaseNotes = <ThrowOnError extends boolean = true>(options: Options<UpdateReleaseNotesData, ThrowOnError>): RequestResult<UpdateReleaseNotesResponses, UpdateReleaseNotesErrors, ThrowOnError, 'data'> => options.client.put<UpdateReleaseNotesResponses, UpdateReleaseNotesErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/projects/{project_id}/release-notes/{version_name}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Draft a version's release notes from commits
+ *
+ * Commit titles, without authors, since the last version that reached a store, up to the version's newest build. Nothing is saved.
+ */
+export const draftReleaseNotes = <ThrowOnError extends boolean = true>(options: Options<DraftReleaseNotesData, ThrowOnError>): RequestResult<DraftReleaseNotesResponses, DraftReleaseNotesErrors, ThrowOnError, 'data'> => options.client.get<DraftReleaseNotesResponses, DraftReleaseNotesErrors, ThrowOnError, 'data'>({
+    responseStyle: 'data',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/projects/{project_id}/release-notes/{version_name}/draft',
+    ...options
+});
+
+/**
  * List config files found in the repository
  *
  * Config files on the project's default branch as Oore last read them,
@@ -3667,44 +3707,4 @@ export const gitlabWebhook = <ThrowOnError extends boolean = true>(options: Opti
         'Content-Type': 'application/json',
         ...options.headers
     }
-});
-
-/**
- * Get a version's release notes
- *
- * The release notes of one app version, such as 2.5.1. Every build of the version shows them, and its store uploads and promotions send them: TestFlight "What to Test", App Store "What's New" and Google Play.
- */
-export const getReleaseNotes = <ThrowOnError extends boolean = true>(options: Options<GetReleaseNotesData, ThrowOnError>): RequestResult<GetReleaseNotesResponses, GetReleaseNotesErrors, ThrowOnError, 'data'> => options.client.get<GetReleaseNotesResponses, GetReleaseNotesErrors, ThrowOnError, 'data'>({
-    responseStyle: 'data',
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/v1/projects/{project_id}/release-notes/{version_name}',
-    ...options
-});
-
-/**
- * Write a version's release notes
- *
- * Replaces the notes and stops Oore drafting them from commits. Notes read from the repository are refused with 409 `notes_in_repository`: change the file instead.
- */
-export const updateReleaseNotes = <ThrowOnError extends boolean = true>(options: Options<UpdateReleaseNotesData, ThrowOnError>): RequestResult<UpdateReleaseNotesResponses, UpdateReleaseNotesErrors, ThrowOnError, 'data'> => options.client.put<UpdateReleaseNotesResponses, UpdateReleaseNotesErrors, ThrowOnError, 'data'>({
-    responseStyle: 'data',
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/v1/projects/{project_id}/release-notes/{version_name}',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
-
-/**
- * Draft a version's release notes from commits
- *
- * Commit titles, without authors, since the last version that reached a store, up to the version's newest build. Nothing is saved.
- */
-export const draftReleaseNotes = <ThrowOnError extends boolean = true>(options: Options<DraftReleaseNotesData, ThrowOnError>): RequestResult<DraftReleaseNotesResponses, DraftReleaseNotesErrors, ThrowOnError, 'data'> => options.client.get<DraftReleaseNotesResponses, DraftReleaseNotesErrors, ThrowOnError, 'data'>({
-    responseStyle: 'data',
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/v1/projects/{project_id}/release-notes/{version_name}/draft',
-    ...options
 });
