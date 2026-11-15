@@ -5,11 +5,13 @@ import { vBuild } from './v-build.js'
 import { vBuildEvent } from './v-build-event.js'
 import { vBuildQueueEstimate } from './v-build-queue-estimate.js'
 import { vBuildRetention } from './v-build-retention.js'
+import { vVersionReleaseNotes } from './v-version-release-notes.js'
 
 export const vBuildDetailResponse = v.object({
     build: vBuild,
     events: v.array(vBuildEvent),
     queue: v.nullish(vBuildQueueEstimate),
+    release_notes: v.nullish(vVersionReleaseNotes),
     retention: v.nullish(vBuildRetention),
     retryable_steps: v.optional(v.array(v.string()))
 });

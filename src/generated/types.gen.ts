@@ -429,7 +429,8 @@ export type Build = {
     status: BuildStatus;
     step_results?: Array<StepResult> | null;
     /**
-     * Release notes written for this build's store uploads.
+     * Release notes written when the build was started. They become the
+     * release notes of the build's app version.
      */
     store_notes?: string | null;
     superseded_by?: null | BuildReference;
@@ -540,6 +541,7 @@ export type BuildDetailResponse = {
     build: Build;
     events: Array<BuildEvent>;
     queue?: null | BuildQueueEstimate;
+    release_notes?: null | VersionReleaseNotes;
     retention?: null | BuildRetention;
     /**
      * Steps of this finished build that `POST /v1/builds/{build_id}/retry-step`
@@ -1064,10 +1066,10 @@ export type CreateBuildRequest = {
      */
     rehearsal?: boolean | null;
     /**
-     * What's new in this release, as testers and store users read it. It
-     * replaces the pipeline's Google Play and App Store release notes for
-     * the build's uploads (Play's notes language, App Store's first
-     * locale). Omitted uses the pipeline's notes.
+     * What's new in this release, as testers and store users read it. Once
+     * the runner reports the build's app version, this becomes that
+     * version's release notes, unless the repository holds them. Omitted
+     * keeps the version's notes as they are.
      */
     store_notes?: string | null;
     trigger_ref?: string | null;
@@ -3207,6 +3209,34 @@ export type ReleaseHistoryEntry = {
 };
 
 /**
+ * Release notes for a version that has none yet: commit titles since the
+ * last released version.
+ */
+export type ReleaseNotesDraftResponse = {
+    /**
+     * The released version the draft starts after.
+     */
+    since_version?: string | null;
+    text: string;
+};
+
+/**
+ * Release notes in one language.
+ */
+export type ReleaseNotesLocale = {
+    /**
+     * Such as `de-DE`.
+     */
+    locale: string;
+    text: string;
+};
+
+/**
+ * Where an app version's release notes came from.
+ */
+export type ReleaseNotesSource = 'commits' | 'manual' | 'repository';
+
+/**
  * Whether Oore uploaded a release or found it in the store.
  */
 export type ReleaseOrigin = 'oore' | 'adopted';
@@ -3253,6 +3283,7 @@ export type ReplaceGitLabTokenRequest = {
 export type ReportBuildIdentityRequest = {
     commit_author?: string | null;
     commit_title?: string | null;
+    release_notes?: null | RepositoryReleaseNotes;
     version_code?: number | null;
     version_name?: string | null;
 };
@@ -3322,6 +3353,25 @@ export type RepositoryConfigFilesResponse = {
      * True when the repository had more config files than Oore reads.
      */
     truncated: boolean;
+};
+
+/**
+ * Release notes a runner read from the repository.
+ */
+export type RepositoryReleaseNotes = {
+    /**
+     * Other languages, from a directory of `<locale>.txt` files.
+     */
+    locales?: Array<ReleaseNotesLocale>;
+    /**
+     * The changelog file or directory, relative to the repository root.
+     */
+    path: string;
+    /**
+     * The default-language text: the changelog's section for the version,
+     * or the directory's first locale.
+     */
+    text: string;
 };
 
 /**
@@ -4731,6 +4781,20 @@ export type UpdateUserRoleResponse = {
     user: User;
 };
 
+/**
+ * `PUT /v1/projects/{project_id}/release-notes/{version_name}`.
+ */
+export type UpdateVersionReleaseNotesRequest = {
+    /**
+     * Other languages; replaces the saved ones.
+     */
+    locales?: Array<ReleaseNotesLocale>;
+    /**
+     * The default-language text, at most 4,000 characters.
+     */
+    text: string;
+};
+
 export type User = {
     avatar_url?: string | null;
     created_at: number;
@@ -4774,6 +4838,38 @@ export type ValidatePipelineRequest = {
 export type ValidatePipelineResponse = {
     errors: Array<string>;
     valid: boolean;
+};
+
+/**
+ * The release notes of one app version (such as 2.5.1). Every build of the
+ * version shows them, and every store upload and promotion of it sends
+ * them: TestFlight "What to Test", App Store "What's New" and Google Play.
+ */
+export type VersionReleaseNotes = {
+    /**
+     * The version Oore drafted from, for `commits` notes.
+     */
+    drafted_since?: string | null;
+    /**
+     * Other languages. Google Play and the App Store get each one.
+     */
+    locales: Array<ReleaseNotesLocale>;
+    project_id: string;
+    source: ReleaseNotesSource;
+    /**
+     * The repository file or directory, for `repository` notes.
+     */
+    source_path?: string | null;
+    /**
+     * The default-language (en-US) text.
+     */
+    text: string;
+    updated_at: number;
+    /**
+     * Who last edited the notes in Oore.
+     */
+    updated_by?: string | null;
+    version_name: string;
 };
 
 export type WarpgateTicketSource = 'database' | 'environment';
@@ -9613,6 +9709,116 @@ export type RejectPromotionResponses = {
 };
 
 export type RejectPromotionResponse = RejectPromotionResponses[keyof RejectPromotionResponses];
+
+export type GetReleaseNotesData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * App version name, such as 2.5.1
+         */
+        version_name: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/release-notes/{version_name}';
+};
+
+export type GetReleaseNotesErrors = {
+    /**
+     * The version has no notes yet
+     */
+    404: ApiError;
+};
+
+export type GetReleaseNotesError = GetReleaseNotesErrors[keyof GetReleaseNotesErrors];
+
+export type GetReleaseNotesResponses = {
+    /**
+     * Release notes
+     */
+    200: VersionReleaseNotes;
+};
+
+export type GetReleaseNotesResponse = GetReleaseNotesResponses[keyof GetReleaseNotesResponses];
+
+export type UpdateReleaseNotesData = {
+    body: UpdateVersionReleaseNotesRequest;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * App version name, such as 2.5.1
+         */
+        version_name: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/release-notes/{version_name}';
+};
+
+export type UpdateReleaseNotesErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * No build of the app is this version
+     */
+    404: ApiError;
+    /**
+     * The notes come from the repository
+     */
+    409: ApiError;
+};
+
+export type UpdateReleaseNotesError = UpdateReleaseNotesErrors[keyof UpdateReleaseNotesErrors];
+
+export type UpdateReleaseNotesResponses = {
+    /**
+     * Release notes
+     */
+    200: VersionReleaseNotes;
+};
+
+export type UpdateReleaseNotesResponse = UpdateReleaseNotesResponses[keyof UpdateReleaseNotesResponses];
+
+export type DraftReleaseNotesData = {
+    body?: never;
+    path: {
+        /**
+         * Project ID
+         */
+        project_id: string;
+        /**
+         * App version name, such as 2.5.1
+         */
+        version_name: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/release-notes/{version_name}/draft';
+};
+
+export type DraftReleaseNotesErrors = {
+    /**
+     * No build of the app is this version
+     */
+    404: ApiError;
+};
+
+export type DraftReleaseNotesError = DraftReleaseNotesErrors[keyof DraftReleaseNotesErrors];
+
+export type DraftReleaseNotesResponses = {
+    /**
+     * Drafted notes
+     */
+    200: ReleaseNotesDraftResponse;
+};
+
+export type DraftReleaseNotesResponse = DraftReleaseNotesResponses[keyof DraftReleaseNotesResponses];
 
 export type ListRepositoryConfigFilesData = {
     body?: never;
