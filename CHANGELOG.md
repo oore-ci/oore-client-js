@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.44.0](https://github.com/oore-ci/oore-client-js/compare/v0.43.0...v0.44.0) (2026-11-16)
+
+
+### Features
+
+* narrower API tokens and which token acted ([#113](https://github.com/oore-ci/oore-client-js/issues/113)) ([8f93283](https://github.com/oore-ci/oore-client-js/commit/8f93283d4ba468d1786e210bc901c9442665420a))
+
 ## [0.43.0](https://github.com/oore-ci/oore-client-js/compare/v0.42.0...v0.43.0) (2026-11-16)
 
 
