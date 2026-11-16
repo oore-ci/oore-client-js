@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.43.0](https://github.com/oore-ci/oore-client-js/compare/v0.42.0...v0.43.0) (2026-11-16)
+
+
+### Features
+
+* app store connections per app ([#111](https://github.com/oore-ci/oore-client-js/issues/111)) ([f206672](https://github.com/oore-ci/oore-client-js/commit/f20667226e4ef0a1a1cdf0b4a81aa34acc4c14b3))
+* pipelines pick signing identities from the app's signing library ([#110](https://github.com/oore-ci/oore-client-js/issues/110)) ([962342e](https://github.com/oore-ci/oore-client-js/commit/962342e8246bbce76f0c7bbe4428ff202c982b78))
+
 ## [0.42.0](https://github.com/oore-ci/oore-client-js/compare/v0.41.0...v0.42.0) (2026-11-16)
 
 
