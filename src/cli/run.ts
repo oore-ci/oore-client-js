@@ -6,6 +6,7 @@ import {
   createBuild,
   createStreamToken,
   getBuild,
+  getBuildDiagnosis,
   getBuildLogs,
   getMe,
   getPipeline,
@@ -24,8 +25,10 @@ import type {
   Project,
 } from '../generated/types.gen.js'
 import { streamBuildLogEvents } from '../logs.js'
+import { newIdempotencyKey } from '../loop.js'
 import {
   configPath,
+  parseHeaders,
   readConfig,
   resolveInstance,
   writeConfig,
@@ -61,6 +64,8 @@ Commands:
       -f, --follow         Follow the build's logs; exit non-zero if it fails
   logs <build>       Print a build's logs
       -f, --follow         Keep streaming until the build finishes
+  why <build>        Explain why a build failed: step, cause, fix, log tail
+      --tail <n>           Log lines to show (default 40, at most 200)
   install <build>    Print a device install link and its QR code
       --platform <name>    android or ios, when the build has both
       --artifact <id>      A specific artifact
@@ -76,23 +81,51 @@ Commands:
 
 Global options:
   --instance <name>  Instance from the config file (env: OORE_INSTANCE)
-  --url, --token     Override the instance (env: OORE_URL, OORE_TOKEN)
+  --url, --token     Override the instance (env: OORE_URL, OORE_TOKEN;
+                     OORE_DAEMON_URL and OORE_SESSION_TOKEN also work)
+  --header <h>       Extra header "Name: value" on every request; repeat it
+                     (env: OORE_HTTP_HEADERS, one per line)
+  --json             Print JSON on stdout; errors as one JSON object on stderr
   -h, --help         Show this help
+
+Exit codes: 0 ok, 1 failed (or the build did not succeed), 4 not signed in
+or not allowed, 5 not found, 64 usage error.
 
 Config file: $OORE_DEV_CONFIG, else $XDG_CONFIG_HOME/oore-dev/config.json,
 else ~/.config/oore-dev/config.json. Create an API token in the web app
 under Settings → API tokens.`
 
+/** Exit codes shared with the `oore` CLI. */
+export const EXIT = {
+  failed: 1,
+  notAllowed: 4,
+  notFound: 5,
+  ok: 0,
+  usage: 64,
+} as const
+
 /** A failure with a message meant for the terminal, not a stack trace. */
 export class CliError extends Error {
   constructor(
     message: string,
-    readonly exitCode = 1,
+    readonly exitCode: number = EXIT.failed,
+    readonly code = exitCode === EXIT.usage ? 'usage' : 'failed',
   ) {
     super(message)
     this.name = 'CliError'
   }
 }
+
+const usageError = (message: string) => new CliError(message, EXIT.usage)
+
+const wantsJson = (argv: ReadonlyArray<string>) => argv.includes('--json')
+
+const apiExitCode = (status: number): number =>
+  status === 401 || status === 403
+    ? EXIT.notAllowed
+    : status === 404
+      ? EXIT.notFound
+      : EXIT.failed
 
 const TERMINAL_STATUSES: ReadonlyArray<BuildStatus> = [
   'succeeded',
@@ -107,33 +140,60 @@ const PLATFORMS: ReadonlyArray<BuildPlatform> = ['android', 'ios', 'macos']
 interface Context {
   client: OoreClient
   io: CliIo
+  json: boolean
   project: string | undefined
   url: string
 }
 
+/** Prints one JSON value on its own line. */
+const printJson = (io: CliIo, value: unknown) => io.stdout(`${JSON.stringify(value)}\n`)
+
 /** Runs the CLI and resolves to the process exit code. */
 export async function runCli(argv: ReadonlyArray<string>, io: CliIo): Promise<number> {
+  const json = wantsJson(argv)
+  const fail = (
+    exitCode: number,
+    error: { error: string; code: string; status?: number; hint?: string },
+    text: string,
+  ) => {
+    io.stderr(json ? `${JSON.stringify(error)}\n` : `${CLI_NAME}: ${text}\n`)
+    return exitCode
+  }
   try {
     return await dispatch(argv, io)
   } catch (error) {
     if (error instanceof CliError) {
-      io.stderr(`${CLI_NAME}: ${error.message}\n`)
-      return error.exitCode
+      return fail(error.exitCode, { code: error.code, error: error.message }, error.message)
     }
     if (isOoreApiError(error)) {
       const hint =
-        error.status === 401
-          ? ' (is the token valid? run `oore-dev login` again)'
-          : ''
-      io.stderr(`${CLI_NAME}: ${error.message} [HTTP ${error.status}]${hint}\n`)
-      return 1
+        error.hint ??
+        (error.status === 401 ? 'Is the token valid? Run `oore-dev login` again.' : undefined)
+      return fail(
+        apiExitCode(error.status),
+        {
+          code: error.code ?? 'http_error',
+          error: error.message,
+          status: error.status,
+          ...(hint ? { hint } : {}),
+        },
+        `${error.message} [HTTP ${error.status}]${hint ? ` (${hint})` : ''}`,
+      )
     }
     let message = error instanceof Error ? error.message : String(error)
     // Node's fetch reports "fetch failed" and keeps the reason in `cause`.
     const cause = error instanceof Error ? error.cause : undefined
     if (cause instanceof Error) message += `: ${cause.message}`
-    io.stderr(`${CLI_NAME}: ${message}\n`)
-    return 1
+    // A bad option from parseArgs is a usage error.
+    const usage =
+      error instanceof Error &&
+      'code' in error &&
+      String((error as { code?: unknown }).code).startsWith('ERR_PARSE_ARGS')
+    return fail(
+      usage ? EXIT.usage : EXIT.failed,
+      { code: usage ? 'usage' : 'failed', error: message },
+      message,
+    )
   }
 }
 
@@ -145,28 +205,40 @@ async function dispatch(argv: ReadonlyArray<string>, io: CliIo): Promise<number>
       artifact: { type: 'string' },
       branch: { type: 'string' },
       follow: { short: 'f', type: 'boolean' },
+      header: { multiple: true, type: 'string' },
       help: { short: 'h', type: 'boolean' },
       instance: { type: 'string' },
+      json: { type: 'boolean' },
       limit: { type: 'string' },
       name: { type: 'string' },
       'no-qr': { type: 'boolean' },
       platform: { multiple: true, type: 'string' },
       project: { type: 'string' },
+      tail: { type: 'string' },
       token: { type: 'string' },
       url: { type: 'string' },
     },
     strict: true,
   })
+  const json = values.json ?? false
+  let headers: Record<string, string>
+  try {
+    headers = parseHeaders(values.header, io.env)
+  } catch (error) {
+    throw usageError((error as Error).message)
+  }
   const [command, target, ...extra] = positionals
 
   if (values.help || !command || command === 'help') {
     io.stdout(`${USAGE}\n`)
-    return command || values.help ? 0 : 2
+    return command || values.help ? EXIT.ok : EXIT.usage
   }
-  if (extra.length > 0) throw new CliError(`Unexpected argument: ${extra[0]}`, 2)
+  if (extra.length > 0) throw usageError(`Unexpected argument: ${extra[0]}`)
 
   if (command === 'login') {
     return login(io, {
+      headers,
+      json,
       name: values.name,
       project: values.project,
       token: values.token,
@@ -180,9 +252,11 @@ async function dispatch(argv: ReadonlyArray<string>, io: CliIo): Promise<number>
     client: createOoreClient({
       baseUrl: instance.url,
       fetch: io.fetch,
+      headers,
       token: instance.token,
     }),
     io,
+    json,
     project: values.project ?? instance.project,
     url: instance.url,
   }
@@ -196,6 +270,8 @@ async function dispatch(argv: ReadonlyArray<string>, io: CliIo): Promise<number>
       })
     case 'logs':
       return logs(ctx, requireTarget(target, 'logs <build>'), values.follow ?? false)
+    case 'why':
+      return why(ctx, requireTarget(target, 'why <build>'), parseTail(values.tail))
     case 'install':
       return install(ctx, requireTarget(target, 'install <build>'), {
         artifact: values.artifact,
@@ -205,12 +281,12 @@ async function dispatch(argv: ReadonlyArray<string>, io: CliIo): Promise<number>
     case 'status':
       return status(ctx, parseLimit(values.limit))
     default:
-      throw new CliError(`Unknown command "${command}". See \`${CLI_NAME} --help\`.`, 2)
+      throw usageError(`Unknown command "${command}". See \`${CLI_NAME} --help\`.`)
   }
 }
 
 const requireTarget = (value: string | undefined, usage: string): string => {
-  if (!value) throw new CliError(`Usage: ${CLI_NAME} ${usage}`, 2)
+  if (!value) throw usageError(`Usage: ${CLI_NAME} ${usage}`)
   return value
 }
 
@@ -221,10 +297,7 @@ const parsePlatforms = (
   const platforms = values.flatMap((value) => value.split(',')).map((p) => p.trim())
   for (const platform of platforms) {
     if (!PLATFORMS.includes(platform as BuildPlatform)) {
-      throw new CliError(
-        `Unknown platform "${platform}". Use ${PLATFORMS.join(', ')}.`,
-        2,
-      )
+      throw usageError(`Unknown platform "${platform}". Use ${PLATFORMS.join(', ')}.`)
     }
   }
   return [...new Set(platforms)] as Array<BuildPlatform>
@@ -234,29 +307,49 @@ const parseLimit = (value: string | undefined): number => {
   if (value === undefined) return 10
   const limit = Number(value)
   if (!Number.isInteger(limit) || limit < 1 || limit > 200) {
-    throw new CliError('--limit must be a whole number from 1 to 200', 2)
+    throw usageError('--limit must be a whole number from 1 to 200')
   }
   return limit
+}
+
+const parseTail = (value: string | undefined): number | undefined => {
+  if (value === undefined) return undefined
+  const tail = Number(value)
+  if (!Number.isInteger(tail) || tail < 1 || tail > 200) {
+    throw usageError('--tail must be a whole number from 1 to 200')
+  }
+  return tail
 }
 
 // ── login ───────────────────────────────────────────────────────
 
 async function login(
   io: CliIo,
-  options: { name?: string; project?: string; token?: string; url?: string },
+  options: {
+    headers: Record<string, string>
+    json: boolean
+    name?: string
+    project?: string
+    token?: string
+    url?: string
+  },
 ): Promise<number> {
-  if (!options.url) throw new CliError('Usage: oore-dev login --url <daemon url> [--token <token>]', 2)
+  if (!options.url) throw usageError('Usage: oore-dev login --url <daemon url> [--token <token>]')
   const url = options.url.replace(/\/+$/, '')
-  let token = options.token ?? io.env.OORE_TOKEN
+  let token = options.token ?? io.env.OORE_TOKEN ?? io.env.OORE_SESSION_TOKEN
   if (!token && io.readStdin) token = (await io.readStdin()).trim()
   if (!token) {
-    throw new CliError(
+    throw usageError(
       'Pass an API token with --token, OORE_TOKEN or stdin. Create one in the web app under Settings → API tokens.',
-      2,
     )
   }
 
-  const client = createOoreClient({ baseUrl: url, fetch: io.fetch, token })
+  const client = createOoreClient({
+    baseUrl: url,
+    fetch: io.fetch,
+    headers: options.headers,
+    token,
+  })
   const { user } = await getMe({ client })
 
   const path = configPath(io.env)
@@ -269,7 +362,11 @@ async function login(
   }
   config.default ??= name
   await writeConfig(path, config)
-  io.stdout(`Signed in to ${url} as ${user.email} (${user.role}). Saved "${name}" to ${path}\n`)
+  if (options.json) {
+    printJson(io, { config: path, instance: name, url, user: { email: user.email, role: user.role } })
+  } else {
+    io.stdout(`Signed in to ${url} as ${user.email} (${user.role}). Saved "${name}" to ${path}\n`)
+  }
   return 0
 }
 
@@ -347,13 +444,20 @@ async function run(
       platforms: options.platforms ?? null,
     },
     client: ctx.client,
+    // Sent so a retry by an HTTP layer never queues a second build.
+    headers: { 'Idempotency-Key': newIdempotencyKey() },
     path: { project_id: pipeline.project_id },
   })
+  if (ctx.json && !options.follow) {
+    printJson(ctx.io, build)
+    return 0
+  }
   const on = build.branch ? ` on ${build.branch}` : ''
   const platforms = options.platforms ? ` for ${options.platforms.join(', ')}` : ''
-  ctx.io.stdout(`Queued build #${build.build_number} of ${pipeline.name}${on}${platforms} (${build.id})\n`)
+  const say = ctx.json ? ctx.io.stderr : ctx.io.stdout
+  say(`Queued build #${build.build_number} of ${pipeline.name}${on}${platforms} (${build.id})\n`)
   if (!options.follow) {
-    ctx.io.stdout(`Follow it with: ${CLI_NAME} logs -f ${build.id}\n`)
+    say(`Follow it with: ${CLI_NAME} logs -f ${build.id}\n`)
     return 0
   }
   return follow(ctx, build.id)
@@ -362,12 +466,20 @@ async function run(
 // ── logs ────────────────────────────────────────────────────────
 
 async function logs(ctx: Context, buildId: string, followLogs: boolean): Promise<number> {
+  jsonLogs = ctx.json
   if (followLogs) return follow(ctx, buildId)
   await printPendingLogs(ctx, buildId, -1)
   return 0
 }
 
+/** With `--json`, one JSON object per log line on stdout. */
+let jsonLogs = false
+
 const writeChunk = (io: CliIo, chunk: BuildLogChunk) => {
+  if (jsonLogs) {
+    printJson(io, chunk)
+    return
+  }
   const text = chunk.content.endsWith('\n') ? chunk.content : `${chunk.content}\n`
   if (chunk.stream === 'stderr') io.stderr(text)
   else io.stdout(text)
@@ -402,6 +514,7 @@ const defaultSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(r
  */
 async function follow(ctx: Context, buildId: string): Promise<number> {
   const { client, io } = ctx
+  jsonLogs = ctx.json
   let after = await printPendingLogs(ctx, buildId, -1)
   let build = (await getBuild({ client, path: { build_id: buildId } })).build
 
@@ -437,8 +550,9 @@ async function follow(ctx: Context, buildId: string): Promise<number> {
     after = await printPendingLogs(ctx, buildId, after)
   }
 
-  io.stderr(`Build #${build.build_number} ${build.status.replace('_', ' ')}\n`)
-  return build.status === 'succeeded' ? 0 : 1
+  if (ctx.json) printJson(io, { build })
+  else io.stderr(`Build #${build.build_number} ${build.status.replace('_', ' ')}\n`)
+  return build.status === 'succeeded' ? EXIT.ok : EXIT.failed
 }
 
 // ── install ─────────────────────────────────────────────────────
@@ -451,7 +565,7 @@ async function install(
   options: { artifact: string | undefined; platform: string | undefined; qr: boolean },
 ): Promise<number> {
   if (options.platform && options.platform !== 'android' && options.platform !== 'ios') {
-    throw new CliError('--platform must be android or ios for install', 2)
+    throw usageError('--platform must be android or ios for install')
   }
   const { artifacts } = await listBuildArtifacts({
     body: { build_ids: [buildId] },
@@ -485,6 +599,10 @@ async function install(
     client: ctx.client,
     path: { artifact_id: artifact.id },
   })
+  if (ctx.json) {
+    printJson(ctx.io, { artifact, link })
+    return 0
+  }
   const expires = new Date(link.expires_at * 1000).toLocaleTimeString()
   ctx.io.stdout(`${artifact.name} (${link.platform}), link expires at ${expires}\n`)
   if (options.qr) {
@@ -519,6 +637,10 @@ async function status(ctx: Context, limit: number): Promise<number> {
     },
   })
 
+  if (ctx.json) {
+    printJson(io, { builds, project: project ?? null, total, url: ctx.url, user })
+    return 0
+  }
   io.stdout(`${ctx.url}  ${user.email} (${user.role})\n`)
   if (project) io.stdout(`Project: ${project.name}\n`)
   if (builds.length === 0) {
@@ -538,5 +660,50 @@ async function status(ctx: Context, limit: number): Promise<number> {
     io.stdout(`${row.map((cell, i) => cell.padEnd(widths[i]!)).join('  ').trimEnd()}\n`)
   }
   if (total > builds.length) io.stdout(`Showing ${builds.length} of ${total} builds.\n`)
+  return 0
+}
+
+// ── why ─────────────────────────────────────────────────────────
+
+async function why(ctx: Context, buildId: string, tail: number | undefined): Promise<number> {
+  const diagnosis = await getBuildDiagnosis({
+    client: ctx.client,
+    path: { build_id: buildId },
+    query: tail === undefined ? undefined : { tail },
+  })
+  if (ctx.json) {
+    printJson(ctx.io, diagnosis)
+    return 0
+  }
+  const { io } = ctx
+  const status = diagnosis.status.replace('_', ' ')
+  if (!diagnosis.failed_step && !diagnosis.hint) {
+    io.stdout(`Build #${diagnosis.build_number} ${status}; nothing failed.\n`)
+    return 0
+  }
+  io.stdout(`Build #${diagnosis.build_number} ${status}\n`)
+  const step = diagnosis.failed_step
+  if (step) {
+    const exit = step.exit_code == null ? '' : ` (exit ${step.exit_code})`
+    io.stdout(`Failed step: ${step.label}${exit}\n`)
+  }
+  const hint = diagnosis.hint
+  if (hint) {
+    io.stdout(`Cause: ${hint.cause}\n`)
+    if (hint.fix) io.stdout(`Fix: ${hint.fix}\n`)
+    io.stdout(`Line: ${hint.line}\n`)
+  }
+  if (diagnosis.failed_tests_total > 0) {
+    io.stdout(`Failed tests (${diagnosis.failed_tests_total}):\n`)
+    for (const test of diagnosis.failed_tests) {
+      io.stdout(`  ${test.name}${test.message ? `: ${test.message.split('\n')[0]}` : ''}\n`)
+    }
+  }
+  if (diagnosis.log_tail.length > 0) {
+    const more = diagnosis.log_tail_truncated ? ' (earlier lines cut)' : ''
+    io.stdout(`\nLast ${diagnosis.log_tail.length} log lines${more}:\n`)
+    for (const line of diagnosis.log_tail) io.stdout(`  ${line}\n`)
+  }
+  if (diagnosis.url) io.stdout(`\n${diagnosis.url}\n`)
   return 0
 }

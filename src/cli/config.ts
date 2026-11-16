@@ -79,8 +79,10 @@ export function resolveInstance(
       `No instance named "${name}". Known: ${names.join(', ') || 'none'}`,
     )
   }
-  const url = options.url ?? env.OORE_URL ?? saved?.url
-  const token = options.token ?? env.OORE_TOKEN ?? saved?.token
+  // OORE_DAEMON_URL and OORE_SESSION_TOKEN are the `oore` CLI's older names.
+  const url = options.url ?? env.OORE_URL ?? env.OORE_DAEMON_URL ?? saved?.url
+  const token =
+    options.token ?? env.OORE_TOKEN ?? env.OORE_SESSION_TOKEN ?? saved?.token
   if (!url || !token) {
     throw new Error(
       'No Oore instance configured. Run `oore-dev login --url <daemon url>` ' +
@@ -93,4 +95,29 @@ export function resolveInstance(
     token,
     url,
   }
+}
+
+/**
+ * Extra request headers, such as an access proxy's service token: each
+ * `--header 'Name: value'`, then each line of `OORE_HTTP_HEADERS`. The same
+ * format as the `oore` CLI.
+ */
+export function parseHeaders(
+  flags: ReadonlyArray<string> | undefined,
+  env: Env,
+): Record<string, string> {
+  const lines = [
+    ...(env.OORE_HTTP_HEADERS ?? '').split('\n'),
+    ...(flags ?? []),
+  ].filter((line) => line.trim() !== '')
+  const headers: Record<string, string> = {}
+  for (const line of lines) {
+    const colon = line.indexOf(':')
+    const name = colon > 0 ? line.slice(0, colon).trim() : ''
+    if (!name || /\s/.test(name)) {
+      throw new Error(`Header "${line.trim()}" must look like "Name: value"`)
+    }
+    headers[name] = line.slice(colon + 1).trim()
+  }
+  return headers
 }

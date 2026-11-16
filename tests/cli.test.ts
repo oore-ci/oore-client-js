@@ -10,6 +10,7 @@ import {
   createArtifactInstallLinkMock,
   createBuildMock,
   createStreamTokenMock,
+  getBuildDiagnosisMock,
   getBuildLogsMock,
   getBuildMock,
   getMeMock,
@@ -334,16 +335,17 @@ test('environment variables override the config file', async () => {
   })
 
   expect(auth).toBe('Bearer tok-env')
-  expect(result.code).toBe(1)
-  expect(result.stderr).toContain('Invalid token [HTTP 401] (is the token valid?')
+  expect(result.code).toBe(4)
+  expect(result.stderr).toContain('Invalid token [HTTP 401] (Is the token valid?')
 })
 
-test('usage errors exit with code 2', async () => {
-  expect((await cli([])).code).toBe(2)
+test('usage errors exit with code 64, as in the oore CLI', async () => {
+  expect((await cli([])).code).toBe(64)
   expect((await cli(['--help'])).code).toBe(0)
-  expect(await cli(['deploy'])).toMatchObject({ code: 2 })
+  expect(await cli(['deploy'])).toMatchObject({ code: 64 })
+  expect((await cli(['status', '--no-such-flag'])).code).toBe(64)
   expect(await cli(['run', 'ci', '--platform', 'windows'])).toMatchObject({
-    code: 2,
+    code: 64,
     stderr: 'oore-dev: Unknown platform "windows". Use android, ios, macos.\n',
   })
   expect((await cli(['logs'])).stderr).toBe('oore-dev: Usage: oore-dev logs <build>\n')
@@ -351,4 +353,104 @@ test('usage errors exit with code 2', async () => {
     code: 1,
     stderr: 'oore-dev: No instance named "home". Known: work\n',
   })
+})
+
+test('the oore CLI\'s variable names, extra headers and --json work', async () => {
+  let seen = { auth: null as string | null, access: null as string | null, proxy: null as string | null }
+  server.use(
+    getMeMock(({ request }) => {
+      seen = {
+        access: request.headers.get('cf-access-client-id'),
+        auth: request.headers.get('authorization'),
+        proxy: request.headers.get('x-proxy'),
+      }
+      return HttpResponse.json({ user: { email: 'dev@acme.test', role: 'developer' } as never })
+    }),
+    listBuildsMock({ body: { builds: [build('running')], total: 1 } }),
+  )
+
+  const result = await cli(['status', '--json', '--header', 'X-Proxy: yes'], {
+    env: {
+      OORE_DAEMON_URL: BASE,
+      OORE_DEV_CONFIG: join(dir, 'missing.json'),
+      OORE_HTTP_HEADERS: 'CF-Access-Client-Id: abc.access\n',
+      OORE_SESSION_TOKEN: 'tok-old',
+    },
+  })
+
+  expect(result.code).toBe(0)
+  expect(seen).toEqual({ access: 'abc.access', auth: 'Bearer tok-old', proxy: 'yes' })
+  const body = JSON.parse(result.stdout)
+  expect(body).toMatchObject({ total: 1, url: BASE, user: { email: 'dev@acme.test' } })
+  expect(body.builds[0].id).toBe('build-42')
+
+  const bad = await cli(['status', '--json', '--header', 'nonsense'])
+  expect(bad.code).toBe(64)
+  expect(JSON.parse(bad.stderr)).toMatchObject({ code: 'usage' })
+})
+
+test('--json errors are one object on stderr with the API code and hint', async () => {
+  server.use(
+    getMeMock(() =>
+      HttpResponse.json(
+        { code: 'permission_denied', error: 'No access', hint: 'Ask a maintainer.', retryable: false },
+        { status: 403 },
+      ),
+    ),
+  )
+  const result = await cli(['status', '--json'])
+  expect(result.code).toBe(4)
+  expect(result.stdout).toBe('')
+  expect(JSON.parse(result.stderr)).toEqual({
+    code: 'permission_denied',
+    error: 'No access',
+    hint: 'Ask a maintainer.',
+    status: 403,
+  })
+})
+
+test('why explains a failed build', async () => {
+  server.use(
+    getBuildDiagnosisMock({
+      body: {
+        build_id: 'build-42',
+        build_number: 42,
+        failed_step: { exit_code: 1, label: 'Build', name: 'build-1' },
+        failed_tests: [{ message: 'expected 1\nactual 2', name: 'test/app_test.dart: adds' }],
+        failed_tests_total: 3,
+        hint: {
+          category: 'gradle',
+          cause: 'Gradle ran out of memory.',
+          fix: 'Raise org.gradle.jvmargs.',
+          line: 'java heap space',
+          sequence: 9,
+        },
+        log_tail: ['BUILD FAILED'],
+        log_tail_truncated: true,
+        status: 'failed',
+        url: 'https://ci.test/builds/build-42',
+      },
+    }),
+  )
+  const result = await cli(['why', 'build-42'])
+  expect(result.code).toBe(0)
+  expect(result.stdout).toContain('Failed step: Build (exit 1)')
+  expect(result.stdout).toContain('Cause: Gradle ran out of memory.')
+  expect(result.stdout).toContain('Failed tests (3):\n  test/app_test.dart: adds: expected 1\n')
+  expect(result.stdout).toContain('(earlier lines cut)')
+})
+
+test('run sends an Idempotency-Key', async () => {
+  let key = null as string | null
+  server.use(
+    getPipelineMock({ body: { build_count: 0, pipeline: pipeline('pipe-1', 'ci', 'proj-1') } as never }),
+    createBuildMock(({ request }) => {
+      key = request.headers.get('idempotency-key')
+      return HttpResponse.json({ build: build('queued') }, { status: 201 })
+    }),
+  )
+  const result = await cli(['run', 'pipe-1', '--json'])
+  expect(result.code).toBe(0)
+  expect(JSON.parse(result.stdout).id).toBe('build-42')
+  expect(key).toMatch(/^[0-9a-f-]{36}$/)
 })

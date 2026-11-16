@@ -18,26 +18,47 @@ export interface OoreClientOptions
   token?: OoreToken
 }
 
+/** One rejected input of an invalid request. */
+export interface OoreApiErrorField {
+  path: string
+  message: string
+}
+
 interface ApiErrorBody {
   code: string
   details?: string | null
   error: string
+  fields?: Array<OoreApiErrorField> | null
+  hint?: string | null
+  retryable?: boolean | null
 }
 
 export interface OoreApiErrorOptions {
   cause?: unknown
   code?: string | undefined
   details?: string | null | undefined
+  fields?: ReadonlyArray<OoreApiErrorField> | undefined
+  hint?: string | undefined
   request?: Request | undefined
   response: Response
+  retryable?: boolean | undefined
 }
 
 /** A non-2xx response returned by an Oore daemon. */
 export class OoreApiError extends Error {
   readonly code: string | undefined
   readonly details: string | null | undefined
+  /** The inputs the daemon rejected, for invalid requests. Empty otherwise. */
+  readonly fields: ReadonlyArray<OoreApiErrorField>
+  /** What to do next, when the daemon knows (daemons from 0.1.54). */
+  readonly hint: string | undefined
   readonly request: Request | undefined
   readonly response: Response
+  /**
+   * Whether the same request may succeed later. From the daemon when it says
+   * so, else true for 429 and 5xx responses.
+   */
+  readonly retryable: boolean
   readonly status: number
 
   constructor(message: string, options: OoreApiErrorOptions) {
@@ -45,9 +66,13 @@ export class OoreApiError extends Error {
     this.name = 'OoreApiError'
     this.code = options.code
     this.details = options.details
+    this.fields = options.fields ?? []
+    this.hint = options.hint
     this.request = options.request
     this.response = options.response
     this.status = options.response.status
+    this.retryable =
+      options.retryable ?? (this.status === 429 || this.status >= 500)
   }
 }
 
@@ -102,8 +127,12 @@ export const toOoreApiError = (
     cause: body,
     code: apiBody?.code,
     details: apiBody?.details,
+    fields: Array.isArray(apiBody?.fields) ? apiBody.fields : undefined,
+    hint: typeof apiBody?.hint === 'string' ? apiBody.hint : undefined,
     request,
     response,
+    retryable:
+      typeof apiBody?.retryable === 'boolean' ? apiBody.retryable : undefined,
   })
 }
 
