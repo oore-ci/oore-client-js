@@ -21,5 +21,6 @@ export const vAppStorePublishConfig = v.object({
     release_type: v.optional(vAppStoreReleaseType),
     submit_for_review: v.optional(v.boolean()),
     testflight_groups: v.array(v.string()),
+    upload_with_signing_key: v.optional(v.boolean()),
     uses_non_exempt_encryption: v.optional(v.boolean())
 });
