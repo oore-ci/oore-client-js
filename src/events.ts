@@ -15,10 +15,13 @@ export type StreamLiveEventsOptions = Omit<
 >
 
 /**
- * An event from `GET /v1/events`. Events are not replayed after a reconnect,
- * so refetch whatever the UI shows on `ready` (after the first) and `resync`.
+ * An event from `GET /v1/events`. Build, release and runner events carry the
+ * stream `id`: reconnect with `query: { since: id }` (or a `Last-Event-ID`
+ * header) and a daemon from 0.1.54 replays what you missed first. Refetch
+ * whatever the UI shows on `resync`, and on `ready` after a reconnect to an
+ * older daemon, which does not replay.
  */
-export type LiveEvent =
+export type LiveEvent = (
   | { ready: EventStreamReady; type: 'ready' }
   | { build: BuildChangedEvent; type: 'build' }
   | { release: ReleaseChangedEvent; type: 'release' }
@@ -26,6 +29,7 @@ export type LiveEvent =
   | { reason: string; type: 'resync' }
   | { reason: string; type: 'done' }
   | { data: unknown; event?: string; type: 'unknown' }
+) & { id?: string }
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
   Boolean(value) && typeof value === 'object'
@@ -70,6 +74,9 @@ export function streamLiveEvents(
     options,
     1,
     (attempt) => streamEvents({ ...options, ...attempt }),
-    ({ data, event }) => toLiveEvent(event, data),
+    ({ data, event, id }) => {
+      const live = toLiveEvent(event, data)
+      return id === undefined ? live : { ...live, id }
+    },
   )
 }

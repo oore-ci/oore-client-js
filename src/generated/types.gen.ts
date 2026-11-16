@@ -91,19 +91,34 @@ export type ApiError = {
     code: string;
     details?: string | null;
     error: string;
+    /**
+     * The inputs that were rejected, when the request was invalid. Boxed
+     * to keep error results small.
+     */
+    fields?: Array<ApiErrorField> | null;
+    /**
+     * What to do next, in plain words, when Oore knows.
+     */
+    hint?: string | null;
+    /**
+     * Whether sending the same request again later may succeed.
+     */
+    retryable?: boolean | null;
+};
+
+/**
+ * One rejected input of an invalid request.
+ */
+export type ApiErrorField = {
+    message: string;
+    /**
+     * Where the input is: a body field such as `name` or `steps[0].run`,
+     * or a query parameter.
+     */
+    path: string;
 };
 
 export type ApiTokenSummary = {
-    /**
-     * Abilities the token holds. Tokens made before abilities existed show
-     * the abilities their role implies.
-     */
-    abilities?: Array<TokenAbility>;
-    /**
-     * Whether `abilities` was chosen when the token was made, rather than
-     * implied by its role.
-     */
-    abilities_chosen?: boolean;
     created_at: number;
     created_by: string;
     created_by_email: string;
@@ -114,10 +129,6 @@ export type ApiTokenSummary = {
     last_used_at?: number | null;
     name: string;
     prefix: string;
-    /**
-     * Apps the token may reach. Empty means every app its creator reaches.
-     */
-    project_ids?: Array<string>;
     role: UserRole;
 };
 
@@ -456,14 +467,6 @@ export type AuditLogEntry = {
     project_name?: string | null;
     resource_id?: string | null;
     resource_type: string;
-    /**
-     * The API token the actor used, when the action came through one.
-     */
-    token_id?: string | null;
-    /**
-     * That token's name when it acted, shown as "via token <name>".
-     */
-    token_name?: string | null;
 };
 
 export type AuthenticatedUser = {
@@ -546,14 +549,6 @@ export type Build = {
     trigger_actor?: string | null;
     trigger_event?: string | null;
     trigger_ref?: string | null;
-    /**
-     * The API token that started the build, when one did.
-     */
-    trigger_token_id?: string | null;
-    /**
-     * That token's name, shown as "via token <name>".
-     */
-    trigger_token_name?: string | null;
     trigger_type: TriggerType;
     updated_at: number;
     /**
@@ -665,6 +660,58 @@ export type BuildDetailResponse = {
      * can run again without rebuilding.
      */
     retryable_steps?: Array<string>;
+};
+
+/**
+ * `GET /v1/builds/{build_id}/diagnosis`: why a build failed, in one call.
+ */
+export type BuildDiagnosis = {
+    build_id: string;
+    build_number: number;
+    failed_step?: null | BuildDiagnosisStep;
+    /**
+     * Failed tests, at most 20.
+     */
+    failed_tests: Array<BuildDiagnosisTest>;
+    failed_tests_total: number;
+    hint?: null | BuildFailureHint;
+    /**
+     * The last lines of the failed step's log, or of the whole log when no
+     * step failed.
+     */
+    log_tail: Array<string>;
+    /**
+     * More lines came before `log_tail`.
+     */
+    log_tail_truncated: boolean;
+    status: BuildStatus;
+    /**
+     * The build's page in the web app, when the instance knows its address.
+     */
+    url?: string | null;
+};
+
+/**
+ * The step a failed build stopped at.
+ */
+export type BuildDiagnosisStep = {
+    exit_code?: number | null;
+    /**
+     * The name people see, such as `Check out code` for `checkout`.
+     */
+    label: string;
+    /**
+     * The step's name in the build, as in `step_results` and log markers.
+     */
+    name: string;
+};
+
+/**
+ * One failed test, kept short.
+ */
+export type BuildDiagnosisTest = {
+    message?: string | null;
+    name: string;
 };
 
 export type BuildEvent = {
@@ -1096,38 +1143,17 @@ export type ConfigureExternalAccessOidcResponse = {
 };
 
 export type CreateApiTokenRequest = {
-    /**
-     * What the token may do. Leave out for `read` and `build`. `read` is
-     * always included.
-     */
-    abilities?: Array<TokenAbility> | null;
-    /**
-     * Unix time the token stops working. Leave out for a token that never
-     * expires; the web UI and CLI suggest 90 days.
-     */
     expires_at?: number | null;
     name: string;
-    /**
-     * Apps the token may reach. Leave out or empty for every app you reach.
-     */
-    project_ids?: Array<string> | null;
     role: string;
 };
 
 export type CreateApiTokenResponse = {
-    /**
-     * Abilities the token holds.
-     */
-    abilities?: Array<TokenAbility>;
     created_at: number;
     expires_at?: number | null;
     id: string;
     name: string;
     prefix: string;
-    /**
-     * Apps the token may reach. Empty means every app its creator reaches.
-     */
-    project_ids?: Array<string>;
     role: string;
     /**
      * The plaintext token. Only returned on creation, never again.
@@ -1964,9 +1990,42 @@ export type InboxResponse = {
     items: Array<InboxItem>;
 };
 
+/**
+ * How people sign in to this instance.
+ */
+export type InstanceAuthMode = 'local' | 'oidc' | 'trusted_proxy';
+
+/**
+ * `GET /v1/meta`: what this instance is and which optional API features it
+ * has, so tools can adapt without guessing from the version.
+ */
+export type InstanceMeta = {
+    auth_mode: InstanceAuthMode;
+    /**
+     * The release channel it was installed from. Only for a signed-in caller.
+     */
+    channel?: string | null;
+    /**
+     * Optional features this daemon has, such as `diagnosis`,
+     * `log_filters`, `build_wait`, `idempotency` and `mcp`. A new feature
+     * adds a string; clients ignore ones they do not know.
+     */
+    features: Array<string>;
+    setup_state: SetupState;
+    /**
+     * The daemon's version. Only for a signed-in caller.
+     */
+    version?: string | null;
+};
+
 export type InstancePreferences = {
     direct_macos_runner_paused: boolean;
     key_storage_mode: KeyStorageMode;
+    /**
+     * The MCP server at `/mcp` answers AI agents. Off until an owner turns
+     * it on.
+     */
+    mcp_enabled: boolean;
     remote_auth_mode: RemoteAuthMode;
     restart_required: boolean;
     runtime_mode: RuntimeMode;
@@ -2122,6 +2181,11 @@ export type LatestInstallLink = {
      */
     url?: string | null;
     use_count: number;
+};
+
+export type ListAllPipelinesResponse = {
+    pipelines: Array<PipelineListing>;
+    total: number;
 };
 
 export type ListApiTokensResponse = {
@@ -2677,6 +2741,13 @@ export type PipelineIosSigningResponse = {
     shared_api_key?: null | AppStoreConnectKeySummary;
     team_id?: string | null;
     updated_at?: number | null;
+};
+
+/**
+ * A pipeline with the app it belongs to, for lists across apps.
+ */
+export type PipelineListing = Pipeline & {
+    project_name: string;
 };
 
 /**
@@ -4715,12 +4786,6 @@ export type TesterGroupRequest = {
     name: string;
 };
 
-/**
- * What an API token may do, on top of its role. A token may do the least
- * of its creator's own rights, its role, its abilities and its app list.
- */
-export type TokenAbility = 'read' | 'build' | 'release_operate' | 'release_manage' | 'manage';
-
 export type TriggerConfig = {
     /**
      * Branch globs for push and pull request events. When only `tags` is
@@ -4794,6 +4859,10 @@ export type UpdateExternalAccessNetworkSettingsRequest = {
 export type UpdateInstancePreferencesRequest = {
     direct_macos_runner_paused?: boolean | null;
     key_storage_mode: KeyStorageMode;
+    /**
+     * Turn the MCP server at `/mcp` on or off. Owner only.
+     */
+    mcp_enabled?: boolean | null;
     remote_auth_mode?: null | RemoteAuthMode;
     runtime_mode?: null | RuntimeMode;
 };
@@ -5992,10 +6061,6 @@ export type ListAuditLogsData = {
          */
         actor_id?: string;
         /**
-         * Filter to entries made through this API token
-         */
-        token_id?: string;
-        /**
          * Filter by exact action string
          */
         action?: string;
@@ -6279,6 +6344,10 @@ export type ListBuildsData = {
          */
         actor?: string;
         /**
+         * Filter by commit: the full SHA or a prefix of at least 7 hex characters, ignoring case
+         */
+        commit_sha?: string;
+        /**
          * Only builds you started or builds of apps you pinned.
          */
         mine?: boolean;
@@ -6438,15 +6507,32 @@ export type GetBuildData = {
          */
         build_id: string;
     };
-    query?: never;
+    query?: {
+        /**
+         * Hold the request up to this many seconds (1 to 60) until the build changes. Answers at once when the build has finished or changed after `since_updated_at`.
+         */
+        wait?: number;
+        /**
+         * With `wait`: the build's `updated_at` you last saw, in Unix seconds. Defaults to its current value.
+         */
+        since_updated_at?: number;
+    };
     url: '/v1/builds/{build_id}';
 };
 
 export type GetBuildErrors = {
     /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
      * Not found
      */
     404: ApiError;
+    /**
+     * Too many requests are waiting for builds
+     */
+    429: ApiError;
 };
 
 export type GetBuildError = GetBuildErrors[keyof GetBuildErrors];
@@ -6585,6 +6671,45 @@ export type CancelBuildResponses = {
 };
 
 export type CancelBuildResponse2 = CancelBuildResponses[keyof CancelBuildResponses];
+
+export type GetBuildDiagnosisData = {
+    body?: never;
+    path: {
+        /**
+         * Build ID
+         */
+        build_id: string;
+    };
+    query?: {
+        /**
+         * Log lines to return, 1 to 200 (default 40)
+         */
+        tail?: number;
+    };
+    url: '/v1/builds/{build_id}/diagnosis';
+};
+
+export type GetBuildDiagnosisErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Not found
+     */
+    404: ApiError;
+};
+
+export type GetBuildDiagnosisError = GetBuildDiagnosisErrors[keyof GetBuildDiagnosisErrors];
+
+export type GetBuildDiagnosisResponses = {
+    /**
+     * Diagnosis
+     */
+    200: BuildDiagnosis;
+};
+
+export type GetBuildDiagnosisResponse = GetBuildDiagnosisResponses[keyof GetBuildDiagnosisResponses];
 
 export type GetBuildFailureHintData = {
     body?: never;
@@ -6842,16 +6967,41 @@ export type GetBuildLogsData = {
          */
         after_sequence?: number;
         /**
-         * Page size
+         * Page size (default 1000, at most 5000)
          */
         limit?: number;
+        /**
+         * Only lines of this step, by its name in the build's `step_results`
+         */
+        step?: string;
+        /**
+         * Only the last this many matching lines (at most 5000)
+         */
+        tail?: number;
+        /**
+         * Only lines containing this text, ignoring case. At most 200 characters.
+         */
+        search?: string;
+        /**
+         * With `search`, also this many lines before and after each match (0 to 50)
+         */
+        context?: number;
     };
     url: '/v1/builds/{build_id}/logs';
 };
 
+export type GetBuildLogsErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+};
+
+export type GetBuildLogsError = GetBuildLogsErrors[keyof GetBuildLogsErrors];
+
 export type GetBuildLogsResponses = {
     /**
-     * Build logs
+     * Build logs. With `step`, `tail` or `search`, `total` counts the matching lines. With `Accept: text/plain`, the lines alone, one per line, and the count in `X-Oore-Log-Total`.
      */
     200: BuildLogsResponse;
 };
@@ -6966,6 +7116,12 @@ export type RejectBuildResponse = RejectBuildResponses[keyof RejectBuildResponse
 
 export type RerunBuildData = {
     body?: never;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Source build ID to re-run
@@ -7072,6 +7228,12 @@ export type ListBuildSharesResponse2 = ListBuildSharesResponses[keyof ListBuildS
 
 export type SendBuildToGroupData = {
     body: SendBuildToGroupRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Build ID
@@ -7221,12 +7383,22 @@ export type GetDeviceRegistrationResponse = GetDeviceRegistrationResponses[keyof
 
 export type StreamEventsData = {
     body?: never;
+    headers?: {
+        /**
+         * The id of the last event received; events after it are replayed first
+         */
+        'Last-Event-ID'?: string | null;
+    };
     path?: never;
     query?: {
         /**
          * Only send build and release events for this project
          */
         project_id?: string;
+        /**
+         * Replay events after this event id, like `Last-Event-ID`
+         */
+        since?: number;
     };
     url: '/v1/events';
 };
@@ -8058,6 +8230,49 @@ export type DeleteLatestInstallLinkResponses = {
 
 export type DeleteLatestInstallLinkResponse = DeleteLatestInstallLinkResponses[keyof DeleteLatestInstallLinkResponses];
 
+export type GetInstanceMetaData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/meta';
+};
+
+export type GetInstanceMetaErrors = {
+    /**
+     * Internal error
+     */
+    500: ApiError;
+};
+
+export type GetInstanceMetaError = GetInstanceMetaErrors[keyof GetInstanceMetaErrors];
+
+export type GetInstanceMetaResponses = {
+    /**
+     * Instance details
+     */
+    200: InstanceMeta;
+};
+
+export type GetInstanceMetaResponse = GetInstanceMetaResponses[keyof GetInstanceMetaResponses];
+
+export type GetOpenapiSpecData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/openapi.json';
+};
+
+export type GetOpenapiSpecResponses = {
+    /**
+     * OpenAPI 3.1 document
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type GetOpenapiSpecResponse = GetOpenapiSpecResponses[keyof GetOpenapiSpecResponses];
+
 export type ListOperatorIncidentsData = {
     body?: never;
     path?: never;
@@ -8121,6 +8336,52 @@ export type MarkOperatorIncidentReadResponses = {
 };
 
 export type MarkOperatorIncidentReadResponse = MarkOperatorIncidentReadResponses[keyof MarkOperatorIncidentReadResponses];
+
+export type ListAllPipelinesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Exact pipeline name, ignoring case
+         */
+        name?: string;
+        /**
+         * Part of the pipeline name, ignoring case. At most 200 characters.
+         */
+        search?: string;
+        /**
+         * Only this app's pipelines
+         */
+        project_id?: string;
+        /**
+         * Page size (default 50, at most 200)
+         */
+        limit?: number;
+        /**
+         * Page offset
+         */
+        offset?: number;
+    };
+    url: '/v1/pipelines';
+};
+
+export type ListAllPipelinesErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+};
+
+export type ListAllPipelinesError = ListAllPipelinesErrors[keyof ListAllPipelinesErrors];
+
+export type ListAllPipelinesResponses = {
+    /**
+     * Pipelines
+     */
+    200: ListAllPipelinesResponse;
+};
+
+export type ListAllPipelinesResponse2 = ListAllPipelinesResponses[keyof ListAllPipelinesResponses];
 
 export type ExportPipelineYamlData = {
     body: ExportPipelineYamlRequest;
@@ -9284,6 +9545,12 @@ export type ListProjectArtifactsResponse = ListProjectArtifactsResponses[keyof L
 
 export type CreateBuildData = {
     body: CreateBuildRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Project ID
@@ -9874,6 +10141,12 @@ export type CreatePipelineResponse2 = CreatePipelineResponses[keyof CreatePipeli
 
 export type PromoteBuildData = {
     body: CreatePromotionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Project ID
@@ -11020,6 +11293,12 @@ export type ListReleasesResponse2 = ListReleasesResponses[keyof ListReleasesResp
 
 export type CreateReleaseData = {
     body: CreateReleaseRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path?: never;
     query?: never;
     url: '/v1/releases';
@@ -11118,6 +11397,12 @@ export type ApproveReleaseData = {
      * Optional reason; `fraction` is accepted by raise only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11167,6 +11452,12 @@ export type AttachScheduleReleaseData = {
      * Optional reason; `policy` is accepted by attach_schedule only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11216,6 +11507,12 @@ export type CompleteReleaseData = {
      * Optional reason; `fraction` is accepted by raise only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11265,6 +11562,12 @@ export type DetachScheduleReleaseData = {
      * Optional reason; `policy` is accepted by attach_schedule only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11314,6 +11617,12 @@ export type HaltReleaseData = {
      * Optional reason; `fraction` is accepted by raise only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11363,6 +11672,12 @@ export type MarkRejectedReleaseData = {
      * Optional reason; `policy` is accepted by attach_schedule only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11412,6 +11727,12 @@ export type MarkSentForReviewReleaseData = {
      * Optional reason; `policy` is accepted by attach_schedule only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11461,6 +11782,12 @@ export type PauseReleaseData = {
      * Optional reason; `fraction` is accepted by raise only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11510,6 +11837,12 @@ export type PullFromReviewReleaseData = {
      * Optional reason; `policy` is accepted by attach_schedule only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11559,6 +11892,12 @@ export type RaiseReleaseData = {
      * Optional reason; `fraction` is accepted by raise only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11608,6 +11947,12 @@ export type ReleaseNowReleaseData = {
      * Optional reason; `policy` is accepted by attach_schedule only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11657,6 +12002,12 @@ export type ResubmitReleaseData = {
      * Optional reason; `policy` is accepted by attach_schedule only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11706,6 +12057,12 @@ export type ResumeReleaseData = {
      * Optional reason; `fraction` is accepted by raise only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID
@@ -11755,6 +12112,12 @@ export type RetryReleaseData = {
      * Optional reason; `policy` is accepted by attach_schedule only
      */
     body?: null | ReleaseActionRequest;
+    headers?: {
+        /**
+         * Send the same key when you retry: a request with a key already used in the last 24 hours, with the same body, answers with the first response and the header `Idempotent-Replayed: true` instead of acting again. The same key with another body answers 409 `idempotency_key_reused`.
+         */
+        'Idempotency-Key'?: string | null;
+    };
     path: {
         /**
          * Release ID

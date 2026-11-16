@@ -8,6 +8,7 @@ import { vRuntimeMode } from './v-runtime-mode.js'
 export const vInstancePreferences = v.object({
     direct_macos_runner_paused: v.boolean(),
     key_storage_mode: vKeyStorageMode,
+    mcp_enabled: v.boolean(),
     remote_auth_mode: vRemoteAuthMode,
     restart_required: v.boolean(),
     runtime_mode: vRuntimeMode,

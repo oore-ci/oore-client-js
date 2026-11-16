@@ -32,6 +32,7 @@ const expected = [
   './client',
   './events',
   './logs',
+  './loop',
   './models',
   './msw',
   './msw/scenarios',

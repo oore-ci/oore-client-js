@@ -39,6 +39,10 @@
       "types": "./dist/logs.d.ts",
       "import": "./dist/logs.js"
     },
+    "./loop": {
+      "types": "./dist/loop.d.ts",
+      "import": "./dist/loop.js"
+    },
     "./msw": {
       "types": "./dist/msw.d.ts",
       "import": "./dist/msw.js"

@@ -61,8 +61,6 @@ export const vBuild = v.object({
     trigger_actor: v.nullish(v.string()),
     trigger_event: v.nullish(v.string()),
     trigger_ref: v.nullish(v.string()),
-    trigger_token_id: v.nullish(v.string()),
-    trigger_token_name: v.nullish(v.string()),
     trigger_type: vTriggerType,
     updated_at: v.pipe(v.union([
         v.number(),
