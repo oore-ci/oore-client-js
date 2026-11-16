@@ -61,6 +61,11 @@ export type AndroidSigningProfile = {
     has_key_password: boolean;
     has_keystore: boolean;
     has_store_password: boolean;
+    /**
+     * The signing library identity this build type signs with.
+     */
+    identity_id?: string | null;
+    identity_name?: string | null;
     key_alias?: string | null;
     keystore_checksum?: string | null;
     keystore_filename?: string | null;
@@ -69,6 +74,12 @@ export type AndroidSigningProfile = {
 
 export type AndroidSigningProfileInput = {
     enabled?: boolean;
+    /**
+     * Sign with this identity from the app's signing library. Omit to keep
+     * the current choice; an empty string clears it. A keystore upload
+     * replaces the choice and is added to the library.
+     */
+    identity_id?: string | null;
     key_alias?: string | null;
     key_password?: string | null;
     keystore_base64?: string | null;
@@ -2578,6 +2589,11 @@ export type PipelineIosSigningResponse = {
     has_api_key: boolean;
     has_p12: boolean;
     has_p12_password: boolean;
+    /**
+     * Manual mode: the signing library identity iOS builds sign with.
+     */
+    identity_id?: string | null;
+    identity_name?: string | null;
     mode: IosSigningMode;
     p12_expires_at?: number | null;
     p12_filename?: string | null;
@@ -4142,12 +4158,25 @@ export type SigningIdentity = {
      * not listed.
      */
     used_by?: Array<SigningIdentityUse>;
+    /**
+     * Pipelines whose own signing picks it.
+     */
+    used_by_pipelines?: Array<SigningIdentityPipelineUse>;
 };
 
 /**
  * What a signing identity in a project's credential library signs with.
  */
 export type SigningIdentityKind = 'android_keystore' | 'ios_distribution';
+
+/**
+ * A pipeline whose own signing picks a signing identity.
+ */
+export type SigningIdentityPipelineUse = {
+    build_type?: null | AndroidSigningBuildType;
+    pipeline_id: string;
+    pipeline_name: string;
+};
 
 /**
  * A provisioning profile in an iOS signing identity, without its contents.
@@ -4687,6 +4716,13 @@ export type UpdatePipelineIosSigningRequest = {
     certificate?: null | IosCertificateInput;
     enabled?: boolean;
     export_method?: null | IosExportMethod;
+    /**
+     * Manual mode: sign with this identity from the app's signing library,
+     * which then sets the team, export method and bundle IDs. Omit to keep
+     * the current choice; an empty string clears it. A certificate upload
+     * replaces the choice and is added to the library.
+     */
+    identity_id?: string | null;
     mode: IosSigningMode;
     provisioning_profiles?: Array<IosProvisioningProfileInput>;
     /**
