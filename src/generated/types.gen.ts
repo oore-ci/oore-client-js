@@ -346,13 +346,69 @@ export type ArtifactStorageSource = 'database' | 'environment' | 'default';
 
 export type ArtifactType = 'apk' | 'ipa' | 'app' | 'aab' | 'generic';
 
+export type AuditLogActivityDay = {
+    count: number;
+    /**
+     * Calendar day in the caller's time zone, `YYYY-MM-DD`.
+     */
+    date: string;
+};
+
+/**
+ * Audit activity over the most recent days, oldest day first.
+ */
+export type AuditLogActivityResponse = {
+    /**
+     * People who did at least one thing in the window.
+     */
+    actors: number;
+    days: Array<AuditLogActivityDay>;
+    /**
+     * Entries that record something blocked or failed.
+     */
+    problems: number;
+    total: number;
+};
+
+/**
+ * The kind of activity an audit entry records. The audit log filters on it.
+ */
+export type AuditLogCategory = 'access' | 'builds' | 'settings' | 'system';
+
 export type AuditLogEntry = {
     action: string;
     actor_email?: string | null;
     actor_id?: string | null;
+    /**
+     * The actor's display name, when they have one.
+     */
+    actor_name?: string | null;
+    /**
+     * The build the entry is about, when it still exists.
+     */
+    build_id?: string | null;
+    build_number?: number | null;
+    category?: AuditLogCategory;
     created_at: number;
     details?: string | null;
     id: number;
+    /**
+     * Current names of the records this entry refers to, keyed by the ids
+     * found in `resource_id` and `details`. Deleted records are absent.
+     */
+    names?: {
+        [key: string]: string;
+    };
+    /**
+     * The pipeline the entry is about, when it still exists.
+     */
+    pipeline_id?: string | null;
+    pipeline_name?: string | null;
+    /**
+     * The app the entry is about, when it still exists.
+     */
+    project_id?: string | null;
+    project_name?: string | null;
     resource_id?: string | null;
     resource_type: string;
 };
@@ -5740,13 +5796,21 @@ export type ListAuditLogsData = {
          */
         offset?: number;
         /**
-         * Filter by actor user ID
+         * Filter by actor user ID, or `system` for entries without an actor
          */
         actor_id?: string;
         /**
-         * Filter by action string
+         * Filter by exact action string
          */
         action?: string;
+        /**
+         * Search text matched against the action, the actor, the details, and the names of apps and pipelines
+         */
+        q?: string;
+        /**
+         * Filter by kind of activity
+         */
+        category?: AuditLogCategory;
         /**
          * Filter by resource type
          */
@@ -5792,6 +5856,44 @@ export type ListAuditLogsResponses = {
 };
 
 export type ListAuditLogsResponse2 = ListAuditLogsResponses[keyof ListAuditLogsResponses];
+
+export type GetAuditLogActivityData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Days to cover, ending today (default 14, max 90)
+         */
+        days?: number;
+        /**
+         * The caller's offset from UTC in minutes, used to split days (default 0)
+         */
+        utc_offset_minutes?: number;
+    };
+    url: '/v1/audit-logs/activity';
+};
+
+export type GetAuditLogActivityErrors = {
+    /**
+     * Invalid input
+     */
+    400: ApiError;
+    /**
+     * Insufficient permissions
+     */
+    403: ApiError;
+};
+
+export type GetAuditLogActivityError = GetAuditLogActivityErrors[keyof GetAuditLogActivityErrors];
+
+export type GetAuditLogActivityResponses = {
+    /**
+     * Audit activity per day
+     */
+    200: AuditLogActivityResponse;
+};
+
+export type GetAuditLogActivityResponse = GetAuditLogActivityResponses[keyof GetAuditLogActivityResponses];
 
 export type LocalLoginData = {
     body: LocalLoginRequest;
