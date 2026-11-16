@@ -119,6 +119,16 @@ export type ApiErrorField = {
 };
 
 export type ApiTokenSummary = {
+    /**
+     * Abilities the token holds. Tokens made before abilities existed show
+     * the abilities their role implies.
+     */
+    abilities?: Array<TokenAbility>;
+    /**
+     * Whether `abilities` was chosen when the token was made, rather than
+     * implied by its role.
+     */
+    abilities_chosen?: boolean;
     created_at: number;
     created_by: string;
     created_by_email: string;
@@ -129,6 +139,10 @@ export type ApiTokenSummary = {
     last_used_at?: number | null;
     name: string;
     prefix: string;
+    /**
+     * Apps the token may reach. Empty means every app its creator reaches.
+     */
+    project_ids?: Array<string>;
     role: UserRole;
 };
 
@@ -467,6 +481,14 @@ export type AuditLogEntry = {
     project_name?: string | null;
     resource_id?: string | null;
     resource_type: string;
+    /**
+     * The API token the actor used, when the action came through one.
+     */
+    token_id?: string | null;
+    /**
+     * That token's name when it acted, shown as "via token <name>".
+     */
+    token_name?: string | null;
 };
 
 export type AuthenticatedUser = {
@@ -549,6 +571,14 @@ export type Build = {
     trigger_actor?: string | null;
     trigger_event?: string | null;
     trigger_ref?: string | null;
+    /**
+     * The API token that started the build, when one did.
+     */
+    trigger_token_id?: string | null;
+    /**
+     * That token's name, shown as "via token <name>".
+     */
+    trigger_token_name?: string | null;
     trigger_type: TriggerType;
     updated_at: number;
     /**
@@ -1143,17 +1173,38 @@ export type ConfigureExternalAccessOidcResponse = {
 };
 
 export type CreateApiTokenRequest = {
+    /**
+     * What the token may do. Leave out for `read` and `build`. `read` is
+     * always included.
+     */
+    abilities?: Array<TokenAbility> | null;
+    /**
+     * Unix time the token stops working. Leave out for a token that never
+     * expires; the web UI and CLI suggest 90 days.
+     */
     expires_at?: number | null;
     name: string;
+    /**
+     * Apps the token may reach. Leave out or empty for every app you reach.
+     */
+    project_ids?: Array<string> | null;
     role: string;
 };
 
 export type CreateApiTokenResponse = {
+    /**
+     * Abilities the token holds.
+     */
+    abilities?: Array<TokenAbility>;
     created_at: number;
     expires_at?: number | null;
     id: string;
     name: string;
     prefix: string;
+    /**
+     * Apps the token may reach. Empty means every app its creator reaches.
+     */
+    project_ids?: Array<string>;
     role: string;
     /**
      * The plaintext token. Only returned on creation, never again.
@@ -4786,6 +4837,12 @@ export type TesterGroupRequest = {
     name: string;
 };
 
+/**
+ * What an API token may do, on top of its role. A token may do the least
+ * of its creator's own rights, its role, its abilities and its app list.
+ */
+export type TokenAbility = 'read' | 'build' | 'release_operate' | 'release_manage' | 'manage';
+
 export type TriggerConfig = {
     /**
      * Branch globs for push and pull request events. When only `tags` is
@@ -6060,6 +6117,10 @@ export type ListAuditLogsData = {
          * Filter by actor user ID, or `system` for entries without an actor
          */
         actor_id?: string;
+        /**
+         * Filter to entries made through this API token
+         */
+        token_id?: string;
         /**
          * Filter by exact action string
          */
