@@ -3,6 +3,7 @@
 import * as v from 'valibot'
 import { vIosExportMethod } from './v-ios-export-method.js'
 import { vSigningIdentityKind } from './v-signing-identity-kind.js'
+import { vSigningIdentityPipelineUse } from './v-signing-identity-pipeline-use.js'
 import { vSigningIdentityProfile } from './v-signing-identity-profile.js'
 import { vSigningIdentityUse } from './v-signing-identity-use.js'
 
@@ -31,5 +32,6 @@ export const vSigningIdentity = v.object({
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
-    used_by: v.optional(v.array(vSigningIdentityUse))
+    used_by: v.optional(v.array(vSigningIdentityUse)),
+    used_by_pipelines: v.optional(v.array(vSigningIdentityPipelineUse))
 });

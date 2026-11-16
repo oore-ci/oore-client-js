@@ -15,6 +15,8 @@ export const vPipelineIosSigningResponse = v.object({
     has_api_key: v.boolean(),
     has_p12: v.boolean(),
     has_p12_password: v.boolean(),
+    identity_id: v.nullish(v.string()),
+    identity_name: v.nullish(v.string()),
     mode: vIosSigningMode,
     p12_expires_at: v.nullish(v.pipe(v.union([
         v.number(),

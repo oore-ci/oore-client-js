@@ -13,6 +13,7 @@ export const vUpdatePipelineIosSigningRequest = v.object({
     certificate: v.nullish(vIosCertificateInput),
     enabled: v.optional(v.boolean()),
     export_method: v.nullish(vIosExportMethod),
+    identity_id: v.nullish(v.string()),
     mode: vIosSigningMode,
     provisioning_profiles: v.optional(v.array(vIosProvisioningProfileInput)),
     shared_api_key_id: v.nullish(v.string()),

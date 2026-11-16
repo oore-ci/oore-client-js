@@ -9,6 +9,8 @@ export const vAndroidSigningProfile = v.object({
     has_key_password: v.boolean(),
     has_keystore: v.boolean(),
     has_store_password: v.boolean(),
+    identity_id: v.nullish(v.string()),
+    identity_name: v.nullish(v.string()),
     key_alias: v.nullish(v.string()),
     keystore_checksum: v.nullish(v.string()),
     keystore_filename: v.nullish(v.string()),

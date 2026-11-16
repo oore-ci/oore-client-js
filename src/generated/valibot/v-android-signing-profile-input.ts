@@ -4,6 +4,7 @@ import * as v from 'valibot'
 
 export const vAndroidSigningProfileInput = v.object({
     enabled: v.optional(v.boolean()),
+    identity_id: v.nullish(v.string()),
     key_alias: v.nullish(v.string()),
     key_password: v.nullish(v.string()),
     keystore_base64: v.nullish(v.string()),

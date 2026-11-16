@@ -344,6 +344,7 @@ export { vSetupTrustedProxyConfigureRequest } from './generated/valibot/v-setup-
 export { vSetupTrustedProxyConfigureResponse } from './generated/valibot/v-setup-trusted-proxy-configure-response.js'
 export { vSigningIdentityKind } from './generated/valibot/v-signing-identity-kind.js'
 export { vCreateSigningIdentityRequest } from './generated/valibot/v-create-signing-identity-request.js'
+export { vSigningIdentityPipelineUse } from './generated/valibot/v-signing-identity-pipeline-use.js'
 export { vSigningIdentityProfile } from './generated/valibot/v-signing-identity-profile.js'
 export { vSigningIdentityUse } from './generated/valibot/v-signing-identity-use.js'
 export { vSigningIdentity } from './generated/valibot/v-signing-identity.js'
