@@ -32,5 +32,7 @@ export const vAuditLogEntry = v.object({
     project_id: v.nullish(v.string()),
     project_name: v.nullish(v.string()),
     resource_id: v.nullish(v.string()),
-    resource_type: v.string()
+    resource_type: v.string(),
+    token_id: v.nullish(v.string()),
+    token_name: v.nullish(v.string())
 });

@@ -15,6 +15,7 @@ export const vListAuditLogsQuery = v.object({
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807'))),
     actor_id: v.optional(v.string()),
+    token_id: v.optional(v.string()),
     action: v.optional(v.string()),
     q: v.optional(v.string()),
     category: v.optional(vAuditLogCategory),
