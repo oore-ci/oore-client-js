@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.45.0](https://github.com/oore-ci/oore-client-js/compare/v0.44.0...v0.45.0) (2026-11-16)
+
+
+### Features
+
+* agent loop helpers, error hints, oore-dev JSON output and the agent daemon API spec ([#115](https://github.com/oore-ci/oore-client-js/issues/115)) ([11d8061](https://github.com/oore-ci/oore-client-js/commit/11d80610e9ed3e6b5112ce87021d78857093e69f))
+
 ## [0.44.0](https://github.com/oore-ci/oore-client-js/compare/v0.43.0...v0.44.0) (2026-11-16)
 
 
