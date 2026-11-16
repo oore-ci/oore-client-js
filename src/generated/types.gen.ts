@@ -129,6 +129,20 @@ export type AppStoreConnectKeySummary = {
 };
 
 /**
+ * Outcome of an App Store Connect connection test. A failed test is a
+ * normal answer, with Apple's reason in `message`.
+ */
+export type AppStoreConnectionTestResponse = {
+    bundle_id?: string | null;
+    checked_at: number;
+    /**
+     * What passed, or the exact failure.
+     */
+    message: string;
+    ok: boolean;
+};
+
+/**
  * Where an App Store Connect upload goes once Apple finishes processing it.
  */
 export type AppStoreDestination = 'testflight' | 'app_store';
@@ -148,8 +162,9 @@ export type AppStoreListing = {
 
 /**
  * App Store publishing settings for a pipeline, stored as the `app_store`
- * publish target. Uploads use the App Store Connect API key from the
- * pipeline's iOS signing settings and require the `app_store` export method.
+ * publish target. Uploads use the app's App Store Connect connection (or,
+ * without one or with `upload_with_signing_key`, the API key from the
+ * pipeline's iOS signing settings) and require the `app_store` export method.
  */
 export type AppStorePublishConfig = {
     /**
@@ -206,6 +221,11 @@ export type AppStorePublishConfig = {
      * TestFlight group names. Used when `destination` is `testflight`.
      */
     testflight_groups: Array<string>;
+    /**
+     * Upload with the API key in this pipeline's iOS signing settings
+     * instead of the app's App Store Connect connection.
+     */
+    upload_with_signing_key?: boolean;
     /**
      * Export compliance answer set on each processed build.
      */
@@ -1741,7 +1761,8 @@ export type GooglePlayCredentialsTestResponse = {
 
 /**
  * Per-pipeline Google Play upload settings. Credentials are referenced by
- * secret name and never stored here.
+ * secret name and never stored here. An empty `service_account_secret` uses
+ * the app's Google Play connection.
  */
 export type GooglePlayPublishConfig = {
     /**
@@ -1761,7 +1782,8 @@ export type GooglePlayPublishConfig = {
      */
     listing_dir?: string | null;
     /**
-     * Expected application id. When omitted, the AAB's package is used.
+     * Expected application id. When omitted, the app's Google Play
+     * connection's package is used, then the AAB's package.
      */
     package_name?: string | null;
     /**
@@ -1777,7 +1799,8 @@ export type GooglePlayPublishConfig = {
     rollout_percent?: number | null;
     rollout_policy?: null | ReleasePolicy;
     /**
-     * Name of the secret holding the service account JSON key.
+     * Name of the secret holding the service account JSON key. Empty uses
+     * the app's Google Play connection.
      */
     service_account_secret: string;
     /**
@@ -2866,6 +2889,17 @@ export type ProjectAppDetection = {
     reference: string;
 };
 
+/**
+ * An app's App Store Connect connection: a stored API key and the app's
+ * bundle ID.
+ */
+export type ProjectAppStoreConnection = {
+    bundle_id?: string | null;
+    key: AppStoreConnectKeySummary;
+    last_check?: null | AppStoreConnectionTestResponse;
+    updated_at: number;
+};
+
 export type ProjectBuildInsights = {
     duration: DurationPercentiles;
     last_finished_at: number;
@@ -2944,6 +2978,25 @@ export type ProjectEnvironment = {
     updated_at: number;
 };
 
+/**
+ * An app's Google Play connection: the service account key its pipelines
+ * upload with, and the app's package.
+ */
+export type ProjectGooglePlayConnection = {
+    last_check?: null | GooglePlayCredentialsTestResponse;
+    package_name?: string | null;
+    /**
+     * Name of the secret holding the service account JSON key, resolved in
+     * the app's scope, then the instance's.
+     */
+    service_account_secret: string;
+    /**
+     * Whether that secret exists in the app or the instance.
+     */
+    service_account_secret_present: boolean;
+    updated_at: number;
+};
+
 export type ProjectMember = {
     created_at: number;
     id: string;
@@ -2997,6 +3050,33 @@ export type ProjectSetupProgress = {
      * Someone has viewer access to the app, as testers do.
      */
     testers: boolean;
+};
+
+/**
+ * A pipeline of the app that uploads with its own credentials instead of
+ * the app's connection.
+ */
+export type ProjectStoreOverride = {
+    /**
+     * What it uses instead, such as the secret name.
+     */
+    detail: string;
+    pipeline_id: string;
+    pipeline_name: string;
+    store: PublishStore;
+};
+
+/**
+ * `GET /v1/projects/{project_id}/stores`
+ */
+export type ProjectStoresResponse = {
+    app_store?: null | ProjectAppStoreConnection;
+    google_play?: null | ProjectGooglePlayConnection;
+    /**
+     * Pipelines that keep their own credentials.
+     */
+    overrides: Array<ProjectStoreOverride>;
+    project_id: string;
 };
 
 export type PromotionDecisionRequest = {
@@ -4769,6 +4849,17 @@ export type UpdatePipelineWorkflowSettingsRequest = {
 };
 
 /**
+ * `PUT /v1/projects/{project_id}/stores/app-store`
+ */
+export type UpdateProjectAppStoreConnectionRequest = {
+    /**
+     * A stored App Store Connect key, from `GET /v1/app-store-connect-keys`.
+     */
+    app_store_connect_key_id: string;
+    bundle_id?: string | null;
+};
+
+/**
  * Changes to an environment. The key and store are fixed once created.
  */
 export type UpdateProjectEnvironmentRequest = {
@@ -4779,6 +4870,14 @@ export type UpdateProjectEnvironmentRequest = {
     rollout_policy?: null | ReleasePolicy;
     submit_for_review?: boolean | null;
     track?: string | null;
+};
+
+/**
+ * `PUT /v1/projects/{project_id}/stores/google-play`
+ */
+export type UpdateProjectGooglePlayConnectionRequest = {
+    package_name?: string | null;
+    service_account_secret: string;
 };
 
 export type UpdateProjectMemberRequest = {
@@ -10415,6 +10514,260 @@ export type UpdateSigningIdentityResponses = {
 };
 
 export type UpdateSigningIdentityResponse = UpdateSigningIdentityResponses[keyof UpdateSigningIdentityResponses];
+
+export type GetProjectStoresData = {
+    body?: never;
+    path: {
+        /**
+         * App ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/stores';
+};
+
+export type GetProjectStoresErrors = {
+    /**
+     * App not found
+     */
+    404: ApiError;
+};
+
+export type GetProjectStoresError = GetProjectStoresErrors[keyof GetProjectStoresErrors];
+
+export type GetProjectStoresResponses = {
+    /**
+     * Store connections
+     */
+    200: ProjectStoresResponse;
+};
+
+export type GetProjectStoresResponse = GetProjectStoresResponses[keyof GetProjectStoresResponses];
+
+export type DeleteProjectAppStoreConnectionData = {
+    body?: never;
+    path: {
+        /**
+         * App ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/stores/app-store';
+};
+
+export type DeleteProjectAppStoreConnectionErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * App not found
+     */
+    404: ApiError;
+};
+
+export type DeleteProjectAppStoreConnectionError = DeleteProjectAppStoreConnectionErrors[keyof DeleteProjectAppStoreConnectionErrors];
+
+export type DeleteProjectAppStoreConnectionResponses = {
+    /**
+     * Store connections
+     */
+    200: ProjectStoresResponse;
+};
+
+export type DeleteProjectAppStoreConnectionResponse = DeleteProjectAppStoreConnectionResponses[keyof DeleteProjectAppStoreConnectionResponses];
+
+export type UpdateProjectAppStoreConnectionData = {
+    body: UpdateProjectAppStoreConnectionRequest;
+    path: {
+        /**
+         * App ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/stores/app-store';
+};
+
+export type UpdateProjectAppStoreConnectionErrors = {
+    /**
+     * Unknown key or invalid bundle ID
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * App not found
+     */
+    404: ApiError;
+};
+
+export type UpdateProjectAppStoreConnectionError = UpdateProjectAppStoreConnectionErrors[keyof UpdateProjectAppStoreConnectionErrors];
+
+export type UpdateProjectAppStoreConnectionResponses = {
+    /**
+     * Store connections
+     */
+    200: ProjectStoresResponse;
+};
+
+export type UpdateProjectAppStoreConnectionResponse = UpdateProjectAppStoreConnectionResponses[keyof UpdateProjectAppStoreConnectionResponses];
+
+export type TestProjectAppStoreConnectionData = {
+    body: UpdateProjectAppStoreConnectionRequest;
+    path: {
+        /**
+         * App ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/stores/app-store/test';
+};
+
+export type TestProjectAppStoreConnectionErrors = {
+    /**
+     * Invalid request
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * App not found
+     */
+    404: ApiError;
+};
+
+export type TestProjectAppStoreConnectionError = TestProjectAppStoreConnectionErrors[keyof TestProjectAppStoreConnectionErrors];
+
+export type TestProjectAppStoreConnectionResponses = {
+    /**
+     * Check result
+     */
+    200: AppStoreConnectionTestResponse;
+};
+
+export type TestProjectAppStoreConnectionResponse = TestProjectAppStoreConnectionResponses[keyof TestProjectAppStoreConnectionResponses];
+
+export type DeleteProjectGooglePlayConnectionData = {
+    body?: never;
+    path: {
+        /**
+         * App ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/stores/google-play';
+};
+
+export type DeleteProjectGooglePlayConnectionErrors = {
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * App not found
+     */
+    404: ApiError;
+    /**
+     * Pipelines upload with this connection
+     */
+    409: ApiError;
+};
+
+export type DeleteProjectGooglePlayConnectionError = DeleteProjectGooglePlayConnectionErrors[keyof DeleteProjectGooglePlayConnectionErrors];
+
+export type DeleteProjectGooglePlayConnectionResponses = {
+    /**
+     * Store connections
+     */
+    200: ProjectStoresResponse;
+};
+
+export type DeleteProjectGooglePlayConnectionResponse = DeleteProjectGooglePlayConnectionResponses[keyof DeleteProjectGooglePlayConnectionResponses];
+
+export type UpdateProjectGooglePlayConnectionData = {
+    body: UpdateProjectGooglePlayConnectionRequest;
+    path: {
+        /**
+         * App ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/stores/google-play';
+};
+
+export type UpdateProjectGooglePlayConnectionErrors = {
+    /**
+     * Invalid secret name or package
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * App not found
+     */
+    404: ApiError;
+};
+
+export type UpdateProjectGooglePlayConnectionError = UpdateProjectGooglePlayConnectionErrors[keyof UpdateProjectGooglePlayConnectionErrors];
+
+export type UpdateProjectGooglePlayConnectionResponses = {
+    /**
+     * Store connections
+     */
+    200: ProjectStoresResponse;
+};
+
+export type UpdateProjectGooglePlayConnectionResponse = UpdateProjectGooglePlayConnectionResponses[keyof UpdateProjectGooglePlayConnectionResponses];
+
+export type TestProjectGooglePlayConnectionData = {
+    body: UpdateProjectGooglePlayConnectionRequest;
+    path: {
+        /**
+         * App ID
+         */
+        project_id: string;
+    };
+    query?: never;
+    url: '/v1/projects/{project_id}/stores/google-play/test';
+};
+
+export type TestProjectGooglePlayConnectionErrors = {
+    /**
+     * Invalid request
+     */
+    400: ApiError;
+    /**
+     * Permission denied
+     */
+    403: ApiError;
+    /**
+     * App not found
+     */
+    404: ApiError;
+};
+
+export type TestProjectGooglePlayConnectionError = TestProjectGooglePlayConnectionErrors[keyof TestProjectGooglePlayConnectionErrors];
+
+export type TestProjectGooglePlayConnectionResponses = {
+    /**
+     * Check result
+     */
+    200: GooglePlayCredentialsTestResponse;
+};
+
+export type TestProjectGooglePlayConnectionResponse = TestProjectGooglePlayConnectionResponses[keyof TestProjectGooglePlayConnectionResponses];
 
 export type GetSetupStatusData = {
     body?: never;
