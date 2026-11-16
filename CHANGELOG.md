@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.42.0](https://github.com/oore-ci/oore-client-js/compare/v0.41.0...v0.42.0) (2026-11-16)
+
+
+### Features
+
+* audit log search, kinds, record names and activity ([#108](https://github.com/oore-ci/oore-client-js/issues/108)) ([a7c8bd0](https://github.com/oore-ci/oore-client-js/commit/a7c8bd081215de7e705af5440fc23aeddea7e160))
+
 ## [0.41.0](https://github.com/oore-ci/oore-client-js/compare/v0.40.0...v0.41.0) (2026-11-15)
 
 
